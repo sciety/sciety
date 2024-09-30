@@ -52,39 +52,39 @@ p + ol {
 }
 
 h1 {
-  @include typography.heading-1();
   margin-top: 0;
   margin-bottom: functions.px-to-rem(16px);
+  @include typography.heading-1();
 }
 
 h2 {
-  @include typography.heading-2();
   margin-top: 0;
   margin-bottom: functions.px-to-rem(16px);
+  @include typography.heading-2();
 }
 
 h3 {
-  @include typography.heading-3();
   margin-top: 0;
   margin-bottom: functions.px-to-rem(16px);
+  @include typography.heading-3();
 }
 
 h4 {
-  @include typography.heading-4();
   margin-top: 0;
   margin-bottom: functions.px-to-rem(16px);
+  @include typography.heading-4();
 }
 
 h5 {
-  @include typography.heading-5();
   margin-top: 0;
   margin-bottom: functions.px-to-rem(16px);
+  @include typography.heading-5();
 }
 
 h6 {
-  @include typography.heading-6();
   margin-top: 0;
   margin-bottom: functions.px-to-rem(16px);
+  @include typography.heading-6();
 }
 
 blockquote {
