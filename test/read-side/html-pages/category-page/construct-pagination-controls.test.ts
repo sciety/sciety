@@ -3,23 +3,27 @@ import { constructPaginationControls } from '../../../../src/read-side/html-page
 import { arbitraryString } from '../../../helpers';
 
 describe('construct-pagination-controls', () => {
-  describe('when two items are available', () => {
-    describe('and the page one is selected', () => {
-      const result = constructPaginationControls(
-        10,
-        { categoryName: arbitraryString() as tt.NonEmptyString, page: 1 },
-        2,
-      );
+  describe('given the page size is 10', () => {
+    const pageSize = 10;
 
-      it.todo('returns backwardPageHref as none');
+    describe('when two items are available', () => {
+      describe('and the page one is selected', () => {
+        const result = constructPaginationControls(
+          pageSize,
+          { categoryName: arbitraryString() as tt.NonEmptyString, page: 1 },
+          2,
+        );
 
-      it.todo('returns forwardPageHref as none');
+        it.todo('returns backwardPageHref as none');
 
-      it('returns page as 1', () => {
-        expect(result.page).toBe(1);
+        it.todo('returns forwardPageHref as none');
+
+        it('returns page as 1', () => {
+          expect(result.page).toBe(1);
+        });
+
+        it.todo('returns pageCount as 1');
       });
-
-      it.todo('returns pageCount as 1');
     });
   });
 });
