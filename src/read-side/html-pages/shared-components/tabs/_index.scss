@@ -7,19 +7,21 @@
 @use 'list';
 
 .tab-list {
-  @include list.basics();
   border-bottom: 2px solid transparent;
   margin-bottom: 0;
+  @include list.basics();
 }
 
 .tab {
-  @include typography.button();
-
   padding: 0;
   margin-bottom: functions.px-to-rem(14px);
-  line-height: math.div(20px, 14px);
   text-transform: uppercase;
   font-weight: bold;
+  @include typography.button();
+
+  & {
+    line-height: math.div(20px, 14px);
+  }
 
   @include breakpoints.not-narrow() {
     display: inline-block;
