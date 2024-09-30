@@ -2,11 +2,11 @@
 @use 'list';
 
 .card-authors {
-  @include list.basics();
   margin-bottom: functions.px-to-rem(24px);
+  @include list.basics();
 }
 
 .card-authors__author {
-  @include list.author-separator-terminator();
   display: inline;
+  @include list.author-separator-terminator();
 }
