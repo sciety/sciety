@@ -22,7 +22,9 @@ describe('construct-pagination-controls', () => {
           expect(result.page).toBe(1);
         });
 
-        it.todo('returns pageCount as 1');
+        it('returns pageCount as 1', () => {
+          expect(result.pageCount).toBe(1);
+        });
       });
     });
   });
