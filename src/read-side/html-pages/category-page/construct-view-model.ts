@@ -15,10 +15,6 @@ const constructPaginationControls = (pageSize: number, totalItems: number): View
 
 export const constructViewModel: ConstructViewModel<Params, ViewModel> = (dependencies) => (params) => pipe(
   dependencies.fetchByCategory(params.categoryName),
-  TE.map(({ expressionDois }) => ({
-    expressionDois,
-    totalItems: 1234,
-  })),
   TE.bindW('articleCardViewModels', ({ expressionDois }) => pipe(
     expressionDois,
     constructArticleCardStackWithSilentFailures(dependencies),

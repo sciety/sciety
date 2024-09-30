@@ -36,5 +36,5 @@ export const fetchByCategory = (
   TE.map(RA.map(EDOI.canonicalExpressionDoiCodec.decode)),
   TE.map(RA.separate),
   TE.map((separated) => separated.right),
-  TE.map((expressionDois) => ({ expressionDois })),
+  TE.map((expressionDois) => ({ expressionDois, totalItems: 1234 })),
 );

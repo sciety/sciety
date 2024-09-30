@@ -15,4 +15,5 @@ export const fetchByCategory: ExternalQueries['fetchByCategory'] = () => TE.righ
     EDOI.fromValidatedString('10.1101/2024.01.16.575490'),
     EDOI.fromValidatedString('10.1101/2024.01.16.575490'),
   ],
+  totalItems: 10,
 });
