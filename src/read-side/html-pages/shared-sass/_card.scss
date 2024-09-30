@@ -26,8 +26,8 @@ $_card-border-radius: settings.$border-radius;
 }
 
 @mixin title() {
-  @include typography.card-title();
   margin-bottom: 0.25rem;
+  @include typography.card-title();
 }
 
 @mixin link () {
@@ -64,15 +64,15 @@ $_card-border-radius: settings.$border-radius;
 }
 
 @mixin meta() {
+  color: settings.$colour-text-secondary;
   @include typography.details();
   @include typography.list-separator();
-  color: settings.$colour-text-secondary;
 }
 
 @mixin list() {
-  @include list.basics();
   margin-top: 0;
   margin-bottom: 1.5rem;
+  @include list.basics();
 
   > li {
     margin-bottom: 0.5rem;
@@ -92,8 +92,8 @@ $_card-border-radius: settings.$border-radius;
 }
 
 @mixin avatar() {
-  @include avatar.border();
   width: avatar.$size--small;
   height: avatar.$size--small;
   flex: 0 0 avatar.$size--small;
+  @include avatar.border();
 }
