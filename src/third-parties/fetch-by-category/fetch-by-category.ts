@@ -18,7 +18,20 @@ const scietyLabsByCategoryResponseCodec = t.type({
       doi: t.string,
     }),
   })),
+  meta: t.strict({
+    total: t.number,
+  }),
 });
+
+type ScietyLabsByCategoryResponse = t.TypeOf<typeof scietyLabsByCategoryResponseCodec>;
+
+const toExpressionDois = (result: ScietyLabsByCategoryResponse) => pipe(
+  result.data,
+  RA.map((item) => item.attributes.doi),
+  RA.map(EDOI.canonicalExpressionDoiCodec.decode),
+  RA.separate,
+  (separated) => separated.right,
+);
 
 export const fetchByCategory = (
   queryExternalService: QueryExternalService,
@@ -31,10 +44,8 @@ export const fetchByCategory = (
     decodeAndLogFailures(logger, scietyLabsByCategoryResponseCodec, { url: buildUrl }),
     E.mapLeft(() => DE.unavailable),
   )),
-  TE.map((result) => result.data),
-  TE.map(RA.map((item) => item.attributes.doi)),
-  TE.map(RA.map(EDOI.canonicalExpressionDoiCodec.decode)),
-  TE.map(RA.separate),
-  TE.map((separated) => separated.right),
-  TE.map((expressionDois) => ({ expressionDois, totalItems: 1234 })),
+  TE.map((result) => ({
+    expressionDois: toExpressionDois(result),
+    totalItems: result.meta.total,
+  })),
 );

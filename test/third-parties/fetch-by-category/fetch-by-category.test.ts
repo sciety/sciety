@@ -6,9 +6,15 @@ import { arbitraryString } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 
-const responseWithValidDoi = { data: [{ attributes: { doi: arbitraryExpressionDoi() } }] };
+const responseWithValidDoi = {
+  data: [{ attributes: { doi: arbitraryExpressionDoi() } }],
+  meta: { total: 1 },
+};
 
-const responseWithInvalidDoi = { data: [{ attributes: { doi: arbitraryString() } }] };
+const responseWithInvalidDoi = {
+  data: [{ attributes: { doi: arbitraryString() } }],
+  meta: { total: 1 },
+};
 
 const dummyQueryExternalService = (queryResponse: unknown) => () => () => TE.right(queryResponse);
 
