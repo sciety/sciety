@@ -12,12 +12,12 @@
       [
         "custom-properties",
         "dollar-variables",
+        "declarations",
         {
           "type": "at-rule",
           "name": "include",
           "hasBlock": false
         },
-        "declarations",
         {
           "type": "rule",
           "selector": "/^&:\\w/"
