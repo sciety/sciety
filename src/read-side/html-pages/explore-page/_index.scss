@@ -8,10 +8,10 @@
 }
 
 .browse-by-category-list {
-  @include list.basics();
   display: flex;
   flex-flow: row wrap;
   gap: functions.px-to-rem(16px);
+  @include list.basics();
 }
 
 .browse-by-category-list__link {
