@@ -9,8 +9,8 @@
 @use 'local-settings';
 
 .article-actions {
-  @include layout.column-two();
   margin-bottom: local-settings.$component-vertical-spacing;
+  @include layout.column-two();
 
   @include breakpoints.two-column-display {
     padding-left: functions.px-to-rem(40px);
@@ -23,8 +23,8 @@
 }
 
 .article-actions-reviewing-groups {
-  @include list.basics();
   margin-bottom: functions.px-to-rem(32px);
+  @include list.basics();
 }
 
 .article-actions-reviewing-groups__item {
@@ -32,14 +32,13 @@
 }
 
 .full-article-button {
-  @include button.primary-link();
   margin-bottom: functions.px-to-rem(32px);
+  @include button.primary-link();
 }
 
 .see-related-articles-button {
-  @include button.secondary-link();
-
   margin-bottom: functions.px-to-rem(32px);
+  @include button.secondary-link();
 
   @include breakpoints.two-column-display {
     margin-bottom: functions.px-to-rem(80px);
@@ -47,16 +46,15 @@
 }
 
 .logged-out-call-to-action {
-  @include button.secondary-link();
-
   margin-bottom: functions.px-to-rem(24px);
+  @include button.secondary-link();
 }
 
 .saved-to-list {
-  @include typography.button();
   display: flex;
   align-items: center;
   margin-bottom: functions.px-to-rem(24px);
+  @include typography.button();
 }
 
 .saved-to-list:any-link {
@@ -76,9 +74,8 @@
 }
 
 .listed-in-list {
-  @include list.basics();
-
   margin-bottom: 0;
+  @include list.basics();
 
   li {
     margin-bottom: functions.px-to-rem(8px);
