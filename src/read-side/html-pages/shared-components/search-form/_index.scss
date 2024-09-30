@@ -23,9 +23,9 @@ $_clear-button-inline-size: 48px;
 }
 
 .search-form__checkbox_label {
-  @include typography.body();
   display: inline-block;
   margin-bottom: functions.px-to-rem(8px);
+  @include typography.body();
 }
 
 .search-form__clear {
@@ -46,6 +46,6 @@ $_clear-button-inline-size: 48px;
 }
 
 .search-form__submit {
-  @include button.primary();
   display: block;
+  @include button.primary();
 }
