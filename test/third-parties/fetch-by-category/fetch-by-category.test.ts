@@ -1,6 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { fetchByCategory } from '../../../src/third-parties/search-categories';
+import { fetchByCategory } from '../../../src/third-parties/fetch-by-category/fetch-by-category';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryString } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
