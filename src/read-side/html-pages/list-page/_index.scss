@@ -28,8 +28,8 @@ $_image-max-width: 200px;
   color: settings.$colour-white;
 
   h2 {
-    @include typography.heading-3();
     margin-bottom: 0;
+    @include typography.heading-3();
   }
 }
 
@@ -46,17 +46,17 @@ $_image-max-width: 200px;
 }
 
 .page-header--list .page-header__subheading {
-  @include typography.subheading();
   display: flex;
   align-items: center;
   margin-bottom: functions.px-to-rem(8px);
+  @include typography.subheading();
 }
 
 .page-header--list .page-header__avatar {
-  @include avatar.border();
   width: avatar.$size--medium;
   height: avatar.$size--medium;
   margin-right: functions.px-to-rem(8px);
+  @include avatar.border();
 }
 
 .page-header--list .page-header__description {
@@ -64,9 +64,9 @@ $_image-max-width: 200px;
 }
 
 .page-header--list .page-header__meta {
+  margin-bottom: functions.px-to-rem(16px);
   @include typography.details();
   @include typography.list-separator();
-  margin-bottom: functions.px-to-rem(16px);
 }
 
 .page-header--list .page-header__list_image {
@@ -87,12 +87,16 @@ $_image-max-width: 200px;
 }
 
 .list-page-actions__edit_details_link {
-  @include button.primary-link();
   background-image: url('/static/images/edit-note-icon.svg');
   background-repeat: no-repeat;
   background-size: functions.px-to-rem($_edit-details-icon-size);
   background-position: functions.px-to-rem($_edit-details-icon-offset) 0.25rem;
-  padding-left: functions.px-to-rem($_edit-details-icon-size + $_edit-details-icon-offset);
+
+  @include button.primary-link();
+
+  & {
+    padding-left: functions.px-to-rem($_edit-details-icon-size + $_edit-details-icon-offset);
+  }
 }
 
 .list-page-actions__related_articles {
@@ -104,8 +108,8 @@ $_image-max-width: 200px;
 }
 
 .articles-page-count {
-  @include typography.details();
   margin-bottom: functions.px-to-rem(16px);
+  @include typography.details();
 }
 
 .saved-articles-control--remove {
