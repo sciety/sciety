@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Params } from './params';
@@ -11,5 +12,11 @@ export const constructViewModel: ConstructViewModel<Params, ViewModel> = (depend
   TE.map((articleCardViewModel) => ({
     pageHeading: `${params.categoryName}`,
     categoryContent: articleCardViewModel,
+    paginationControls: {
+      backwardPageHref: O.some('/backward-page-href'),
+      forwardPageHref: O.some('/forward-page-href'),
+      page: 1,
+      pageCount: 100,
+    },
   })),
 );
