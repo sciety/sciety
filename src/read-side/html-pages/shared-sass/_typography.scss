@@ -61,8 +61,8 @@
 }
 
 @mixin heading-1 () {
-  @include heading-base();
   font-size: functions.px-to-rem(26px);
+  @include heading-base();
 
   @include breakpoints.not-narrow() {
     font-size: functions.px-to-rem(32px);
@@ -70,8 +70,8 @@
 }
 
 @mixin heading-2 () {
-  @include heading-base();
   font-size: functions.px-to-rem(20px);
+  @include heading-base();
 
   @include breakpoints.not-narrow() {
     font-size: functions.px-to-rem(26px);
@@ -79,24 +79,24 @@
 }
 
 @mixin heading-3 () {
-  @include heading-base();
   font-size: functions.px-to-rem(18px);
+  @include heading-base();
 }
 
 @mixin heading-4 () {
-  @include heading-base();
   font-size: functions.px-to-rem(15px);
+  @include heading-base();
 }
 
 @mixin heading-5 () {
-  @include heading-base();
   font-size: functions.px-to-rem(14px);
+  @include heading-base();
 }
 
 @mixin heading-6 () {
-  @include heading-base();
   font-size: functions.px-to-rem(14px);
   font-style: italic;
+  @include heading-base();
 }
 
 @mixin list-separator() {
