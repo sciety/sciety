@@ -63,14 +63,14 @@ $_arbitrary-large-amount-of-px: 9000px;
 }
 
 .curation-teasers__title {
+  margin-bottom: functions.px-to-rem(20px);
   @include layout.page-content-horizontal-margins();
   @include common.section-heading-on-not-narrow();
-  margin-bottom: functions.px-to-rem(20px);
 }
 
 .curation-teasers__teasers {
-  @include list.basics();
   margin-bottom: 0;
+  @include list.basics();
 
   @media screen and (min-width: common.$home-page-breakpoint) {
     display: flex;
@@ -124,12 +124,11 @@ $_arbitrary-large-amount-of-px: 9000px;
 }
 
 .curation-teaser__quote {
-  @include _clamp-to-max-number-of-lines(10);
-
   margin: 0;
   margin-bottom: functions.px-to-rem(24px);
   padding-left: 0;
   border-width: 0;
+  @include _clamp-to-max-number-of-lines(10);
 }
 
 .curation-teaser__strapline {
