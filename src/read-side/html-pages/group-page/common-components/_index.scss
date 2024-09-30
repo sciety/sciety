@@ -12,8 +12,8 @@
 }
 
 .page-header__large_logo {
-  @include contain-image.contain-image();
   object-position: 50% 50%;
+  @include contain-image.contain-image();
 
   @include breakpoints.not-narrow() {
     object-position: left 50%;
