@@ -34,9 +34,9 @@ body {
 }
 
 p {
-  @include typography.body();
   margin-top: 0;
   margin-bottom: functions.px-to-rem(24px);
+  @include typography.body();
 
 
   a {
@@ -138,8 +138,8 @@ textarea {
 }
 
 button {
-  @include typography.button();
   cursor: pointer;
+  @include typography.button();
 }
 
 fieldset {
@@ -222,9 +222,9 @@ th {
 }
 
 address {
-  @include typography.body();
   font-style: normal;
   margin-bottom: functions.px-to-rem(16px);
+  @include typography.body();
 }
 
 *,
