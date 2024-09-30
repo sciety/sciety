@@ -3,8 +3,8 @@
 
 .user-card {
   $_is-entire-card-linked: true;
-  @include card.basics($_is-entire-card-linked);
   display: flex;
+  @include card.basics($_is-entire-card-linked);
 }
 
 .user-card__body {
@@ -24,8 +24,8 @@
 }
 
 .user-card__avatar {
-  @include card.avatar();
   margin-left: functions.px-to-rem(32px);
+  @include card.avatar();
 }
 
 .user-card__meta {
