@@ -31,8 +31,8 @@
 }
 
 .activity-feed__item__avatar {
-  @include card.avatar();
   margin-right: functions.px-to-rem(8px);
+  @include card.avatar();
 }
 
 .activity-feed__item__meta {
@@ -79,8 +79,8 @@ p.activity-feed__item__title {
   margin-right: functions.px-to-rem(24px);
 
   h3 {
-    @include typography.sizing($font-size: settings.$base-font-measure, $line-height-in-px: 24px);
     font-weight: bold;
+    @include typography.sizing($font-size: settings.$base-font-measure, $line-height-in-px: 24px);
   }
 
   ol,
