@@ -25,8 +25,8 @@
   justify-content: center;
 
   a {
-    @include button.primary-link();
     margin-bottom: functions.px-to-rem(24px);
+    @include button.primary-link();
   }
 }
 
