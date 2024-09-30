@@ -39,10 +39,10 @@ $_clear-button-inline-size: 48px;
   }
 
   button[type="submit"] {
-    @include button.primary();
     margin-right: functions.px-to-rem(
-      settings.$default-form-element-separation
+            settings.$default-form-element-separation
     );
+    @include button.primary();
   }
 
   dl {
