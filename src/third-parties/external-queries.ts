@@ -10,7 +10,8 @@ import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { SearchResults } from '../types/search-results';
 import { UserId } from '../types/user-id';
 
-type FetchByCategory = (category: string) => TE.TaskEither<DE.DataError, ReadonlyArray<ExpressionDoi>>;
+type FetchByCategory = (category: string)
+=> TE.TaskEither<DE.DataError, { expressionDois: ReadonlyArray<ExpressionDoi> }>;
 
 type FetchExpressionFrontMatter = (expressionDoi: ExpressionDoi)
 => TE.TaskEither<DE.DataError, ExpressionFrontMatter>;

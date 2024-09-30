@@ -27,7 +27,7 @@ describe('fetch-by-category', () => {
     });
 
     it('is included', () => {
-      expect(result).toHaveLength(1);
+      expect(result.expressionDois).toHaveLength(1);
     });
   });
 
@@ -37,7 +37,7 @@ describe('fetch-by-category', () => {
     });
 
     it('is not included', () => {
-      expect(result).toHaveLength(0);
+      expect(result.expressionDois).toHaveLength(0);
     });
   });
 });
