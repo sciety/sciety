@@ -1,5 +1,4 @@
 import * as O from 'fp-ts/Option';
-import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Params } from './params';
@@ -20,13 +19,10 @@ export const constructViewModel: ConstructViewModel<Params, ViewModel> = (depend
     expressionDois,
     totalItems: 1000,
   })),
-  TE.chainTaskK(({ expressionDois, totalItems }) => pipe(
+  TE.bindW('articleCardViewModels', ({ expressionDois }) => pipe(
     expressionDois,
     constructArticleCardStackWithSilentFailures(dependencies),
-    T.map((articleCardViewModels) => ({
-      articleCardViewModels,
-      totalItems,
-    })),
+    TE.rightTask,
   )),
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   TE.map(({ articleCardViewModels, totalItems }) => ({
