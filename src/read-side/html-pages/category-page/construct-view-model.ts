@@ -7,10 +7,10 @@ import { constructCategoryPageHref } from '../../../standards/paths';
 import { ConstructViewModel } from '../construct-view-model';
 import { constructArticleCardStackWithSilentFailures } from '../shared-components/article-list';
 
-const constructPaginationControls = (pageSize: number, totalItems: number, categoryName: string): ViewModel['paginationControls'] => ({
+const constructPaginationControls = (pageSize: number, totalItems: number, params: Params): ViewModel['paginationControls'] => ({
   backwardPageHref: O.some('/backward-page-href'),
-  forwardPageHref: O.some(constructCategoryPageHref(categoryName, 2)),
-  page: 1,
+  forwardPageHref: O.some(constructCategoryPageHref(params.categoryName, 2)),
+  page: params.page,
   pageCount: Math.ceil(totalItems / pageSize),
 });
 
@@ -24,6 +24,6 @@ export const constructViewModel: ConstructViewModel<Params, ViewModel> = (depend
   TE.map(({ articleCardViewModels, totalItems }) => ({
     pageHeading: `${params.categoryName}`,
     categoryContent: articleCardViewModels,
-    paginationControls: constructPaginationControls(10, totalItems, params.categoryName),
+    paginationControls: constructPaginationControls(10, totalItems, params),
   })),
 );
