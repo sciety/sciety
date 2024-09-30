@@ -71,8 +71,8 @@ $_triangle-size: 32px;
 }
 
 .article-card-annotation__avatar {
-  @include avatar.border();
   width: avatar.$size--small;
   height: avatar.$size--small;
   margin-right: functions.px-to-rem(16px);
+  @include avatar.border();
 }
