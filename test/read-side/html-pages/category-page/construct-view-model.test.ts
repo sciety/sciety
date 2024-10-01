@@ -9,6 +9,7 @@ import { abortTest } from '../../../abort-test';
 import { createTestFramework, TestFramework } from '../../../framework';
 import { arbitraryNumber, arbitraryString } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { arbitraryDataError } from '../../../types/data-error.helper';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 
 describe('construct-view-model', () => {
@@ -69,7 +70,30 @@ describe('construct-view-model', () => {
     });
 
     describe('and an article card cannot be displayed', () => {
-      it.todo('displays an article error card');
+      let paginatedCards: PaginatedCards;
+
+      beforeEach(async () => {
+        const dependencies = {
+          ...framework.dependenciesForViews,
+          fetchByCategory: () => TE.right({ expressionDois: [arbitraryExpressionDoi()], totalItems: 1 }),
+          fetchPublishingHistory: () => TE.left(arbitraryDataError()),
+        };
+        paginatedCards = await pipe(
+          {
+            categoryName: arbitraryString() as tt.NonEmptyString,
+            page: arbitraryNumber(1, 1000),
+          },
+          constructViewModel(dependencies),
+          TE.getOrElse(abortTest('expected view model construction to succeed')),
+          T.map((viewModel) => viewModel.content),
+          TE.getOrElse(abortTest('expected paginated cards')),
+        )();
+      });
+
+      it.failing('displays an article error card', () => {
+        expect(paginatedCards.categoryContent).toHaveLength(1);
+        expect(paginatedCards.categoryContent[0]).toStrictEqual(E.left(expect.anything()));
+      });
     });
   });
 
