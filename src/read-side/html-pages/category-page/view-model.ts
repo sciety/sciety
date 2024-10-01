@@ -1,11 +1,13 @@
 import * as E from 'fp-ts/Either';
-import { ArticleCardViewModel } from '../shared-components/article-card';
+import { ArticleCardViewModel, ArticleErrorCardViewModel } from '../shared-components/article-card';
 import { PaginationControlsViewModel } from '../shared-components/pagination';
 
 type InformationalMessage = string;
 
+type ArticleCardSlot = E.Either<ArticleErrorCardViewModel, ArticleCardViewModel>;
+
 export type PaginatedCards = {
-  categoryContent: ReadonlyArray<ArticleCardViewModel>,
+  categoryContent: ReadonlyArray<ArticleCardSlot>,
   paginationControls: PaginationControlsViewModel,
 };
 

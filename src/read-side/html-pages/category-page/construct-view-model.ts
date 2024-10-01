@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { constructPaginationControls } from './construct-pagination-controls';
@@ -25,7 +26,7 @@ export const constructViewModel: ConstructViewModel<Params, ViewModel> = (depend
         () => 'No evaluated articles were found for this category.',
       ),
       E.map(() => ({
-        categoryContent: articleCardViewModels,
+        categoryContent: pipe(articleCardViewModels, RA.map(E.right)),
         paginationControls: constructPaginationControls(10, params, totalItems),
       })),
     ),
