@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import * as tt from 'io-ts-types';
 import { constructPaginationControls } from '../../../../src/read-side/html-pages/category-page/construct-pagination-controls';
-import { arbitraryString } from '../../../helpers';
+import { arbitraryNumber, arbitraryString } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 
 describe('construct-pagination-controls', () => {
@@ -56,6 +56,21 @@ describe('construct-pagination-controls', () => {
 
         it('returns pageCount as 2', () => {
           expect(result.pageCount).toBe(2);
+        });
+      });
+    });
+
+    describe('when 0 items are available', () => {
+      describe('and any page is selected', () => {
+        const selectedPage = arbitraryNumber(0, 1000);
+        const result = constructPaginationControls(
+          pageSize,
+          { categoryName: arbitraryString() as tt.NonEmptyString, page: selectedPage },
+          0,
+        );
+
+        it.failing('does not display anything', () => {
+          expect(result).toStrictEqual(O.none);
         });
       });
     });
