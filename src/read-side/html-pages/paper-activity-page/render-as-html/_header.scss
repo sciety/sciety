@@ -17,8 +17,10 @@
 }
 
 @mixin _apply-page-gutter-as-padding() {
-  padding-left: settings.$default-gutter;
-  padding-right: settings.$default-gutter;
+  & {
+    padding-left: settings.$default-gutter;
+    padding-right: settings.$default-gutter;
+  }
 
   @include breakpoints.not-narrow() {
     padding-left: 0;
