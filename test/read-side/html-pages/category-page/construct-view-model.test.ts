@@ -9,7 +9,7 @@ describe('construct-view-model', () => {
     });
 
     describe('and an article card cannot be displayed', () => {
-      it.todo('?');
+      it.todo('displays an article error card');
     });
   });
 
@@ -19,11 +19,13 @@ describe('construct-view-model', () => {
     });
 
     describe('and 1 article card cannot be displayed', () => {
-      it.todo('?');
+      it.todo('displays one article card');
+
+      it.todo('displays one article error card');
     });
 
     describe('and no article cards can be displayed', () => {
-      it.todo('?');
+      it.todo('displays article cards instead');
     });
   });
 });
