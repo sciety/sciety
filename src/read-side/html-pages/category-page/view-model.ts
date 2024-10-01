@@ -5,7 +5,7 @@ import { PaginationControlsViewModel } from '../shared-components/pagination';
 
 type InformationalMessage = string;
 
-type PaginatedCards = {
+export type PaginatedCards = {
   categoryContent: ReadonlyArray<ArticleCardViewModel>,
   paginationControls: PaginationControlsViewModel,
 };
