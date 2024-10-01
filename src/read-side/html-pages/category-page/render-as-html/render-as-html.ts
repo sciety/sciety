@@ -1,4 +1,6 @@
 import { htmlEscape } from 'escape-goat';
+import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import { renderCategoryContent } from './render-category-content';
 import { toHtmlFragment } from '../../../../types/html-fragment';
 import { HtmlPage, toHtmlPage } from '../../html-page';
@@ -14,7 +16,7 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
     </header>
     <section>
       ${renderCategoryContent(viewModel.categoryContent)}
-      ${process.env.EXPERIMENT_ENABLED === 'true' ? renderPaginationControls(viewModel.paginationControls) : ''}
+      ${process.env.EXPERIMENT_ENABLED === 'true' ? pipe(viewModel.paginationControls, O.match(() => '', renderPaginationControls)) : ''}
     </section>
   `,
   ),
