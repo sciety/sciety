@@ -11,12 +11,14 @@ $_card-border-radius: settings.$border-radius;
   @if ($is-entire-card-linked == true) {
     position: relative;
   }
-  background-color: settings.$colour-white;
-  padding: 1rem functions.px-to-rem(settings.$default-gutter);
 
-  border: settings.$border-width solid settings.$colour-furniture;
-  border-left-width: 0;
-  border-right-width: 0;
+  & {
+    background-color: settings.$colour-white;
+    padding: 1rem functions.px-to-rem(settings.$default-gutter);
+    border: settings.$border-width solid settings.$colour-furniture;
+    border-left-width: 0;
+    border-right-width: 0;
+  }
 
   @include breakpoints.not-narrow {
     border-radius: $_card-border-radius;
