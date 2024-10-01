@@ -36,12 +36,12 @@ $_mobile-menu-perimeter-spacing: functions.px-to-rem(24px);
 }
 
 .mobile-menu__link {
-  @include typography.button();
   display: inline-block;
   align-items: center;
   border-radius: settings.$border-radius;
   margin-bottom: functions.px-to-rem(32px);
   font-weight: bold;
+  @include typography.button();
 
   &:any-link {
     color: settings.$colour-white;
@@ -58,12 +58,12 @@ $_mobile-menu-perimeter-spacing: functions.px-to-rem(24px);
 }
 
 .mobile-menu__user_avatar {
-  @include avatar.border();
   background-color: settings.$colour-white;
   width: functions.px-to-rem(avatar.$size--small);
   height: auto;
   display: inline-block;
   margin-right: functions.px-to-rem(12px);
+  @include avatar.border();
 }
 
 .mobile-menu__link_primary_button {
@@ -71,10 +71,10 @@ $_mobile-menu-perimeter-spacing: functions.px-to-rem(24px);
 }
 
 .mobile-menu__link_secondary_button {
-  @include typography.button();
   border-radius: settings.$border-radius;
   border: settings.$border-width solid settings.$colour-furniture;
   padding: functions.px-to-rem(8px) functions.px-to-rem(12px - settings.$border-width);
+  @include typography.button();
 
   @include link.normal-state() {
     color: settings.$colour-white;
