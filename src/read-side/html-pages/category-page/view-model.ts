@@ -1,15 +1,18 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { ArticleCardViewModel } from '../shared-components/article-card';
 import { PaginationControlsViewModel } from '../shared-components/pagination';
 
-type Content = {
+type InformationalMessage = string;
+
+type PaginatedCards = {
   categoryContent: ReadonlyArray<ArticleCardViewModel>,
-  paginationControls: O.Option<PaginationControlsViewModel>,
+  paginationControls: PaginationControlsViewModel,
 };
 
 export type ViewModel = {
   pageHeading: string,
-  content: Content,
+  content: E.Either<InformationalMessage, PaginatedCards>,
   categoryContent: ReadonlyArray<ArticleCardViewModel>,
   paginationControls: O.Option<PaginationControlsViewModel>,
 };

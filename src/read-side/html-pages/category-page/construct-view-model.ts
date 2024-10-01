@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { constructPaginationControls } from './construct-pagination-controls';
@@ -17,9 +18,6 @@ export const constructViewModel: ConstructViewModel<Params, ViewModel> = (depend
     pageHeading: `${params.categoryName}`,
     categoryContent: articleCardViewModels,
     paginationControls: constructPaginationControls(10, params, totalItems),
-    content: {
-      categoryContent: articleCardViewModels,
-      paginationControls: constructPaginationControls(10, params, totalItems),
-    },
+    content: E.left('Unreachable state'),
   })),
 );
