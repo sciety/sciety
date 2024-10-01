@@ -1,7 +1,7 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { evaluationAuthorsCodec } from './types/evaluation-authors';
-import { evaluationTypeCodec } from './types/evaluation-type';
+import { evaluationTypeCodec } from '../../domain-events/types/evaluation-type';
 import { evaluationLocatorCodec } from '../../types/evaluation-locator';
 import { expressionDoiCodec } from '../../types/expression-doi';
 import { GroupIdFromStringCodec } from '../../types/group-id';
