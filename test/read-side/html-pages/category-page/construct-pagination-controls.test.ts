@@ -6,11 +6,12 @@ describe('construct-pagination-controls', () => {
   describe('given the page size is 10', () => {
     const pageSize = 10;
 
-    describe('when two items are available', () => {
-      describe('and the page one is selected', () => {
+    describe('when 2 items are available', () => {
+      describe('and the page 1 is selected', () => {
+        const selectedPage = 1;
         const result = constructPaginationControls(
           pageSize,
-          { categoryName: arbitraryString() as tt.NonEmptyString, page: 1 },
+          { categoryName: arbitraryString() as tt.NonEmptyString, page: selectedPage },
           2,
         );
 
@@ -18,8 +19,8 @@ describe('construct-pagination-controls', () => {
 
         it.todo('returns forwardPageHref as none');
 
-        it('returns page as 1', () => {
-          expect(result.page).toBe(1);
+        it('returns page as the selected page', () => {
+          expect(result.page).toBe(selectedPage);
         });
 
         it('returns pageCount as 1', () => {
@@ -28,11 +29,12 @@ describe('construct-pagination-controls', () => {
       });
     });
 
-    describe('when twelve items are available', () => {
-      describe('and the page two is selected', () => {
+    describe('when 12 items are available', () => {
+      describe('and the page 2 is selected', () => {
+        const selectedPage = 2;
         const result = constructPaginationControls(
           pageSize,
-          { categoryName: arbitraryString() as tt.NonEmptyString, page: 2 },
+          { categoryName: arbitraryString() as tt.NonEmptyString, page: selectedPage },
           12,
         );
 
@@ -40,8 +42,8 @@ describe('construct-pagination-controls', () => {
 
         it.todo('returns forwardPageHref as none');
 
-        it('returns page as 2', () => {
-          expect(result.page).toBe(2);
+        it('returns page as the selected page', () => {
+          expect(result.page).toBe(selectedPage);
         });
 
         it('returns pageCount as 2', () => {
