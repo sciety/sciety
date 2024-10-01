@@ -18,6 +18,16 @@ export const constructViewModel: ConstructViewModel<Params, ViewModel> = (depend
     pageHeading: `${params.categoryName}`,
     categoryContent: articleCardViewModels,
     paginationControls: constructPaginationControls(10, params, totalItems),
-    content: E.left('Unreachable state'),
+    content: pipe(
+      totalItems,
+      E.fromPredicate(
+        (items) => items > 0,
+        () => 'No evaluated articles were found for this category.',
+      ),
+      E.map(() => ({
+        categoryContent: articleCardViewModels,
+        paginationControls: constructPaginationControls(10, params, totalItems),
+      })),
+    ),
   })),
 );

@@ -42,7 +42,7 @@ describe('construct-view-model', () => {
   });
 
   describe('when there is 1 evaluated expression in the selected category', () => {
-    describe.skip('and an article card can be displayed', () => {
+    describe('and an article card can be displayed', () => {
       let paginatedCards: PaginatedCards;
 
       beforeEach(async () => {
