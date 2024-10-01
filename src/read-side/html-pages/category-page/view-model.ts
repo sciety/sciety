@@ -14,6 +14,4 @@ export type PaginatedCards = {
 export type ViewModel = {
   pageHeading: string,
   content: E.Either<InformationalMessage, PaginatedCards>,
-  categoryContent: ReadonlyArray<ArticleCardViewModel>,
-  paginationControls: PaginationControlsViewModel,
 };

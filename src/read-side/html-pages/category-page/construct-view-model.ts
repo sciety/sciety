@@ -17,8 +17,6 @@ export const constructViewModel: ConstructViewModel<Params, ViewModel> = (depend
   )),
   TE.map(({ articleCardViewModels, totalItems }) => ({
     pageHeading: `${params.categoryName}`,
-    categoryContent: articleCardViewModels,
-    paginationControls: constructPaginationControls(10, params, totalItems),
     content: pipe(
       totalItems,
       E.fromPredicate(
