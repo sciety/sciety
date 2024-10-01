@@ -81,7 +81,7 @@ describe('construct-view-model', () => {
         );
       });
 
-      it.failing('displays an article error card', () => {
+      it('displays an article error card', () => {
         expect(paginatedCards.categoryContent).toHaveLength(1);
         expect(paginatedCards.categoryContent[0]).toStrictEqual(E.left(expect.anything()));
       });

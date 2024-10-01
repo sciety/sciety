@@ -1,18 +1,18 @@
 import * as E from 'fp-ts/Either';
-import * as RA from 'fp-ts/ReadonlyArray';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { constructPaginationControls } from './construct-pagination-controls';
 import { Params } from './params';
 import { ViewModel } from './view-model';
 import { ConstructViewModel } from '../construct-view-model';
-import { constructArticleCardStackWithSilentFailures } from '../shared-components/article-list';
+import { constructArticleCard } from '../shared-components/article-card';
 
 export const constructViewModel: ConstructViewModel<Params, ViewModel> = (dependencies) => (params) => pipe(
   dependencies.fetchByCategory(params.categoryName),
   TE.bindW('articleCardViewModels', ({ expressionDois }) => pipe(
     expressionDois,
-    constructArticleCardStackWithSilentFailures(dependencies),
+    T.traverseArray(constructArticleCard(dependencies)),
     TE.rightTask,
   )),
   TE.map(({ articleCardViewModels, totalItems }) => ({
@@ -24,7 +24,7 @@ export const constructViewModel: ConstructViewModel<Params, ViewModel> = (depend
         () => 'No evaluated articles were found for this category.',
       ),
       E.map(() => ({
-        categoryContent: pipe(articleCardViewModels, RA.map(E.right)),
+        categoryContent: articleCardViewModels,
         paginationControls: constructPaginationControls(10, params, totalItems),
       })),
     ),
