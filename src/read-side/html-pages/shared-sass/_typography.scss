@@ -8,8 +8,10 @@
   $font-size-in-rem: functions.px-to-rem($font-size);
   $line-height-in-rem: functions.px-to-rem($line-height-in-px);
 
-  font-size: $font-size-in-rem;
-  line-height: math.div($line-height-in-rem, $font-size-in-rem);
+  & {
+    font-size: $font-size-in-rem;
+    line-height: math.div($line-height-in-rem, $font-size-in-rem);
+  }
 }
 
 @mixin subtle-link () {
