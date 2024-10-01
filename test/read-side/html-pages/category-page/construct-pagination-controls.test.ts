@@ -1,9 +1,6 @@
-import * as O from 'fp-ts/Option';
-import { pipe } from 'fp-ts/function';
 import * as tt from 'io-ts-types';
 import { constructPaginationControls } from '../../../../src/read-side/html-pages/category-page/construct-pagination-controls';
-import { arbitraryNumber, arbitraryString } from '../../../helpers';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { arbitraryString } from '../../../helpers';
 
 describe('construct-pagination-controls', () => {
   describe('given the page size is 10', () => {
@@ -12,13 +9,10 @@ describe('construct-pagination-controls', () => {
     describe('when 2 items are available', () => {
       describe('and the page 1 is selected', () => {
         const selectedPage = 1;
-        const result = pipe(
-          constructPaginationControls(
-            pageSize,
-            { categoryName: arbitraryString() as tt.NonEmptyString, page: selectedPage },
-            2,
-          ),
-          O.getOrElseW(shouldNotBeCalled),
+        const result = constructPaginationControls(
+          pageSize,
+          { categoryName: arbitraryString() as tt.NonEmptyString, page: selectedPage },
+          2,
         );
 
         it.todo('returns backwardPageHref as none');
@@ -38,12 +32,10 @@ describe('construct-pagination-controls', () => {
     describe('when 12 items are available', () => {
       describe('and the page 2 is selected', () => {
         const selectedPage = 2;
-        const result = pipe(
-          constructPaginationControls(
-            pageSize,
-            { categoryName: arbitraryString() as tt.NonEmptyString, page: selectedPage },
-            12,
-          ), O.getOrElseW(shouldNotBeCalled),
+        const result = constructPaginationControls(
+          pageSize,
+          { categoryName: arbitraryString() as tt.NonEmptyString, page: selectedPage },
+          12,
         );
 
         it.todo('returns backwardPageHref as some');
@@ -56,21 +48,6 @@ describe('construct-pagination-controls', () => {
 
         it('returns pageCount as 2', () => {
           expect(result.pageCount).toBe(2);
-        });
-      });
-    });
-
-    describe('when 0 items are available', () => {
-      describe('and any page is selected', () => {
-        const selectedPage = arbitraryNumber(0, 1000);
-        const result = constructPaginationControls(
-          pageSize,
-          { categoryName: arbitraryString() as tt.NonEmptyString, page: selectedPage },
-          0,
-        );
-
-        it('does not display anything', () => {
-          expect(result).toStrictEqual(O.none);
         });
       });
     });
