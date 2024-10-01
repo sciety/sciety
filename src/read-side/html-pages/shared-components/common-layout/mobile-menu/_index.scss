@@ -40,7 +40,6 @@ $_mobile-menu-perimeter-spacing: functions.px-to-rem(24px);
   align-items: center;
   border-radius: settings.$border-radius;
   margin-bottom: functions.px-to-rem(32px);
-  font-weight: bold;
   @include typography.button();
 
   &:any-link {
