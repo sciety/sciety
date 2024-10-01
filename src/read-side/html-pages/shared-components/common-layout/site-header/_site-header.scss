@@ -17,11 +17,14 @@ $_search-button-width-on-mobile: $_search-icon-size + $_search-button-padding * 
 $_left-links-width-not-narrow: 280px;
 
 .site-header {
-  @include schemed-colours.light();
-  background-color: var(--colour-site-header-background);
   width: 100%;
   height: functions.px-to-rem(settings.$site-header-height);
   display: flex;
+  @include schemed-colours.light();
+
+  & {
+    background-color: var(--colour-site-header-background);
+  }
 
   @include breakpoints.site-header() {
     display: grid;
@@ -51,12 +54,11 @@ $_left-links-width-not-narrow: 280px;
 }
 
 .site-header__left_links_list {
-  @include list.basics();
-
   display: flex;
   align-items: center;
   height: 100%;
   justify-content: space-between;
+  @include list.basics();
 
   @include breakpoints.site-header() {
     justify-content: unset;
@@ -101,13 +103,12 @@ $_left-links-width-not-narrow: 280px;
   ;
 
   &::before {
-    @include layout.visually-hidden();
     content: 'Open the menu';
+    @include layout.visually-hidden();
   }
 }
 
 .site-header__search_link {
-  @include typography.button();
   display: flex;
   align-items: center;
   border-radius: settings.$border-radius;
@@ -115,6 +116,7 @@ $_left-links-width-not-narrow: 280px;
   padding: 0.25rem functions.px-to-rem(12px - settings.$border-width);
   background-color: settings.$colour-white;
   margin-left: functions.px-to-rem(settings.$click-target-separation);
+  @include typography.button();
 
   @include link.normal-state(){
     color: var(--colour-text-navigation-link);
@@ -134,7 +136,7 @@ $_left-links-width-not-narrow: 280px;
   @include layout.visually-hidden();
 
   @include breakpoints.site-header() {
-    @include layout.visually-unhidden();
     color: settings.$colour-brand;
+    @include layout.visually-unhidden();
   }
 }
