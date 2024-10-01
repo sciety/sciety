@@ -9,11 +9,11 @@
   margin-bottom: functions.px-to-rem(24px);
 
   .page-header__avatar {
-    @include avatar.border();
     width: avatar.$size--large;
     height: avatar.$size--large;
     flex: 0 0 avatar.$size--large;
     margin-right: functions.px-to-rem(16px);
+    @include avatar.border();
   }
 
   h1 {
