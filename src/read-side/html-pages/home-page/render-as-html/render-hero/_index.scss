@@ -36,8 +36,8 @@ $_width-at-which-image-is-too-narrow: 1680px;
 }
 
 .home-page-hero__left_image {
-  @include _decorative-side-image();
   justify-self: end;
+  @include _decorative-side-image();
 
   @media screen and (min-width: functions.px-to-em($_width-at-which-image-is-too-narrow)) {
     justify-self: start;
@@ -45,8 +45,8 @@ $_width-at-which-image-is-too-narrow: 1680px;
 }
 
 .home-page-hero__right_image {
-  @include _decorative-side-image();
   justify-self: start;
+  @include _decorative-side-image();
 
   @media screen and (min-width: functions.px-to-em($_width-at-which-image-is-too-narrow)) {
     justify-self: end;
@@ -66,25 +66,25 @@ $_width-at-which-image-is-too-narrow: 1680px;
 }
 
 .home-page-hero__content_title {
-  @include typography.sizing(32px, 38px);
   margin-top: functions.px-to-rem(20px);
   margin-bottom: functions.px-to-rem(8px);
   text-align: center;
+  @include typography.sizing(32px, 38px);
 
   @include breakpoints.not-narrow() {
-    @include typography.sizing(54px, 62px);
     margin-bottom: functions.px-to-rem(40px);
     margin-top: 0;
+    @include typography.sizing(54px, 62px);
   }
 }
 
 .home-page-hero__content_byline {
+  text-align: center;
   @include _vertical-spacing-in-hero();
   @include typography.sizing(20px, 26px);
-  text-align: center;
 
   @include breakpoints.not-narrow() {
-    @include typography.sizing(24px, 28px);
     margin-bottom: functions.px-to-rem(76px);
+    @include typography.sizing(24px, 28px);
   }
 }
