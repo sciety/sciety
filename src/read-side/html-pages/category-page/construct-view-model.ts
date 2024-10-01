@@ -17,5 +17,9 @@ export const constructViewModel: ConstructViewModel<Params, ViewModel> = (depend
     pageHeading: `${params.categoryName}`,
     categoryContent: articleCardViewModels,
     paginationControls: constructPaginationControls(10, params, totalItems),
+    content: {
+      categoryContent: articleCardViewModels,
+      paginationControls: constructPaginationControls(10, params, totalItems),
+    },
   })),
 );
