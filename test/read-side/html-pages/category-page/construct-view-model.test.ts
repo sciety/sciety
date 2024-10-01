@@ -64,6 +64,7 @@ describe('construct-view-model', () => {
 
       it('displays 1 article card', () => {
         expect(paginatedCards.categoryContent).toHaveLength(1);
+        expect(paginatedCards.categoryContent[0]).toStrictEqual(E.right(expect.anything()));
       });
     });
 
