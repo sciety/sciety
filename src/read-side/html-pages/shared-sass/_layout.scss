@@ -55,7 +55,9 @@ $vertical-spacing-coupled-to-page-header: 3rem;
 }
 
 @mixin page-header-bottom-space() {
-  margin-bottom: $vertical-spacing-coupled-to-page-header;
+  & {
+    margin-bottom: $vertical-spacing-coupled-to-page-header;
+  }
 }
 
 @mixin column-two() {
