@@ -69,7 +69,7 @@ describe('construct-pagination-controls', () => {
           0,
         );
 
-        it.failing('does not display anything', () => {
+        it('does not display anything', () => {
           expect(result).toStrictEqual(O.none);
         });
       });
