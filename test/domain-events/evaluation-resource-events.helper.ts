@@ -1,7 +1,7 @@
+import { arbitraryEvaluationType } from './types/evaluation-type.helper';
 import { EventOfType, constructEvent } from '../../src/domain-events';
 import { arbitraryDate, arbitraryString } from '../helpers';
 import { arbitraryEvaluationLocator } from '../types/evaluation-locator.helper';
-import { arbitraryEvaluationType } from '../types/evaluation-type.helper';
 import { arbitraryExpressionDoi } from '../types/expression-doi.helper';
 import { arbitraryGroupId } from '../types/group-id.helper';
 

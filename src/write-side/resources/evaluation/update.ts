@@ -6,9 +6,9 @@ import { evaluationResourceError } from './evaluation-resource-error';
 import {
   EventOfType, constructEvent, DomainEvent, isEventOfType,
 } from '../../../domain-events';
+import { EvaluationType } from '../../../domain-events/types/evaluation-type';
 import { ErrorMessage, toErrorMessage } from '../../../types/error-message';
 import { EvaluationLocator } from '../../../types/evaluation-locator';
-import { EvaluationType } from '../../../types/evaluation-type';
 import { UpdateEvaluationCommand } from '../../commands';
 import { ResourceAction } from '../resource-action';
 

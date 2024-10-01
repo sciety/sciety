@@ -2,8 +2,8 @@ import * as D from 'fp-ts/Date';
 import * as O from 'fp-ts/Option';
 import * as Ord from 'fp-ts/Ord';
 import { pipe } from 'fp-ts/function';
+import { EvaluationType } from '../../domain-events/types/evaluation-type';
 import { EvaluationLocator } from '../../types/evaluation-locator';
-import { EvaluationType } from '../../types/evaluation-type';
 import { ExpressionDoi } from '../../types/expression-doi';
 import { GroupId } from '../../types/group-id';
 

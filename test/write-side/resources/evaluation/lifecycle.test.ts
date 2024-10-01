@@ -5,9 +5,9 @@ import {
   erase, update, recordPublication, recordRemoval,
 } from '../../../../src/write-side/resources/evaluation';
 import { evaluationResourceError } from '../../../../src/write-side/resources/evaluation/evaluation-resource-error';
+import { arbitraryEvaluationType } from '../../../domain-events/types/evaluation-type.helper';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryEvaluationLocator } from '../../../types/evaluation-locator.helper';
-import { arbitraryEvaluationType } from '../../../types/evaluation-type.helper';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../commands/record-evaluation-publication-command.helper';
 import { arbitraryUpdateEvaluationCommand } from '../../commands/update-evaluation-command.helper';
 import * as A from '../enact';
