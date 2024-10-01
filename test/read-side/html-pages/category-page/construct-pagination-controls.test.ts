@@ -27,5 +27,27 @@ describe('construct-pagination-controls', () => {
         });
       });
     });
+
+    describe('when twelve items are available', () => {
+      describe('and the page two is selected', () => {
+        const result = constructPaginationControls(
+          pageSize,
+          { categoryName: arbitraryString() as tt.NonEmptyString, page: 2 },
+          12,
+        );
+
+        it.todo('returns backwardPageHref as some');
+
+        it.todo('returns forwardPageHref as none');
+
+        it('returns page as 2', () => {
+          expect(result.page).toBe(2);
+        });
+
+        it('returns pageCount as 2', () => {
+          expect(result.pageCount).toBe(2);
+        });
+      });
+    });
   });
 });
