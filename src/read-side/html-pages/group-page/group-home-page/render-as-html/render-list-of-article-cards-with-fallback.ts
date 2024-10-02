@@ -1,26 +1,8 @@
-import * as E from 'fp-ts/Either';
-import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../../../../types/html-fragment';
-import {
-  ArticleCardViewModel, ArticleErrorCardViewModel, renderArticleCard, renderArticleErrorCard,
-} from '../../../shared-components/article-card';
-import { renderArticleList } from '../../../shared-components/article-list';
-import { renderListItems } from '../../../shared-components/list-items';
+import { renderArticleCardStack } from '../../../shared-components/article-card-stack';
 import { PaginationControlsViewModel, renderPaginationControls } from '../../../shared-components/pagination';
 import { ViewModel } from '../view-model';
-
-const renderArticleCardStack = (
-  cards: ReadonlyArray<E.Either<ArticleErrorCardViewModel, ArticleCardViewModel>>,
-) => pipe(
-  cards,
-  RA.map(E.fold(
-    renderArticleErrorCard,
-    renderArticleCard,
-  )),
-  (items) => renderListItems(items),
-  renderArticleList,
-);
 
 const renderGroupFeed = (
   paginationControlsViewModel: PaginationControlsViewModel,
