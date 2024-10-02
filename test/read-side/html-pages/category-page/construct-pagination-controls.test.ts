@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option';
 import * as tt from 'io-ts-types';
 import { constructPaginationControls } from '../../../../src/read-side/html-pages/category-page/construct-pagination-controls';
 import { arbitraryString } from '../../../helpers';
@@ -17,7 +18,9 @@ describe('construct-pagination-controls', () => {
 
         it.todo('returns backwardPageHref as none');
 
-        it.todo('returns forwardPageHref as none');
+        it.failing('returns forwardPageHref as none', () => {
+          expect(O.isNone(result.forwardPageHref)).toBe(true);
+        });
 
         it('returns page as the selected page', () => {
           expect(result.page).toBe(selectedPage);
