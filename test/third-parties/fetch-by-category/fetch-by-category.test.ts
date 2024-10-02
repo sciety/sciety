@@ -16,7 +16,7 @@ const responseWithValidDoi = {
 
 const responseWithInvalidDoi = {
   data: [{ attributes: { doi: arbitraryString() } }],
-  meta: { total: 1 },
+  meta: { total: metaTotalValue },
 };
 
 const dummyQueryExternalService = (queryResponse: unknown) => () => () => TE.right(queryResponse);
@@ -30,7 +30,7 @@ const invokeFetchByCategory = async (category: string, queryResponse: unknown) =
 describe('fetch-by-category', () => {
   let result: Awaited<ReturnType<typeof invokeFetchByCategory>>;
 
-  describe('when an item with a valid doi syntax is returned', () => {
+  describe('when an item with a valid doi syntax is contained in the API response', () => {
     beforeEach(async () => {
       result = await invokeFetchByCategory(arbitraryString(), responseWithValidDoi);
     });
@@ -45,13 +45,17 @@ describe('fetch-by-category', () => {
     });
   });
 
-  describe('when an item with an invalid doi syntax is returned', () => {
+  describe('when an item with an invalid doi syntax is contained in the API response', () => {
     beforeEach(async () => {
       result = await invokeFetchByCategory(arbitraryString(), responseWithInvalidDoi);
     });
 
     it('does not include the item with an invalid doi syntax in expressionDois', () => {
       expect(result.expressionDois).toHaveLength(0);
+    });
+
+    it('includes the total number of items', () => {
+      expect(result.totalItems).toBe(metaTotalValue);
     });
   });
 });
