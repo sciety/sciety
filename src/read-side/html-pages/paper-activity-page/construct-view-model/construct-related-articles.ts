@@ -6,7 +6,7 @@ import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
 import { ExpressionDoi } from '../../../../types/expression-doi';
 import * as PH from '../../../../types/publishing-history';
-import { constructArticleCard } from '../../shared-components/article-card';
+import { constructArticleCardStackWithTotalFailure } from '../../shared-components/article-card-stack';
 import { ViewModel } from '../view-model';
 
 const buildRelatedArticleCards = (
@@ -14,7 +14,7 @@ const buildRelatedArticleCards = (
   history: PH.PublishingHistory,
 ) => (recommendedPapers: ReadonlyArray<ExpressionDoi>) => pipe(
   recommendedPapers,
-  TE.traverseArray(constructArticleCard(dependencies)),
+  constructArticleCardStackWithTotalFailure(dependencies),
   TE.mapLeft((relatedArticleError) => {
     dependencies.logger('error', 'at least one related article paper activity summary card could not be constructed', {
       relatedArticleError,
