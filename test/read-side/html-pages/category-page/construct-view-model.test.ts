@@ -12,10 +12,10 @@ import { arbitraryDataError } from '../../../types/data-error.helper';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 import { arbitraryPublishingHistoryOnlyPreprints } from '../../../types/publishing-history.helper';
 
-const performConstruction = async (dependencies: DependenciesForViews) => pipe(
+const performConstruction = async (dependencies: DependenciesForViews, page?: number) => pipe(
   {
     categoryName: arbitraryString() as tt.NonEmptyString,
-    page: arbitraryNumber(1, 1000),
+    page: page ?? arbitraryNumber(1, 1000),
   },
   constructViewModel(dependencies),
   TE.getOrElse(abortTest('expected view model construction to succeed')),
@@ -53,7 +53,7 @@ describe('construct-view-model', () => {
     framework = createTestFramework();
   });
 
-  describe('when there are no evaluated expressions in the selected category', () => {
+  describe('when there are no evaluated expressions in the category', () => {
     let result: ViewModel;
 
     beforeEach(async () => {
@@ -61,7 +61,7 @@ describe('construct-view-model', () => {
         ...framework.dependenciesForViews,
         fetchByCategory: () => TE.right({ expressionDois: [], totalItems: 0 }),
       };
-      result = await performConstruction(dependencies);
+      result = await performConstruction(dependencies, 1);
     });
 
     it('displays an informational message', () => {
@@ -69,7 +69,7 @@ describe('construct-view-model', () => {
     });
   });
 
-  describe('when there is 1 evaluated expression in the selected category', () => {
+  describe('when there is 1 evaluated expression in the selected page of the category', () => {
     describe('and an article card can be displayed', () => {
       let paginatedCards: PaginatedCards;
 
@@ -106,7 +106,7 @@ describe('construct-view-model', () => {
     });
   });
 
-  describe('when there are 2 evaluated expressions in the selected category', () => {
+  describe('when there are 2 evaluated expressions in the selected page of the category', () => {
     describe('and all article cards can be displayed', () => {
       let paginatedCards: PaginatedCards;
 
