@@ -27,6 +27,25 @@ const performConstructionOfPaginatedCards = async (dependencies: DependenciesFor
   E.getOrElseW(abortTest('expected paginated cards')),
 );
 
+const fetchByCategoryReturningOneExpression = () => TE.right(
+  {
+    expressionDois: [
+      arbitraryExpressionDoi(),
+    ],
+    totalItems: 1,
+  },
+);
+
+const fetchByCategoryReturningTwoExpressions = () => TE.right(
+  {
+    expressionDois: [
+      arbitraryExpressionDoi(),
+      arbitraryExpressionDoi(),
+    ],
+    totalItems: 2,
+  },
+);
+
 describe('construct-view-model', () => {
   let framework: TestFramework;
 
@@ -57,7 +76,7 @@ describe('construct-view-model', () => {
       beforeEach(async () => {
         const dependencies = {
           ...framework.dependenciesForViews,
-          fetchByCategory: () => TE.right({ expressionDois: [arbitraryExpressionDoi()], totalItems: 1 }),
+          fetchByCategory: fetchByCategoryReturningOneExpression,
         };
         paginatedCards = await performConstructionOfPaginatedCards(dependencies);
       });
@@ -74,7 +93,7 @@ describe('construct-view-model', () => {
       beforeEach(async () => {
         const dependencies = {
           ...framework.dependenciesForViews,
-          fetchByCategory: () => TE.right({ expressionDois: [arbitraryExpressionDoi()], totalItems: 1 }),
+          fetchByCategory: fetchByCategoryReturningOneExpression,
           fetchPublishingHistory: () => TE.left(arbitraryDataError()),
         };
         paginatedCards = await performConstructionOfPaginatedCards(dependencies);
@@ -94,15 +113,7 @@ describe('construct-view-model', () => {
       beforeEach(async () => {
         const dependencies = {
           ...framework.dependenciesForViews,
-          fetchByCategory: () => TE.right(
-            {
-              expressionDois: [
-                arbitraryExpressionDoi(),
-                arbitraryExpressionDoi(),
-              ],
-              totalItems: 2,
-            },
-          ),
+          fetchByCategory: fetchByCategoryReturningTwoExpressions,
         };
         paginatedCards = await performConstructionOfPaginatedCards(dependencies);
       });
@@ -123,15 +134,7 @@ describe('construct-view-model', () => {
           .mockReturnValueOnce(TE.left(arbitraryDataError()));
         const dependencies = {
           ...framework.dependenciesForViews,
-          fetchByCategory: () => TE.right(
-            {
-              expressionDois: [
-                arbitraryExpressionDoi(),
-                arbitraryExpressionDoi(),
-              ],
-              totalItems: 2,
-            },
-          ),
+          fetchByCategory: fetchByCategoryReturningTwoExpressions,
           fetchPublishingHistory,
         };
         paginatedCards = await performConstructionOfPaginatedCards(dependencies);
