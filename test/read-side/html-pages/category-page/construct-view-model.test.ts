@@ -152,7 +152,23 @@ describe('construct-view-model', () => {
     });
 
     describe('and no article cards can be displayed', () => {
-      it.todo('displays article cards instead');
+      let paginatedCards: PaginatedCards;
+
+      beforeEach(async () => {
+        const fetchPublishingHistory = () => TE.left(arbitraryDataError());
+        const dependencies = {
+          ...framework.dependenciesForViews,
+          fetchByCategory: fetchByCategoryReturningTwoExpressions,
+          fetchPublishingHistory,
+        };
+        paginatedCards = await performConstructionOfPaginatedCards(dependencies);
+      });
+
+      it('displays 2 article error cards', () => {
+        expect(paginatedCards.categoryContent).toHaveLength(2);
+        expect(paginatedCards.categoryContent[0]).toStrictEqual(E.left(expect.anything()));
+        expect(paginatedCards.categoryContent[1]).toStrictEqual(E.left(expect.anything()));
+      });
     });
   });
 });
