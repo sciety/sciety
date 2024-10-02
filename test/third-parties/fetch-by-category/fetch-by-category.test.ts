@@ -6,8 +6,10 @@ import { arbitraryString } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 
+const doiWithValidSyntax = arbitraryExpressionDoi();
+
 const responseWithValidDoi = {
-  data: [{ attributes: { doi: arbitraryExpressionDoi() } }],
+  data: [{ attributes: { doi: doiWithValidSyntax.toString() } }],
   meta: { total: 1 },
 };
 
@@ -34,6 +36,7 @@ describe('fetch-by-category', () => {
 
     it('is included', () => {
       expect(result.expressionDois).toHaveLength(1);
+      expect(result.expressionDois[0]).toBe(doiWithValidSyntax);
     });
   });
 
