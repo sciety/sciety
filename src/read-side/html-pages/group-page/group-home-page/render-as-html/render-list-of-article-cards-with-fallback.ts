@@ -2,12 +2,23 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../../../../types/html-fragment';
-import { renderArticleCard } from '../../../shared-components/article-card';
-import { renderErrorAsHtml } from '../../../shared-components/article-card/render-error-as-html';
+import {
+  ArticleCardViewModel, ArticleErrorCardViewModel, renderArticleCard, renderArticleErrorCard,
+} from '../../../shared-components/article-card';
 import { renderArticleList } from '../../../shared-components/article-list';
 import { renderListItems } from '../../../shared-components/list-items';
 import { PaginationControlsViewModel, renderPaginationControls } from '../../../shared-components/pagination';
 import { ViewModel } from '../view-model';
+
+const renderArticleCardsOrArticleErrorCards = (
+  cards: ReadonlyArray<E.Either<ArticleErrorCardViewModel, ArticleCardViewModel>>,
+) => pipe(
+  cards,
+  RA.map(E.fold(
+    renderArticleErrorCard,
+    renderArticleCard,
+  )),
+);
 
 const renderCards = (
   paginationControlsViewModel: PaginationControlsViewModel,
@@ -37,10 +48,7 @@ export const renderListOfArticleCardsWithFallback: RenderListOfArticleCardsWithF
   }
   return pipe(
     content.articleCards,
-    RA.map(E.fold(
-      renderErrorAsHtml,
-      renderArticleCard,
-    )),
+    renderArticleCardsOrArticleErrorCards,
     renderCards(content),
   );
 };
