@@ -20,6 +20,12 @@ const performConstruction = async (dependencies: DependenciesForViews) => pipe(
   TE.getOrElse(abortTest('expected view model construction to succeed')),
 )();
 
+const performConstructionOfPaginatedCards = async (dependencies: DependenciesForViews) => pipe(
+  await performConstruction(dependencies),
+  (viewModel) => viewModel.content,
+  E.getOrElseW(abortTest('expected paginated cards')),
+);
+
 describe('construct-view-model', () => {
   let framework: TestFramework;
 
@@ -52,11 +58,7 @@ describe('construct-view-model', () => {
           ...framework.dependenciesForViews,
           fetchByCategory: () => TE.right({ expressionDois: [arbitraryExpressionDoi()], totalItems: 1 }),
         };
-        paginatedCards = pipe(
-          await performConstruction(dependencies),
-          (viewModel) => viewModel.content,
-          E.getOrElseW(abortTest('expected paginated cards')),
-        );
+        paginatedCards = await performConstructionOfPaginatedCards(dependencies);
       });
 
       it('displays 1 article card', () => {
@@ -74,11 +76,7 @@ describe('construct-view-model', () => {
           fetchByCategory: () => TE.right({ expressionDois: [arbitraryExpressionDoi()], totalItems: 1 }),
           fetchPublishingHistory: () => TE.left(arbitraryDataError()),
         };
-        paginatedCards = pipe(
-          await performConstruction(dependencies),
-          (viewModel) => viewModel.content,
-          E.getOrElseW(abortTest('expected paginated cards')),
-        );
+        paginatedCards = await performConstructionOfPaginatedCards(dependencies);
       });
 
       it('displays an article error card', () => {
@@ -105,11 +103,7 @@ describe('construct-view-model', () => {
             },
           ),
         };
-        paginatedCards = pipe(
-          await performConstruction(dependencies),
-          (viewModel) => viewModel.content,
-          E.getOrElseW(abortTest('expected paginated cards')),
-        );
+        paginatedCards = await performConstructionOfPaginatedCards(dependencies);
       });
 
       it('displays 2 article cards', () => {
