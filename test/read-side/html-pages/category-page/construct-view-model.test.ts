@@ -10,6 +10,7 @@ import { createTestFramework, TestFramework } from '../../../framework';
 import { arbitraryNumber, arbitraryString } from '../../../helpers';
 import { arbitraryDataError } from '../../../types/data-error.helper';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
+import { arbitraryPublishingHistoryOnlyPreprints } from '../../../types/publishing-history.helper';
 
 const performConstruction = async (dependencies: DependenciesForViews) => pipe(
   {
@@ -114,9 +115,37 @@ describe('construct-view-model', () => {
     });
 
     describe('and 1 article card cannot be displayed', () => {
-      it.todo('displays one article card');
+      let paginatedCards: PaginatedCards;
 
-      it.todo('displays one article error card');
+      beforeEach(async () => {
+        const fetchPublishingHistory = jest.fn()
+          .mockReturnValueOnce(TE.right(arbitraryPublishingHistoryOnlyPreprints()))
+          .mockReturnValueOnce(TE.left(arbitraryDataError()));
+        const dependencies = {
+          ...framework.dependenciesForViews,
+          fetchByCategory: () => TE.right(
+            {
+              expressionDois: [
+                arbitraryExpressionDoi(),
+                arbitraryExpressionDoi(),
+              ],
+              totalItems: 2,
+            },
+          ),
+          fetchPublishingHistory,
+        };
+        paginatedCards = await performConstructionOfPaginatedCards(dependencies);
+      });
+
+      it('displays one article card', () => {
+        expect(paginatedCards.categoryContent).toHaveLength(2);
+        expect(paginatedCards.categoryContent[0]).toStrictEqual(E.right(expect.anything()));
+      });
+
+      it('displays one article error card', () => {
+        expect(paginatedCards.categoryContent).toHaveLength(2);
+        expect(paginatedCards.categoryContent[1]).toStrictEqual(E.left(expect.anything()));
+      });
     });
 
     describe('and no article cards can be displayed', () => {
