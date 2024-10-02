@@ -10,7 +10,7 @@ import { renderListItems } from '../../../shared-components/list-items';
 import { PaginationControlsViewModel, renderPaginationControls } from '../../../shared-components/pagination';
 import { ViewModel } from '../view-model';
 
-const renderArticleCardsOrArticleErrorCards = (
+const renderArticleCardStack = (
   cards: ReadonlyArray<E.Either<ArticleErrorCardViewModel, ArticleCardViewModel>>,
 ) => pipe(
   cards,
@@ -18,24 +18,21 @@ const renderArticleCardsOrArticleErrorCards = (
     renderArticleErrorCard,
     renderArticleCard,
   )),
+  (items) => renderListItems(items),
+  renderArticleList,
 );
 
-const renderCards = (
+const renderGroupFeed = (
   paginationControlsViewModel: PaginationControlsViewModel,
 ) => (
-  cards: ReadonlyArray<HtmlFragment>,
-) => pipe(
-  cards,
-  (items) => renderListItems(items),
-  (listContent) => `
-    <section class="group-page-feed">
-      <h2>Latest preprint reviews</h2>
-      ${renderArticleList(listContent)}
-    </section>
-    ${renderPaginationControls(paginationControlsViewModel)}
-  `,
-  toHtmlFragment,
-);
+  feedContent: HtmlFragment,
+) => toHtmlFragment(`
+  <section class="group-page-feed">
+    <h2>Latest preprint reviews</h2>
+    ${feedContent}
+  </section>
+  ${renderPaginationControls(paginationControlsViewModel)}
+`);
 
 type RenderListOfArticleCardsWithFallback = (
   content: ViewModel['feed'],
@@ -48,7 +45,7 @@ export const renderListOfArticleCardsWithFallback: RenderListOfArticleCardsWithF
   }
   return pipe(
     content.articleCards,
-    renderArticleCardsOrArticleErrorCards,
-    renderCards(content),
+    renderArticleCardStack,
+    renderGroupFeed(content),
   );
 };
