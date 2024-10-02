@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import * as DE from '../../../types/data-error';
@@ -9,6 +10,7 @@ import { rawUserInput } from '../../raw-user-input';
 import { HtmlPage, toHtmlPage } from '../html-page';
 import { renderArticleErrorCard } from '../shared-components/article-card';
 import { renderAsHtml } from '../shared-components/article-card/render-as-html';
+import { renderArticleCardStack } from '../shared-components/article-card-stack';
 import {
   renderArticleCardWithControlsAndAnnotation,
 } from '../shared-components/article-card-with-controls-and-annotation';
@@ -224,6 +226,28 @@ export const sharedComponentsPage: HtmlPage = toHtmlPage({
   renderListItems,
   renderListOfCards)}
 
+    <h2 class="_style-guide-heading">Article card stack</h2>
+    <h3 class="_style-guide-heading">with one article error card and one article card</h3>
+    ${renderArticleCardStack(
+    [
+      E.left({
+        href: '/articles/foo',
+        error: DE.notFound,
+        inputExpressionDoi: EDOI.fromValidatedString('10.1101/foo'),
+      }),
+      E.right({
+        paperActivityPageHref: '/articles/foo',
+        title: sanitise(toHtmlFragment('Some title')),
+        authors: O.some(['Doctor Smith']),
+        latestPublishedAt: new Date('2023-09-11'),
+        latestActivityAt: O.some(new Date('2023-09-10')),
+        evaluationCount: O.some(1),
+        listMembershipCount: O.some(1),
+        curationStatementsTeasers: [],
+        reviewingGroups: [],
+      }),
+    ],
+  )}
     </div>
   `),
 });
