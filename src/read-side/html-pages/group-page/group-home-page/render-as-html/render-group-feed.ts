@@ -1,33 +1,35 @@
 import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../../../../types/html-fragment';
 import { renderArticleCardStack } from '../../../shared-components/article-card-stack';
-import { PaginationControlsViewModel, renderPaginationControls } from '../../../shared-components/pagination';
+import { renderPaginationControls } from '../../../shared-components/pagination';
 import { ViewModel } from '../view-model';
 
-const renderGroupFeed = (
-  paginationControlsViewModel: PaginationControlsViewModel,
-) => (
+const wrapIntoSection = (
   feedContent: HtmlFragment,
 ) => toHtmlFragment(`
   <section class="group-page-feed">
     <h2>Latest preprint reviews</h2>
     ${feedContent}
   </section>
-  ${renderPaginationControls(paginationControlsViewModel)}
 `);
 
-type RenderListOfArticleCardsWithFallback = (
+type RenderGroupFeed = (
   content: ViewModel['feed'],
 )
 => HtmlFragment;
 
-export const renderListOfArticleCardsWithFallback: RenderListOfArticleCardsWithFallback = (content) => {
+export const renderGroupFeed: RenderGroupFeed = (content) => {
   if (content.tag === 'no-activity-yet') {
     return toHtmlFragment('<p class="static-message">This group has no activity yet.</p>');
   }
   return pipe(
     content.articleCards,
     renderArticleCardStack,
-    renderGroupFeed(content),
+    wrapIntoSection,
+    (feed) => `
+      ${feed}
+      ${renderPaginationControls(content)}
+    `,
+    toHtmlFragment,
   );
 };
