@@ -90,7 +90,33 @@ describe('construct-view-model', () => {
 
   describe('when there are 2 evaluated expressions in the selected category', () => {
     describe('and all article cards can be displayed', () => {
-      it.todo('displays 2 article cards');
+      let paginatedCards: PaginatedCards;
+
+      beforeEach(async () => {
+        const dependencies = {
+          ...framework.dependenciesForViews,
+          fetchByCategory: () => TE.right(
+            {
+              expressionDois: [
+                arbitraryExpressionDoi(),
+                arbitraryExpressionDoi(),
+              ],
+              totalItems: 2,
+            },
+          ),
+        };
+        paginatedCards = pipe(
+          await performConstruction(dependencies),
+          (viewModel) => viewModel.content,
+          E.getOrElseW(abortTest('expected paginated cards')),
+        );
+      });
+
+      it('displays 2 article cards', () => {
+        expect(paginatedCards.categoryContent).toHaveLength(2);
+        expect(paginatedCards.categoryContent[0]).toStrictEqual(E.right(expect.anything()));
+        expect(paginatedCards.categoryContent[1]).toStrictEqual(E.right(expect.anything()));
+      });
     });
 
     describe('and 1 article card cannot be displayed', () => {
