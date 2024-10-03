@@ -51,7 +51,9 @@ describe('construct-pagination-controls', () => {
           expect(result.page).toBe(selectedPage);
         });
 
-        it.todo('returns page count as 2');
+        it('returns page count as 2', () => {
+          expect(result.pageCount).toBe(2);
+        });
       });
 
       describe('and the page 2 is selected', () => {
