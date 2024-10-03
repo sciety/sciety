@@ -43,19 +43,14 @@ describe('construct-pagination-controls', () => {
           { categoryName: arbitraryString() as tt.NonEmptyString, page: selectedPage },
           12,
         );
+        const forwardPageHrefValue = pipe(
+          result.forwardPageHref,
+          O.getOrElseW(shouldNotBeCalled),
+        );
 
         it.todo('returns backwardPageHref as none');
 
-        it('returns forwardPageHref as some', () => {
-          expect(O.isSome(result.forwardPageHref)).toBe(true);
-        });
-
         it.failing('returns the value of the next page, 2, in the page param of the forwardPageHref', () => {
-          const forwardPageHrefValue = pipe(
-            result.forwardPageHref,
-            O.getOrElseW(shouldNotBeCalled),
-          );
-
           expect(forwardPageHrefValue).toContain(`page=${nextPage}`);
         });
 
