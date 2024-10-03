@@ -73,7 +73,9 @@ describe('construct-pagination-controls', () => {
 
         it.todo('returns backwardPageHref as some');
 
-        it.todo('returns forwardPageHref as none');
+        it('returns forwardPageHref as none', () => {
+          expect(O.isNone(result.forwardPageHref)).toBe(true);
+        });
 
         it('returns page as the selected page', () => {
           expect(result.page).toBe(selectedPage);
