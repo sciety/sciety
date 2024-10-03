@@ -8,7 +8,7 @@ import { ConstructViewModel } from '../construct-view-model';
 import { constructArticleCardStack } from '../shared-components/article-card-stack';
 
 export const constructViewModel: ConstructViewModel<Params, ViewModel> = (dependencies) => (params) => pipe(
-  dependencies.fetchByCategory(params.categoryName),
+  dependencies.fetchByCategory(params.categoryName, params.page),
   TE.bindW('articleCardViewModels', ({ expressionDois }) => pipe(
     expressionDois,
     constructArticleCardStack(dependencies),

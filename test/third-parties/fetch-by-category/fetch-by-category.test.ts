@@ -23,7 +23,7 @@ const dummyQueryExternalService = (queryResponse: unknown) => () => () => TE.rig
 
 const invokeFetchByCategory = async (category: string, queryResponse: unknown) => pipe(
   category,
-  fetchByCategory(dummyQueryExternalService(queryResponse), dummyLogger),
+  (cat) => fetchByCategory(dummyQueryExternalService(queryResponse), dummyLogger)(cat, 1),
   TE.getOrElse(shouldNotBeCalled),
 )();
 
