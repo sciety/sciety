@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { PageOfItems, paginate } from '../../../../../src/read-side/html-pages/shared-components/pagination/paginate';
+import { PageOfItems, paginateInternalQueryResults } from '../../../../../src/read-side/html-pages/shared-components/pagination/paginate-internal-query-results';
 import * as DE from '../../../../../src/types/data-error';
 import { abortTest } from '../../../../abort-test';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
@@ -15,11 +15,11 @@ const generateItems = (eventCount: number): ReadonlyArray<number> => pipe(
 
 const valueOf = O.getOrElseW(() => 'none');
 
-describe('paginate', () => {
+describe('paginate-internal-query-results', () => {
   describe('when there are multiple items', () => {
     const result = pipe(
       ['a', 'b', 'c'],
-      paginate(1, 2),
+      paginateInternalQueryResults(1, 2),
       E.getOrElseW(shouldNotBeCalled),
     );
 
@@ -43,7 +43,7 @@ describe('paginate', () => {
       beforeEach(() => {
         result = pipe(
           [],
-          paginate(1, 1),
+          paginateInternalQueryResults(1, 1),
           E.getOrElseW(abortTest('paginate returned on the left')),
         );
       });
@@ -79,7 +79,7 @@ describe('paginate', () => {
       beforeEach(() => {
         result = pipe(
           [],
-          paginate(20, 2),
+          paginateInternalQueryResults(20, 2),
           E.getOrElseW(abortTest('paginate returned on the left')),
         );
       });
@@ -123,7 +123,7 @@ describe('paginate', () => {
     ])('given %d items and page %d is the current page', (itemCount, page, forwardPage, backwardPage) => {
       const result = pipe(
         generateItems(itemCount),
-        paginate(itemsPerPage, page),
+        paginateInternalQueryResults(itemsPerPage, page),
         E.getOrElseW(shouldNotBeCalled),
       );
 
@@ -149,7 +149,7 @@ describe('paginate', () => {
     it('returns not-found', () => {
       const result = pipe(
         ['a', 'b', 'c'],
-        paginate(1, 7),
+        paginateInternalQueryResults(1, 7),
       );
 
       expect(result).toStrictEqual(E.left(DE.notFound));
