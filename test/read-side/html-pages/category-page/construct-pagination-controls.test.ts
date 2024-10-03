@@ -50,7 +50,7 @@ describe('construct-pagination-controls', () => {
 
         it.todo('returns backwardPageHref as none');
 
-        it.failing('returns the value of the next page, 2, in the page param of the forwardPageHref', () => {
+        it('returns the value of the next page, 2, in the page param of the forwardPageHref', () => {
           expect(forwardPageHrefValue).toContain(`page=${nextPage}`);
         });
 

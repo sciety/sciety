@@ -10,7 +10,8 @@ const calculateForwardPageHref = (params: Params, totalItems: number, pageSize: 
   if (params.page >= pageCount) {
     return O.none;
   }
-  return O.some(constructCategoryPageHref(params.categoryName, params.page));
+  const nextPage = params.page + 1;
+  return O.some(constructCategoryPageHref(params.categoryName, nextPage));
 };
 
 export const constructPaginationControls = (pageSize: number, params: Params, totalItems: number): PaginatedCards['paginationControls'] => ({
