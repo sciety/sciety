@@ -14,11 +14,16 @@ const calculateForwardPageHref = (params: Params, totalItems: number, pageSize: 
   return O.some(constructCategoryPageHref(params.categoryName, nextPage));
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const calculateBackwardPageHref = (params: Params, totalItems: number, pageSize: number) => O.none;
+const calculateBackwardPageHref = (params: Params) => {
+  if (params.page === 1) {
+    return O.none;
+  }
+  const previousPage = params.page - 1;
+  return O.some(constructCategoryPageHref(params.categoryName, previousPage));
+};
 
 export const constructPaginationControls = (pageSize: number, params: Params, totalItems: number): PaginatedCards['paginationControls'] => ({
-  backwardPageHref: calculateBackwardPageHref(params, totalItems, pageSize),
+  backwardPageHref: calculateBackwardPageHref(params),
   forwardPageHref: calculateForwardPageHref(params, totalItems, pageSize),
   page: params.page,
   pageCount: calculatePageCount(totalItems, pageSize),

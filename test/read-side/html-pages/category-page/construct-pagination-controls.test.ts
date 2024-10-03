@@ -77,10 +77,10 @@ describe('construct-pagination-controls', () => {
         );
         const backwardPageHrefValue = pipe(
           result.backwardPageHref,
-          // O.getOrElseW(shouldNotBeCalled),
+          O.getOrElseW(shouldNotBeCalled),
         );
 
-        it.skip('returns the value of the previous page, 1, in the page param of the backwardPageHref', () => {
+        it('returns the value of the previous page, 1, in the page param of the backwardPageHref', () => {
           expect(backwardPageHrefValue).toContain(`page=${previousPage}`);
         });
 
