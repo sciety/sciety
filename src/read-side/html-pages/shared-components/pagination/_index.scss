@@ -1,6 +1,7 @@
-@use 'settings';
 @use 'functions';
 @use 'button';
+
+$_pagination-controls-horizontal-spacing: functions.px-to-rem(2px);
 
 .pagination-controls {
   text-align: center;
@@ -12,6 +13,6 @@
 }
 
 .pagination-controls__page_count {
-  margin-left: settings.$default-gutter;
-  margin-right: settings.$default-gutter;
+  margin-left: $_pagination-controls-horizontal-spacing;
+  margin-right: $_pagination-controls-horizontal-spacing;
 }
