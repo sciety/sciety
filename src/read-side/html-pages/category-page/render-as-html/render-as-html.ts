@@ -10,9 +10,9 @@ import { PaginatedCards, ViewModel } from '../view-model';
 const renderInformationalMessage = (message: string) => toHtmlFragment(`<p>${message}</p>`);
 
 const renderPaginatedCards = (paginatedCards: PaginatedCards) => `
-      ${renderArticleCardStack(paginatedCards.categoryContent)}
-      ${process.env.EXPERIMENT_ENABLED === 'true' ? renderPaginationControls(paginatedCards.paginationControls) : ''}
-      `;
+  ${renderArticleCardStack(paginatedCards.categoryContent)}
+  ${renderPaginationControls(paginatedCards.paginationControls)}
+`;
 
 export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
   title: viewModel.pageHeading,
