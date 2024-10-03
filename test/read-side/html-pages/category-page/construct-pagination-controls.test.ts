@@ -33,6 +33,16 @@ describe('construct-pagination-controls', () => {
     });
 
     describe('when 12 items are available', () => {
+      describe('and the page 1 is selected', () => {
+        it.todo('returns backwardPageHref as none');
+
+        it.todo('returns forwardPageHref as some');
+
+        it.todo('returns page as the selected page');
+
+        it.todo('returns page count as 2');
+      });
+
       describe('and the page 2 is selected', () => {
         const selectedPage = 2;
         const result = constructPaginationControls(
