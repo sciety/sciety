@@ -6,11 +6,12 @@ import * as t from 'io-ts';
 import { Logger } from '../../logger';
 import * as DE from '../../types/data-error';
 import * as EDOI from '../../types/expression-doi';
+import { QueryParameters } from '../../types/query-parameters';
 import { decodeAndLogFailures } from '../decode-and-log-failures';
 import { ExternalQueries } from '../external-queries';
 import { QueryExternalService } from '../query-external-service';
 
-const buildUrl = (pageNumber: number) => (categoryName: string) => `https://labs.sciety.org/api/papers/v1/preprints?filter%5Bcategory%5D=${categoryName}&filter%5Bevaluated_only%5D=true&page%5Bsize%5D=10&page%5Bnumber%5D=${pageNumber}&fields%5Bpaper%5D=doi`;
+const buildUrl = (queryParameters: QueryParameters) => `https://labs.sciety.org/api/papers/v1/preprints?filter%5Bcategory%5D=${queryParameters.category}&filter%5Bevaluated_only%5D=true&page%5Bsize%5D=10&page%5Bnumber%5D=${queryParameters.pageNumber}&fields%5Bpaper%5D=doi`;
 
 const scietyLabsByCategoryResponseCodec = t.type({
   data: t.readonlyArray(t.strict({
@@ -37,8 +38,8 @@ export const fetchByCategory = (
   queryExternalService: QueryExternalService,
   logger: Logger,
 ): ExternalQueries['fetchByCategory'] => (queryParameters) => pipe(
-  queryParameters.category,
-  buildUrl(queryParameters.pageNumber),
+  queryParameters,
+  buildUrl,
   queryExternalService(),
   TE.chainEitherKW(flow(
     decodeAndLogFailures(logger, scietyLabsByCategoryResponseCodec, { url: buildUrl }),
