@@ -69,13 +69,20 @@ describe('construct-pagination-controls', () => {
 
       describe('and the page 2 is selected', () => {
         const selectedPage = 2;
+        const previousPage = 1;
         const result = constructPaginationControls(
           pageSize,
           { categoryName: arbitraryString() as tt.NonEmptyString, page: selectedPage },
           12,
         );
+        const backwardPageHrefValue = pipe(
+          result.backwardPageHref,
+          // O.getOrElseW(shouldNotBeCalled),
+        );
 
-        it.todo('returns backwardPageHref as some');
+        it.skip('returns the value of the previous page, 1, in the page param of the backwardPageHref', () => {
+          expect(backwardPageHrefValue).toContain(`page=${previousPage}`);
+        });
 
         it('returns forwardPageHref as none', () => {
           expect(O.isNone(result.forwardPageHref)).toBe(true);
