@@ -12,7 +12,9 @@ import { UserId } from '../types/user-id';
 
 type PageOfExpressions = { expressionDois: ReadonlyArray<ExpressionDoi>, totalItems: number };
 
-type FetchByCategory = (category: string, pageNumber: number)
+type QueryParameters = { category: string, pageNumber: number };
+
+type FetchByCategory = (queryParameters: QueryParameters)
 => TE.TaskEither<DE.DataError, PageOfExpressions>;
 
 type FetchExpressionFrontMatter = (expressionDoi: ExpressionDoi)

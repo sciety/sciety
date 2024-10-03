@@ -36,9 +36,9 @@ const toExpressionDois = (result: ScietyLabsByCategoryResponse) => pipe(
 export const fetchByCategory = (
   queryExternalService: QueryExternalService,
   logger: Logger,
-): ExternalQueries['fetchByCategory'] => (category, pageNumber) => pipe(
-  category,
-  buildUrl(pageNumber),
+): ExternalQueries['fetchByCategory'] => (queryParameters) => pipe(
+  queryParameters.category,
+  buildUrl(queryParameters.pageNumber),
   queryExternalService(),
   TE.chainEitherKW(flow(
     decodeAndLogFailures(logger, scietyLabsByCategoryResponseCodec, { url: buildUrl }),
