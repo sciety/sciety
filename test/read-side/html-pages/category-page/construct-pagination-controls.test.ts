@@ -1,7 +1,9 @@
 import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import * as tt from 'io-ts-types';
 import { constructPaginationControls } from '../../../../src/read-side/html-pages/category-page/construct-pagination-controls';
 import { arbitraryString } from '../../../helpers';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
 
 describe('construct-pagination-controls', () => {
   describe('given the page size is 10', () => {
@@ -35,6 +37,7 @@ describe('construct-pagination-controls', () => {
     describe('when 12 items are available', () => {
       describe('and the page 1 is selected', () => {
         const selectedPage = 1;
+        const nextPage = 2;
         const result = constructPaginationControls(
           pageSize,
           { categoryName: arbitraryString() as tt.NonEmptyString, page: selectedPage },
@@ -45,6 +48,15 @@ describe('construct-pagination-controls', () => {
 
         it('returns forwardPageHref as some', () => {
           expect(O.isSome(result.forwardPageHref)).toBe(true);
+        });
+
+        it.failing('returns the value of the next page, 2, in the page param of the forwardPageHref', () => {
+          const forwardPageHrefValue = pipe(
+            result.forwardPageHref,
+            O.getOrElseW(shouldNotBeCalled),
+          );
+
+          expect(forwardPageHrefValue).toContain(`page=${nextPage}`);
         });
 
         it('returns page as the selected page', () => {
