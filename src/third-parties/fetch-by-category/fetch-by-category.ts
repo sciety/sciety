@@ -10,7 +10,7 @@ import { decodeAndLogFailures } from '../decode-and-log-failures';
 import { ExternalQueries } from '../external-queries';
 import { QueryExternalService } from '../query-external-service';
 
-const buildUrl = (categoryName: string) => `https://labs.sciety.org/api/papers/v1/preprints?filter%5Bcategory%5D=${categoryName}&filter%5Bevaluated_only%5D=true&page%5Bsize%5D=10&page%5Bnumber%5D=1&fields%5Bpaper%5D=doi`;
+const buildUrl = (pageNumber: number) => (categoryName: string) => `https://labs.sciety.org/api/papers/v1/preprints?filter%5Bcategory%5D=${categoryName}&filter%5Bevaluated_only%5D=true&page%5Bsize%5D=10&page%5Bnumber%5D=${pageNumber}&fields%5Bpaper%5D=doi`;
 
 const scietyLabsByCategoryResponseCodec = t.type({
   data: t.readonlyArray(t.strict({
@@ -38,7 +38,7 @@ export const fetchByCategory = (
   logger: Logger,
 ): ExternalQueries['fetchByCategory'] => (category) => pipe(
   category,
-  buildUrl,
+  buildUrl(1),
   queryExternalService(),
   TE.chainEitherKW(flow(
     decodeAndLogFailures(logger, scietyLabsByCategoryResponseCodec, { url: buildUrl }),
