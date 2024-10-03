@@ -18,7 +18,9 @@ describe('construct-pagination-controls', () => {
           2,
         );
 
-        it.todo('returns backwardPageHref as none');
+        it.failing('returns backwardPageHref as none', () => {
+          expect(O.isNone(result.backwardPageHref)).toBe(true);
+        });
 
         it('returns forwardPageHref as none', () => {
           expect(O.isNone(result.forwardPageHref)).toBe(true);
