@@ -34,6 +34,7 @@ import { listsPage, paramsCodec as listsPageParamsCodec } from '../read-side/htm
 import { myFeedPage, myFeedParams } from '../read-side/html-pages/my-feed-page';
 import { paperActivityPage } from '../read-side/html-pages/paper-activity-page';
 import { saveArticleFormPage } from '../read-side/html-pages/save-article-form-page';
+import { page as searchPage } from '../read-side/html-pages/search-page';
 import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../read-side/html-pages/search-results-page';
 import { fullWidthPageLayout } from '../read-side/html-pages/shared-components/full-width-page-layout';
 import { referencePage, sharedComponentsPage, indexPage } from '../read-side/html-pages/style-guide-page';
@@ -81,7 +82,7 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
     pageHandler(dependencies, flow(
       searchResultsPageParams.decode,
       E.fold(
-        () => explorePage(dependencies),
+        () => searchPage(dependencies),
         searchResultsPage(dependencies)(20),
       ),
     )),
