@@ -82,7 +82,7 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
     pageHandler(dependencies, flow(
       searchResultsPageParams.decode,
       E.fold(
-        () => searchPage(dependencies),
+        () => searchPage(),
         searchResultsPage(dependencies)(20),
       ),
     )),
