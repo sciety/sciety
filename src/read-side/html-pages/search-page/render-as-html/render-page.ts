@@ -8,8 +8,7 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
     <header class="page-header">
       <h1>${viewModel.pageHeading}</h1>
     </header>
-    <section class="explore-page-search-form">
-      <h2>Search</h2>
+    <section>
       ${renderSearchForm('', true)}
     </section>
   `,

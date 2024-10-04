@@ -3,5 +3,5 @@ import * as DE from '../../../../types/data-error';
 import { ViewModel } from '../view-model';
 
 export const constructViewModel = (): TE.TaskEither<DE.DataError, ViewModel> => TE.right({
-  pageHeading: 'Explore evaluated preprints',
+  pageHeading: 'Search evaluated preprints',
 });
