@@ -1,6 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { ColourSchemes } from './colour-schemes';
 import { utilityBar } from './utility-bar';
+import { searchPagePath } from '../../../../../standards/paths';
 import { HtmlFragment, toHtmlFragment } from '../../../../../types/html-fragment';
 import { UserDetails } from '../../../../../types/user-details';
 
@@ -31,7 +32,7 @@ export const siteHeader = (user: O.Option<UserDetails>, scheme: ColourSchemes = 
         </a>
       </li>
       <li>
-        <a href="/search" class="site-header__search_link">
+        <a href="${searchPagePath}" class="site-header__search_link">
           <img src="/static/images/search-icon.svg" alt="" class="site-header__search_icon"><span class="site-header__search_label">Search</span>
         </a>
       </li>
