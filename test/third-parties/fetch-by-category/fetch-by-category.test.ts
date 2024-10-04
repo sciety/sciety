@@ -22,7 +22,7 @@ const responseWithInvalidDoi = {
 const dummyQueryExternalService = (queryResponse: unknown) => () => () => TE.right(queryResponse);
 
 const invokeFetchByCategory = async (category: string, queryResponse: unknown) => pipe(
-  { category, pageNumber: 1 },
+  { category, pageNumber: 1, pageSize: arbitraryNumber(1, 100) },
   fetchByCategory(dummyQueryExternalService(queryResponse), dummyLogger),
   TE.getOrElse(shouldNotBeCalled),
 )();

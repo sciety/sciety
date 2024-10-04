@@ -7,8 +7,10 @@ import { ViewModel } from './view-model';
 import { ConstructViewModel } from '../construct-view-model';
 import { constructArticleCardStack } from '../shared-components/article-card-stack';
 
+const pageSize = 10;
+
 export const constructViewModel: ConstructViewModel<Params, ViewModel> = (dependencies) => (params) => pipe(
-  dependencies.fetchByCategory({ category: params.categoryName, pageNumber: params.page }),
+  dependencies.fetchByCategory({ category: params.categoryName, pageNumber: params.page, pageSize }),
   TE.bindW('articleCardViewModels', ({ expressionDois }) => pipe(
     expressionDois,
     constructArticleCardStack(dependencies),
@@ -24,7 +26,7 @@ export const constructViewModel: ConstructViewModel<Params, ViewModel> = (depend
       ),
       E.map(() => ({
         categoryContent: articleCardViewModels,
-        paginationControls: constructPaginationControls(10, params, totalItems),
+        paginationControls: constructPaginationControls(pageSize, params, totalItems),
       })),
     ),
   })),
