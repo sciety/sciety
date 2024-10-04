@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
@@ -11,7 +12,15 @@ import { decodeAndLogFailures } from '../decode-and-log-failures';
 import { ExternalQueries } from '../external-queries';
 import { QueryExternalService } from '../query-external-service';
 
-const buildUrl = (queryParameters: QueryParameters) => `https://labs.sciety.org/api/papers/v1/preprints?filter%5Bcategory%5D=${queryParameters.category}&filter%5Bevaluated_only%5D=true&page%5Bsize%5D=10&page%5Bnumber%5D=${queryParameters.pageNumber}&fields%5Bpaper%5D=doi`;
+const buildUrl = (queryParameters: QueryParameters) => {
+  const queryUrl = new URL('https://labs.sciety.org/api/papers/v1/preprints');
+  queryUrl.searchParams.set('filter[category]', queryParameters.category);
+  queryUrl.searchParams.set('filter[evaluated_only]', 'true');
+  queryUrl.searchParams.set('page[size]', '10');
+  queryUrl.searchParams.set('page[number]', queryParameters.pageNumber.toString());
+  queryUrl.searchParams.set('fields[paper]', 'doi');
+  return queryUrl.href;
+};
 
 const scietyLabsByCategoryResponseCodec = t.type({
   data: t.readonlyArray(t.strict({
