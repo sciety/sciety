@@ -10,7 +10,7 @@ describe('construct-pagination-controls', () => {
     const pageSize = 10;
 
     describe('when 2 items are available', () => {
-      describe('and the page 1 is selected', () => {
+      describe('and page 1 is selected', () => {
         const selectedPage = 1;
         const result = constructPaginationControls(
           pageSize,
@@ -37,7 +37,7 @@ describe('construct-pagination-controls', () => {
     });
 
     describe('when 12 items are available', () => {
-      describe('and the page 1 is selected', () => {
+      describe('and page 1 is selected', () => {
         const selectedPage = 1;
         const nextPage = 2;
         const result = constructPaginationControls(
@@ -67,7 +67,7 @@ describe('construct-pagination-controls', () => {
         });
       });
 
-      describe('and the page 2 is selected', () => {
+      describe('and page 2 is selected', () => {
         const selectedPage = 2;
         const previousPage = 1;
         const result = constructPaginationControls(
@@ -94,6 +94,43 @@ describe('construct-pagination-controls', () => {
 
         it('returns pageCount as 2', () => {
           expect(result.pageCount).toBe(2);
+        });
+      });
+    });
+
+    describe('when 30 items are available', () => {
+      describe('and page 2 is selected', () => {
+        const selectedPage = 2;
+        const previousPage = 1;
+        const nextPage = 3;
+        const result = constructPaginationControls(
+          pageSize,
+          { categoryName: arbitraryString() as tt.NonEmptyString, page: selectedPage },
+          30,
+        );
+        const backwardPageHrefValue = pipe(
+          result.backwardPageHref,
+          O.getOrElseW(shouldNotBeCalled),
+        );
+        const forwardPageHrefValue = pipe(
+          result.forwardPageHref,
+          O.getOrElseW(shouldNotBeCalled),
+        );
+
+        it('returns the value of the previous page, 1, in the page param of the backwardPageHref', () => {
+          expect(backwardPageHrefValue).toContain(`page=${previousPage}`);
+        });
+
+        it('returns the value of the next page, 3, in the page param of the forwardPageHref', () => {
+          expect(forwardPageHrefValue).toContain(`page=${nextPage}`);
+        });
+
+        it('returns page as the selected page', () => {
+          expect(result.page).toBe(selectedPage);
+        });
+
+        it('returns pageCount as 3', () => {
+          expect(result.pageCount).toBe(3);
         });
       });
     });
