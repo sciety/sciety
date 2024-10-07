@@ -9,7 +9,7 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
       <h1>${viewModel.pageHeading}</h1>
     </header>
     <section>
-      ${renderSearchForm('', true)}
+      ${renderSearchForm('', true, false)}
     </section>
   `,
   toHtmlFragment,
