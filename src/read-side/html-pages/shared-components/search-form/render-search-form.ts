@@ -9,16 +9,16 @@ const renderEvaluatedOnlyCheckbox = (evaluatedOnly: boolean) => `
   </section>
 `;
 
-const renderUnevaluatedPreprintsCheckbox = (evaluatedOnly: boolean) => `
+const renderUnevaluatedPreprintsCheckbox = (includeUnevaluatedPreprints: boolean) => `
   <section>
-    <input type="checkbox" name="evaluatedOnly" value="true" id="searchEvaluatedOnlyFilter"${evaluatedOnly ? ' checked' : ''}>
-    <label for="searchEvaluatedOnlyFilter" class="search-form__checkbox_label">Search only evaluated preprints</label>
+    <input type="checkbox" name="includeUnevaluatedPreprints" value="true" id="includeUnevaluatedPreprintsFilter"${includeUnevaluatedPreprints ? ' checked' : ''}>
+    <label for="includeUnevaluatedPreprintsFilter" class="search-form__checkbox_label">Include preprints that haven't been evaluated yet</label>
   </section>
 `;
 
 const renderCheckbox = (evaluatedOnly: boolean) => {
   if (process.env.EXPERIMENT_ENABLED === 'true') {
-    return renderUnevaluatedPreprintsCheckbox(evaluatedOnly);
+    return renderUnevaluatedPreprintsCheckbox(!evaluatedOnly);
   }
   return renderEvaluatedOnlyCheckbox(evaluatedOnly);
 };
