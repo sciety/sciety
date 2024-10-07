@@ -6,6 +6,7 @@ export const paramsCodec = t.type({
   cursor: tt.optionFromNullable(t.string),
   page: tt.optionFromNullable(tt.NumberFromString),
   evaluatedOnly: tt.withFallback(tt.BooleanFromString, false),
+  includeUnevaluatedPreprints: tt.withFallback(tt.BooleanFromString, false),
 });
 
 export type Params = t.TypeOf<typeof paramsCodec>;

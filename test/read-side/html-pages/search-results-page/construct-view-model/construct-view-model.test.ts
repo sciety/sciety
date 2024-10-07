@@ -43,10 +43,11 @@ describe('construct-view-model', () => {
   const cursor = O.none;
   const page = O.none;
   const evaluatedOnly = false;
+  const includeUnevaluatedPreprints = true;
 
   const getViewModel = async (searchForPaperExpressions: ExternalQueries['searchForPaperExpressions'], itemsPerPage: number = 1) => pipe(
     {
-      query, cursor, page, evaluatedOnly,
+      query, cursor, page, evaluatedOnly, includeUnevaluatedPreprints,
     },
     constructViewModel(
       {
