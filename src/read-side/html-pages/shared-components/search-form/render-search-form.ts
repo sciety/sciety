@@ -11,8 +11,10 @@ const renderEvaluatedOnlyCheckbox = (evaluatedOnly: boolean) => `
 
 const renderUnevaluatedPreprintsCheckbox = (includeUnevaluatedPreprints: boolean) => `
   <section>
-    <input type="checkbox" name="includeUnevaluatedPreprints" value="true" id="includeUnevaluatedPreprintsFilter"${includeUnevaluatedPreprints ? ' checked' : ''}>
-    <label for="includeUnevaluatedPreprintsFilter" class="search-form__checkbox_label">Include preprints that haven't been evaluated yet</label>
+    <label class="search-form__checkbox_label">
+      <input type="checkbox" name="includeUnevaluatedPreprints" value="true" ${includeUnevaluatedPreprints ? ' checked' : ''}>
+      Include preprints that haven't been evaluated yet
+    </label>
   </section>
 `;
 
