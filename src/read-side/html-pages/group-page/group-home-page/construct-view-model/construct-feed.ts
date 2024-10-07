@@ -13,7 +13,7 @@ import * as EDOI from '../../../../../types/expression-doi';
 import { Group } from '../../../../../types/group';
 import { GroupId } from '../../../../../types/group-id';
 import * as GID from '../../../../../types/group-id';
-import { constructArticleCard } from '../../../shared-components/article-card';
+import { constructArticleCardStack } from '../../../shared-components/article-card-stack';
 import { PageOfItems, paginate, constructDefaultPaginationControls } from '../../../shared-components/pagination';
 import { ViewModel } from '../view-model';
 
@@ -33,7 +33,8 @@ const toOrderedArticleCards = (
   pageOfExpressionDois: PageOfItems<string>,
 ) => pipe(
   pageOfExpressionDois.items,
-  T.traverseArray((expressionDoi) => constructArticleCard(dependencies)(EDOI.fromValidatedString(expressionDoi))),
+  RA.map(EDOI.fromValidatedString),
+  constructArticleCardStack(dependencies),
   T.map((articleCards) => ({
     tag: 'ordered-article-cards' as const,
     articleCards,

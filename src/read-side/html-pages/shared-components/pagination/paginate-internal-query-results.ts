@@ -44,7 +44,7 @@ const selectAPageOfItems = (pageSize: number, page: number) => <I>(items: Readon
   ),
 );
 
-type Paginate = <I>(
+type PaginateInternalQueryResults = <I>(
   pageSize: number,
   page: number,
 ) => (items: ReadonlyArray<I>) => E.Either<DE.DataError, PageOfItems<I>>;
@@ -53,7 +53,7 @@ type Paginate = <I>(
  * - When `items` are empty, returns an empty page 1.
  * - Returns on left when the `page` does not exist.
  */
-export const paginate: Paginate = (pageSize, page) => (items) => pipe(
+export const paginateInternalQueryResults: PaginateInternalQueryResults = (pageSize, page) => (items) => pipe(
   items,
   RA.match(
     () => E.right(emptyFirstPage()),

@@ -1,7 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { renderFeaturedListsSection } from './render-featured-lists-section';
-import { renderListOfArticleCardsWithFallback } from './render-list-of-article-cards-with-fallback';
+import { renderGroupFeed } from './render-group-feed';
 import { HtmlFragment, toHtmlFragment } from '../../../../../types/html-fragment';
 import { ViewModel } from '../view-model';
 
@@ -17,6 +17,6 @@ const augmentWithFeaturedListsSection = (viewmodel: ViewModel) => (otherContent:
 );
 
 export const renderMainContent = (viewmodel: ViewModel): HtmlFragment => pipe(
-  renderListOfArticleCardsWithFallback(viewmodel.feed),
+  renderGroupFeed(viewmodel.feed),
   augmentWithFeaturedListsSection(viewmodel),
 );

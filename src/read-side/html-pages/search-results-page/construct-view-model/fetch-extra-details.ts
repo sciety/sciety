@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { constructRelatedGroups } from './construct-related-groups';
 import { Dependencies } from './dependencies';
 import { SearchResults } from '../../../../types/search-results';
-import { constructArticleCardStackWithSilentFailures } from '../../shared-components/article-list';
+import { constructArticleCardStackWithSilentFailures } from '../../shared-components/article-card-stack';
 import { ViewModel } from '../view-model';
 
 type LimitedSet = {

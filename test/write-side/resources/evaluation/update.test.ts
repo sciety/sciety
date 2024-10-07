@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent } from '../../../../src/domain-events';
-import { EvaluationType } from '../../../../src/types/evaluation-type';
+import { EvaluationType } from '../../../../src/domain-events/types/evaluation-type';
 import { UpdateEvaluationCommand } from '../../../../src/write-side/commands';
 import * as evaluationResource from '../../../../src/write-side/resources/evaluation';
 import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationUpdatedEvent } from '../../../domain-events/evaluation-resource-events.helper';

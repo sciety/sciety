@@ -1,7 +1,7 @@
-import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { constructEvent } from '../../../src/domain-events';
+import { isCurationStatement } from '../../../src/read-models/evaluations';
 import { getEvaluationsByGroup } from '../../../src/read-models/evaluations/get-evaluations-by-group';
 import { handleEvent, initialState } from '../../../src/read-models/evaluations/handle-event';
 import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events/evaluation-resource-events.helper';
@@ -114,7 +114,7 @@ describe('get-evaluations-by-group', () => {
     );
 
     it('sets the type correctly', () => {
-      expect(result[0].type).toStrictEqual(O.some('curation-statement'));
+      expect(isCurationStatement(result[0])).toBe(true);
     });
   });
 });

@@ -6,11 +6,15 @@ import { EvaluationLocator } from '../types/evaluation-locator';
 import { ExpressionDoi } from '../types/expression-doi';
 import { ExpressionFrontMatter } from '../types/expression-front-matter';
 import { PublishingHistory } from '../types/publishing-history';
+import { QueryParameters } from '../types/query-parameters';
 import { SanitisedHtmlFragment } from '../types/sanitised-html-fragment';
 import { SearchResults } from '../types/search-results';
 import { UserId } from '../types/user-id';
 
-type FetchByCategory = (category: string) => TE.TaskEither<DE.DataError, ReadonlyArray<ExpressionDoi>>;
+type PageOfExpressions = { expressionDois: ReadonlyArray<ExpressionDoi>, totalItems: number };
+
+type FetchByCategory = (queryParameters: QueryParameters)
+=> TE.TaskEither<DE.DataError, PageOfExpressions>;
 
 type FetchExpressionFrontMatter = (expressionDoi: ExpressionDoi)
 => TE.TaskEither<DE.DataError, ExpressionFrontMatter>;

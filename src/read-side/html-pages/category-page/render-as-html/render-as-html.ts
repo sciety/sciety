@@ -1,8 +1,18 @@
 import { htmlEscape } from 'escape-goat';
-import { renderCategoryContent } from './render-category-content';
+import * as E from 'fp-ts/Either';
+import { pipe } from 'fp-ts/function';
 import { toHtmlFragment } from '../../../../types/html-fragment';
 import { HtmlPage, toHtmlPage } from '../../html-page';
-import { ViewModel } from '../view-model';
+import { renderArticleCardStack } from '../../shared-components/article-card-stack';
+import { renderPaginationControls } from '../../shared-components/pagination';
+import { PaginatedCards, ViewModel } from '../view-model';
+
+const renderInformationalMessage = (message: string) => toHtmlFragment(`<p>${message}</p>`);
+
+const renderPaginatedCards = (paginatedCards: PaginatedCards) => `
+  ${renderArticleCardStack(paginatedCards.categoryContent)}
+  ${renderPaginationControls(paginatedCards.paginationControls)}
+`;
 
 export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
   title: viewModel.pageHeading,
@@ -12,7 +22,13 @@ export const renderAsHtml = (viewModel: ViewModel): HtmlPage => toHtmlPage({
       <h1>${htmlEscape(viewModel.pageHeading)}</h1>
     </header>
     <section>
-      ${renderCategoryContent(viewModel.categoryContent)}
+      ${pipe(
+    viewModel.content,
+    E.match(
+      renderInformationalMessage,
+      renderPaginatedCards,
+    ),
+  )}
     </section>
   `,
   ),

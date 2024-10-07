@@ -15,7 +15,7 @@ const commonFields = {
   articleId: canonicalExpressionDoiCodec,
   publishedAt: tt.DateFromISOString,
   authors: evaluationAuthorsCodec,
-  evaluationType: evaluationTypeCodec,
+  evaluationType: t.union([evaluationTypeCodec, t.undefined]),
 };
 
 export const evaluationRecordedEventCodec = t.strict({

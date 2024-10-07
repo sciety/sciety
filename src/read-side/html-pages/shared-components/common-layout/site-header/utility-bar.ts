@@ -17,9 +17,9 @@ const groupsMenuItem = () => `
   </li>
 `;
 
-const listsMenuItem = () => `
+const exploreMenuItem = () => `
   <li class="utility-bar__list_item utility-bar__list_item--navigation">
-    <a href="/lists" class="utility-bar__list_nav_link">Lists</a>
+    <a href="/explore" class="utility-bar__list_nav_link">Explore</a>
   </li>
 `;
 
@@ -77,7 +77,7 @@ const aboutScietyMenuItem = () => `
 const loggedOutMenuItems = () => `
   ${homeMenuItem()}
   ${groupsMenuItem()}
-  ${listsMenuItem()}
+  ${exploreMenuItem()}
   ${newsletterMenuItem()}
   ${aboutScietyMenuItem()}
   ${logInMenuItem()}
@@ -87,7 +87,7 @@ const loggedOutMenuItems = () => `
 const loggedInMenuItems = (user: UserDetails) => `
   ${homeMenuItem()}
   ${groupsMenuItem()}
-  ${listsMenuItem()}
+  ${exploreMenuItem()}
   ${myFeedMenuItem()}
   ${myListsMenuItem(user.handle)}
   ${myUsernameMenuItem(user.handle, constructUserAvatarSrc(user))}

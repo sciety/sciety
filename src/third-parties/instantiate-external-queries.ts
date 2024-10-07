@@ -4,14 +4,15 @@ import { CachingFetcherOptions, createCachingFetcher } from './cache';
 import { crossrefResponseBodyCachePredicate } from './crossref';
 import { searchEuropePmc } from './europe-pmc';
 import { ExternalQueries } from './external-queries';
+import { fetchByCategory } from './fetch-by-category';
 import { createFetchEvaluationDigest } from './fetch-evaluation-digest';
 import { fetchEvaluationHumanReadableOriginalUrl } from './fetch-evaluation-human-readable-original-url';
 import { fetchExpressionFrontMatter } from './fetch-expression-front-matter';
 import { fetchPublishingHistory } from './fetch-publishing-history';
 import { createFetchRecommendedPapers } from './fetch-recommended-papers';
+import { fetchSearchCategories } from './fetch-search-categories';
 import { fetchStaticFile } from './fetch-static-file';
 import { fetchUserAvatarUrl } from './fetch-user-avatar-url';
-import { fetchByCategory, fetchSearchCategories } from './search-categories';
 import { Logger } from '../logger';
 
 const cachingFetcherOptions = (redisClient: ReturnType<typeof createClient> | undefined): CachingFetcherOptions => {

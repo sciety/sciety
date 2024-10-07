@@ -3,7 +3,6 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { renderListItems } from '../../shared-components/list-items';
-import { renderSearchForm } from '../../shared-components/search-form';
 import { ViewModel } from '../view-model';
 
 const renderBrowseByCategory = (viewModel: ViewModel['browseByCategory']) => pipe(
@@ -16,7 +15,6 @@ const renderBrowseByCategory = (viewModel: ViewModel['browseByCategory']) => pip
       renderListItems,
       (listContent) => `
     <section class="browse-by-category">
-    <h2>Browse by category</h2>
       <ul role="list" class="browse-by-category-list">
         ${listContent}
       </ul>
@@ -31,10 +29,6 @@ export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
     <header class="page-header">
       <h1>${viewModel.pageHeading}</h1>
     </header>
-    <section class="explore-page-search-form">
-      <h2>Search</h2>
-      ${renderSearchForm('', true)}
-    </section>
     ${renderBrowseByCategory(viewModel.browseByCategory)}
   `,
   toHtmlFragment,

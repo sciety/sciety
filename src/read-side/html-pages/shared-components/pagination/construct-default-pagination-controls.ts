@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { PageOfItems } from './paginate';
+import { PageOfItems } from './paginate-internal-query-results';
 import { ViewModel } from './render-pagination-controls';
 import { queryStringParameters } from '../../../../standards';
 
