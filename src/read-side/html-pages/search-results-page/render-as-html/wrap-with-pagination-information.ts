@@ -1,9 +1,9 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { renderNextLinkOrCallsToAction } from './render-next-link-or-calls-to-action';
 import { constructSearchPageHref } from '../../../../standards/paths';
 import { articleServers } from '../../../../types/article-server';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
+import { renderLegacyPaginationControls } from '../../shared-components/pagination';
 
 const articleServersSeparatedByComma = `<b>${articleServers.biorxiv.name}</b>, <b>${articleServers.medrxiv.name}</b>, <b>${articleServers.researchsquare.name}</b>, <b>${articleServers.scielopreprints.name}</b>`;
 
@@ -33,10 +33,26 @@ const renderArticlesSearchResultsHeader = (paginationParameters: PaginationViewM
   </header>
 `;
 
+const renderNextLinkOrCallsToAction = (viewModel: PaginationViewModel): HtmlFragment => pipe(
+  viewModel.nextCursor,
+  O.match(
+    () => '<footer>Not what you were hoping for? Try our <a href="https://blog.sciety.org/sciety-search/">advanced search tips</a>, or <a href="/contact-us">leave us a suggestion</a>.</footer>',
+    (nextCursor) => renderLegacyPaginationControls(
+      {
+        nextPageHref:
+O.some(
+  constructSearchPageHref(nextCursor, viewModel.query, viewModel.includeUnevaluatedPreprints, viewModel.pageNumber + 1),
+),
+      },
+    ),
+  ),
+  toHtmlFragment,
+);
+
 const applyHeaderAndFooter = (viewModel: PaginationViewModel) => (c: HtmlFragment) => `
       ${renderArticlesSearchResultsHeader(viewModel)}
       ${c}
-      ${renderNextLinkOrCallsToAction(constructSearchPageHref(viewModel.nextCursor, viewModel.query, viewModel.includeUnevaluatedPreprints, viewModel.pageNumber + 1))}
+      ${renderNextLinkOrCallsToAction(viewModel)}
     `;
 
 type WrapWithPaginationInformation = (viewModel: PaginationViewModel)
