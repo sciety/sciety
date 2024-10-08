@@ -1,7 +1,7 @@
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { renderNextLinkOrCallsToAction } from './render-next-link-or-calls-to-action';
-import { searchResultsPagePath } from '../../../../standards/paths';
+import { constructPartialHref } from '../../../../standards/paths';
 import { articleServers } from '../../../../types/article-server';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 
@@ -33,15 +33,10 @@ const renderArticlesSearchResultsHeader = (paginationParameters: PaginationViewM
   </header>
 `;
 
-export const buildBasePath = (viewModel: PaginationViewModel): O.Option<string> => pipe(
-  viewModel.nextCursor,
-  O.map((cursor) => `${searchResultsPagePath}?query=${encodeURIComponent(viewModel.query)}&cursor=${encodeURIComponent(cursor)}${viewModel.includeUnevaluatedPreprints ? '&includeUnevaluatedPreprints=true' : ''}&`),
-);
-
 const applyHeaderAndFooter = (viewModel: PaginationViewModel) => (c: HtmlFragment) => `
       ${renderArticlesSearchResultsHeader(viewModel)}
       ${c}
-      ${renderNextLinkOrCallsToAction(viewModel.pageNumber + 1, buildBasePath(viewModel))}
+      ${renderNextLinkOrCallsToAction(viewModel.pageNumber + 1, constructPartialHref(viewModel.nextCursor, viewModel.query, viewModel.includeUnevaluatedPreprints))}
     `;
 
 type WrapWithPaginationInformation = (viewModel: PaginationViewModel)
