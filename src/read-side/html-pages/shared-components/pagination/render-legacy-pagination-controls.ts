@@ -1,11 +1,7 @@
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 
-export type ViewModel = {
-  nextPageHref: string,
-};
-
-export const renderLegacyPaginationControls = (viewModel: ViewModel): HtmlFragment => toHtmlFragment(
+export const renderLegacyPaginationControls = (nextPageHref: string): HtmlFragment => toHtmlFragment(
   `<div class="pagination-controls">
-      <a href="${viewModel.nextPageHref}" class="pagination-controls__next_link">Next</a>
+      <a href="${nextPageHref}" class="pagination-controls__next_link">Next</a>
     </div>`,
 );

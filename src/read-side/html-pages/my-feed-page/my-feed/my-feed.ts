@@ -66,7 +66,6 @@ const renderArticleCardList = (pageofItems: PageOfItems<unknown>) => flow(
     ${pipe(
     pageofItems.forwardPage,
     O.map((nextPage) => `/my-feed?page=${nextPage}`),
-    O.map((nextPageHref) => ({ nextPageHref })),
     O.map(renderLegacyPaginationControls),
     O.getOrElse(() => ''),
   )

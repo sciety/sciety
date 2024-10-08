@@ -11,10 +11,8 @@ const addPaginationControls = (nextPageHref: ContentWithPaginationViewModel['nex
       ${pageOfContent}
       ${pipe(
     nextPageHref,
-    O.match(
-      () => '',
-      (href) => renderLegacyPaginationControls({ nextPageHref: href }),
-    ),
+    O.map(renderLegacyPaginationControls),
+    O.getOrElse(() => ''),
   )}
     </div>
   `,
