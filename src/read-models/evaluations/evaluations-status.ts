@@ -7,6 +7,7 @@ import * as RM from 'fp-ts/ReadonlyMap';
 import { pipe } from 'fp-ts/function';
 import { ReadModel } from './handle-event';
 import { RecordedEvaluation } from './recorded-evaluation';
+import { evaluationTypes } from '../../domain-events/types/evaluation-type';
 
 const byDate: Ord.Ord<RecordedEvaluation> = pipe(
   D.Ord,
@@ -15,8 +16,11 @@ const byDate: Ord.Ord<RecordedEvaluation> = pipe(
 
 type CountOccurrencesOfEvaluationTypes = (soughtType: string, evaluationTypes: ReadonlyArray<RecordedEvaluation['type']>) => number;
 
-const countOccurrencesOfEvaluationTypes: CountOccurrencesOfEvaluationTypes = (soughtType, evaluationTypes) => pipe(
-  evaluationTypes,
+const countOccurrencesOfEvaluationTypes: CountOccurrencesOfEvaluationTypes = (
+  soughtType,
+  recordedEvaluationTypes,
+) => pipe(
+  recordedEvaluationTypes,
   O.sequenceArray,
   O.match(
     () => 0,
@@ -35,10 +39,18 @@ export const evaluationsStatus = (readmodel: ReadModel) => (): Json => pipe(
   RA.map((evaluation) => evaluation.type),
   RA.partition((t) => O.isSome(t)),
   (partitioned) => ({
-    'curation-statement': countOccurrencesOfEvaluationTypes('curation-statement', partitioned.right),
-    review: countOccurrencesOfEvaluationTypes('review', partitioned.right),
-    'author-response': countOccurrencesOfEvaluationTypes('author-response', partitioned.right),
-    'not-provided': countOccurrencesOfEvaluationTypes('not-provided', partitioned.right),
+    [evaluationTypes.curationStatement]: countOccurrencesOfEvaluationTypes(
+      evaluationTypes.curationStatement, partitioned.right,
+    ),
+    [evaluationTypes.review]: countOccurrencesOfEvaluationTypes(
+      evaluationTypes.review, partitioned.right,
+    ),
+    [evaluationTypes.authorResponse]: countOccurrencesOfEvaluationTypes(
+      evaluationTypes.authorResponse, partitioned.right,
+    ),
+    [evaluationTypes.notProvided]: countOccurrencesOfEvaluationTypes(
+      evaluationTypes.notProvided, partitioned.right,
+    ),
     unknown: partitioned.left.length,
   }),
 );
