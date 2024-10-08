@@ -8,7 +8,7 @@ import { ExternalQueries } from '../../../../../src/third-parties';
 import { ExpressionDoi } from '../../../../../src/types/expression-doi';
 import { SearchResults } from '../../../../../src/types/search-results';
 import { TestFramework, createTestFramework } from '../../../../framework';
-import { arbitraryString, arbitraryWord } from '../../../../helpers';
+import { arbitraryBoolean, arbitraryString, arbitraryWord } from '../../../../helpers';
 import { shouldNotBeCalled } from '../../../../should-not-be-called';
 import { arbitraryExpressionDoi } from '../../../../types/expression-doi.helper';
 
@@ -42,7 +42,7 @@ describe('construct-view-model', () => {
   const query = arbitraryString();
   const cursor = O.none;
   const page = O.none;
-  const includeUnevaluatedPreprints = true;
+  const includeUnevaluatedPreprints = arbitraryBoolean();
 
   const getViewModel = async (searchForPaperExpressions: ExternalQueries['searchForPaperExpressions'], itemsPerPage: number = 1) => pipe(
     {
@@ -77,7 +77,7 @@ describe('construct-view-model', () => {
     searchForPaperExpressionsReturningNoResults,
   );
 
-  describe('and there is only one page of results, with no evaluated articles', () => {
+  describe('when there is only one page of results', () => {
     const expressionDoi = arbitraryExpressionDoi();
     let cardHrefs: ReadonlyArray<string>;
 
@@ -98,12 +98,12 @@ describe('construct-view-model', () => {
       expect(result.query).toBe(query);
     });
 
-    it('the state of the filter for evaluated articles is displayed', () => {
-      expect(result.includeUnevaluatedPreprints).toBe(true);
+    it('the state of the toggle for unevaluatedPreprints matches the params', () => {
+      expect(result.includeUnevaluatedPreprints).toBe(includeUnevaluatedPreprints);
     });
   });
 
-  describe('and there is more than one page of results, with no evaluated articles', () => {
+  describe('when there is more than one page of results', () => {
     const expressionDoi = arbitraryExpressionDoi();
     const itemsPerPage = 1;
     const cursorValue = arbitraryWord();
@@ -120,8 +120,8 @@ describe('construct-view-model', () => {
       expect(result.query).toBe(query);
     });
 
-    it('the state of the filter for evaluated articles is displayed', () => {
-      expect(result.includeUnevaluatedPreprints).toBe(true);
+    it('the state of the toggle for unevaluatedPreprints matches the params', () => {
+      expect(result.includeUnevaluatedPreprints).toBe(includeUnevaluatedPreprints);
     });
 
     it('the current page number is displayed', () => {
@@ -133,7 +133,7 @@ describe('construct-view-model', () => {
     });
   });
 
-  describe('but there are no results', () => {
+  describe('when there are no results', () => {
     beforeEach(async () => {
       result = await getViewModelForAPageWithNoResults();
     });
@@ -146,8 +146,8 @@ describe('construct-view-model', () => {
       expect(result.query).toBe(query);
     });
 
-    it('the state of the filter for evaluated articles is displayed', () => {
-      expect(result.includeUnevaluatedPreprints).toBe(true);
+    it('the state of the toggle for unevaluatedPreprints matches the params', () => {
+      expect(result.includeUnevaluatedPreprints).toBe(includeUnevaluatedPreprints);
     });
   });
 });
