@@ -1,3 +1,5 @@
+import { queryStringParameters } from '../query-string-parameters';
+
 export const searchPagePath = '/search';
 
 export const searchResultsPagePath = '/search';
@@ -7,4 +9,4 @@ export const constructSearchPageHref = (
   query: string,
   includeUnevaluatedPreprints: boolean,
   pageNumber: number,
-): string => `${searchResultsPagePath}?query=${encodeURIComponent(query)}&cursor=${encodeURIComponent(nextCursor)}${includeUnevaluatedPreprints ? '&includeUnevaluatedPreprints=true' : ''}&page=${pageNumber}`;
+): string => `${searchResultsPagePath}?${queryStringParameters.query}=${encodeURIComponent(query)}&${queryStringParameters.cursor}=${encodeURIComponent(nextCursor)}${includeUnevaluatedPreprints ? `&${queryStringParameters.includeUnevaluatedPreprints}=true` : ''}&${queryStringParameters.page}=${pageNumber}`;

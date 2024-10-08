@@ -1,11 +1,12 @@
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
+import { queryStringParameters } from '../../../../standards';
 
 export const paramsCodec = t.type({
-  query: t.string,
-  cursor: tt.optionFromNullable(t.string),
-  page: tt.optionFromNullable(tt.NumberFromString),
-  includeUnevaluatedPreprints: tt.withFallback(tt.BooleanFromString, false),
+  [queryStringParameters.query]: queryStringParameters.queryCodec,
+  [queryStringParameters.cursor]: queryStringParameters.cursorCodec,
+  [queryStringParameters.page]: tt.optionFromNullable(tt.NumberFromString),
+  [queryStringParameters.includeUnevaluatedPreprints]: queryStringParameters.includeUnevaluatedPreprintsCodec,
 });
 
 export type Params = t.TypeOf<typeof paramsCodec>;
