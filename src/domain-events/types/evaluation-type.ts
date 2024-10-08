@@ -7,11 +7,13 @@ export const evaluationTypeCodec = t.union([
   t.literal('not-provided'),
 ]);
 
-export const evaluationTypes = {
-  review: 'review' as const,
-  authorResponse: 'author-response' as const,
-  curationStatement: 'curation-statement' as const,
-  notProvided: 'not-provided' as const,
+export const evaluationTypes = <const>{
+  review: 'review',
+  authorResponse: 'author-response',
+  curationStatement: 'curation-statement',
+  notProvided: 'not-provided',
 };
 
-export type EvaluationType = 'review' | 'author-response' | 'curation-statement' | 'not-provided';
+type MapOfEvaluationTypes = typeof evaluationTypes;
+
+export type EvaluationType = MapOfEvaluationTypes[keyof MapOfEvaluationTypes];
