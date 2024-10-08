@@ -63,14 +63,14 @@ const renderArticleCardList = (pageofItems: PageOfItems<unknown>) => flow(
       Showing page <b>${pageofItems.pageNumber}</b> of <b>${pageofItems.numberOfPages}</b><span class="visually-hidden"> pages of articles that have been evaluated by groups that you follow.</span>
     </p>
     ${listOfCards}
-    ${renderLegacyPaginationControls({
-    nextPageHref: pipe(
-      pageofItems.forwardPage,
-      O.map(
-        (nextPage) => `/my-feed?page=${nextPage}`,
-      ),
-    ),
-  })}`,
+    ${pipe(
+    pageofItems.forwardPage,
+    O.map((nextPage) => `/my-feed?page=${nextPage}`),
+    O.map((nextPageHref) => ({ nextPageHref })),
+    O.map(renderLegacyPaginationControls),
+    O.getOrElse(() => ''),
+  )
+}`,
 );
 
 type YourFeed = (dependencies: Dependencies) => (

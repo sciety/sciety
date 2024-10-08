@@ -9,14 +9,12 @@ import { DependenciesForViews } from '../../../dependencies-for-views';
 import { paginate } from '../../shared-components/pagination';
 import { ContentWithPaginationViewModel } from '../view-model';
 
-const constructPaginationControlsViewModel = (nextPageNumber: O.Option<number>, basePath: string) => ({
-  nextPageHref: pipe(
-    nextPageNumber,
-    O.map(
-      (nextPage) => `${basePath}?page=${nextPage}`,
-    ),
+const constructNextPageHref = (nextPageNumber: O.Option<number>, basePath: string) => pipe(
+  nextPageNumber,
+  O.map(
+    (nextPage) => `${basePath}?page=${nextPage}`,
   ),
-});
+);
 
 export const constructContentWithPaginationViewModel = (
   dependencies: DependenciesForViews,
@@ -33,7 +31,7 @@ export const constructContentWithPaginationViewModel = (
     TE.map((articles) => ({
       articles,
       pagination: pageOfExpressionDois,
-      ...constructPaginationControlsViewModel(pageOfExpressionDois.forwardPage, `/lists/${listId}`),
+      nextPageHref: constructNextPageHref(pageOfExpressionDois.forwardPage, `/lists/${listId}`),
     })),
   )),
 );

@@ -7,7 +7,7 @@ import { ArticleErrorCardViewModel } from '../shared-components/article-card';
 import {
   ArticleCardWithControlsAndAnnotationViewModel,
 } from '../shared-components/article-card-with-controls-and-annotation';
-import { PageOfItems, LegacyPaginationControlsViewModel } from '../shared-components/pagination';
+import { PageOfItems } from '../shared-components/pagination';
 
 type Message = 'no-articles' | 'no-articles-can-be-fetched';
 
@@ -16,9 +16,10 @@ ArticleErrorCardViewModel,
 ArticleCardWithControlsAndAnnotationViewModel
 >>;
 
-export type ContentWithPaginationViewModel = LegacyPaginationControlsViewModel & {
+export type ContentWithPaginationViewModel = {
   articles: ArticlesViewModel,
   pagination: PageOfItems<unknown>,
+  nextPageHref: O.Option<string>,
 };
 
 type Content = Message | ContentWithPaginationViewModel;

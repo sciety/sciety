@@ -1,18 +1,11 @@
-import * as O from 'fp-ts/Option';
-import { pipe } from 'fp-ts/function';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 
 export type ViewModel = {
-  nextPageHref: O.Option<string>,
+  nextPageHref: string,
 };
 
-export const renderLegacyPaginationControls = (viewModel: ViewModel): HtmlFragment => pipe(
-  viewModel.nextPageHref,
-  O.match(
-    () => '',
-    (url) => `<div class="pagination-controls">
-      <a href="${url}" class="pagination-controls__next_link">Next</a>
+export const renderLegacyPaginationControls = (viewModel: ViewModel): HtmlFragment => toHtmlFragment(
+  `<div class="pagination-controls">
+      <a href="${viewModel.nextPageHref}" class="pagination-controls__next_link">Next</a>
     </div>`,
-  ),
-  toHtmlFragment,
 );

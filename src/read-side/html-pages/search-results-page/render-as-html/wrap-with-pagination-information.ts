@@ -40,9 +40,7 @@ const renderNextLinkOrCallsToAction = (viewModel: PaginationViewModel): HtmlFrag
     (nextCursor) => renderLegacyPaginationControls(
       {
         nextPageHref:
-O.some(
   constructSearchPageHref(nextCursor, viewModel.query, viewModel.includeUnevaluatedPreprints, viewModel.pageNumber + 1),
-),
       },
     ),
   ),

@@ -1,14 +1,21 @@
+import * as O from 'fp-ts/Option';
 import { flow, pipe } from 'fp-ts/function';
 import { renderArticlesList } from './render-articles-list';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
-import { LegacyPaginationControlsViewModel, renderLegacyPaginationControls } from '../../shared-components/pagination';
+import { renderLegacyPaginationControls } from '../../shared-components/pagination';
 import { ContentWithPaginationViewModel } from '../view-model';
 
-const addPaginationControls = (paginationControlsViewModel: LegacyPaginationControlsViewModel) => flow(
+const addPaginationControls = (nextPageHref: ContentWithPaginationViewModel['nextPageHref']) => flow(
   (pageOfContent: HtmlFragment) => `
     <div>
       ${pageOfContent}
-      ${renderLegacyPaginationControls(paginationControlsViewModel)}
+      ${pipe(
+    nextPageHref,
+    O.match(
+      () => '',
+      (href) => renderLegacyPaginationControls({ nextPageHref: href }),
+    ),
+  )}
     </div>
   `,
   toHtmlFragment,
@@ -28,7 +35,7 @@ export const renderContentWithPagination = (
 ): HtmlFragment => pipe(
   viewModel.articles,
   renderArticlesList,
-  addPaginationControls(viewModel),
+  addPaginationControls(viewModel.nextPageHref),
   (content) => `
       ${renderPageNumbers(viewModel.pagination.pageNumber, viewModel.pagination.numberOfOriginalItems, viewModel.pagination.numberOfPages)}
       ${content}

@@ -31,7 +31,7 @@ export const fetchExtraDetails = (dependencies: Dependencies) => (state: Limited
         basePath: '',
         pageNumber: state.pageNumber + 1,
       },
-      ({ basePath, pageNumber }) => O.some(`${basePath}page=${pageNumber}`),
+      ({ basePath, pageNumber }) => `${basePath}page=${pageNumber}`,
     ),
   })),
 );
