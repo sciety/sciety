@@ -3,6 +3,7 @@ import {
   DomainEvent, CurrentOrLegacyDomainEvent, EventOfType,
   LegacyEventOfType,
 } from '../domain-events';
+import { evaluationTypes } from '../domain-events/types/evaluation-type';
 
 export const upgradeLegacyEventIfNecessary = (event: CurrentOrLegacyDomainEvent): O.Option<DomainEvent> => {
   const upgradeFunctions = {
@@ -13,7 +14,7 @@ export const upgradeLegacyEventIfNecessary = (event: CurrentOrLegacyDomainEvent)
     CurationStatementRecorded: (legacyEvent: LegacyEventOfType<'CurationStatementRecorded'>) => ({
       ...legacyEvent,
       authors: undefined,
-      evaluationType: 'curation-statement',
+      evaluationType: evaluationTypes.curationStatement,
       type: 'EvaluationUpdated' as const,
     } satisfies EventOfType<'EvaluationUpdated'>),
     AnnotationCreated: (legacyEvent: LegacyEventOfType<'AnnotationCreated'>) => ({
