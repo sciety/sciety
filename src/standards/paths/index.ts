@@ -4,4 +4,4 @@ export { constructGroupPagePath } from './construct-group-page-path';
 export { constructCategoryPageHref } from './construct-category-page-href';
 export { explorePageHref } from './explore-page-href';
 export { saveArticlePageHref } from './save-article-page-href';
-export { searchPagePath, searchResultsPagePath, constructPartialHref } from './construct-search-page-path-href';
+export { searchPagePath, searchResultsPagePath, constructSearchPageHref } from './construct-search-page-path-href';
