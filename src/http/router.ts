@@ -45,12 +45,12 @@ import { docmapIndex, docmap } from '../read-side/non-html-views/docmaps';
 import { evaluationContent } from '../read-side/non-html-views/evaluation-content';
 import { redirectToAvatarImageUrl } from '../read-side/user-avatars';
 import {
+  categoryPagePathSpecification,
   constructPaperActivityPageHref,
   explorePageHref,
   paperActivityPagePathSpecification,
   saveArticlePageHref,
 } from '../standards/paths';
-import { categoryPagePathSpecification } from '../standards/paths/construct-category-page-href';
 import * as EDOI from '../types/expression-doi';
 import { DependenciesForCommands } from '../write-side';
 

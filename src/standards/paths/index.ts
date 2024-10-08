@@ -1,7 +1,7 @@
-export { constructUserAvatarSrc } from './construct-user-avatar-src';
-export { constructPaperActivityPageHref, constructPaperActivityPageFocusedOnEvaluationHref, paperActivityPagePathSpecification } from './construct-paper-activity-page-href';
-export { constructGroupPagePath } from './construct-group-page-path';
-export { constructCategoryPageHref } from './construct-category-page-href';
-export { explorePageHref } from './explore-page-href';
-export { saveArticlePageHref } from './save-article-page-href';
-export { searchPagePath, searchResultsPagePath, constructSearchPageHref } from './construct-search-page-path-href';
+export { constructUserAvatarSrc } from './user-avatar-src';
+export { constructPaperActivityPageHref, constructPaperActivityPageFocusedOnEvaluationHref, paperActivityPagePathSpecification } from './paper-activity-page';
+export { constructGroupPagePath } from './group-page';
+export { constructCategoryPageHref, categoryPagePathSpecification } from './category-page';
+export { explorePageHref } from './explore-page';
+export { saveArticlePageHref } from './save-article-page';
+export { searchPagePath, searchResultsPagePath, constructSearchPageHref } from './search-page';
