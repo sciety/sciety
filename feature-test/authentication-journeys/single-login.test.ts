@@ -35,7 +35,7 @@ describe('single-login', () => {
     ['Home page', '/'],
     ['Legal page', '/legal'],
     ['Explore page', '/explore'],
-    ['Search results page', '/search?category=articles&query=covid&evaluatedOnly=true'],
+    ['Search results page', '/search?category=articles&query=covid'],
     ['User page, lists tab', `/users/${createUserAccountCommand.handle}/lists`],
     ['User page, following tab', `/users/${createUserAccountCommand.handle}/lists`],
   ])('when I am on the %s and I am not logged in', (name, page) => {
