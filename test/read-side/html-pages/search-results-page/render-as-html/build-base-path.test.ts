@@ -11,7 +11,7 @@ describe('buildBasePath', () => {
       numberOfPages: 3,
     });
 
-    const expectedHref = '/search?query=bats&cursor=foo%2B%2Fbar&';
+    const expectedHref = '/search?query=bats&cursor=foo%2B%2Fbar&includeUnevaluatedPreprints=true&';
 
     expect(nextLinkAnchor).toStrictEqual(O.some(expectedHref));
   });
@@ -25,7 +25,7 @@ describe('buildBasePath', () => {
       numberOfPages: 3,
     });
 
-    const expectedHref = '/search?query=bats%2Bbugs&cursor=foo&';
+    const expectedHref = '/search?query=bats%2Bbugs&cursor=foo&includeUnevaluatedPreprints=true&';
 
     expect(nextLinkAnchor).toStrictEqual(O.some(expectedHref));
   });
@@ -40,7 +40,7 @@ describe('buildBasePath', () => {
     });
 
     it('includes the filter in the href', () => {
-      const expectedHref = '/search?query=bats&cursor=foo&evaluatedOnly=true&';
+      const expectedHref = '/search?query=bats&cursor=foo&';
 
       expect(nextLinkAnchor).toStrictEqual(O.some(expectedHref));
     });

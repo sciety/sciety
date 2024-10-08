@@ -5,15 +5,13 @@ import { ViewModel } from '../view-model';
 
 const includeUnevaluatedPreprints = false;
 
-const evaluatedOnly = !includeUnevaluatedPreprints;
-
 export const renderPage = (viewModel: ViewModel): HtmlFragment => pipe(
   `
     <header class="page-header">
       <h1>${viewModel.pageHeading}</h1>
     </header>
     <section>
-      ${renderSearchForm('', evaluatedOnly, includeUnevaluatedPreprints)}
+      ${renderSearchForm('', includeUnevaluatedPreprints)}
     </section>
   `,
   toHtmlFragment,

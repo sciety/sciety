@@ -5,7 +5,6 @@ export const paramsCodec = t.type({
   query: t.string,
   cursor: tt.optionFromNullable(t.string),
   page: tt.optionFromNullable(tt.NumberFromString),
-  evaluatedOnly: tt.withFallback(tt.BooleanFromString, false),
   includeUnevaluatedPreprints: tt.withFallback(tt.BooleanFromString, false),
 });
 

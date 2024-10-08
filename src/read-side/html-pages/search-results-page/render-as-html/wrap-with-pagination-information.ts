@@ -35,7 +35,7 @@ const renderArticlesSearchResultsHeader = (paginationParameters: PaginationViewM
 
 export const buildBasePath = (viewModel: PaginationViewModel): O.Option<string> => pipe(
   viewModel.nextCursor,
-  O.map((cursor) => `${searchResultsPagePath}?query=${encodeURIComponent(viewModel.query)}&cursor=${encodeURIComponent(cursor)}${viewModel.evaluatedOnly ? '&evaluatedOnly=true' : ''}&`),
+  O.map((cursor) => `${searchResultsPagePath}?query=${encodeURIComponent(viewModel.query)}&cursor=${encodeURIComponent(cursor)}${!viewModel.evaluatedOnly ? '&includeUnevaluatedPreprints=true' : ''}&`),
 );
 
 const applyHeaderAndFooter = (viewModel: PaginationViewModel) => (c: HtmlFragment) => `
