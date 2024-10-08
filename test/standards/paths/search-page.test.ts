@@ -28,7 +28,7 @@ describe('constructSearchPageHref', () => {
     expect(nextLinkAnchor).toStrictEqual(O.some(expectedHref));
   });
 
-  describe('when the evaluatedOnly filter is set', () => {
+  describe('when the includeUnevaluatedPreprints filter is not set', () => {
     const nextLinkAnchor = constructSearchPageHref(
       O.some('foo'),
       'bats',
@@ -36,7 +36,7 @@ describe('constructSearchPageHref', () => {
       2,
     );
 
-    it('includes the filter in the href', () => {
+    it('excludes the param from the href', () => {
       const expectedHref = '/search?query=bats&cursor=foo&page=2';
 
       expect(nextLinkAnchor).toStrictEqual(O.some(expectedHref));
