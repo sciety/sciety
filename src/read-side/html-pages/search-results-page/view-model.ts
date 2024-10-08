@@ -14,7 +14,7 @@ export type SomeRelatedGroups = {
 
 export type ViewModel = PaginationViewModel & LegacyPaginationControlsViewModel & {
   query: string,
-  evaluatedOnly: boolean,
+  includeUnevaluatedPreprints: boolean,
   paperActivitySummaryCards: ReadonlyArray<ArticleCardViewModel>,
   relatedGroups: NoGroupsEvaluatedTheFoundArticles | SomeRelatedGroups,
 };

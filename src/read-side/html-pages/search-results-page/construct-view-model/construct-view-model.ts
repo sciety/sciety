@@ -18,7 +18,7 @@ export const constructViewModel = (
   ],
   tupled(dependencies.searchForPaperExpressions(pageSize)),
   TE.map((searchResults) => ({
-    evaluatedOnly: !params.includeUnevaluatedPreprints,
+    includeUnevaluatedPreprints: params.includeUnevaluatedPreprints,
     itemsToDisplay: searchResults.items,
     query: params.query,
     nextCursor: searchResults.nextCursor,

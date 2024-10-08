@@ -6,7 +6,7 @@ describe('buildBasePath', () => {
     const nextLinkAnchor = buildBasePath({
       pageNumber: 2,
       query: 'bats',
-      evaluatedOnly: false,
+      includeUnevaluatedPreprints: true,
       nextCursor: O.some('foo+/bar'),
       numberOfPages: 3,
     });
@@ -20,7 +20,7 @@ describe('buildBasePath', () => {
     const nextLinkAnchor = buildBasePath({
       pageNumber: 2,
       query: 'bats+bugs',
-      evaluatedOnly: false,
+      includeUnevaluatedPreprints: true,
       nextCursor: O.some('foo'),
       numberOfPages: 3,
     });
@@ -34,7 +34,7 @@ describe('buildBasePath', () => {
     const nextLinkAnchor = buildBasePath({
       pageNumber: 2,
       query: 'bats',
-      evaluatedOnly: true,
+      includeUnevaluatedPreprints: false,
       nextCursor: O.some('foo'),
       numberOfPages: 3,
     });

@@ -42,12 +42,11 @@ describe('construct-view-model', () => {
   const query = arbitraryString();
   const cursor = O.none;
   const page = O.none;
-  const evaluatedOnly = false;
   const includeUnevaluatedPreprints = true;
 
   const getViewModel = async (searchForPaperExpressions: ExternalQueries['searchForPaperExpressions'], itemsPerPage: number = 1) => pipe(
     {
-      query, cursor, page, evaluatedOnly, includeUnevaluatedPreprints,
+      query, cursor, page, includeUnevaluatedPreprints,
     },
     constructViewModel(
       {
@@ -100,7 +99,7 @@ describe('construct-view-model', () => {
     });
 
     it('the state of the filter for evaluated articles is displayed', () => {
-      expect(result.evaluatedOnly).toBe(false);
+      expect(result.includeUnevaluatedPreprints).toBe(true);
     });
   });
 
@@ -122,7 +121,7 @@ describe('construct-view-model', () => {
     });
 
     it('the state of the filter for evaluated articles is displayed', () => {
-      expect(result.evaluatedOnly).toBe(false);
+      expect(result.includeUnevaluatedPreprints).toBe(true);
     });
 
     it('the current page number is displayed', () => {
@@ -148,7 +147,7 @@ describe('construct-view-model', () => {
     });
 
     it('the state of the filter for evaluated articles is displayed', () => {
-      expect(result.evaluatedOnly).toBe(false);
+      expect(result.includeUnevaluatedPreprints).toBe(true);
     });
   });
 });

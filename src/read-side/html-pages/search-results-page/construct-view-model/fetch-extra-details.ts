@@ -9,7 +9,7 @@ import { ViewModel } from '../view-model';
 
 type LimitedSet = {
   query: string,
-  evaluatedOnly: boolean,
+  includeUnevaluatedPreprints: boolean,
   itemsToDisplay: SearchResults['items'],
   nextCursor: O.Option<string>,
   pageNumber: number,
