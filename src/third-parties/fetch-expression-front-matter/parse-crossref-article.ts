@@ -1,4 +1,4 @@
-import { XMLSerializer } from '@xmldom/xmldom';
+import { Document, Element, XMLSerializer } from '@xmldom/xmldom';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { getElement } from './get-element';
