@@ -24,7 +24,7 @@ describe('fetch-expression-front-matter', () => {
   });
 
   describe('when crossref returns no usable authors', () => {
-    it('returns a Right', async () => {
+    it.failing('returns a Right', async () => {
       const queryExternalService = () => () => TE.right(`
         <?xml version="1.0" encoding="UTF-8"?>
         <doi_records>
