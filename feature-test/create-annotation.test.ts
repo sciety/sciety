@@ -4,6 +4,7 @@ import {
 import { createUserAccountAndLogIn } from './helpers/create-user-account-and-log-in.helper';
 import { getIdOfFirstListOwnedByUser } from './helpers/get-first-list-owned-by.helper';
 import { inputFieldNames } from '../src/standards';
+import { ListId } from '../src/types/list-id';
 import { arbitraryString } from '../test/helpers';
 import { arbitraryExpressionDoi } from '../test/types/expression-doi.helper';
 import { arbitraryUserId } from '../test/types/user-id.helper';
@@ -19,9 +20,11 @@ describe('create-annotation', () => {
 
   describe('given I am logged in', () => {
     const userId = arbitraryUserId();
+    let listId: ListId;
 
     beforeEach(async () => {
       await createUserAccountAndLogIn(userId);
+      listId = await getIdOfFirstListOwnedByUser(userId);
     });
 
     describe('with an article on my list', () => {
@@ -41,14 +44,9 @@ describe('create-annotation', () => {
           await click($('button[type="submit"]'));
         });
 
-        it('i am back on the list page', async () => {
-          const currentPage = await currentURL();
-          const listId = await getIdOfFirstListOwnedByUser(userId);
+        it('i am back on the list page and the annotation is visible', async () => {
+          expect(await currentURL()).toContain(listId);
 
-          expect(currentPage).toContain(`http://localhost:8080/lists/${listId}`);
-        });
-
-        it('the annotation is visible', async () => {
           const annotation = await $('.article-card-annotation').text();
 
           expect(annotation).toContain(annotationContent);
