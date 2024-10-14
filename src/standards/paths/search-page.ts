@@ -13,6 +13,7 @@ export const constructSearchPageHref = (
 ): string => {
   const queryString = new URLSearchParams({
     [queryStringParameters.query]: query,
+    [queryStringParameters.cursor]: nextCursor,
   });
-  return `${searchResultsPagePath}?${queryString.toString()}&${queryStringParameters.cursor}=${encodeURIComponent(nextCursor)}${includeUnevaluatedPreprints ? `&${queryStringParameters.includeUnevaluatedPreprints}=true` : ''}&${queryStringParameters.page}=${pageNumber}`;
+  return `${searchResultsPagePath}?${queryString.toString()}${includeUnevaluatedPreprints ? `&${queryStringParameters.includeUnevaluatedPreprints}=true` : ''}&${queryStringParameters.page}=${pageNumber}`;
 };
