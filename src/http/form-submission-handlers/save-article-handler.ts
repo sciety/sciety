@@ -51,10 +51,10 @@ type FormBody = t.TypeOf<typeof saveArticleHandlerFormBodyCodec>;
 const fromFormInputToOptionalProperty = (value: UnsafeUserInput) => (
   value.length === 0 ? undefined : value
 );
-const toCommand = (formBody: FormBody) => ({
+const toCommand = (formBody: FormBody): AddArticleToListCommand => ({
   expressionDoi: formBody[inputFieldNames.expressionDoi],
   listId: formBody[inputFieldNames.listId],
-  annotation: fromFormInputToOptionalProperty(formBody[inputFieldNames.annotationContent]),
+  annotationContent: fromFormInputToOptionalProperty(formBody[inputFieldNames.annotationContent]),
 });
 
 export const saveArticleHandler = (dependencies: Dependencies): Middleware => async (context) => {
