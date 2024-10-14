@@ -14,7 +14,7 @@ type Candidate = {
   reviewId: string,
 };
 
-const identifyCandidates = (since: Date) => (feed: string) => {
+const identifyCandidates = (feed: string) => {
   const parser = new DOMParser({
     errorHandler: (_, msg) => {
       throw msg;
@@ -27,16 +27,19 @@ const identifyCandidates = (since: Date) => (feed: string) => {
     const articleDoiString = link.getElementsByTagName('doi')[1]?.textContent ?? '';
     const reviewDoiString = link.getElementsByTagName('doi')[0]?.textContent ?? '';
     const date = link.getElementsByTagName('date')[0]?.textContent ?? '';
-    if ((new Date(date).getTime()) > since.getTime()) {
-      candidates.push({
-        date,
-        articleId: articleDoiString,
-        reviewId: reviewDoiString,
-      });
-    }
+    candidates.push({
+      date,
+      articleId: articleDoiString,
+      reviewId: reviewDoiString,
+    });
   }
   return candidates;
 };
+
+const filterByDate = (since: Date) => (candidates: ReadonlyArray<Candidate>) => pipe(
+  candidates,
+  RA.filter((candidate) => (new Date(candidate.date).getTime()) > since.getTime()),
+);
 
 /**
  * @deprecated extend and use supportedArticleIdFromLink instead.
@@ -73,7 +76,8 @@ export const discoverPciEvaluations = (
   dependencies,
 ) => pipe(
   dependencies.fetchData<string>(url),
-  TE.map(identifyCandidates(ingestionWindowStartDate(ingestDays))),
+  TE.map(identifyCandidates),
+  TE.map(filterByDate(ingestionWindowStartDate(ingestDays))),
   TE.map(RA.map(toEvaluationOrSkip)),
   TE.map((items) => ({
     understood: RA.rights(items),
