@@ -15,5 +15,10 @@ export const constructSearchPageHref = (
     [queryStringParameters.query]: query,
     [queryStringParameters.cursor]: nextCursor,
   });
-  return `${searchResultsPagePath}?${queryString.toString()}${includeUnevaluatedPreprints ? `&${queryStringParameters.includeUnevaluatedPreprints}=true` : ''}&${queryStringParameters.page}=${pageNumber}`;
+
+  if (includeUnevaluatedPreprints) {
+    queryString.append(queryStringParameters.includeUnevaluatedPreprints, 'true');
+  }
+
+  return `${searchResultsPagePath}?${queryString.toString()}&${queryStringParameters.page}=${pageNumber}`;
 };
