@@ -1,3 +1,4 @@
+import { URLSearchParams } from 'url';
 import { queryStringParameters } from '../query-string-parameters';
 
 export const searchPagePath = '/search';
@@ -9,4 +10,9 @@ export const constructSearchPageHref = (
   query: string,
   includeUnevaluatedPreprints: boolean,
   pageNumber: number,
-): string => `${searchResultsPagePath}?${queryStringParameters.query}=${encodeURIComponent(query)}&${queryStringParameters.cursor}=${encodeURIComponent(nextCursor)}${includeUnevaluatedPreprints ? `&${queryStringParameters.includeUnevaluatedPreprints}=true` : ''}&${queryStringParameters.page}=${pageNumber}`;
+): string => {
+  const queryString = new URLSearchParams({
+    [queryStringParameters.query]: query,
+  });
+  return `${searchResultsPagePath}?${queryString.toString()}&${queryStringParameters.cursor}=${encodeURIComponent(nextCursor)}${includeUnevaluatedPreprints ? `&${queryStringParameters.includeUnevaluatedPreprints}=true` : ''}&${queryStringParameters.page}=${pageNumber}`;
+};
