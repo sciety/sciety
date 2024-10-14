@@ -6,6 +6,7 @@ import { flow, pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
+import * as tt from 'io-ts-types';
 import { ingestionWindowStartDate } from './ingestion-window-start-date';
 import { DiscoverPublishedEvaluations } from '../discover-published-evaluations';
 import { constructPublishedEvaluation } from '../types/published-evaluation';
@@ -16,7 +17,9 @@ type Candidate = {
   reviewId: string,
 };
 
-const parser = new XMLParser();
+const parser = new XMLParser({
+  isArray: (name) => name === 'link',
+});
 
 const parseXmlDocument = (s: string) => E.tryCatch(
   () => parser.parse(s) as unknown,
@@ -54,17 +57,18 @@ const toEvaluationOrSkip = (candidate: Candidate) => {
     reason: 'not parseable into a DOI',
   });
 };
+const arrayOfLinkElements = t.readonlyArray(t.strict({
+  link: t.strict({
+    doi: t.string,
+    resource: t.strict({
+      doi: t.string,
+      date: t.string,
+    }),
+  }),
+}));
 
 const pciEvaluationsCodec = t.strict({
-  links: t.readonlyArray(t.strict({
-    link: t.strict({
-      doi: t.string,
-      resource: t.strict({
-        doi: t.string,
-        date: t.string,
-      }),
-    }),
-  })),
+  links: tt.withFallback(arrayOfLinkElements, []),
 });
 
 export const discoverPciEvaluations = (

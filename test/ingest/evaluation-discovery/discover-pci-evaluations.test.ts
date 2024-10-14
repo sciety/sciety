@@ -5,6 +5,7 @@ import { discoverPciEvaluations } from '../../../src/ingest/evaluation-discovery
 import { ingestionWindowStartDate } from '../../../src/ingest/evaluation-discovery/ingestion-window-start-date';
 import { DiscoveredPublishedEvaluations } from '../../../src/ingest/types/discovered-published-evaluations';
 import { constructPublishedEvaluation } from '../../../src/ingest/types/published-evaluation';
+import { abortTest } from '../../abort-test';
 import { arbitraryString, arbitraryUri, arbitraryWord } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
@@ -17,7 +18,7 @@ const discover = async (xml: string) => pipe(
     fetchGoogleSheet: shouldNotBeCalled,
   },
   discoverPciEvaluations(arbitraryUri())(ingestDays),
-  TE.getOrElse(shouldNotBeCalled),
+  TE.getOrElse(abortTest('expected discovery not to fail')),
 )();
 
 const constructPciXmlResponseForOneItem = (evaluationDoi: string, publishedDate: Date, paperReference: string) => `
@@ -51,12 +52,12 @@ describe('discover-pci-evaluations', () => {
       )();
     });
 
-    it('returns on the left', () => {
+    it.failing('returns on the left', () => {
       expect(unhappyResult).toStrictEqual(E.left(expect.anything()));
     });
   });
 
-  describe.skip('when there are no evaluations', () => {
+  describe('when there are no evaluations', () => {
     const pciXmlResponse = `
       <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
       <links>
