@@ -40,8 +40,12 @@ export const getAuthenticatedUserIdFromContext = (
 
 /**
  * @deprecated
- * Replace with call to getAuthenticatedUserIdFromContext.
- * If you require user details, use the query for lookupUser.
+ *
+ * - If only the UserId is necessary, replace with call to getAuthenticatedUserIdFromContext.
+ *
+ * - If you require UserDetails, inline this pipe.
+ * This exposes the query and makes it possible to move it down into the read-side
+ * e.g. with a layout view we don't have yet.
  */
 export const getLoggedInScietyUser = (
   dependencies: Dependencies,

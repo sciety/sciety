@@ -1,6 +1,8 @@
+import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { ParameterizedContext } from 'koa';
-import { Dependencies as GetLoggedInScietyUserDependencies, getLoggedInScietyUser } from './authentication-and-logging-in-of-sciety-users';
+import { getAuthenticatedUserIdFromContext, Dependencies as GetLoggedInScietyUserDependencies } from './authentication-and-logging-in-of-sciety-users';
 import { detectClientClassification } from './detect-client-classification';
 import { toDefaultErrorHtmlDocument } from '../read-side/html-pages/to-default-error-html-document';
 
@@ -14,9 +16,14 @@ export const sendDefaultErrorHtmlResponse = (
 ): void => {
   context.response.status = statusCode;
   context.response.type = 'html';
+  const provideLoggedInUserDetails = pipe(
+    context,
+    getAuthenticatedUserIdFromContext,
+    O.chain((id) => dependencies.lookupUser(id)),
+  );
   context.response.body = toDefaultErrorHtmlDocument(
     errorMessage,
     detectClientClassification(context),
-    getLoggedInScietyUser(dependencies, context),
+    provideLoggedInUserDetails,
   );
 };
