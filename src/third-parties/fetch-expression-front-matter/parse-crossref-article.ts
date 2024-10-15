@@ -24,19 +24,24 @@ const parseXmlDocument = (s: string) => E.tryCatch(
   identity,
 );
 
+const personNameCodec = t.strict({
+  given_name: tt.optionFromNullable(t.string),
+  surname: t.string,
+  '@_contributor_role': t.string,
+});
+
 const parsedCrossrefXmlCodec = t.strict({
   doi_records: t.strict({
     doi_record: t.strict({
       crossref: t.strict({
         posted_content: t.strict({
           abstract: tt.optionFromNullable(t.string),
-          contributors: tt.optionFromNullable(t.strict({
-            person_name: t.readonlyArray(t.strict({
-              given_name: tt.optionFromNullable(t.string),
-              surname: t.string,
-              '@_contributor_role': t.string,
-            })),
-          })),
+          contributors: tt.optionFromNullable(
+            t.strict({
+              person_name: t.readonlyArray(personNameCodec),
+              organization: tt.optionFromNullable(t.string),
+            }),
+          ),
         }),
       }),
     }),
