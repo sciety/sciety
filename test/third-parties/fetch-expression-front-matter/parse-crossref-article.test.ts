@@ -149,7 +149,7 @@ describe('parse-crossref-article', () => {
       const doc = parser.parseFromString(response, 'text/xml');
       const abstract = getAbstract(doc, response);
 
-      expect(abstract).toStrictEqual(expect.not.stringContaining('Graphical abstract'));
+      expect(abstract).toStrictEqual(O.some(''));
     });
 
     it('strips <section> elements that are empty or only contain whitespace', () => {
@@ -165,8 +165,7 @@ describe('parse-crossref-article', () => {
       const doc = parser.parseFromString(response, 'text/xml');
       const abstract = getAbstract(doc, response);
 
-      expect(abstract).toStrictEqual(O.some(expect.not.stringContaining('<section>')));
-      expect(abstract).toStrictEqual(O.some(expect.not.stringContaining('</section>')));
+      expect(abstract).toStrictEqual(O.some(''));
     });
 
     it('doesn\'t strip <section> elements that are not empty', () => {

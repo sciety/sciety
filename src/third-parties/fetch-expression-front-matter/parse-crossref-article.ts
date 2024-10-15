@@ -1,15 +1,18 @@
 import { XMLSerializer } from '@xmldom/xmldom';
+import { load } from 'cheerio';
 import { XMLParser } from 'fast-xml-parser';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import { identity, pipe } from 'fp-ts/function';
+import { flow, identity, pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
+import { formatValidationErrors } from 'io-ts-reporters';
 import { getElement } from './get-element';
 import { ArticleAuthors } from '../../types/article-authors';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 
 const parser = new XMLParser({
-  stopNodes: ['abstract'],
+  stopNodes: ['*.abstract'],
 });
 
 const parseXmlDocument = (s: string) => E.tryCatch(
@@ -17,39 +20,36 @@ const parseXmlDocument = (s: string) => E.tryCatch(
   identity,
 );
 
+const parsedCrossrefXmlCodec = t.strict({
+  doi_records: t.strict({
+    doi_record: t.strict({
+      crossref: t.strict({
+        posted_content: t.strict({
+          abstract: t.string,
+        }),
+      }),
+    }),
+  }),
+});
+
 export const getAbstract = (
   doc: Document,
   rawXmlString: string,
 ): O.Option<SanitisedHtmlFragment> => {
-  const wip = pipe(
+  const abstract = pipe(
     rawXmlString,
     parseXmlDocument,
-    O.fromEither,
+    E.chainW(flow(
+      parsedCrossrefXmlCodec.decode,
+      E.mapLeft(formatValidationErrors),
+      E.mapLeft((errors) => errors.join('\n')),
+    )),
+    E.map((parsed) => parsed.doi_records.doi_record.crossref.posted_content.abstract),
   );
 
-  if (O.isNone(wip)) {
-    return wip;
-  }
-
-  const abstractElement = getElement(doc, 'abstract');
-
-  if (typeof abstractElement?.textContent !== 'string') {
+  if (E.isLeft(abstract)) {
     return O.none;
   }
-
-  const titleElement = getElement(abstractElement, 'title');
-  if (titleElement) {
-    abstractElement.removeChild(titleElement);
-  }
-
-  const titles = Array.from(abstractElement.getElementsByTagName('title'));
-  titles.forEach((title) => {
-    if (title.textContent === 'Graphical abstract') {
-      abstractElement.removeChild(title);
-    }
-  });
-
-  const abstract = new XMLSerializer().serializeToString(abstractElement);
 
   const transformXmlToHtml = (xml: string) => (
     xml
@@ -71,12 +71,21 @@ export const getAbstract = (
     html.replace(/<section>\s*<\/section>/g, '')
   );
 
+  const removeSuperfluousTitles = (html: string) => {
+    const model = load(html);
+    model('h3').first().remove();
+    model('h3:contains("Graphical abstract")').remove();
+    return model.html();
+  };
+
   return pipe(
-    abstract,
+    abstract.right,
     transformXmlToHtml,
+    removeSuperfluousTitles,
     toHtmlFragment,
     sanitise,
     stripEmptySections,
+    (output) => output.trim(),
     toHtmlFragment,
     sanitise,
     O.some,
