@@ -16,6 +16,7 @@ import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-frag
 const parser = new XMLParser({
   isArray: (name) => name === 'person_name',
   stopNodes: ['*.abstract', '*.given_name', '*.surname'],
+  ignoreAttributes: (aName) => aName !== 'contributor_role',
 });
 
 const parseXmlDocument = (s: string) => E.tryCatch(
@@ -33,6 +34,7 @@ const parsedCrossrefXmlCodec = t.strict({
             person_name: t.readonlyArray(t.strict({
               given_name: tt.optionFromNullable(t.string),
               surname: t.string,
+              '@_contributor_role': t.string,
             })),
           })),
         }),
@@ -131,6 +133,10 @@ const constructAuthorName = (person: { given_name: O.Option<string>, surname: st
 export const getAuthors = (doc: Document, rawXmlString: string): ArticleAuthors => pipe(
   rawXmlString,
   parseXmlDocument,
+  E.map((foo) => {
+    console.log('!!!!!!!!!!!!!', JSON.stringify(foo));
+    return foo;
+  }),
   E.chainW(flow(
     parsedCrossrefXmlCodec.decode,
     E.mapLeft(formatValidationErrors),
@@ -140,6 +146,7 @@ export const getAuthors = (doc: Document, rawXmlString: string): ArticleAuthors 
   O.fromEither,
   O.chain((parsed) => parsed.doi_records.doi_record.crossref.posted_content.contributors),
   O.map((contributors) => contributors.person_name),
+  O.map(RA.filter((person) => person['@_contributor_role'] === 'author')),
   O.map(RA.map(constructAuthorName)),
   O.map(RA.map((name) => name.replace(/<[^>]*>/g, ''))),
 );
