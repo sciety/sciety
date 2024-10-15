@@ -7,6 +7,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, identity, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
+import * as tt from 'io-ts-types';
 import { getElement } from './get-element';
 import { ArticleAuthors } from '../../types/article-authors';
 import { toHtmlFragment } from '../../types/html-fragment';
@@ -28,12 +29,12 @@ const parsedCrossrefXmlCodec = t.strict({
       crossref: t.strict({
         posted_content: t.strict({
           abstract: t.string,
-          contributors: t.strict({
+          contributors: tt.optionFromNullable(t.strict({
             person_name: t.readonlyArray(t.strict({
               given_name: t.string,
               surname: t.string,
             })),
-          }),
+          })),
         }),
       }),
     }),
@@ -126,7 +127,8 @@ export const getAuthors = (doc: Document, rawXmlString: string): ArticleAuthors 
     E.mapLeft(formatValidationErrors),
     E.mapLeft((errors) => errors.join('\n')),
   )),
-  E.map((parsed) => parsed.doi_records.doi_record.crossref.posted_content.contributors.person_name),
-  E.map(RA.map((person) => `${person.given_name} ${person.surname}`)),
   O.fromEither,
+  O.chain((parsed) => parsed.doi_records.doi_record.crossref.posted_content.contributors),
+  O.map((contributors) => contributors.person_name),
+  O.map(RA.map((person) => `${person.given_name} ${person.surname}`)),
 );
