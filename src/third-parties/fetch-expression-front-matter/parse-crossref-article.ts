@@ -15,7 +15,7 @@ import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-frag
 
 const parser = new XMLParser({
   isArray: (name) => name === 'person_name',
-  stopNodes: ['*.abstract'],
+  stopNodes: ['*.abstract', '*.given_name', '*.surname'],
 });
 
 const parseXmlDocument = (s: string) => E.tryCatch(
@@ -133,4 +133,5 @@ export const getAuthors = (doc: Document, rawXmlString: string): ArticleAuthors 
   O.chain((parsed) => parsed.doi_records.doi_record.crossref.posted_content.contributors),
   O.map((contributors) => contributors.person_name),
   O.map(RA.map((person) => `${person.given_name} ${person.surname}`)),
+  O.map(RA.map((name) => name.replace(/<[^>]*>/g, ''))),
 );
