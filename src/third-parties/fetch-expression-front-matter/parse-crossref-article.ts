@@ -1,14 +1,36 @@
 import { XMLSerializer } from '@xmldom/xmldom';
+import { XMLParser } from 'fast-xml-parser';
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import { pipe } from 'fp-ts/function';
+import { identity, pipe } from 'fp-ts/function';
 import { getElement } from './get-element';
 import { ArticleAuthors } from '../../types/article-authors';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 
+const parser = new XMLParser({
+  stopNodes: ['abstract'],
+});
+
+const parseXmlDocument = (s: string) => E.tryCatch(
+  () => parser.parse(s) as unknown,
+  identity,
+);
+
 export const getAbstract = (
   doc: Document,
+  rawXmlString: string,
 ): O.Option<SanitisedHtmlFragment> => {
+  const wip = pipe(
+    rawXmlString,
+    parseXmlDocument,
+    O.fromEither,
+  );
+
+  if (O.isNone(wip)) {
+    return wip;
+  }
+
   const abstractElement = getElement(doc, 'abstract');
 
   if (typeof abstractElement?.textContent !== 'string') {

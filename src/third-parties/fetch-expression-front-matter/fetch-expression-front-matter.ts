@@ -44,7 +44,7 @@ const parseResponseAndConstructDomainObject = (document: string, logger: Logger,
       logger('warn', 'crossref/fetch-expression-front-matter: Unable to find authors', { expressionDoi, document });
     }
 
-    abstract = getAbstract(parsedXml);
+    abstract = getAbstract(parsedXml, document);
     if (O.isNone(abstract)) {
       logger('warn', 'crossref/fetch-expression-front-matter: Unable to find abstract', { expressionDoi, document });
     }
