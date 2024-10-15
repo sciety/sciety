@@ -31,7 +31,7 @@ const parsedCrossrefXmlCodec = t.strict({
           abstract: tt.optionFromNullable(t.string),
           contributors: tt.optionFromNullable(t.strict({
             person_name: t.readonlyArray(t.strict({
-              given_name: t.string,
+              given_name: tt.optionFromNullable(t.string),
               surname: t.string,
             })),
           })),
@@ -120,6 +120,14 @@ export const getTitle = (doc: Document): O.Option<SanitisedHtmlFragment> => {
   return O.none;
 };
 
+const constructAuthorName = (person: { given_name: O.Option<string>, surname: string }) => pipe(
+  person.given_name,
+  O.match(
+    () => person.surname,
+    (given) => `${given} ${person.surname}`,
+  ),
+);
+
 export const getAuthors = (doc: Document, rawXmlString: string): ArticleAuthors => pipe(
   rawXmlString,
   parseXmlDocument,
@@ -132,6 +140,6 @@ export const getAuthors = (doc: Document, rawXmlString: string): ArticleAuthors 
   O.fromEither,
   O.chain((parsed) => parsed.doi_records.doi_record.crossref.posted_content.contributors),
   O.map((contributors) => contributors.person_name),
-  O.map(RA.map((person) => `${person.given_name} ${person.surname}`)),
+  O.map(RA.map(constructAuthorName)),
   O.map(RA.map((name) => name.replace(/<[^>]*>/g, ''))),
 );
