@@ -28,7 +28,7 @@ const parsedCrossrefXmlCodec = t.strict({
     doi_record: t.strict({
       crossref: t.strict({
         posted_content: t.strict({
-          abstract: t.string,
+          abstract: tt.optionFromNullable(t.string),
           contributors: tt.optionFromNullable(t.strict({
             person_name: t.readonlyArray(t.strict({
               given_name: t.string,
@@ -54,6 +54,7 @@ export const getAbstract = (
       E.mapLeft((errors) => errors.join('\n')),
     )),
     E.map((parsed) => parsed.doi_records.doi_record.crossref.posted_content.abstract),
+    E.chainW(E.fromOption(() => 'abstract field is undefined')),
   );
 
   if (E.isLeft(abstract)) {
@@ -126,6 +127,7 @@ export const getAuthors = (doc: Document, rawXmlString: string): ArticleAuthors 
     parsedCrossrefXmlCodec.decode,
     E.mapLeft(formatValidationErrors),
     E.mapLeft((errors) => errors.join('\n')),
+    E.mapLeft((foo) => { console.log('>>>>>>>>>>>>', rawXmlString, '\n>>', foo); return foo; }),
   )),
   O.fromEither,
   O.chain((parsed) => parsed.doi_records.doi_record.crossref.posted_content.contributors),
