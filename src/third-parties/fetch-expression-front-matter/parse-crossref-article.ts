@@ -3,6 +3,7 @@ import { load } from 'cheerio';
 import { XMLParser } from 'fast-xml-parser';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, identity, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
@@ -12,6 +13,7 @@ import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 
 const parser = new XMLParser({
+  isArray: (name) => name === 'person_name',
   stopNodes: ['*.abstract'],
 });
 
@@ -26,6 +28,12 @@ const parsedCrossrefXmlCodec = t.strict({
       crossref: t.strict({
         posted_content: t.strict({
           abstract: t.string,
+          contributors: t.strict({
+            person_name: t.readonlyArray(t.strict({
+              given_name: t.string,
+              surname: t.string,
+            })),
+          }),
         }),
       }),
     }),
@@ -110,43 +118,15 @@ export const getTitle = (doc: Document): O.Option<SanitisedHtmlFragment> => {
   return O.none;
 };
 
-const personAuthor = (person: Element) => {
-  const givenName = person.getElementsByTagName('given_name')[0]?.textContent;
-  const surname = person.getElementsByTagName('surname')[0]?.textContent;
-
-  if (!surname) {
-    return O.none;
-  }
-
-  if (!givenName) {
-    return O.some(surname);
-  }
-
-  return O.some(`${givenName} ${surname}`);
-};
-
-const organisationAuthor = (organisation: Element) => O.fromNullable(organisation.textContent);
-
-export const getAuthors = (doc: Document): ArticleAuthors => {
-  const contributorsElement = getElement(doc, 'contributors');
-
-  if (!contributorsElement || typeof contributorsElement?.textContent !== 'string') {
-    return O.none;
-  }
-
-  const authors = Array.from(contributorsElement.childNodes)
-    .filter((node): node is Element => node.nodeType === node.ELEMENT_NODE)
-    .filter((contributor) => contributor.getAttribute('contributor_role') === 'author')
-    .map((contributor) => {
-      switch (contributor.tagName) {
-        case 'person_name':
-          return personAuthor(contributor);
-        case 'organization':
-          return organisationAuthor(contributor);
-      }
-
-      return O.none;
-    });
-
-  return pipe(authors, O.sequenceArray);
-};
+export const getAuthors = (doc: Document, rawXmlString: string): ArticleAuthors => pipe(
+  rawXmlString,
+  parseXmlDocument,
+  E.chainW(flow(
+    parsedCrossrefXmlCodec.decode,
+    E.mapLeft(formatValidationErrors),
+    E.mapLeft((errors) => errors.join('\n')),
+  )),
+  E.map((parsed) => parsed.doi_records.doi_record.crossref.posted_content.contributors.person_name),
+  E.map(RA.map((person) => `${person.given_name} ${person.surname}`)),
+  O.fromEither,
+);

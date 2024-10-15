@@ -39,7 +39,7 @@ const parseResponseAndConstructDomainObject = (document: string, logger: Logger,
       return E.left(DE.unavailable);
     }
 
-    authors = getAuthors(parsedXml);
+    authors = getAuthors(parsedXml, document);
     if (O.isNone(authors)) {
       logger('warn', 'crossref/fetch-expression-front-matter: Unable to find authors', { expressionDoi, document });
     }
