@@ -241,7 +241,7 @@ describe('discover-pci-evaluations', () => {
     });
   });
 
-  describe.skip('when there is an evaluation that does not fall into the ingestion window', () => {
+  describe('when there is an evaluation that does not fall into the ingestion window', () => {
     const publishedDateThatFallsOutsideOfIngestionWindow = new Date('1970-01-01');
 
     beforeEach(async () => {
