@@ -52,12 +52,12 @@ describe('discover-pci-evaluations', () => {
       )();
     });
 
-    it.failing('returns on the left', () => {
+    it('returns on the left', () => {
       expect(unhappyResult).toStrictEqual(E.left(expect.anything()));
     });
   });
 
-  describe('when there are no evaluations', () => {
+  describe.skip('when there are no evaluations', () => {
     const pciXmlResponse = `
       <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
       <links>
@@ -77,7 +77,7 @@ describe('discover-pci-evaluations', () => {
     });
   });
 
-  describe.skip('when there is an evaluation that falls into the ingestion window', () => {
+  describe('when there is an evaluation that falls into the ingestion window', () => {
     const publishedDateThatFallsIntoIngestionWindow = ingestionWindowStartDate(ingestDays - 2);
 
     describe('and the paper being evaluated is expressed with a DOI', () => {

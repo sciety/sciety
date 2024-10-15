@@ -6,7 +6,6 @@ import { flow, pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
-import * as tt from 'io-ts-types';
 import { ingestionWindowStartDate } from './ingestion-window-start-date';
 import { DiscoverPublishedEvaluations } from '../discover-published-evaluations';
 import { constructPublishedEvaluation } from '../types/published-evaluation';
@@ -57,18 +56,18 @@ const toEvaluationOrSkip = (candidate: Candidate) => {
     reason: 'not parseable into a DOI',
   });
 };
-const arrayOfLinkElements = t.readonlyArray(t.strict({
-  link: t.strict({
+const arrayOfLinkElements = t.strict({
+  link: t.readonlyArray(t.strict({
     doi: t.string,
     resource: t.strict({
       doi: t.string,
       date: t.string,
     }),
-  }),
-}));
+  })),
+});
 
 const pciEvaluationsCodec = t.strict({
-  links: tt.withFallback(arrayOfLinkElements, []),
+  links: arrayOfLinkElements,
 });
 
 export const discoverPciEvaluations = (
@@ -85,11 +84,11 @@ export const discoverPciEvaluations = (
     E.mapLeft(formatValidationErrors),
     E.mapLeft((errors) => errors.join('\n')),
   )),
-  TE.map(({ links }) => links),
-  TE.map(RA.map(({ link }) => ({
-    date: link.resource.date,
-    reviewId: link.doi,
-    articleId: link.resource.doi,
+  TE.map(({ links }) => links.link),
+  TE.map(RA.map((item) => ({
+    date: item.resource.date,
+    reviewId: item.resource.doi,
+    articleId: item.doi,
   }))),
   TE.map(filterByDate(ingestionWindowStartDate(ingestDays))),
   TE.map(RA.map(toEvaluationOrSkip)),
