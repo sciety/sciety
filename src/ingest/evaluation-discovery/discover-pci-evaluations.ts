@@ -56,6 +56,7 @@ const toEvaluationOrSkip = (candidate: Candidate) => {
     reason: 'not parseable into a DOI',
   });
 };
+
 const arrayOfLinkElements = t.strict({
   link: t.readonlyArray(t.strict({
     doi: t.string,
@@ -66,8 +67,10 @@ const arrayOfLinkElements = t.strict({
   })),
 });
 
+const emptyLinksElement = t.literal('');
+
 const pciEvaluationsCodec = t.strict({
-  links: arrayOfLinkElements,
+  links: t.union([arrayOfLinkElements, emptyLinksElement]),
 });
 
 export const discoverPciEvaluations = (
@@ -84,7 +87,7 @@ export const discoverPciEvaluations = (
     E.mapLeft(formatValidationErrors),
     E.mapLeft((errors) => errors.join('\n')),
   )),
-  TE.map(({ links }) => links.link),
+  TE.map((decodedResponse) => (decodedResponse.links === '' ? [] : decodedResponse.links.link)),
   TE.map(RA.map((item) => ({
     date: item.resource.date,
     reviewId: item.resource.doi,

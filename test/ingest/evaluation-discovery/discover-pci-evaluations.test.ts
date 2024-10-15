@@ -57,7 +57,7 @@ describe('discover-pci-evaluations', () => {
     });
   });
 
-  describe.skip('when there are no evaluations', () => {
+  describe('when there are no evaluations', () => {
     const pciXmlResponse = `
       <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
       <links>
