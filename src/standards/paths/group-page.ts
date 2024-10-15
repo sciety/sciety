@@ -12,8 +12,6 @@ const pageSuffixes: Record<string, string> = {
   management: '/management',
   followers: '/followers',
   lists: '/lists',
-  /** @deprecated */
-  feed: '/feed',
 };
 
 export const constructGroupPagePath = pipe(
@@ -23,3 +21,5 @@ export const constructGroupPagePath = pipe(
     href: constructGroupSubPageHref(suffix),
   })),
 );
+
+export const legacyGroupFeedPagePathSpecification = groupSubPagePathSpecification('/feed');

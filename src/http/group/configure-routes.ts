@@ -7,7 +7,7 @@ import * as GFP from '../../read-side/html-pages/group-page/group-followers-page
 import * as GHP from '../../read-side/html-pages/group-page/group-home-page';
 import * as GLP from '../../read-side/html-pages/group-page/group-lists-page';
 import * as GMP from '../../read-side/html-pages/group-page/group-management-page';
-import { constructGroupPagePath } from '../../standards/paths';
+import { constructGroupPagePath, legacyGroupFeedPagePathSpecification } from '../../standards/paths';
 import { pageHandler, pageHandlerWithLoggedInUser } from '../page-handler';
 
 export const configureRoutes = (router: Router, dependencies: DependenciesForViews): void => {
@@ -48,7 +48,7 @@ export const configureRoutes = (router: Router, dependencies: DependenciesForVie
   );
 
   router.get(
-    constructGroupPagePath.feed.spec,
+    legacyGroupFeedPagePathSpecification,
     async (context, next) => {
       context.status = StatusCodes.TEMPORARY_REDIRECT;
       context.redirect(constructGroupPagePath.home.href({ slug: context.params.slug }));
