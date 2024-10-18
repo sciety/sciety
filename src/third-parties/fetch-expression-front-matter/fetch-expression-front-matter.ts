@@ -23,8 +23,8 @@ const parseResponseAndConstructDomainObject = (document: string, logger: Logger,
     return E.left(DE.unavailable);
   }
   const parser = new DOMParser({
-    errorHandler: (_, msg) => {
-      throw msg;
+    onError: (_, msg) => {
+      throw new Error(msg);
     },
   });
   let abstract: O.Option<SanitisedHtmlFragment>;

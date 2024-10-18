@@ -1,3 +1,4 @@
+import { Document } from '@xmldom/xmldom';
 import * as O from 'fp-ts/Option';
 import { getElement } from './get-element';
 

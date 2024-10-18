@@ -16,8 +16,8 @@ type Candidate = {
 
 const identifyCandidates = (since: Date) => (feed: string) => {
   const parser = new DOMParser({
-    errorHandler: (_, msg) => {
-      throw msg;
+    onError: (_, msg) => {
+      throw new Error(msg);
     },
   });
   const doc = parser.parseFromString(feed, 'text/xml');
