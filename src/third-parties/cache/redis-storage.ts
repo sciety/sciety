@@ -53,8 +53,4 @@ export const redisStorage = (
     logger('verbose', 'Removing third party data from the cache', { requestKey, redisKey });
     await client.del(redisKey);
   },
-
-  async clear() {
-    logger('error', 'An attempt was made to call `clear()` on redisStorage');
-  },
 });
