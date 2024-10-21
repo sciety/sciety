@@ -1,4 +1,3 @@
-import { XMLSerializer } from '@xmldom/xmldom';
 import { load } from 'cheerio';
 import { XMLParser } from 'fast-xml-parser';
 import * as E from 'fp-ts/Either';
@@ -8,7 +7,6 @@ import { flow, identity, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { formatValidationErrors } from 'io-ts-reporters';
 import * as tt from 'io-ts-types';
-import { getElement } from './get-element';
 import { ArticleAuthors } from '../../types/article-authors';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
@@ -43,6 +41,7 @@ const parsedCrossrefXmlCodec = t.strict({
     doi_record: t.strict({
       crossref: t.strict({
         posted_content: t.strict({
+          titles: t.strict({ title: t.string }),
           abstract: tt.optionFromNullable(t.string),
           contributors: tt.optionFromNullable(
             t.strict({
@@ -117,20 +116,20 @@ export const getAbstract = (
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const getTitle = (doc: Document, rawXmlString: string): O.Option<SanitisedHtmlFragment> => {
-  return pipe(
-    rawXmlString,
-    parseXmlDocument,
-    E.chainW(flow(
-      parsedCrossrefXmlCodec.decode,
-      E.mapLeft(formatValidationErrors),
-      E.mapLeft((errors) => errors.join('\n')),
-    )),
-    O.fromEither,
-    O.map(() => sanitise(toHtmlFragment(''))),
-  );
-  
-  /*
+export const getTitle = (doc: Document, rawXmlString: string): O.Option<SanitisedHtmlFragment> => pipe(
+  rawXmlString,
+  parseXmlDocument,
+  E.map((foo) => { console.log('>>>>>>>>>>>>', JSON.stringify(foo)); return foo; }),
+  E.chainW(flow(
+    parsedCrossrefXmlCodec.decode,
+    E.mapLeft(formatValidationErrors),
+    E.mapLeft((errors) => errors.join('\n')),
+  )),
+  O.fromEither,
+  O.map(() => sanitise(toHtmlFragment(''))),
+)
+
+/*
   const titlesElement = getElement(doc, 'titles');
   const titleElement = titlesElement?.getElementsByTagName('title')[0];
   if (titleElement) {
@@ -147,7 +146,7 @@ export const getTitle = (doc: Document, rawXmlString: string): O.Option<Sanitise
   }
   return O.none;
   */
-};
+;
 
 type Person = {
   given_name: O.Option<string>,
