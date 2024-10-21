@@ -3,7 +3,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { ParameterizedContext } from 'koa';
-import { getLoggedInScietyUser, Dependencies as GetLoggedInScietyUserDependencies, getAuthenticatedUserIdFromContext } from './authentication-and-logging-in-of-sciety-users';
+import { Dependencies as GetLoggedInScietyUserDependencies, getAuthenticatedUserIdFromContext } from './authentication-and-logging-in-of-sciety-users';
 import { detectClientClassification } from './detect-client-classification';
 import { sendHtmlResponse } from './send-html-response';
 import { sendRedirect } from './send-redirect';
@@ -23,7 +23,11 @@ const constructAndSendHtmlResponse = (
 ) => (input: E.Either<ErrorPageViewModel, HtmlPage>) => pipe(
   input,
   constructHtmlResponse(
-    getLoggedInScietyUser(dependencies, context),
+    pipe(
+      context,
+      getAuthenticatedUserIdFromContext,
+      O.chain((id) => dependencies.lookupUser(id)),
+    ),
     pageLayout,
     detectClientClassification(context),
   ),
