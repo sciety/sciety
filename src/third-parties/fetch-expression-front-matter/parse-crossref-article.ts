@@ -31,6 +31,13 @@ const personNameCodec = t.strict({
   '@_contributor_role': t.string,
 });
 
+const organizationCodec = t.strict({
+  '#text': t.string,
+  '@_contributor_role': t.string,
+});
+
+const orgOrPersonCodec = t.union([personNameCodec, organizationCodec]);
+
 const parsedCrossrefXmlCodec = t.strict({
   doi_records: t.strict({
     doi_record: t.strict({
@@ -39,7 +46,7 @@ const parsedCrossrefXmlCodec = t.strict({
           abstract: tt.optionFromNullable(t.string),
           contributors: tt.optionFromNullable(
             t.strict({
-              _org_or_person: t.readonlyArray(personNameCodec),
+              _org_or_person: t.readonlyArray(orgOrPersonCodec),
             }),
           ),
         }),
@@ -127,13 +134,27 @@ export const getTitle = (doc: Document): O.Option<SanitisedHtmlFragment> => {
   return O.none;
 };
 
-const constructAuthorName = (person: { given_name: O.Option<string>, surname: string }) => pipe(
-  person.given_name,
-  O.match(
-    () => person.surname,
-    (given) => `${given} ${person.surname}`,
-  ),
-);
+type Person = {
+  given_name: O.Option<string>,
+  surname: string,
+};
+
+type Organization = {
+  '#text': string,
+};
+
+const constructAuthorName = (author: Person | Organization) => {
+  if ('given_name' in author) {
+    return pipe(
+      author.given_name,
+      O.match(
+        () => author.surname,
+        (given) => `${given} ${author.surname}`,
+      ),
+    );
+  }
+  return author['#text'];
+};
 
 export const getAuthors = (doc: Document, rawXmlString: string): ArticleAuthors => pipe(
   rawXmlString,
