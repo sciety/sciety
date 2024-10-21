@@ -11,6 +11,7 @@ import { standardPageLayout } from './shared-components/standard-page-layout';
 import { wrapInHtmlDocument } from './wrap-in-html-document';
 import * as DE from '../../types/data-error';
 import { UserDetails } from '../../types/user-details';
+import { DependenciesForViews } from '../dependencies-for-views';
 
 const constructLayoutViewModel = (user: O.Option<UserDetails>) => ({
   userDetails: user,
@@ -61,6 +62,27 @@ type ConstructHtmlResponse = (
 => HtmlResponse;
 
 export const constructHtmlResponse: ConstructHtmlResponse = (
+  userDetails,
+  pageLayout,
+  clientClassification,
+) => (renderedPage) => pipe(
+  renderedPage,
+  E.fold(
+    toErrorResponse(userDetails, clientClassification),
+    pageToSuccessResponse(userDetails, pageLayout, clientClassification),
+  ),
+);
+
+type ConstructHtmlResponseWithDependencies = (
+  dependencies: DependenciesForViews,
+  userDetails: O.Option<UserDetails>,
+  pageLayout: PageLayout,
+  clientClassification: ClientClassification)
+=> (renderedPage: E.Either<ErrorPageViewModel, HtmlPage>)
+=> HtmlResponse;
+
+export const constructHtmlResponseWithDependencies: ConstructHtmlResponseWithDependencies = (
+  dependencies,
   userDetails,
   pageLayout,
   clientClassification,

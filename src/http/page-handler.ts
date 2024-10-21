@@ -9,7 +9,7 @@ import { sendHtmlResponse } from './send-html-response';
 import { sendRedirect } from './send-redirect';
 import { Queries } from '../read-models';
 import { ErrorPageViewModel } from '../read-side/html-pages/construct-error-page-view-model';
-import { constructHtmlResponse } from '../read-side/html-pages/construct-html-response';
+import { constructHtmlResponse, constructHtmlResponseWithDependencies } from '../read-side/html-pages/construct-html-response';
 import { ConstructLoggedInPage, ConstructPage } from '../read-side/html-pages/construct-page';
 import { HtmlPage } from '../read-side/html-pages/html-page';
 import { PageLayout } from '../read-side/html-pages/page-layout';
@@ -22,7 +22,8 @@ const constructAndSendHtmlResponse = (
   context: ParameterizedContext,
 ) => (input: E.Either<ErrorPageViewModel, HtmlPage>) => pipe(
   input,
-  constructHtmlResponse(
+  constructHtmlResponseWithDependencies(
+    dependencies,
     pipe(
       context,
       getAuthenticatedUserIdFromContext,
