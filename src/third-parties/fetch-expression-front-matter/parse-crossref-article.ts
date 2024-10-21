@@ -38,8 +38,7 @@ const parsedCrossrefXmlCodec = t.strict({
           abstract: tt.optionFromNullable(t.string),
           contributors: tt.optionFromNullable(
             t.strict({
-              person_name: t.readonlyArray(personNameCodec),
-              organization: tt.optionFromNullable(t.string),
+              _org_or_person: t.readonlyArray(personNameCodec),
             }),
           ),
         }),
@@ -150,7 +149,7 @@ export const getAuthors = (doc: Document, rawXmlString: string): ArticleAuthors 
   )),
   O.fromEither,
   O.chain((parsed) => parsed.doi_records.doi_record.crossref.posted_content.contributors),
-  O.map((contributors) => contributors.person_name),
+  O.map((contributors) => contributors._org_or_person),
   O.map(RA.filter((person) => person['@_contributor_role'] === 'author')),
   O.map(RA.map(constructAuthorName)),
   O.map(RA.map((name) => name.replace(/<[^>]*>/g, ''))),
