@@ -118,6 +118,19 @@ export const getAbstract = (
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const getTitle = (doc: Document, rawXmlString: string): O.Option<SanitisedHtmlFragment> => {
+  return pipe(
+    rawXmlString,
+    parseXmlDocument,
+    E.chainW(flow(
+      parsedCrossrefXmlCodec.decode,
+      E.mapLeft(formatValidationErrors),
+      E.mapLeft((errors) => errors.join('\n')),
+    )),
+    O.fromEither,
+    O.map(() => sanitise(toHtmlFragment(''))),
+  );
+  
+  /*
   const titlesElement = getElement(doc, 'titles');
   const titleElement = titlesElement?.getElementsByTagName('title')[0];
   if (titleElement) {
@@ -133,6 +146,7 @@ export const getTitle = (doc: Document, rawXmlString: string): O.Option<Sanitise
     );
   }
   return O.none;
+  */
 };
 
 type Person = {

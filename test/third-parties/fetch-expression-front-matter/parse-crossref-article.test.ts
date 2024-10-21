@@ -331,7 +331,7 @@ describe('parse-crossref-article', () => {
       expect(title).toStrictEqual(O.some('An article title'));
     });
 
-    it('returns `Unknown title` when no title present', async () => {
+    it('returns O.none when no title present', async () => {
       const response = crossrefResponseWith('');
       const doc = parser.parseFromString(response, 'text/xml');
       const title = getTitle(doc, response);
