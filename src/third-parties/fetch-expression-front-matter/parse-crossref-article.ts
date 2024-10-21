@@ -14,7 +14,7 @@ import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 
 const parser = new XMLParser({
-  isArray: (name) => name === 'person_name',
+  transformTagName: (tagName) => ((['organization', 'person_name']).includes(tagName) ? '_org_or_person' : tagName),
   stopNodes: ['*.abstract', '*.given_name', '*.surname'],
   ignoreAttributes: (aName) => aName !== 'contributor_role',
 });
