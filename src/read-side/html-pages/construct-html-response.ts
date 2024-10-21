@@ -12,6 +12,10 @@ import { wrapInHtmlDocument } from './wrap-in-html-document';
 import * as DE from '../../types/data-error';
 import { UserDetails } from '../../types/user-details';
 
+const constructLayoutViewModel = (user: O.Option<UserDetails>) => ({
+  userDetails: user,
+});
+
 const toErrorResponse = (
   user: O.Option<UserDetails>,
   clientClassification: ClientClassification,
@@ -23,7 +27,7 @@ const toErrorResponse = (
     title: 'Error',
     content,
   }),
-  standardPageLayout({ userDetails: user }),
+  standardPageLayout(constructLayoutViewModel(user)),
   wrapInHtmlDocument(user, { title: 'Error', clientClassification }),
   (document) => ({
     document,
@@ -38,7 +42,7 @@ const pageToSuccessResponse = (
 ) => (page: HtmlPage): HtmlResponse => ({
   document: pipe(
     page,
-    pageLayout({ userDetails: user }),
+    pageLayout(constructLayoutViewModel(user)),
     wrapInHtmlDocument(user, { ...page, clientClassification }),
   ),
   error: O.none,
