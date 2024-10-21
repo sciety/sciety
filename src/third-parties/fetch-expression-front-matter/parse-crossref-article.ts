@@ -116,7 +116,8 @@ export const getAbstract = (
   );
 };
 
-export const getTitle = (doc: Document): O.Option<SanitisedHtmlFragment> => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const getTitle = (doc: Document, rawXmlString: string): O.Option<SanitisedHtmlFragment> => {
   const titlesElement = getElement(doc, 'titles');
   const titleElement = titlesElement?.getElementsByTagName('title')[0];
   if (titleElement) {

@@ -49,7 +49,7 @@ const parseResponseAndConstructDomainObject = (document: string, logger: Logger,
       logger('warn', 'crossref/fetch-expression-front-matter: Unable to find abstract', { expressionDoi, document });
     }
 
-    title = getTitle(parsedXml);
+    title = getTitle(parsedXml, document);
     if (O.isNone(title)) {
       logger('error', 'crossref/fetch-expression-front-matter: Unable to find title', { expressionDoi, document });
       return E.left(DE.unavailable);

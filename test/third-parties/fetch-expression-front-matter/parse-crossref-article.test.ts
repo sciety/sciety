@@ -313,7 +313,7 @@ describe('parse-crossref-article', () => {
           <title>An article title</title>
         </titles>`);
       const doc = parser.parseFromString(response, 'text/xml');
-      const title = getTitle(doc);
+      const title = getTitle(doc, response);
 
       expect(title).toStrictEqual(O.some('An article title'));
     });
@@ -326,7 +326,7 @@ describe('parse-crossref-article', () => {
           </title>
         </titles>`);
       const doc = parser.parseFromString(response, 'text/xml');
-      const title = getTitle(doc);
+      const title = getTitle(doc, response);
 
       expect(title).toStrictEqual(O.some('An article title'));
     });
@@ -334,7 +334,7 @@ describe('parse-crossref-article', () => {
     it('returns `Unknown title` when no title present', async () => {
       const response = crossrefResponseWith('');
       const doc = parser.parseFromString(response, 'text/xml');
-      const title = getTitle(doc);
+      const title = getTitle(doc, response);
 
       expect(title).toStrictEqual(O.none);
     });
@@ -345,7 +345,7 @@ describe('parse-crossref-article', () => {
           <title>An article title for <i>C. elegans</i></title>
         </titles>`);
       const doc = parser.parseFromString(response, 'text/xml');
-      const title = getTitle(doc);
+      const title = getTitle(doc, response);
 
       expect(title).toStrictEqual(O.some('An article title for <i>C. elegans</i>'));
     });
@@ -356,7 +356,7 @@ describe('parse-crossref-article', () => {
           <title>An article title for <scp>C. elegans</scp></title>
         </titles>`);
       const doc = parser.parseFromString(response, 'text/xml');
-      const title = getTitle(doc);
+      const title = getTitle(doc, response);
 
       expect(title).toStrictEqual(O.some('An article title for C. elegans'));
     });
