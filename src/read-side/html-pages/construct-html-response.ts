@@ -23,7 +23,7 @@ const toErrorResponse = (
     title: 'Error',
     content,
   }),
-  standardPageLayout(user),
+  standardPageLayout({ userDetails: user }),
   wrapInHtmlDocument(user, { title: 'Error', clientClassification }),
   (document) => ({
     document,
@@ -38,7 +38,7 @@ const pageToSuccessResponse = (
 ) => (page: HtmlPage): HtmlResponse => ({
   document: pipe(
     page,
-    pageLayout(user),
+    pageLayout({ userDetails: user }),
     wrapInHtmlDocument(user, { ...page, clientClassification }),
   ),
   error: O.none,

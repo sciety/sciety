@@ -3,7 +3,7 @@ import { commonLayout } from './common-layout';
 import { toHtmlFragment } from '../../../types/html-fragment';
 import { PageLayout } from '../page-layout';
 
-export const fullWidthPageLayout: PageLayout = (user) => (page) => pipe(
+export const fullWidthPageLayout: PageLayout = (viewModel) => (page) => pipe(
   `
   <main id="mainContent">
     <div class="page-content">
@@ -12,5 +12,5 @@ export const fullWidthPageLayout: PageLayout = (user) => (page) => pipe(
   </main>
   `,
   toHtmlFragment,
-  commonLayout('standard-page-container', user),
+  commonLayout('standard-page-container', viewModel.userDetails),
 );
