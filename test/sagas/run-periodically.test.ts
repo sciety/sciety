@@ -25,6 +25,30 @@ describe('run-periodically', () => {
   });
 
   describe('given a saga that takes longer to run than the period', () => {
-    it.todo('prevents concurrent execution of the saga');
+    const periodInSeconds = arbitraryNumber(1, 100);
+    let counter: number;
+
+    const saga: Saga = async () => {
+      counter += 1;
+      return new Promise((resolve) => {
+        setTimeout(
+          () => {
+            resolve();
+          },
+          42 * periodInSeconds * 1000,
+        );
+      });
+    };
+
+    beforeEach(async () => {
+      jest.useFakeTimers();
+      counter = 0;
+      runPeriodically(dummyLogger, saga, periodInSeconds);
+      await jest.advanceTimersByTimeAsync(2 * periodInSeconds * 1000);
+    });
+
+    it('prevents concurrent execution of the saga', () => {
+      expect(counter).toBe(1);
+    });
   });
 });
