@@ -16,12 +16,16 @@ export const scheduleSagas = (
     return;
   }
   dependencies.logger('info', 'Scheduling sagas');
-  runPeriodically(async () => ensureEvaluationsAreListed(dependencies), 317);
+  runPeriodically(dependencies.logger, async () => ensureEvaluationsAreListed(dependencies), 317);
   if (process.env.EXPERIMENT_ENABLED === 'true') {
-    runPeriodically(async () => maintainSnapshotsForEvaluatedExpressions(dependencies), 5);
+    runPeriodically(dependencies.logger, async () => maintainSnapshotsForEvaluatedExpressions(dependencies), 5);
   }
   if (process.env.EXPERIMENT_ENABLED === 'true') {
-    runPeriodically(async () => ensureDeliveryOfNotificationsToCoarInboxes(dependencies, scietyUiOrigin), 5);
+    runPeriodically(
+      dependencies.logger,
+      async () => ensureDeliveryOfNotificationsToCoarInboxes(dependencies, scietyUiOrigin),
+      5,
+    );
   }
   dependencies.logger('info', 'Sagas scheduled');
 };
