@@ -11,6 +11,7 @@ import { standardPageLayout } from './shared-components/standard-page-layout';
 import { wrapInHtmlDocument } from './wrap-in-html-document';
 import * as DE from '../../types/data-error';
 import { UserDetails } from '../../types/user-details';
+import { UserId } from '../../types/user-id';
 import { DependenciesForViews } from '../dependencies-for-views';
 
 const constructLayoutViewModel = (user: O.Option<UserDetails>) => ({
@@ -77,7 +78,7 @@ export type Dependencies = DependenciesForViews;
 
 type ConstructHtmlResponseWithDependencies = (
   dependencies: Dependencies,
-  userDetails: O.Option<UserDetails>,
+  loggedInUserId: O.Option<UserId>,
   pageLayout: PageLayout,
   clientClassification: ClientClassification)
 => (renderedPage: E.Either<ErrorPageViewModel, HtmlPage>)
@@ -85,13 +86,20 @@ type ConstructHtmlResponseWithDependencies = (
 
 export const constructHtmlResponseWithDependencies: ConstructHtmlResponseWithDependencies = (
   dependencies,
-  userDetails,
+  loggedInUserId,
   pageLayout,
   clientClassification,
-) => (renderedPage) => pipe(
-  renderedPage,
-  E.fold(
-    toErrorResponse(userDetails, clientClassification),
-    pageToSuccessResponse(userDetails, pageLayout, clientClassification),
-  ),
-);
+) => (renderedPage) => {
+  const userDetails = pipe(
+    loggedInUserId,
+    O.chain((id) => dependencies.lookupUser(id)),
+  );
+
+  return pipe(
+    renderedPage,
+    E.fold(
+      toErrorResponse(userDetails, clientClassification),
+      pageToSuccessResponse(userDetails, pageLayout, clientClassification),
+    ),
+  );
+};

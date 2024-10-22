@@ -26,7 +26,6 @@ const constructAndSendHtmlResponse = (
     pipe(
       context,
       getAuthenticatedUserIdFromContext,
-      O.chain((id) => dependencies.lookupUser(id)),
     ),
     pageLayout,
     detectClientClassification(context),
