@@ -1,5 +1,8 @@
 export type Saga = () => Promise<void>;
 
 export const runPeriodically = (saga: Saga, seconds: number): void => {
-  setInterval(saga, seconds * 1000);
+  console.log(new Error());
+  setTimeout(async () => saga()
+    .then(() => runPeriodically(saga, seconds))
+    .catch(() => console.log('Saga promise rejected')), seconds * 1000);
 };
