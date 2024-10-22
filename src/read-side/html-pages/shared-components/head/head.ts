@@ -1,10 +1,8 @@
 import { htmlEscape } from 'escape-goat';
-import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { ClientClassification } from './client-classification';
 import { DynamicHeadViewModel } from './dynamic-head-view-model';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
-import { UserId } from '../../../../types/user-id';
 import { fathom, googleTagManager } from '../analytics';
 
 const renderWithClientClassification = (headTagContents: string, clientClassification: ClientClassification) => `
@@ -18,7 +16,6 @@ const renderHeadTag = (clientClassification: DynamicHeadViewModel['clientClassif
 );
 
 export const head = (
-  userId: O.Option<UserId>,
   dynamicHeadViewModel: DynamicHeadViewModel,
 ): HtmlFragment => pipe(
   `
@@ -47,7 +44,7 @@ export const head = (
   <meta name="msapplication-config" content="/static/images/favicons/generated/browserconfig.xml">
   <meta name="theme-color" content="#ffffff">
 
-  ${googleTagManager(userId)}
+  ${googleTagManager(dynamicHeadViewModel.loggedInUserId)}
   ${fathom()}
 `,
   renderHeadTag(dynamicHeadViewModel.clientClassification),

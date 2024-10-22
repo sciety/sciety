@@ -30,7 +30,7 @@ const toErrorResponse = (
     content,
   }),
   standardPageLayout(constructLayoutViewModel(user)),
-  wrapInHtmlDocument(user, { title: 'Error', clientClassification }),
+  wrapInHtmlDocument({ title: 'Error', loggedInUserId: pipe(user, O.map((u) => u.id)), clientClassification }),
   (document) => ({
     document,
     error: O.some(error.type),
@@ -45,7 +45,7 @@ const pageToSuccessResponse = (
   document: pipe(
     page,
     pageLayout(constructLayoutViewModel(user)),
-    wrapInHtmlDocument(user, { ...page, clientClassification }),
+    wrapInHtmlDocument({ ...page, loggedInUserId: pipe(user, O.map((u) => u.id)), clientClassification }),
   ),
   error: O.none,
 });
