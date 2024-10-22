@@ -1,12 +1,5 @@
-export type Saga = () => Promise<void>;
+type Saga = () => Promise<void>;
 
-type SagaTimer = {
-  cancel: () => void,
-};
-
-export const runPeriodically = (saga: Saga, seconds: number): SagaTimer => {
+export const runPeriodically = (saga: Saga, seconds: number): void => {
   setInterval(saga, seconds * 1000);
-  return {
-    cancel: () => {},
-  };
 };
