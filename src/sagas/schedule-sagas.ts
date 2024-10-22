@@ -6,12 +6,7 @@ import { ensureEvaluationsAreListed } from './ensure-evaluations-are-listed';
 import {
   maintainSnapshotsForEvaluatedExpressions,
 } from './maintain-snapshots-for-evaluated-expressions/maintain-snapshots-for-evaluated-expressions';
-
-type Saga = () => Promise<void>;
-
-const runPeriodically = (saga: Saga, seconds: number): void => {
-  setInterval(saga, seconds * 1000);
-};
+import { runPeriodically } from './run-periodically';
 
 export const scheduleSagas = (
   dependencies: DependenciesForSagas,
