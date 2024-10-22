@@ -2,6 +2,8 @@ import { runPeriodically, Saga } from '../../src/sagas/run-periodically';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryNumber } from '../helpers';
 
+jest.useFakeTimers();
+
 describe('run-periodically', () => {
   describe('given a saga that executes faster than the period', () => {
     const periodInSeconds = arbitraryNumber(1, 100);
@@ -13,7 +15,6 @@ describe('run-periodically', () => {
     };
 
     beforeEach(async () => {
-      jest.useFakeTimers();
       counter = 0;
       runPeriodically(dummyLogger, saga, periodInSeconds);
       await jest.advanceTimersByTimeAsync(periodInSeconds * 1000 * iterations);
@@ -41,7 +42,6 @@ describe('run-periodically', () => {
     };
 
     beforeEach(async () => {
-      jest.useFakeTimers();
       counter = 0;
       runPeriodically(dummyLogger, saga, periodInSeconds);
       await jest.advanceTimersByTimeAsync(2 * periodInSeconds * 1000);
