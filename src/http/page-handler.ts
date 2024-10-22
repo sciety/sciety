@@ -3,13 +3,12 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { ParameterizedContext } from 'koa';
-import { Dependencies as GetLoggedInScietyUserDependencies, getAuthenticatedUserIdFromContext } from './authentication-and-logging-in-of-sciety-users';
+import { getAuthenticatedUserIdFromContext } from './authentication-and-logging-in-of-sciety-users';
 import { detectClientClassification } from './detect-client-classification';
 import { sendHtmlResponse } from './send-html-response';
 import { sendRedirect } from './send-redirect';
-import { Queries } from '../read-models';
 import { ErrorPageViewModel } from '../read-side/html-pages/construct-error-page-view-model';
-import { constructHtmlResponse, constructHtmlResponseWithDependencies } from '../read-side/html-pages/construct-html-response';
+import { constructHtmlResponseWithDependencies, Dependencies as ConstructHtmlResponseDependencies } from '../read-side/html-pages/construct-html-response';
 import { ConstructLoggedInPage, ConstructPage } from '../read-side/html-pages/construct-page';
 import { HtmlPage } from '../read-side/html-pages/html-page';
 import { PageLayout } from '../read-side/html-pages/page-layout';
@@ -17,7 +16,7 @@ import { RedirectTarget } from '../read-side/html-pages/redirect-target';
 import { standardPageLayout } from '../read-side/html-pages/shared-components/standard-page-layout';
 
 const constructAndSendHtmlResponse = (
-  dependencies: GetLoggedInScietyUserDependencies,
+  dependencies: ConstructHtmlResponseDependencies,
   pageLayout: PageLayout,
   context: ParameterizedContext,
 ) => (input: E.Either<ErrorPageViewModel, HtmlPage>) => pipe(
@@ -36,7 +35,7 @@ const constructAndSendHtmlResponse = (
 );
 
 const sendHtmlResponseOrRedirect = (
-  dependencies: GetLoggedInScietyUserDependencies,
+  dependencies: ConstructHtmlResponseDependencies,
   context: ParameterizedContext,
   pageLayout: PageLayout,
   result: E.Either<ErrorPageViewModel | RedirectTarget, HtmlPage>,
@@ -56,7 +55,7 @@ const sendHtmlResponseOrRedirect = (
 };
 
 export const pageHandler = (
-  dependencies: Queries,
+  dependencies: ConstructHtmlResponseDependencies,
   handler: ConstructPage,
   pageLayout: PageLayout = standardPageLayout,
 ): Middleware => async (context, next) => {
@@ -88,7 +87,7 @@ export const pageHandler = (
 };
 
 export const pageHandlerWithLoggedInUser = (
-  dependencies: GetLoggedInScietyUserDependencies,
+  dependencies: ConstructHtmlResponseDependencies,
   handler: ConstructLoggedInPage,
   pageLayout: PageLayout = standardPageLayout,
 ): Middleware => async (context, next) => {

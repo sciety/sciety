@@ -73,8 +73,10 @@ export const constructHtmlResponse: ConstructHtmlResponse = (
   ),
 );
 
+export type Dependencies = DependenciesForViews;
+
 type ConstructHtmlResponseWithDependencies = (
-  dependencies: DependenciesForViews,
+  dependencies: Dependencies,
   userDetails: O.Option<UserDetails>,
   pageLayout: PageLayout,
   clientClassification: ClientClassification)
