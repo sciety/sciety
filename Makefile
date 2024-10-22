@@ -301,6 +301,9 @@ clean:
 clobber: clean
 	rm -rf build node_modules
 
+wip:
+	@scripts/wip-counts.sh
+
 check-ci: compile-prod check
 
 compile-prod: export TARGET = prod
