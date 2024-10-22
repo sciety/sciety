@@ -11,11 +11,11 @@ describe('run-periodically', () => {
       counter += 1;
     };
 
-    beforeEach(() => {
+    beforeEach(async () => {
       jest.useFakeTimers();
       counter = 0;
       runPeriodically(saga, periodMs / 1000);
-      jest.advanceTimersByTime(periodMs * iterations + fudgeFactorMs);
+      await jest.advanceTimersByTimeAsync(periodMs * iterations + fudgeFactorMs);
     });
 
     it('allows all iterations to run', () => {
