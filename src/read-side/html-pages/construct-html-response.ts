@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { CompleteHtmlDocument } from './complete-html-document';
 import { ErrorPageViewModel } from './construct-error-page-view-model';
 import { HtmlPage, toHtmlPage } from './html-page';
-import { PageLayout } from './page-layout';
+import { PageLayout, PageLayoutViewModel } from './page-layout';
 import { renderOopsMessage } from './render-oops-message';
 import { ClientClassification } from './shared-components/head';
 import { standardPageLayout } from './shared-components/standard-page-layout';
@@ -14,7 +14,7 @@ import { UserDetails } from '../../types/user-details';
 import { UserId } from '../../types/user-id';
 import { DependenciesForViews } from '../dependencies-for-views';
 
-const constructLayoutViewModel = (user: O.Option<UserDetails>) => ({
+const constructLayoutViewModel = (user: O.Option<UserDetails>): PageLayoutViewModel => ({
   userDetails: user,
 });
 

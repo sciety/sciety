@@ -3,6 +3,6 @@ import { ContentWrappedInLayout } from './content-wrapped-in-layout';
 import { HtmlPage } from './html-page';
 import { UserDetails } from '../../types/user-details';
 
-type ViewModel = { userDetails: O.Option<UserDetails> };
+export type PageLayoutViewModel = { userDetails: O.Option<UserDetails> };
 
-export type PageLayout = (viewModel: ViewModel) => (page: HtmlPage) => ContentWrappedInLayout;
+export type PageLayout = (viewModel: PageLayoutViewModel) => (page: HtmlPage) => ContentWrappedInLayout;
