@@ -38,4 +38,9 @@ spec:
                     secretKeyRef:
                       name: sciety-events-shipper-aws-credentials
                       key: secret
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ .Release.Name }}--sciety-export-events
 {{ end }}
