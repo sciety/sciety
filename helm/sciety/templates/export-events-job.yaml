@@ -13,6 +13,7 @@ spec:
       template:
         spec:
           restartPolicy: Never
+          serviceAccount: {{ .Release.Name }}--sciety-export-events
           containers:
             - name: ship-events-to-s3
               image: amazon/aws-cli:2.4.23
