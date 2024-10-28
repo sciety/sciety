@@ -20,7 +20,7 @@ export const scheduleSagas = (
   if (process.env.EXPERIMENT_ENABLED === 'true') {
     runPeriodically(dependencies.logger, maintainSnapshotsForEvaluatedExpressions(dependencies), 5);
   }
-  if (process.env.EXPERIMENT_ENABLED === 'true') {
+  if (process.env.COAR_NOTIFICATION_DELIVERY_ENABLED === 'true') {
     runPeriodically(
       dependencies.logger,
       ensureDeliveryOfNotificationsToCoarInboxes(dependencies, scietyUiOrigin),
