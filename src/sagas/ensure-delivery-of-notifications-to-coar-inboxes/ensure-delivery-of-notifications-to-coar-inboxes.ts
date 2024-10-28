@@ -7,13 +7,14 @@ import { constructCoarNotificationModel } from './construct-coar-notification-mo
 import * as coarNotification from '../../write-side/resources/coar-notification';
 import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
 import { DependenciesForSagas } from '../dependencies-for-sagas';
+import { Saga } from '../run-periodically';
 
 type Dependencies = DependenciesForSagas;
 
 export const ensureDeliveryOfNotificationsToCoarInboxes = (
   dependencies: Dependencies,
   scietyUiOrigin: URL,
-) => async (): Promise<void> => {
+): Saga => async () => {
   const iterationId = uuidV4();
 
   dependencies.logger('debug', 'sendNotificationsToCoarInboxes starting', { iterationId });

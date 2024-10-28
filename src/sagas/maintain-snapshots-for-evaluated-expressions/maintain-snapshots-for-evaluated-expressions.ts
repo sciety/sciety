@@ -6,12 +6,13 @@ import * as PH from '../../types/publishing-history';
 import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
 import * as paperSnapshot from '../../write-side/resources/paper-snapshot';
 import { DependenciesForSagas } from '../dependencies-for-sagas';
+import { Saga } from '../run-periodically';
 
 type Dependencies = DependenciesForSagas;
 
 export const maintainSnapshotsForEvaluatedExpressions = (
   dependencies: Dependencies,
-) => async (): Promise<void> => {
+): Saga => async () => {
   const iterationId = uuidV4();
   dependencies.logger('debug', 'maintainSnapshotsForEvaluatedExpressions starting', { iterationId });
   await pipe(
