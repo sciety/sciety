@@ -51,4 +51,8 @@ describe('run-periodically', () => {
       expect(counter).toBe(1);
     });
   });
+
+  describe('given a saga that fails catastrophically', () => {
+    it.todo('does not schedule the saga to be run again');
+  });
 });
