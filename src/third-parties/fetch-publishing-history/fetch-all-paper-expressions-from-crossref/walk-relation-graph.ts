@@ -49,6 +49,13 @@ export const walkRelationGraph = (
   if (state.queue.length === 0) {
     return TE.right(Array.from(state.collectedWorks.values()));
   }
+  if (state.queue.length > 15) {
+    logger('warn', 'walk-relation-graph queue contains more than 15 items, could be overloading the Crossref API', {
+      queueSize: state.queue.length,
+      collectedWorksSize: state.collectedWorks.size,
+      startingDoi: doi,
+    });
+  }
   if (state.collectedWorks.size > 20) {
     return TE.right(Array.from(state.collectedWorks.values()));
   }
