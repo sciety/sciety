@@ -18,6 +18,10 @@ uuids=$(grep -rE "'[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F
 printf "\n> Files with hardcoded UUIDs\n"
 grep -rEl "'[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}'" src | grep -v 'style-guide'
 
+pr_count=$(gh pr list --json url,title,statusCheckRollup | jq -r '.[] | "\(.statusCheckRollup.[].conclusion) \(.statusCheckRollup.[].name) \(.url) -- \(.title)"' | grep frontend | grep 'FAILURE\|SUCCESS' | uniq | wc -l)
+printf "\n> Open PRs\n"
+gh pr list --json url,title,statusCheckRollup | jq -r '.[] | "\(.statusCheckRollup.[].conclusion) \(.statusCheckRollup.[].name) \(.url) -- \(.title)"' | grep frontend | grep 'FAILURE\|SUCCESS' | uniq
+
 printf "\n> Use of deprecated code\n"
 npx eslint src --ext .ts --plugin "deprecation" --rule "deprecation/deprecation:error" --cache --cache-location .eslint/wip || true
 
@@ -25,3 +29,4 @@ printf "\nSkipped or failing fast tests: %s\n" $fast_test_count
 printf "Skipped or failing feature tests: %s\n" $feature_test_count
 printf "Feature flags: %s\n" $feature_flags
 printf "Hardcoded UUIDs: %s\n" $uuids
+printf "Open PRs: %s\n" $pr_count
