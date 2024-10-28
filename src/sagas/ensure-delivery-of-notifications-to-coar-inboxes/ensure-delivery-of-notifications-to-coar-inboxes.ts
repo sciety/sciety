@@ -10,10 +10,10 @@ import { DependenciesForSagas } from '../dependencies-for-sagas';
 
 type Dependencies = DependenciesForSagas;
 
-export const ensureDeliveryOfNotificationsToCoarInboxes = async (
+export const ensureDeliveryOfNotificationsToCoarInboxes = (
   dependencies: Dependencies,
   scietyUiOrigin: URL,
-): Promise<void> => {
+) => async (): Promise<void> => {
   const iterationId = uuidV4();
 
   dependencies.logger('debug', 'sendNotificationsToCoarInboxes starting', { iterationId });

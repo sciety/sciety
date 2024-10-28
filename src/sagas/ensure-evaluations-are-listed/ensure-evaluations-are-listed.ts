@@ -9,7 +9,7 @@ import { DependenciesForSagas } from '../dependencies-for-sagas';
 
 type Dependencies = DependenciesForSagas;
 
-export const ensureEvaluationsAreListed = async (dependencies: Dependencies): Promise<void> => {
+export const ensureEvaluationsAreListed = (dependencies: Dependencies) => async (): Promise<void> => {
   dependencies.logger('debug', 'ensureEvaluationsAreListed starting');
   await pipe(
     dependencies.getUnlistedEvaluatedArticles(),

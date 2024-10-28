@@ -40,7 +40,7 @@ describe('maintain-snapshots-for-evaluated-expressions', () => {
         await maintainSnapshotsForEvaluatedExpressions({
           ...framework.dependenciesForSagas,
           fetchPublishingHistory: () => TE.right(publishingHistory),
-        });
+        })();
       });
 
       it('causes a paper to be regarded as evaluated by that group', () => {
@@ -65,7 +65,7 @@ describe('maintain-snapshots-for-evaluated-expressions', () => {
     beforeEach(async () => {
       await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
 
-      await maintainSnapshotsForEvaluatedExpressions(framework.dependenciesForSagas);
+      await maintainSnapshotsForEvaluatedExpressions(framework.dependenciesForSagas)();
     });
 
     it('does nothing', () => {

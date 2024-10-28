@@ -9,9 +9,9 @@ import { DependenciesForSagas } from '../dependencies-for-sagas';
 
 type Dependencies = DependenciesForSagas;
 
-export const maintainSnapshotsForEvaluatedExpressions = async (
+export const maintainSnapshotsForEvaluatedExpressions = (
   dependencies: Dependencies,
-): Promise<void> => {
+) => async (): Promise<void> => {
   const iterationId = uuidV4();
   dependencies.logger('debug', 'maintainSnapshotsForEvaluatedExpressions starting', { iterationId });
   await pipe(

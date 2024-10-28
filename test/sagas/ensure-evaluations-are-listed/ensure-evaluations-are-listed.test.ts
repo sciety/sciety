@@ -24,7 +24,7 @@ describe('ensure-evaluations-are-listed', () => {
       await framework.commandHelpers.addGroup(addGroupCommand);
       await framework.commandHelpers.recordEvaluationPublication(recordEvaluationPublicationCommand);
 
-      await ensureEvaluationsAreListed(framework.dependenciesForSagas);
+      await ensureEvaluationsAreListed(framework.dependenciesForSagas)();
 
       const list = framework.queries.selectAllListsOwnedBy(LOID.fromGroupId(addGroupCommand.groupId))[0];
       listedExpressionDois = toExpressionDoisByMostRecentlyAdded(list.entries);

@@ -16,14 +16,14 @@ export const scheduleSagas = (
     return;
   }
   dependencies.logger('info', 'Scheduling sagas');
-  runPeriodically(dependencies.logger, async () => ensureEvaluationsAreListed(dependencies), 317);
+  runPeriodically(dependencies.logger, ensureEvaluationsAreListed(dependencies), 317);
   if (process.env.EXPERIMENT_ENABLED === 'true') {
-    runPeriodically(dependencies.logger, async () => maintainSnapshotsForEvaluatedExpressions(dependencies), 5);
+    runPeriodically(dependencies.logger, maintainSnapshotsForEvaluatedExpressions(dependencies), 5);
   }
   if (process.env.EXPERIMENT_ENABLED === 'true') {
     runPeriodically(
       dependencies.logger,
-      async () => ensureDeliveryOfNotificationsToCoarInboxes(dependencies, scietyUiOrigin),
+      ensureDeliveryOfNotificationsToCoarInboxes(dependencies, scietyUiOrigin),
       5,
     );
   }

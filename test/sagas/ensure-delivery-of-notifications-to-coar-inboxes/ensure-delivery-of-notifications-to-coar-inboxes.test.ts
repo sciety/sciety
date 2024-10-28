@@ -28,7 +28,7 @@ describe('ensure-delivery-of-notifications-to-coar-inboxes', () => {
           commitEvents,
         },
         arbitraryUrl(),
-      );
+      )();
     });
 
     it('does nothing', () => {
@@ -54,7 +54,7 @@ describe('ensure-delivery-of-notifications-to-coar-inboxes', () => {
             commitEvents,
           },
           arbitraryUrl(),
-        );
+        )();
       });
 
       it('sends the notification to an inbox', () => {
@@ -77,7 +77,7 @@ describe('ensure-delivery-of-notifications-to-coar-inboxes', () => {
             commitEvents,
           },
           arbitraryUrl(),
-        );
+        )();
       });
 
       it('leaves the notification as pending', () => {
@@ -110,7 +110,7 @@ describe('ensure-delivery-of-notifications-to-coar-inboxes', () => {
           commitEvents,
         },
         arbitraryUrl(),
-      );
+      )();
     });
 
     it('sends one notification to an inbox', () => {
