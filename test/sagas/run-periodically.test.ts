@@ -52,7 +52,28 @@ describe('run-periodically', () => {
     });
   });
 
-  describe('given a saga that fails catastrophically', () => {
-    it.todo('does not schedule the saga to be run again');
+  describe('given a saga that fails catastrophically on its first run', () => {
+    const periodInSeconds = arbitraryNumber(1, 100);
+    let counter: number;
+
+    const saga: Saga = async () => {
+      counter += 1;
+      throw new Error('Intentionally failing saga');
+    };
+
+    beforeEach(async () => {
+      jest.clearAllTimers();
+      counter = 0;
+      runPeriodically(dummyLogger, saga, periodInSeconds);
+      await jest.advanceTimersByTimeAsync(2 * periodInSeconds * 1000);
+    });
+
+    it('runs the saga only once', () => {
+      expect(counter).toBe(1);
+    });
+
+    it('does not schedule the saga to be run again', () => {
+      expect(jest.getTimerCount()).toBe(0);
+    });
   });
 });
