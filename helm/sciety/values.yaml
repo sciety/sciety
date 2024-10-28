@@ -5,6 +5,7 @@ images:
 allowSiteCrawlers: "false"
 crossrefApiBearerToken:
 experimentEnabled: "false"
+coarNotificationDeliveryEnabled: "false"
 fathomSiteId: 
 googleTagManagerId:
 appSecret: "not-a-secret-coming-from-helm-chart-defaults"

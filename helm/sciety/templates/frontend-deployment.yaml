@@ -42,6 +42,8 @@ spec:
               value: {{ .Values.crossrefApiBearerToken }}
             - name: EXPERIMENT_ENABLED
               value: "{{ .Values.experimentEnabled }}"
+            - name: COAR_NOTIFICATION_DELIVERY_ENABLED
+              value: "{{ .Values.coarNotificationDeliveryEnabled }}"
             - name: FATHOM_SITE_ID
               value: {{ .Values.fathomSiteId }}
             - name: GOOGLE_TAG_MANAGER_ID
