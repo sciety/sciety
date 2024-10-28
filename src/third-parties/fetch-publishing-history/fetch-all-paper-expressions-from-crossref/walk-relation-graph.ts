@@ -46,7 +46,10 @@ export const walkRelationGraph = (
       startingDoi: doi,
     });
   }
-  if (state.queue.length === 0 || state.collectedWorks.size > 20) {
+  if (state.queue.length === 0) {
+    return TE.right(Array.from(state.collectedWorks.values()));
+  }
+  if (state.collectedWorks.size > 20) {
     return TE.right(Array.from(state.collectedWorks.values()));
   }
 
