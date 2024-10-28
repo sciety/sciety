@@ -12,21 +12,23 @@ describe('ensure-delivery-of-notifications-to-coar-inboxes', () => {
   let framework: TestFramework;
   let sendCoarNotification: DependenciesForSagas['sendCoarNotification'];
   let commitEvents: DependenciesForSagas['commitEvents'];
+  let defaultDependencies: DependenciesForSagas;
 
   beforeEach(() => {
     framework = createTestFramework();
     sendCoarNotification = jest.fn(framework.dependenciesForSagas.sendCoarNotification);
     commitEvents = jest.fn(framework.commitEvents);
+    defaultDependencies = {
+      ...framework.dependenciesForSagas,
+      sendCoarNotification,
+      commitEvents,
+    };
   });
 
   describe('when there are no pending notifications', () => {
     beforeEach(async () => {
       await ensureDeliveryOfNotificationsToCoarInboxes(
-        {
-          ...framework.dependenciesForSagas,
-          sendCoarNotification,
-          commitEvents,
-        },
+        defaultDependencies,
         arbitraryUrl(),
       )();
     });
@@ -48,11 +50,7 @@ describe('ensure-delivery-of-notifications-to-coar-inboxes', () => {
     describe('and sendNotification returns a right', () => {
       beforeEach(async () => {
         await ensureDeliveryOfNotificationsToCoarInboxes(
-          {
-            ...framework.dependenciesForSagas,
-            sendCoarNotification,
-            commitEvents,
-          },
+          defaultDependencies,
           arbitraryUrl(),
         )();
       });
@@ -72,9 +70,8 @@ describe('ensure-delivery-of-notifications-to-coar-inboxes', () => {
       beforeEach(async () => {
         await ensureDeliveryOfNotificationsToCoarInboxes(
           {
-            ...framework.dependenciesForSagas,
+            ...defaultDependencies,
             sendCoarNotification: () => TE.left(toErrorMessage(arbitraryString())),
-            commitEvents,
           },
           arbitraryUrl(),
         )();
@@ -104,11 +101,7 @@ describe('ensure-delivery-of-notifications-to-coar-inboxes', () => {
         evaluationLocator: evaluationB,
       });
       await ensureDeliveryOfNotificationsToCoarInboxes(
-        {
-          ...framework.dependenciesForSagas,
-          sendCoarNotification,
-          commitEvents,
-        },
+        defaultDependencies,
         arbitraryUrl(),
       )();
     });

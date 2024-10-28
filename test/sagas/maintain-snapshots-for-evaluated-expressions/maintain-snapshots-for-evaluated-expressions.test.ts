@@ -37,10 +37,11 @@ describe('maintain-snapshots-for-evaluated-expressions', () => {
           E.getOrElseW(shouldNotBeCalled),
         );
 
-        await maintainSnapshotsForEvaluatedExpressions({
+        const dependencies = {
           ...framework.dependenciesForSagas,
           fetchPublishingHistory: () => TE.right(publishingHistory),
-        })();
+        };
+        await maintainSnapshotsForEvaluatedExpressions(dependencies)();
       });
 
       it('causes a paper to be regarded as evaluated by that group', () => {
