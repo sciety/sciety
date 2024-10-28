@@ -18,6 +18,9 @@ uuids=$(grep -rE "'[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F
 printf "\n> Files with hardcoded UUIDs\n"
 grep -rEl "'[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}'" src | grep -v 'style-guide'
 
+printf "\n> Use of deprecated code\n"
+npx eslint src --ext .ts --plugin "deprecation" --rule "deprecation/deprecation:error" --cache --cache-location .eslint/wip || true
+
 printf "\nSkipped or failing fast tests: %s\n" $fast_test_count
 printf "Skipped or failing feature tests: %s\n" $feature_test_count
 printf "Feature flags: %s\n" $feature_flags
