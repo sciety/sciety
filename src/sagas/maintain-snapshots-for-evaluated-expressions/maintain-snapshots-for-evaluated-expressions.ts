@@ -6,7 +6,7 @@ import * as PH from '../../types/publishing-history';
 import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
 import * as paperSnapshot from '../../write-side/resources/paper-snapshot';
 import { DependenciesForSagas } from '../dependencies-for-sagas';
-import { Saga } from '../run-periodically';
+import { Saga } from '../saga';
 
 type Dependencies = DependenciesForSagas;
 

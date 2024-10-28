@@ -1,6 +1,5 @@
+import { Saga } from './saga';
 import { Logger } from '../logger';
-
-export type Saga = () => Promise<void>;
 
 export const runPeriodically = (logger: Logger, saga: Saga, seconds: number): void => {
   setTimeout(

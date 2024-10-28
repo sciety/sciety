@@ -6,7 +6,7 @@ import * as EDOI from '../../types/expression-doi';
 import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
 import * as list from '../../write-side/resources/list';
 import { DependenciesForSagas } from '../dependencies-for-sagas';
-import { Saga } from '../run-periodically';
+import { Saga } from '../saga';
 
 type Dependencies = DependenciesForSagas;
 

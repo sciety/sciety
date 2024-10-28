@@ -1,4 +1,5 @@
-import { runPeriodically, Saga } from '../../src/sagas/run-periodically';
+import { runPeriodically } from '../../src/sagas/run-periodically';
+import { Saga } from '../../src/sagas/saga';
 import { dummyLogger } from '../dummy-logger';
 import { arbitraryNumber } from '../helpers';
 
