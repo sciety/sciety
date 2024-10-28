@@ -7,9 +7,11 @@ import {
   maintainSnapshotsForEvaluatedExpressions,
 } from './maintain-snapshots-for-evaluated-expressions/maintain-snapshots-for-evaluated-expressions';
 import { runPeriodically } from './run-periodically';
+import { EnvironmentVariables } from '../environment-variables-codec';
 
 export const scheduleSagas = (
   dependencies: DependenciesForSagas,
+  env: EnvironmentVariables,
   scietyUiOrigin: URL,
 ): T.Task<void> => async () => {
   if (process.env.DISABLE_SAGAS === 'true') {
@@ -20,7 +22,7 @@ export const scheduleSagas = (
   if (process.env.EXPERIMENT_ENABLED === 'true') {
     runPeriodically(dependencies.logger, maintainSnapshotsForEvaluatedExpressions(dependencies), 5);
   }
-  if (process.env.COAR_NOTIFICATION_DELIVERY_ENABLED === 'true') {
+  if (env.COAR_NOTIFICATION_DELIVERY_ENABLED) {
     runPeriodically(
       dependencies.logger,
       ensureDeliveryOfNotificationsToCoarInboxes(dependencies, scietyUiOrigin),
