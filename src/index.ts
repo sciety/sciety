@@ -6,7 +6,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { formatValidationErrors } from 'io-ts-reporters';
-import { environmentVariablesCodec } from './http/environment-variables-codec';
+import { environmentVariablesCodec } from './environment-variables-codec';
 import { createRouter } from './http/router';
 import { createApplicationServer } from './http/server';
 import { createInfrastructure, logCatastrophicFailure } from './infrastructure';
