@@ -9,7 +9,7 @@ import { auth0PassportStrategy } from './authentication/auth0-passport-strategy'
 import { testingPassportStrategy } from './authentication/testing-passport-strategy';
 import { logRequestAndResponse } from './log-request-and-response';
 import { respondWithNotFoundIfNoRoutesMatched } from './route-not-found';
-import { EnvironmentVariables } from '../environment-variables-codec';
+import { EnvironmentVariables } from '../environment-variables';
 import { CollectedPorts } from '../infrastructure';
 
 export const createApplicationServer = (

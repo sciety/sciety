@@ -7,7 +7,7 @@ import {
   maintainSnapshotsForEvaluatedExpressions,
 } from './maintain-snapshots-for-evaluated-expressions/maintain-snapshots-for-evaluated-expressions';
 import { runPeriodically } from './run-periodically';
-import { EnvironmentVariables } from '../environment-variables-codec';
+import { EnvironmentVariables } from '../environment-variables';
 
 export const scheduleSagas = (
   dependencies: DependenciesForSagas,

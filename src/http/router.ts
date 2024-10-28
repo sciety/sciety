@@ -16,7 +16,7 @@ import { ping } from './ping';
 import { requireLoggedInUser } from './require-logged-in-user';
 import { robots } from './robots';
 import { routeForNonHtmlView } from './route-for-non-html-view';
-import { EnvironmentVariables } from '../environment-variables-codec';
+import { EnvironmentVariables } from '../environment-variables';
 import { evaluationContentPathSpecification } from '../read-side/construct-evaluation-content-url';
 import { DependenciesForViews } from '../read-side/dependencies-for-views';
 import { aboutPage } from '../read-side/html-pages/about-page';
