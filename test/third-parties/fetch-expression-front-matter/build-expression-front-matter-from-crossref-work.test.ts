@@ -38,6 +38,20 @@ const extractAbstractFromFrontMatter = (partialResponse: string) => {
   );
 };
 
+const extractAuthorsFromFrontMatter = (partialResponse: string) => {
+  const response = crossrefResponseWith(`
+    <titles>
+      <title>${arbitraryString()}</title>
+    </titles>
+    ${partialResponse}
+  `);
+  return pipe(
+    buildExpressionFrontMatterFromCrossrefWork(response, dummyLogger, arbitraryExpressionDoi()),
+    E.getOrElseW(abortTest('Failed to build expression front matter')),
+    (frontMatter) => frontMatter.authors,
+  );
+};
+
 describe('build-expression-front-matter-from-crossref-work', () => {
   const parser = new DOMParser({
     errorHandler: (_, msg) => {
@@ -190,9 +204,7 @@ describe('build-expression-front-matter-from-crossref-work', () => {
   describe('parsing the authors', () => {
     describe('when there are no contributors', () => {
       it('returns none', async () => {
-        const response = crossrefResponseWith('');
-        const doc = parser.parseFromString(response, 'text/xml');
-        const authors = getAuthors(doc);
+        const authors = extractAuthorsFromFrontMatter('');
 
         expect(authors).toStrictEqual(O.none);
       });
@@ -200,7 +212,7 @@ describe('build-expression-front-matter-from-crossref-work', () => {
 
     describe('when there are person contributors with a given name and a surname', () => {
       it('extracts authors from the XML response', async () => {
-        const response = crossrefResponseWith(`
+        const authors = extractAuthorsFromFrontMatter(`
         <contributors>
           <person_name contributor_role="author" sequence="first">
             <given_name>Eesha</given_name>
@@ -211,23 +223,19 @@ describe('build-expression-front-matter-from-crossref-work', () => {
             <surname>Fountain</surname>
           </person_name>
         </contributors>`);
-        const doc = parser.parseFromString(response, 'text/xml');
-        const authors = getAuthors(doc);
 
         expect(authors).toStrictEqual(O.some(['Eesha Ross', 'Fergus Fountain']));
       });
 
       describe('when any part of the author name contains XML', () => {
         it('strips XML from the author names', async () => {
-          const response = crossrefResponseWith(`
+          const authors = extractAuthorsFromFrontMatter(`
         <contributors>
           <person_name contributor_role="author" sequence="first">
             <given_name><scp>Fergus</scp></given_name>
             <surname>Fo<scp>untain</scp></surname>
           </person_name>
         </contributors>`);
-          const doc = parser.parseFromString(response, 'text/xml');
-          const authors = getAuthors(doc);
 
           expect(authors).toStrictEqual(O.some(['Fergus Fountain']));
         });
