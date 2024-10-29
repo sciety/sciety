@@ -1,5 +1,5 @@
 import * as TE from 'fp-ts/TaskEither';
-import { preReviewGroupId } from '../../../src/read-models/evaluations-for-notifications';
+import { preReviewGroupId } from '../../../src/read-models/evaluations-for-notifications/coar-notifications-config';
 import { DependenciesForSagas } from '../../../src/sagas/dependencies-for-sagas';
 import { ensureDeliveryOfNotificationsToCoarInboxes } from '../../../src/sagas/ensure-delivery-of-notifications-to-coar-inboxes';
 import { toErrorMessage } from '../../../src/types/error-message';

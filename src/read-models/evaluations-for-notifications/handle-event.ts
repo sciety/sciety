@@ -1,13 +1,7 @@
-import { URL } from 'url';
+import { CoarNotificationsConfig, Target } from './coar-notifications-config';
 import { DomainEvent, isEventOfType } from '../../domain-events';
 import { EvaluationLocator } from '../../types/evaluation-locator';
 import { ExpressionDoi } from '../../types/expression-doi';
-import { GroupId } from '../../types/group-id';
-
-export type Target = {
-  id: string,
-  inbox: URL,
-};
 
 export type PendingNotification = {
   expressionDoi: ExpressionDoi,
@@ -43,7 +37,7 @@ const removePendingNotificationMatchingEvaluationAndTarget = (
 };
 
 export const handleEvent = (
-  consideredGroups: ReadonlyMap<GroupId, ReadonlyArray<Target>>,
+  consideredGroups: CoarNotificationsConfig,
 ) => (readModel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('EvaluationPublicationRecorded')(event)) {
     const targets = consideredGroups.get(event.groupId);

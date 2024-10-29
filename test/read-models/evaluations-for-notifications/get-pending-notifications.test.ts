@@ -1,8 +1,9 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent, EventOfType } from '../../../src/domain-events';
+import { Target } from '../../../src/read-models/evaluations-for-notifications/coar-notifications-config';
 import { getPendingNotifications } from '../../../src/read-models/evaluations-for-notifications/get-pending-notifications';
-import { Target, handleEvent, initialState } from '../../../src/read-models/evaluations-for-notifications/handle-event';
+import { handleEvent, initialState } from '../../../src/read-models/evaluations-for-notifications/handle-event';
 import { arbitraryCoarNotificationDeliveredEvent } from '../../domain-events/coar-notification-resource-events.helper';
 import { arbitraryEvaluationPublicationRecordedEvent, arbitraryEvaluationRemovalRecordedEvent, arbitraryIncorrectlyRecordedEvaluationErasedEvent } from '../../domain-events/evaluation-resource-events.helper';
 import { arbitraryString, arbitraryUrl } from '../../helpers';
