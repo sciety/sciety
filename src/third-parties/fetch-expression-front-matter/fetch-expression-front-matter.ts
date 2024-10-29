@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
-import { parseResponseAndConstructDomainObject } from './parse-crossref-article';
+import { buildExpressionFrontMatterFromCrossrefWork } from './build-expression-front-matter-from-crossref-work';
 import { Logger } from '../../logger';
 import * as DE from '../../types/data-error';
 import { ExpressionDoi } from '../../types/expression-doi';
@@ -35,7 +35,7 @@ export const fetchExpressionFrontMatter = (
     decodeAndLogFailures(logger, t.string, { expressionDoi }),
     E.mapLeft(() => DE.unavailable),
   )),
-  TE.chainEitherKW((response) => parseResponseAndConstructDomainObject(
+  TE.chainEitherKW((response) => buildExpressionFrontMatterFromCrossrefWork(
     response,
     logger,
     expressionDoi,

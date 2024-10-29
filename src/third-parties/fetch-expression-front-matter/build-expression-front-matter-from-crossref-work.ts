@@ -126,13 +126,13 @@ export const getAuthors = (doc: Document): ArticleAuthors => {
   return pipe(authors, O.sequenceArray);
 };
 
-export const parseResponseAndConstructDomainObject = (
-  document: string,
+export const buildExpressionFrontMatterFromCrossrefWork = (
+  crossrefWorkXml: string,
   logger: Logger,
   expressionDoi: ExpressionDoi,
 ): E.Either<DE.DataError, ExpressionFrontMatter> => {
-  if (document.length === 0) {
-    logger('error', 'crossref/fetch-expression-front-matter: Empty document', { doi: expressionDoi, document });
+  if (crossrefWorkXml.length === 0) {
+    logger('error', 'crossref/fetch-expression-front-matter: Empty document', { doi: expressionDoi, crossrefWorkXml });
     return E.left(DE.unavailable);
   }
   const parser = new DOMParser({
@@ -144,31 +144,31 @@ export const parseResponseAndConstructDomainObject = (
   let authors: ArticleAuthors;
   let title: O.Option<SanitisedHtmlFragment>;
   try {
-    const parsedXml = parser.parseFromString(document, 'text/xml');
+    const parsedXml = parser.parseFromString(crossrefWorkXml, 'text/xml');
 
     const unrecoverableError = detectUnrecoverableError(parsedXml);
     if (O.isSome(unrecoverableError)) {
-      logger('error', 'crossref/fetch-expression-front-matter: Unrecoverable error', { expressionDoi, document, reason: unrecoverableError.value });
+      logger('error', 'build-expression-front-matter-from-crossref-work: Unrecoverable error', { expressionDoi, crossrefWorkXml, reason: unrecoverableError.value });
       return E.left(DE.unavailable);
     }
 
     authors = getAuthors(parsedXml);
     if (O.isNone(authors)) {
-      logger('warn', 'crossref/fetch-expression-front-matter: Unable to find authors', { expressionDoi, document });
+      logger('warn', 'build-expression-front-matter-from-crossref-work: Unable to find authors', { expressionDoi, crossrefWorkXml });
     }
 
     abstract = getAbstract(parsedXml);
     if (O.isNone(abstract)) {
-      logger('warn', 'crossref/fetch-expression-front-matter: Unable to find abstract', { expressionDoi, document });
+      logger('warn', 'build-expression-front-matter-from-crossref-work: Unable to find abstract', { expressionDoi, crossrefWorkXml });
     }
 
     title = getTitle(parsedXml);
     if (O.isNone(title)) {
-      logger('error', 'crossref/fetch-expression-front-matter: Unable to find title', { expressionDoi, document });
+      logger('error', 'build-expression-front-matter-from-crossref-work: Unable to find title', { expressionDoi, crossrefWorkXml });
       return E.left(DE.unavailable);
     }
   } catch (error: unknown) {
-    logger('error', 'crossref/fetch-expression-front-matter: Unable to parse document', { expressionDoi, document, error });
+    logger('error', 'build-expression-front-matter-from-crossref-work: Unable to parse document', { expressionDoi, crossrefWorkXml, error });
     return E.left(DE.unavailable);
   }
   return E.right({

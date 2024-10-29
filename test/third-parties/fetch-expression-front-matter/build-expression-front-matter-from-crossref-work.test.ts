@@ -2,7 +2,7 @@ import { DOMParser } from '@xmldom/xmldom';
 import * as O from 'fp-ts/Option';
 import {
   getAbstract, getAuthors, getTitle,
-} from '../../../src/third-parties/fetch-expression-front-matter/parse-crossref-article';
+} from '../../../src/third-parties/fetch-expression-front-matter/build-expression-front-matter-from-crossref-work';
 
 const crossrefResponseWith = (content: string): string => `
   <?xml version="1.0" encoding="UTF-8"?>
@@ -17,7 +17,7 @@ const crossrefResponseWith = (content: string): string => `
   </doi_records>
 `;
 
-describe('parse-crossref-article', () => {
+describe('build-expression-front-matter-from-crossref-work', () => {
   const parser = new DOMParser({
     errorHandler: (_, msg) => {
       throw msg;
