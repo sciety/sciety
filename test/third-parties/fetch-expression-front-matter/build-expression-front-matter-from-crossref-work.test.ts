@@ -4,7 +4,7 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import {
   buildExpressionFrontMatterFromCrossrefWork,
-  getAbstract, getAuthors, getTitle,
+  getAuthors, getTitle,
 } from '../../../src/third-parties/fetch-expression-front-matter/build-expression-front-matter-from-crossref-work';
 import { abortTest } from '../../abort-test';
 import { dummyLogger } from '../../dummy-logger';
@@ -131,14 +131,12 @@ describe('build-expression-front-matter-from-crossref-work', () => {
     });
 
     it('replaces <sec> with HTML <section>', () => {
-      const response = crossrefResponseWith(`
+      const abstract = extractAbstractFromFrontMatter(`
         <abstract>
           <sec class="something">
             <p>Lorem ipsum</p>
           </sec>
         </abstract>`);
-      const doc = parser.parseFromString(response, 'text/xml');
-      const abstract = getAbstract(doc);
 
       expect(abstract).toStrictEqual(O.some(expect.stringContaining('<section>')));
       expect(abstract).toStrictEqual(O.some(expect.stringContaining('</section>')));
@@ -147,7 +145,7 @@ describe('build-expression-front-matter-from-crossref-work', () => {
     });
 
     it('strips <title> named Graphical abstract', () => {
-      const response = crossrefResponseWith(`
+      const abstract = extractAbstractFromFrontMatter(`
         <abstract>
           <title>First title</title>
           <sec>
@@ -157,14 +155,12 @@ describe('build-expression-front-matter-from-crossref-work', () => {
             </fig>
           </sec>
         </abstract>`);
-      const doc = parser.parseFromString(response, 'text/xml');
-      const abstract = getAbstract(doc);
 
       expect(abstract).toStrictEqual(expect.not.stringContaining('Graphical abstract'));
     });
 
     it('strips <section> elements that are empty or only contain whitespace', () => {
-      const response = crossrefResponseWith(`
+      const abstract = extractAbstractFromFrontMatter(`
         <abstract>
           <sec>
             <fig id="ufig1" position="float" fig-type="figure" orientation="portrait">
@@ -173,23 +169,17 @@ describe('build-expression-front-matter-from-crossref-work', () => {
           </sec>
         </abstract>`);
 
-      const doc = parser.parseFromString(response, 'text/xml');
-      const abstract = getAbstract(doc);
-
       expect(abstract).toStrictEqual(O.some(expect.not.stringContaining('<section>')));
       expect(abstract).toStrictEqual(O.some(expect.not.stringContaining('</section>')));
     });
 
     it('doesn\'t strip <section> elements that are not empty', () => {
-      const response = crossrefResponseWith(`
+      const abstract = extractAbstractFromFrontMatter(`
         <abstract>
           <sec>
             Lorem ipsum
           </sec>
         </abstract>`);
-
-      const doc = parser.parseFromString(response, 'text/xml');
-      const abstract = getAbstract(doc);
 
       expect(abstract).toStrictEqual(O.some(expect.stringContaining('<section>')));
       expect(abstract).toStrictEqual(O.some(expect.stringContaining('Lorem ipsum')));

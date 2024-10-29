@@ -12,7 +12,7 @@ import { ExpressionFrontMatter } from '../../types/expression-front-matter';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 
-export const getAbstract = (
+const getAbstract = (
   doc: Document,
 ): O.Option<SanitisedHtmlFragment> => {
   const abstractElement = getElement(doc, 'abstract');
