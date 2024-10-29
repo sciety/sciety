@@ -25,7 +25,12 @@ const crossrefResponseWith = (content: string): string => `
 `;
 
 const extractAbstractFromFrontMatter = (partialResponse: string) => {
-  const response = crossrefResponseWith(partialResponse);
+  const response = crossrefResponseWith(`
+    <titles>
+      <title>${arbitraryString()}</title>
+    </titles>
+    ${partialResponse}
+  `);
   return pipe(
     buildExpressionFrontMatterFromCrossrefWork(response, dummyLogger, arbitraryExpressionDoi()),
     E.getOrElseW(abortTest('Failed to build expression front matter')),
@@ -43,9 +48,6 @@ describe('build-expression-front-matter-from-crossref-work', () => {
   describe('parsing the abstract', () => {
     it('extracts the abstract text from the XML response', async () => {
       const abstract = extractAbstractFromFrontMatter(`
-        <titles>
-          <title>${arbitraryString()}</title>
-        </titles>
         <abstract>
           Some random nonsense.
         </abstract>`);
@@ -54,12 +56,10 @@ describe('build-expression-front-matter-from-crossref-work', () => {
     });
 
     it('removes the <abstract> element', async () => {
-      const response = crossrefResponseWith(`
+      const abstract = extractAbstractFromFrontMatter(`
         <abstract class="something">
-          Some random nonsense.
+          ${arbitraryString()}
         </abstract>`);
-      const doc = parser.parseFromString(response, 'text/xml');
-      const abstract = getAbstract(doc);
 
       expect(abstract).toStrictEqual(O.some(expect.not.stringContaining('<abstract>')));
       expect(abstract).toStrictEqual(O.some(expect.not.stringContaining('</abstract>')));
