@@ -66,19 +66,18 @@ describe('build-expression-front-matter-from-crossref-work', () => {
     });
 
     it('removes the first <title> if present', async () => {
-      const response = crossrefResponseWith(`
+      const abstract = extractAbstractFromFrontMatter(`
         <abstract>
           <title class="something">Abstract</title>
-          Some random nonsense.
-        </abstract>`);
-      const doc = parser.parseFromString(response, 'text/xml');
-      const abstract = getAbstract(doc);
+          ${arbitraryString()}
+        </abstract>
+      `);
 
       expect(abstract).toStrictEqual(O.some(expect.not.stringContaining('Abstract')));
     });
 
     it('replaces remaining <title>s with HTML <h3>s', async () => {
-      const response = crossrefResponseWith(`
+      const abstract = extractAbstractFromFrontMatter(`
         <abstract>
           <title class="something">expected to be removed</title>
           <p>Lorem ipsum</p>
@@ -86,9 +85,8 @@ describe('build-expression-front-matter-from-crossref-work', () => {
           <p>Lorem ipsum</p>
           <title class="something">should also be an h3</title>
           </sec>
-        </abstract>`);
-      const doc = parser.parseFromString(response, 'text/xml');
-      const abstract = getAbstract(doc);
+        </abstract>
+      `);
 
       expect(abstract).toStrictEqual(O.some(expect.stringContaining('<h3>should be an h3</h3>')));
       expect(abstract).toStrictEqual(O.some(expect.stringContaining('<h3>should also be an h3</h3>')));
@@ -97,38 +95,34 @@ describe('build-expression-front-matter-from-crossref-work', () => {
     });
 
     it('renders italic if present', async () => {
-      const response = crossrefResponseWith(`
+      const abstract = extractAbstractFromFrontMatter(`
         <abstract>
           <title>Abstract</title>
           <p>
-            The spread of antimicrobial resistance continues to be a priority health concern worldwide, necessitating exploration of alternative therapies.
+            ${arbitraryString()}
             <italic class="something">Cannabis sativa</italic>
-            has long been known to contain antibacterial cannabinoids, but their potential to address antibiotic resistance has only been superficially investigated. Here, we show that cannabinoids exhibit antibacterial activity against MRSA, inhibit its ability to form biofilms and eradicate pre-formed biofilms and stationary phase cells persistent to antibiotics. We show that the mechanism of action of cannabigerol is through targeting the cytoplasmic membrane of Gram-positive bacteria and demonstrate
+            ${arbitraryString()}
             <italic class="something">in vivo</italic>
-            efficacy of cannabigerol in a murine systemic infection model caused by MRSA. We also show that cannabinoids are effective against Gram-negative organisms whose outer membrane is permeabilized, where cannabigerol acts on the inner membrane. Finally, we demonstrate that cannabinoids work in combination with polymyxin B against multi-drug resistant Gram-negative pathogens, revealing the broad-spectrum therapeutic potential for cannabinoids.
+            ${arbitraryString()}
           </p>
         </abstract>`);
-      const doc = parser.parseFromString(response, 'text/xml');
-      const abstract = getAbstract(doc);
 
       expect(abstract).toStrictEqual(O.some(expect.stringContaining('<i>Cannabis sativa</i>')));
       expect(abstract).toStrictEqual(O.some(expect.stringContaining('<i>in vivo</i>')));
     });
 
     it('replaces <list> unordered list with HTML <ul>', async () => {
-      const response = crossrefResponseWith(`
+      const abstract = extractAbstractFromFrontMatter(`
         <abstract>
           <list class="something" list-type="bullet" id="id-1">
             <list-item class="something">
-              <p>Transcriptional regulation of ESRP2.</p>
+              <p>${arbitraryString()}</p>
             </list-item>
             <list-item class="something">
-              <p>Both ESRP1 and ESRP2 are highly expressed in prostate cancer tissue.</p>
+              <p>${arbitraryString()}</p>
             </list-item>
           </list>
         </abstract>`);
-      const doc = parser.parseFromString(response, 'text/xml');
-      const abstract = getAbstract(doc);
 
       expect(abstract).toStrictEqual(O.some(expect.stringContaining('<ul>')));
       expect(abstract).toStrictEqual(O.some(expect.stringContaining('</ul>')));
