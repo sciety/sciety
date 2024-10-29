@@ -24,6 +24,15 @@ const crossrefResponseWith = (content: string): string => `
   </doi_records>
 `;
 
+const extractAbstractFromFrontMatter = (partialResponse: string) => {
+  const response = crossrefResponseWith(partialResponse);
+  return pipe(
+    buildExpressionFrontMatterFromCrossrefWork(response, dummyLogger, arbitraryExpressionDoi()),
+    E.getOrElseW(abortTest('Failed to build expression front matter')),
+    (frontMatter) => frontMatter.abstract,
+  );
+};
+
 describe('build-expression-front-matter-from-crossref-work', () => {
   const parser = new DOMParser({
     errorHandler: (_, msg) => {
@@ -33,18 +42,13 @@ describe('build-expression-front-matter-from-crossref-work', () => {
 
   describe('parsing the abstract', () => {
     it('extracts the abstract text from the XML response', async () => {
-      const response = crossrefResponseWith(`
+      const abstract = extractAbstractFromFrontMatter(`
         <titles>
           <title>${arbitraryString()}</title>
         </titles>
         <abstract>
           Some random nonsense.
         </abstract>`);
-      const abstract = pipe(
-        buildExpressionFrontMatterFromCrossrefWork(response, dummyLogger, arbitraryExpressionDoi()),
-        E.getOrElseW(abortTest('Failed to build expression front matter')),
-        (frontMatter) => frontMatter.abstract,
-      );
 
       expect(abstract).toStrictEqual(O.some(expect.stringContaining('Some random nonsense.')));
     });
