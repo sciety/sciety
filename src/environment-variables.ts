@@ -3,10 +3,10 @@ import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 
-const withDefaultIfEmpty = <C extends t.Any>(
+export const withDefaultIfEmpty = <C extends t.Any>(
   codec: C,
   ifEmpty: t.TypeOf<C>,
-) => tt.withValidate(codec, (input, context) => pipe(
+): C => tt.withValidate(codec, (input, context) => pipe(
     tt.NonEmptyString.validate(input, context),
     E.orElse(() => t.success(String(ifEmpty))),
     E.chain((nonEmptyString) => codec.validate(nonEmptyString, context)),
