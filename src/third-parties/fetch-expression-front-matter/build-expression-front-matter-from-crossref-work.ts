@@ -102,7 +102,7 @@ const personAuthor = (person: Element) => {
 
 const organisationAuthor = (organisation: Element) => O.fromNullable(organisation.textContent);
 
-export const getAuthors = (doc: Document): ArticleAuthors => {
+const getAuthors = (doc: Document): ArticleAuthors => {
   const contributorsElement = getElement(doc, 'contributors');
 
   if (!contributorsElement || typeof contributorsElement?.textContent !== 'string') {

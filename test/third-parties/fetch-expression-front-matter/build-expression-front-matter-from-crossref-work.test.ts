@@ -3,8 +3,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import {
-  buildExpressionFrontMatterFromCrossrefWork,
-  getAuthors, getTitle,
+  buildExpressionFrontMatterFromCrossrefWork, getTitle,
 } from '../../../src/third-parties/fetch-expression-front-matter/build-expression-front-matter-from-crossref-work';
 import { abortTest } from '../../abort-test';
 import { dummyLogger } from '../../dummy-logger';
@@ -244,14 +243,12 @@ describe('build-expression-front-matter-from-crossref-work', () => {
 
     describe('when there is a person author without a given name', () => {
       it('uses the surname', async () => {
-        const response = crossrefResponseWith(`
+        const authors = extractAuthorsFromFrontMatter(`
         <contributors>
           <person_name contributor_role="author" sequence="first">
             <surname>Ross</surname>
           </person_name>
         </contributors>`);
-        const doc = parser.parseFromString(response, 'text/xml');
-        const authors = getAuthors(doc);
 
         expect(authors).toStrictEqual(O.some(['Ross']));
       });
@@ -259,7 +256,7 @@ describe('build-expression-front-matter-from-crossref-work', () => {
 
     describe('when there are both author and non-author contributors', () => {
       it('only includes authors', async () => {
-        const response = crossrefResponseWith(`
+        const authors = extractAuthorsFromFrontMatter(`
         <contributors>
           <person_name contributor_role="author" sequence="first">
             <given_name>Eesha</given_name>
@@ -270,8 +267,6 @@ describe('build-expression-front-matter-from-crossref-work', () => {
             <surname>Fountain</surname>
           </person_name>
         </contributors>`);
-        const doc = parser.parseFromString(response, 'text/xml');
-        const authors = getAuthors(doc);
 
         expect(authors).toStrictEqual(O.some(['Eesha Ross']));
       });
@@ -279,7 +274,7 @@ describe('build-expression-front-matter-from-crossref-work', () => {
 
     describe('when there is an organisational author', () => {
       it('uses the organisation\'s name', () => {
-        const response = crossrefResponseWith(`
+        const authors = extractAuthorsFromFrontMatter(`
         <contributors>
           <organization contributor_role="author" sequence="first">SEQC2 Oncopanel Sequencing Working Group</organization>
           <person_name contributor_role="author" sequence="additional">
@@ -289,8 +284,6 @@ describe('build-expression-front-matter-from-crossref-work', () => {
           </person_name>
         </contributors>
       `);
-        const doc = parser.parseFromString(response, 'text/xml');
-        const authors = getAuthors(doc);
 
         expect(authors).toStrictEqual(O.some(['SEQC2 Oncopanel Sequencing Working Group', 'Yifan Zhang']));
       });
@@ -298,15 +291,13 @@ describe('build-expression-front-matter-from-crossref-work', () => {
 
     describe('when the mandatory surname is missing', () => {
       it('return O.none from getAuthors', () => {
-        const response = crossrefResponseWith(`
+        const authors = extractAuthorsFromFrontMatter(`
         <contributors>
           <person_name contributor_role="author" sequence="additional">
             <given_name>Yifan</given_name>
           </person_name>
         </contributors>
       `);
-        const doc = parser.parseFromString(response, 'text/xml');
-        const authors = getAuthors(doc);
 
         expect(O.isSome(authors)).toBeFalsy();
       });
