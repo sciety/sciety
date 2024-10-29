@@ -1,8 +1,15 @@
 import { DOMParser } from '@xmldom/xmldom';
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import {
+  buildExpressionFrontMatterFromCrossrefWork,
   getAbstract, getAuthors, getTitle,
 } from '../../../src/third-parties/fetch-expression-front-matter/build-expression-front-matter-from-crossref-work';
+import { abortTest } from '../../abort-test';
+import { dummyLogger } from '../../dummy-logger';
+import { arbitraryString } from '../../helpers';
+import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 
 const crossrefResponseWith = (content: string): string => `
   <?xml version="1.0" encoding="UTF-8"?>
@@ -27,11 +34,17 @@ describe('build-expression-front-matter-from-crossref-work', () => {
   describe('parsing the abstract', () => {
     it('extracts the abstract text from the XML response', async () => {
       const response = crossrefResponseWith(`
+        <titles>
+          <title>${arbitraryString()}</title>
+        </titles>
         <abstract>
           Some random nonsense.
         </abstract>`);
-      const doc = parser.parseFromString(response, 'text/xml');
-      const abstract = getAbstract(doc);
+      const abstract = pipe(
+        buildExpressionFrontMatterFromCrossrefWork(response, dummyLogger, arbitraryExpressionDoi()),
+        E.getOrElseW(abortTest('Failed to build expression front matter')),
+        (frontMatter) => frontMatter.abstract,
+      );
 
       expect(abstract).toStrictEqual(O.some(expect.stringContaining('Some random nonsense.')));
     });
