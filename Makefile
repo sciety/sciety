@@ -148,7 +148,7 @@ feature-test: export DISPLAY_LAST_SERVER_STARTUP = false
 feature-test: node_modules clean-db build
 	${DOCKER_COMPOSE} up -d
 	scripts/wait-for-healthy.sh
-	npx jest ${TEST} --testTimeout=300000 --cache-directory=.jest-feature-test --roots ./feature-test/
+	npx jest ${TEST} --maxConcurrency=1 --testTimeout=300000 --cache-directory=.jest-feature-test --roots ./feature-test/
 	${DOCKER_COMPOSE} down
 
 download-exploratory-test-from-prod:
