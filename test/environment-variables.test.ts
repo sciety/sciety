@@ -21,12 +21,10 @@ describe('environment-variables', () => {
     });
 
     describe('given a non-empty string that does not pass the codec', () => {
-      const stringInput = 'will not pass';
       const defaultValue = false;
-      const codec = tt.BooleanFromString;
       const result = pipe(
-        stringInput,
-        withDefaultIfEmpty(codec, defaultValue).decode,
+        'does not pass',
+        withDefaultIfEmpty(tt.BooleanFromString, defaultValue).decode,
       );
 
       it('returns an error', () => {
