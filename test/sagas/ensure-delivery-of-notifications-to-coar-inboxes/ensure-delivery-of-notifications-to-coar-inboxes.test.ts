@@ -1,5 +1,5 @@
 import * as TE from 'fp-ts/TaskEither';
-import { preReviewGroupId } from '../../../src/read-models/evaluations-for-notifications/coar-notifications-config';
+import { coarNotificationsConfig } from '../../../src/read-models/evaluations-for-notifications/coar-notifications-config';
 import { DependenciesForSagas } from '../../../src/sagas/dependencies-for-sagas';
 import { ensureDeliveryOfNotificationsToCoarInboxes } from '../../../src/sagas/ensure-delivery-of-notifications-to-coar-inboxes';
 import { toErrorMessage } from '../../../src/types/error-message';
@@ -7,6 +7,8 @@ import { createTestFramework, TestFramework } from '../../framework';
 import { arbitraryString, arbitraryUrl } from '../../helpers';
 import { arbitraryEvaluationLocator } from '../../types/evaluation-locator.helper';
 import { arbitraryRecordEvaluationPublicationCommand } from '../../write-side/commands/record-evaluation-publication-command.helper';
+
+const groupIdFromHardCodedConfig = coarNotificationsConfig.keys().next().value;
 
 describe('ensure-delivery-of-notifications-to-coar-inboxes', () => {
   let framework: TestFramework;
@@ -43,7 +45,7 @@ describe('ensure-delivery-of-notifications-to-coar-inboxes', () => {
     beforeEach(async () => {
       await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordEvaluationPublicationCommand(),
-        groupId: preReviewGroupId,
+        groupId: groupIdFromHardCodedConfig,
       });
     });
 
@@ -92,12 +94,12 @@ describe('ensure-delivery-of-notifications-to-coar-inboxes', () => {
     beforeEach(async () => {
       await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordEvaluationPublicationCommand(),
-        groupId: preReviewGroupId,
+        groupId: groupIdFromHardCodedConfig,
         evaluationLocator: evaluationA,
       });
       await framework.commandHelpers.recordEvaluationPublication({
         ...arbitraryRecordEvaluationPublicationCommand(),
-        groupId: preReviewGroupId,
+        groupId: groupIdFromHardCodedConfig,
         evaluationLocator: evaluationB,
       });
       await ensureDeliveryOfNotificationsToCoarInboxes(
