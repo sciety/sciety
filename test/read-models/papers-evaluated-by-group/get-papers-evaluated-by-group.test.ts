@@ -43,7 +43,7 @@ const expectSingleExpressionDoiIn = (
 ) => {
   expect(result.size).toBe(1);
 
-  const onlyElementInTheSet: EvaluatedPaper = result.values().next().value;
+  const onlyElementInTheSet = result.values().next().value as EvaluatedPaper;
 
   expect(onlyElementInTheSet.representative).toStrictEqual(representative);
 };
@@ -54,7 +54,7 @@ const expectLastEvaluatedAt = (
 ) => {
   expect(result.size).toBe(1);
 
-  const onlyElementInTheSet: EvaluatedPaper = result.values().next().value;
+  const onlyElementInTheSet = result.values().next().value as EvaluatedPaper;
 
   expect(
     onlyElementInTheSet.lastEvaluatedAt,
