@@ -35,7 +35,15 @@ describe('environment-variables', () => {
     });
 
     describe('given undefined', () => {
-      it.todo('returns a default value');
+      const defaultValue = arbitraryString();
+      const result = pipe(
+        undefined,
+        withDefaultIfEmpty(t.string, defaultValue).decode,
+      );
+
+      it('returns a default value', () => {
+        expect(result).toStrictEqual(E.right(defaultValue));
+      });
     });
 
     describe('given an empty string', () => {
