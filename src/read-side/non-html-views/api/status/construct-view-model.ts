@@ -16,6 +16,6 @@ export const constructViewModel = (dependencies: DependenciesForViews): ApiData 
   sagaWorkQueues: {
     ensureEvaluationsAreListed: dependencies.getUnlistedEvaluatedArticles(),
     maintainSnapshotsForEvaluatedExpressions: dependencies.getExpressionsWithNoAssociatedSnapshot(),
-    sendNotificationToCoarTestInbox: dependencies.getPendingNotifications(),
+    ensureDeliveryOfNotificationsToCoarInboxes: dependencies.getPendingNotifications(),
   },
 });
