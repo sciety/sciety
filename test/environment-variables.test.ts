@@ -1,6 +1,7 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
+import * as tt from 'io-ts-types';
 import { arbitraryString } from './helpers';
 import { withDefaultIfEmpty } from '../src/environment-variables';
 
@@ -20,7 +21,17 @@ describe('environment-variables', () => {
     });
 
     describe('given a non-empty string that does not pass the codec', () => {
-      it.todo('returns an error');
+      const stringInput = 'will not pass';
+      const defaultValue = false;
+      const codec = tt.BooleanFromString;
+      const result = pipe(
+        stringInput,
+        withDefaultIfEmpty(codec, defaultValue).decode,
+      );
+
+      it('returns an error', () => {
+        expect(result).toStrictEqual(E.left(expect.anything()));
+      });
     });
 
     describe('given undefined', () => {
