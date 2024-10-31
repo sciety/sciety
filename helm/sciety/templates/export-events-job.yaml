@@ -27,20 +27,11 @@ spec:
                     name: {{ .Release.Name }}--public-env-vars
                 - secretRef:
                     name: {{ .Release.Name }}--secret-env-vars
-              env:
-                - name: AWS_ACCESS_KEY_ID
-                  valueFrom:
-                    secretKeyRef:
-                      name: sciety-events-shipper-aws-credentials
-                      key: id
-                - name: AWS_SECRET_ACCESS_KEY
-                  valueFrom:
-                    secretKeyRef:
-                      name: sciety-events-shipper-aws-credentials
-                      key: secret
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: {{ .Release.Name }}--sciety-export-events
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::540790251273:role/ScietyEventsShipper
 {{ end }}
