@@ -62,6 +62,9 @@ type ConstructHtmlResponse = (
 => (renderedPage: E.Either<ErrorPageViewModel, HtmlPage>)
 => HtmlResponse;
 
+/**
+ * @deprecated replace with constructHtmlResponseWithDependencies
+ */
 export const constructHtmlResponse: ConstructHtmlResponse = (
   userDetails,
   pageLayout,
