@@ -12,19 +12,19 @@ import {
 import { ensureUserIsLoggedIn } from './ensure-user-is-logged-in';
 import { DependenciesForViews } from '../../read-side/dependencies-for-views';
 import { toErrorPageViewModel } from '../../read-side/html-pages/construct-error-page-view-model';
-import { constructHtmlResponse } from '../../read-side/html-pages/construct-html-response';
+import { constructHtmlResponseWithDependencies } from '../../read-side/html-pages/construct-html-response';
 import { createAnnotationFormPage, paramsCodec } from '../../read-side/html-pages/create-annotation-form-page';
 import { HtmlPage, toHtmlPage } from '../../read-side/html-pages/html-page';
 import { standardPageLayout } from '../../read-side/html-pages/shared-components/standard-page-layout';
 import { inputFieldNames } from '../../standards';
 import { GroupId } from '../../types/group-id';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { UserDetails } from '../../types/user-details';
 import { UserId } from '../../types/user-id';
 import { DependenciesForCommands } from '../../write-side';
 import { AnnotateArticleInListCommand, annotateArticleInListCommandCodec } from '../../write-side/commands';
 import { executeResourceAction } from '../../write-side/resources/execute-resource-action';
 import * as listResource from '../../write-side/resources/list';
+import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
 import { detectClientClassification } from '../detect-client-classification';
 import { sendDefaultErrorHtmlResponse } from '../send-default-error-html-response';
 import { sendHtmlResponse } from '../send-html-response';
@@ -44,7 +44,6 @@ const redisplayFormPage = (
   dependencies: Dependencies,
   context: ParameterizedContext,
   params: Params,
-  user: O.Option<UserDetails>,
 ) => pipe(
   createAnnotationFormPage(dependencies, 'article-not-in-list')(params),
   TE.map(prependErrorToTitleForAccessibility),
@@ -54,7 +53,12 @@ const redisplayFormPage = (
       message: toHtmlFragment(`Something went wrong when you submitted your annotation. ${errorPageBodyViewModel.message}`),
     }),
   ),
-  T.map(constructHtmlResponse(user, standardPageLayout, detectClientClassification(context))),
+  T.map(constructHtmlResponseWithDependencies(
+    dependencies,
+    getAuthenticatedUserIdFromContext(context),
+    standardPageLayout,
+    detectClientClassification(context),
+  )),
 );
 
 type CreateAnnotationHandler = (dependencies: Dependencies) => Middleware;
@@ -110,7 +114,6 @@ export const createAnnotationHandler: CreateAnnotationHandler = (dependencies) =
     dependencies,
     context,
     { listId: command.right.listId, expressionDoi: command.right.expressionDoi },
-    loggedInUser,
   )();
   sendHtmlResponse(context)(htmlResponse);
 };
