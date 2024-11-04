@@ -1,11 +1,11 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
-import { Middleware, ParameterizedContext } from 'koa';
+import { Middleware } from 'koa';
 import { validateAndExecuteCommand, Dependencies as ValidateAndExecuteCommandDependencies } from './validate-and-execute-command';
-import { constructHtmlResponse } from '../../read-side/html-pages/construct-html-response';
+import { DependenciesForViews } from '../../read-side/dependencies-for-views';
+import { constructHtmlResponseWithDependencies } from '../../read-side/html-pages/construct-html-response';
 import { createUserAccountFormPageLayout, renderFormPage } from '../../read-side/html-pages/create-user-account-form-page';
-import { UserDetails } from '../../types/user-details';
 import {
   Dependencies as GetLoggedInScietyUserDependencies, getAuthenticatedUserIdFromContext,
 } from '../authentication-and-logging-in-of-sciety-users';
@@ -13,16 +13,7 @@ import { redirectToAuthenticationDestination } from '../authentication-destinati
 import { detectClientClassification } from '../detect-client-classification';
 import { sendHtmlResponse } from '../send-html-response';
 
-type Dependencies = GetLoggedInScietyUserDependencies & ValidateAndExecuteCommandDependencies;
-
-const getLoggedInScietyUser = (
-  dependencies: Dependencies,
-  context: ParameterizedContext,
-): O.Option<UserDetails> => pipe(
-  context,
-  getAuthenticatedUserIdFromContext,
-  O.chain((id) => dependencies.lookupUser(id)),
-);
+type Dependencies = GetLoggedInScietyUserDependencies & ValidateAndExecuteCommandDependencies & DependenciesForViews;
 
 export const createUserAccount = (dependencies: Dependencies): Middleware => async (context) => {
   const result = await validateAndExecuteCommand(context, dependencies)();
@@ -34,8 +25,9 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
       },
       renderFormPage(formDetails.fullName, formDetails.handle),
       E.right,
-      constructHtmlResponse(
-        getLoggedInScietyUser(dependencies, context),
+      constructHtmlResponseWithDependencies(
+        dependencies,
+        getAuthenticatedUserIdFromContext(context),
         createUserAccountFormPageLayout,
         detectClientClassification(context),
       ),
