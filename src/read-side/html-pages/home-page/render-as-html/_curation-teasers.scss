@@ -103,10 +103,6 @@ $_arbitrary-large-amount-of-px: 9000px;
   margin-top: 0;
   margin-bottom: 0;
   padding-top: functions.px-to-rem(16px);
-
-  @media screen and (min-width: common.$home-page-breakpoint) {
-    height: 100%;
-  }
 }
 
 .curation-teaser__quote_wrapper {
