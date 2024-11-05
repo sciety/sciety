@@ -130,7 +130,7 @@ const updateLastEvaluationDate = (
   }
 };
 
-const declareEvaluatedExpression = (readmodel: ReadModel, groupId: GroupId, expressionDoi: ExpressionDoi) => {
+const addToExpressionsWithoutSnapshot = (readmodel: ReadModel, groupId: GroupId, expressionDoi: ExpressionDoi) => {
   if (!(groupId in readmodel.evaluatedExpressionsWithoutPaperSnapshot)) {
     readmodel.evaluatedExpressionsWithoutPaperSnapshot[groupId] = new Set();
   }
@@ -145,11 +145,13 @@ const isSnapshotRepresented = (
 
 const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPublicationRecorded'>, readmodel: ReadModel) => {
   updateLastEvaluationDate(readmodel.expressionLastEvaluatedAt, event);
+
   const isPartOfKnownSnapshot = Object.keys(readmodel.paperSnapshotsByEveryMember).includes(event.articleId);
   if (!isPartOfKnownSnapshot) {
-    declareEvaluatedExpression(readmodel, event.groupId, event.articleId);
+    addToExpressionsWithoutSnapshot(readmodel, event.groupId, event.articleId);
     return;
   }
+
   const latestSnapshotForEvaluatedExpression = readmodel.paperSnapshotsByEveryMember[event.articleId];
   if (!isSnapshotRepresented(readmodel, event.groupId, latestSnapshotForEvaluatedExpression)) {
     const paperSnapshotRepresentative = pickRepresentative(latestSnapshotForEvaluatedExpression);
