@@ -7,7 +7,7 @@ import { HtmlPage, toHtmlPage } from './html-page';
 import { PageLayout, PageLayoutViewModel } from './page-layout';
 import { renderOopsMessage } from './render-oops-message';
 import { ClientClassification } from './shared-components/head';
-import { standardPageLayout } from './shared-components/standard-page-layout';
+import { renderStandardPageLayout } from './shared-components/standard-page-layout';
 import { wrapInHtmlDocument } from './wrap-in-html-document';
 import * as DE from '../../types/data-error';
 import { UserDetails } from '../../types/user-details';
@@ -29,7 +29,7 @@ const toErrorResponse = (
     title: 'Error',
     content,
   }),
-  standardPageLayout(constructLayoutViewModel(user)),
+  renderStandardPageLayout(constructLayoutViewModel(user)),
   wrapInHtmlDocument({ title: 'Error', loggedInUserId: pipe(user, O.map((u) => u.id)), clientClassification }),
   (document) => ({
     document,

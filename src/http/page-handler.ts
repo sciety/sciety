@@ -13,7 +13,7 @@ import { ConstructLoggedInPage, ConstructPage } from '../read-side/html-pages/co
 import { HtmlPage } from '../read-side/html-pages/html-page';
 import { PageLayout } from '../read-side/html-pages/page-layout';
 import { RedirectTarget } from '../read-side/html-pages/redirect-target';
-import { standardPageLayout } from '../read-side/html-pages/shared-components/standard-page-layout';
+import { renderStandardPageLayout } from '../read-side/html-pages/shared-components/standard-page-layout';
 
 const constructAndSendHtmlResponse = (
   dependencies: ConstructHtmlResponseDependencies,
@@ -56,7 +56,7 @@ const sendHtmlResponseOrRedirect = (
 export const pageHandler = (
   dependencies: ConstructHtmlResponseDependencies,
   handler: ConstructPage,
-  pageLayout: PageLayout = standardPageLayout,
+  pageLayout: PageLayout = renderStandardPageLayout,
 ): Middleware => async (context, next) => {
   const result = await pipe(
     {
@@ -88,7 +88,7 @@ export const pageHandler = (
 export const pageHandlerWithLoggedInUser = (
   dependencies: ConstructHtmlResponseDependencies,
   handler: ConstructLoggedInPage,
-  pageLayout: PageLayout = standardPageLayout,
+  pageLayout: PageLayout = renderStandardPageLayout,
 ): Middleware => async (context, next) => {
   const loggedInUserId = getAuthenticatedUserIdFromContext(context);
   if (O.isNone(loggedInUserId)) {

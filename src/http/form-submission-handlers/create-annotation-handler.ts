@@ -15,7 +15,7 @@ import { toErrorPageViewModel } from '../../read-side/html-pages/construct-error
 import { constructHtmlResponseWithDependencies } from '../../read-side/html-pages/construct-html-response';
 import { createAnnotationFormPage, paramsCodec } from '../../read-side/html-pages/create-annotation-form-page';
 import { HtmlPage, toHtmlPage } from '../../read-side/html-pages/html-page';
-import { standardPageLayout } from '../../read-side/html-pages/shared-components/standard-page-layout';
+import { renderStandardPageLayout } from '../../read-side/html-pages/shared-components/standard-page-layout';
 import { inputFieldNames } from '../../standards';
 import { GroupId } from '../../types/group-id';
 import { toHtmlFragment } from '../../types/html-fragment';
@@ -56,7 +56,7 @@ const redisplayFormPage = (
   T.map(constructHtmlResponseWithDependencies(
     dependencies,
     getAuthenticatedUserIdFromContext(context),
-    standardPageLayout,
+    renderStandardPageLayout,
     detectClientClassification(context),
   )),
 );
