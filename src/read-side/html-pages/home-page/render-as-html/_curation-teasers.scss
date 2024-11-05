@@ -7,6 +7,7 @@
 @use 'common';
 
 $_arbitrary-large-amount-of-px: 9000px;
+$_wide-enough-to-fit-into-columns: functions.px-to-rem(924px);
 
 /* stylelint-disable value-no-vendor-prefix */
 @mixin _clamp-to-max-number-of-lines($number-of-lines) {
@@ -29,6 +30,8 @@ $_arbitrary-large-amount-of-px: 9000px;
   padding-top: common.$section-vertical-separation;
   max-width: common.$home-page-section-max-width;
   background-color: settings.$colour-curation-teasers-background;
+
+  container-type: inline-size;
 
   @include breakpoints.not-narrow {
     padding-left: functions.px-to-rem(settings.$default-gutter);
@@ -70,9 +73,10 @@ $_arbitrary-large-amount-of-px: 9000px;
 
 .curation-teasers__teasers {
   margin-bottom: 0;
+  container-type: inline-size;
   @include list.basics();
 
-  @media screen and (min-width: common.$home-page-breakpoint) {
+  @container (min-width: #{$_wide-enough-to-fit-into-columns}) {
     display: flex;
     justify-content: space-evenly;
   }
@@ -85,7 +89,7 @@ $_arbitrary-large-amount-of-px: 9000px;
     margin-bottom: 0;
   }
 
-  @media screen and (min-width: common.$home-page-breakpoint) {
+  @container (min-width: #{$_wide-enough-to-fit-into-columns}) {
     flex: 1 0;
     margin-bottom: 0;
     margin-right: functions.px-to-rem(24px);
