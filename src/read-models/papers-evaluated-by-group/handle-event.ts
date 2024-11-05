@@ -1,8 +1,15 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-loops/no-loops */
+import * as RA from 'fp-ts/ReadonlyArray';
+import * as R from 'fp-ts/Record';
+import { pipe } from 'fp-ts/function';
 import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events';
 import { ExpressionDoi } from '../../types/expression-doi';
 import { GroupId } from '../../types/group-id';
+
+const intersection = <T>(
+  set1: ReadonlySet<T>,
+) => (set2: ReadonlySet<T>): Set<T> => new Set([...set2].filter((value) => set1.has(value)));
 
 type PaperSnapshotRepresentative = ExpressionDoi;
 
@@ -138,27 +145,29 @@ const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>
     readmodel.paperSnapshotsByEveryMember[snapshotMember] = paperSnapshot;
   });
 
-  // Loop over all evaluated expressions for which we previously had no snapshots
-  for (const [groupId, expressionsWithoutPaperSnapshot]
-    of Object.entries(readmodel.evaluatedExpressionsWithoutPaperSnapshot)) {
-    for (const expressionDoi of expressionsWithoutPaperSnapshot) {
-      // Ignore expression that aren't part of current snapshot
-      const latestSnapshotForEvaluatedExpression = readmodel.paperSnapshotsByEveryMember[expressionDoi];
-      if (latestSnapshotForEvaluatedExpression === undefined) {
-        // eslint-disable-next-line no-continue
-        continue;
-      }
+  const evaluatedExpressionCoveredByNewSnapshot = pipe(
+    readmodel.evaluatedExpressionsWithoutPaperSnapshot,
+    R.map(intersection(event.expressionDois)),
+    R.toEntries,
+    RA.flatMap(([groupId, expressionDois]) => pipe(
+      Array.from(expressionDois),
+      RA.map((expressionDoi) => ({ expressionDoi, groupId })),
+    )),
+  );
 
-      const dateOfLatestEvalutionByGroup = calculateLastEvaluatedAtForSnapshot(
-        readmodel, groupId as GroupId, latestSnapshotForEvaluatedExpression,
-      ) ?? new Date(); // fallback needed due to types
-      updateEvaluatedPapers(
-        readmodel,
-        groupId as GroupId,
-        latestSnapshotForEvaluatedExpression,
-        dateOfLatestEvalutionByGroup,
-      );
-    }
+  // Loop over all evaluated expressions for which we previously had no snapshots
+  for (const item of evaluatedExpressionCoveredByNewSnapshot) {
+    const latestSnapshotForEvaluatedExpression = readmodel.paperSnapshotsByEveryMember[item.expressionDoi];
+
+    const dateOfLatestEvalutionByGroup = calculateLastEvaluatedAtForSnapshot(
+      readmodel, item.groupId, latestSnapshotForEvaluatedExpression,
+    ) ?? new Date(); // fallback needed due to types
+    updateEvaluatedPapers(
+      readmodel,
+      item.groupId,
+      latestSnapshotForEvaluatedExpression,
+      dateOfLatestEvalutionByGroup,
+    );
   }
 
   // Remove all expression from queue of missing snapshots for which we now have a snapshot
