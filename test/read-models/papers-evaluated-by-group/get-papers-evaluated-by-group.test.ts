@@ -217,7 +217,7 @@ describe('get-papers-evaluated-by-group', () => {
       });
 
       it('returns the paper representative', () => {
-        expectSingleExpressionDoiIn(result, expressionDoiA);
+        expectSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisAB.expressionDois);
       });
 
       it('returns a lastEvaluatedAt', () => {
@@ -243,7 +243,7 @@ describe('get-papers-evaluated-by-group', () => {
       });
 
       it('returns the paper representative', () => {
-        expectSingleExpressionDoiIn(result, expressionDoiA);
+        expectSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisAB.expressionDois);
       });
 
       it('returns a lastEvaluatedAt', () => {
@@ -269,7 +269,7 @@ describe('get-papers-evaluated-by-group', () => {
       });
 
       it('returns the paper representative', () => {
-        expectSingleExpressionDoiIn(result, expressionDoiA);
+        expectSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisAB.expressionDois);
       });
 
       it('returns a lastEvaluatedAt', () => {
@@ -295,7 +295,7 @@ describe('get-papers-evaluated-by-group', () => {
       });
 
       it('returns the paper representative', () => {
-        expectSingleExpressionDoiIn(result, expressionDoiA);
+        expectSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisAB.expressionDois);
       });
 
       it('returns a lastEvaluatedAt', () => {
@@ -320,7 +320,7 @@ describe('get-papers-evaluated-by-group', () => {
       });
 
       it('returns the paper representative', () => {
-        expectSingleExpressionDoiIn(result, expressionDoiA);
+        expectSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisAB.expressionDois);
       });
 
       it('returns a lastEvaluatedAt', () => {
@@ -344,7 +344,7 @@ describe('get-papers-evaluated-by-group', () => {
       });
 
       it('returns the paper representative', () => {
-        expectSingleExpressionDoiIn(result, expressionDoiA);
+        expectSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisAB.expressionDois);
       });
 
       it('returns a lastEvaluatedAt', () => {
@@ -368,7 +368,7 @@ describe('get-papers-evaluated-by-group', () => {
       });
 
       it('returns the paper representative', () => {
-        expectSingleExpressionDoiIn(result, expressionDoiA);
+        expectSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisAB.expressionDois);
       });
 
       it('returns a lastEvaluatedAt', () => {
