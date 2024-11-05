@@ -50,6 +50,17 @@ const expectSingleExpressionDoiIn = (
   expect(onlyElementInTheSet.representative).toStrictEqual(representative);
 };
 
+const expectSingleExpressionDoiFromSnapshot = (
+  result: ReadonlySet<EvaluatedPaper>,
+  snapshot: ReadonlySet<ExpressionDoi>,
+) => {
+  expect(result.size).toBe(1);
+
+  const onlyPaper: EvaluatedPaper = result.values().next().value;
+
+  expect(snapshot.has(onlyPaper.representative)).toBe(true);
+};
+
 const expectLastEvaluatedAt = (
   result: ReadonlySet<EvaluatedPaper>,
   lastEvaluatedAt: Date,
@@ -187,7 +198,7 @@ describe('get-papers-evaluated-by-group', () => {
       });
 
       it('returns the paper representative', () => {
-        expectSingleExpressionDoiIn(result, expressionDoiA);
+        expectSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisAB.expressionDois);
       });
 
       it('returns a lastEvaluatedAt', () => {
