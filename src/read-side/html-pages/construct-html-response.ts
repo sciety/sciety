@@ -14,6 +14,13 @@ import { UserDetails } from '../../types/user-details';
 import { UserId } from '../../types/user-id';
 import { DependenciesForViews } from '../dependencies-for-views';
 
+export type Dependencies = DependenciesForViews;
+
+const constructLoggedInUserDetails = (dependencies: Dependencies, loggedInUserId: O.Option<UserId>) => pipe(
+  loggedInUserId,
+  O.chain((id) => dependencies.lookupUser(id)),
+);
+
 const constructLayoutViewModel = (user: O.Option<UserDetails>): PageLayoutViewModel => ({
   userDetails: user,
 });
@@ -55,8 +62,6 @@ export type HtmlResponse = {
   error: O.Option<DE.DataError>,
 };
 
-export type Dependencies = DependenciesForViews;
-
 type ConstructHtmlResponse = (
   dependencies: Dependencies,
   loggedInUserId: O.Option<UserId>,
@@ -70,17 +75,10 @@ export const constructHtmlResponse: ConstructHtmlResponse = (
   loggedInUserId,
   pageLayout,
   clientClassification,
-) => (renderedPage) => {
-  const userDetails = pipe(
-    loggedInUserId,
-    O.chain((id) => dependencies.lookupUser(id)),
-  );
-
-  return pipe(
-    renderedPage,
-    E.fold(
-      toErrorResponse(userDetails, clientClassification),
-      pageToSuccessResponse(userDetails, pageLayout, clientClassification),
-    ),
-  );
-};
+) => (renderedPage) => pipe(
+  renderedPage,
+  E.fold(
+    toErrorResponse(constructLoggedInUserDetails(dependencies, loggedInUserId), clientClassification),
+    pageToSuccessResponse(constructLoggedInUserDetails(dependencies, loggedInUserId), pageLayout, clientClassification),
+  ),
+);
