@@ -171,7 +171,7 @@ describe('get-papers-evaluated-by-group', () => {
         result = runQuery(events, fromValidatedString('4d6a8908-22a9-45c8-bd56-3c7140647709'));
       });
 
-      it.failing('returns only one paper', () => {
+      it('returns only one paper', () => {
         expect(result.size).toBe(1);
       });
     });

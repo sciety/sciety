@@ -1,8 +1,5 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-loops/no-loops */
-import * as RA from 'fp-ts/ReadonlyArray';
-import * as R from 'fp-ts/Record';
-import { pipe } from 'fp-ts/function';
 import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events';
 import { ExpressionDoi } from '../../types/expression-doi';
 import { GroupId } from '../../types/group-id';
@@ -18,7 +15,7 @@ export type EvaluatedPaper = {
 
 export type ReadModel = {
   evaluatedPapers: Record<GroupId, Array<EvaluatedPaper>>,
-  evaluatedExpressionsWithoutPaperSnapshot: Record<GroupId, Set<ExpressionDoi>>,
+  evaluatedExpressionsWithoutPaperSnapshot: Record<GroupId, Set<ExpressionDoi>>, // why is this by GroupId?
   paperSnapshotsByEveryMember: Record<ExpressionDoi, PaperSnapshot>,
   expressionLastEvaluatedAt: Map<GroupId, Map<ExpressionDoi, Date>>,
 };
@@ -35,30 +32,6 @@ const initialiseEvaluatedPapersForGroup = (readmodel: ReadModel, groupId: GroupI
     readmodel.evaluatedPapers[groupId] = [];
   }
 };
-
-const allKnownRepresentatives = (readmodel: ReadModel, groupId: GroupId) => {
-  initialiseEvaluatedPapersForGroup(readmodel, groupId);
-  return pipe(
-    readmodel.evaluatedPapers[groupId],
-    RA.map((evaluatedPaper) => evaluatedPaper.representative),
-    (representatives) => new Set(representatives),
-  );
-};
-
-const declareEvaluatedPaper = (
-  readmodel: ReadModel,
-  groupId: GroupId,
-  representative: PaperSnapshotRepresentative,
-  lastEvaluatedAt: Date,
-) => {
-  initialiseEvaluatedPapersForGroup(readmodel, groupId);
-  return readmodel.evaluatedPapers[groupId].push({
-    representative,
-    lastEvaluatedAt,
-  });
-};
-
-const pickRepresentative = (paperSnapshot: PaperSnapshot): PaperSnapshotRepresentative => paperSnapshot[0];
 
 const calculateLastEvaluatedAtForSnapshot = (
   readmodel: ReadModel,
@@ -86,27 +59,6 @@ const calculateLastEvaluatedAtForSnapshot = (
   return calculatedDate;
 };
 
-const updateLastEvaluatedAtForKnownPaper = (
-  readmodel: ReadModel,
-  groupId: GroupId,
-  paperSnapshotRepresentative: PaperSnapshotRepresentative,
-) => {
-  const evaluatedPapers = readmodel.evaluatedPapers[groupId];
-  const indexOfExistingEvaluatedPaper = evaluatedPapers.findIndex(
-    (evaluatedPaper) => evaluatedPaper.representative === paperSnapshotRepresentative,
-  );
-  if (indexOfExistingEvaluatedPaper > -1) {
-    const lastEvaluatedAt = calculateLastEvaluatedAtForSnapshot(
-      readmodel,
-      groupId,
-      readmodel.paperSnapshotsByEveryMember[paperSnapshotRepresentative],
-    );
-    if (lastEvaluatedAt !== undefined) {
-      evaluatedPapers[indexOfExistingEvaluatedPaper].lastEvaluatedAt = lastEvaluatedAt;
-    }
-  }
-};
-
 const updateLastEvaluationDate = (
   expressionLastEvaluatedAt: ReadModel['expressionLastEvaluatedAt'],
   event: EventOfType<'EvaluationPublicationRecorded'>,
@@ -131,12 +83,6 @@ const addToExpressionsWithoutSnapshot = (readmodel: ReadModel, groupId: GroupId,
   }
   readmodel.evaluatedExpressionsWithoutPaperSnapshot[groupId].add(expressionDoi);
 };
-
-const isSnapshotRepresented = (
-  readmodel: ReadModel,
-  groupId: GroupId,
-  paperSnapshot: PaperSnapshot,
-) => allKnownRepresentatives(readmodel, groupId).has(pickRepresentative(paperSnapshot));
 
 const updateEvaluatedPapers = (
   readmodel: ReadModel,
@@ -185,56 +131,41 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
   );
 };
 
-const updatePaperSnapshotRepresentatives = (
-  readmodel: ReadModel,
-  groupId: GroupId,
-  paperSnapshot: PaperSnapshot,
-  evaluatedExpressionsWithoutPaperSnapshot: ReadModel['evaluatedExpressionsWithoutPaperSnapshot'][GroupId],
-) => {
-  const lastEvaluatedAt = calculateLastEvaluatedAtForSnapshot(
-    readmodel,
-    groupId,
-    paperSnapshot,
-  );
-  const paperSnapshotRepresentative = pickRepresentative(paperSnapshot);
-  if (lastEvaluatedAt === undefined) {
-    return;
-  }
-  paperSnapshot.forEach((expressionDoi) => {
-    if (isSnapshotRepresented(readmodel, groupId, paperSnapshot)) {
-      evaluatedExpressionsWithoutPaperSnapshot.delete(expressionDoi);
-      return;
-    }
-    const evaluatedPaperExpressionWasNotAlreadyInSnapshot = evaluatedExpressionsWithoutPaperSnapshot.has(expressionDoi);
-    if (evaluatedPaperExpressionWasNotAlreadyInSnapshot) {
-      declareEvaluatedPaper(
+const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>, readmodel: ReadModel) => {
+  // Keep track of latest snapshot information available for each expression
+  const paperSnapshot = Array.from(event.expressionDois);
+  event.expressionDois.forEach((snapshotMember) => {
+    readmodel.paperSnapshotsByEveryMember[snapshotMember] = paperSnapshot;
+  });
+
+  // Loop over all evaluated expressions for which we previously had no snapshots
+  for (const [groupId, expressionsWithoutPaperSnapshot]
+    of Object.entries(readmodel.evaluatedExpressionsWithoutPaperSnapshot)) {
+    for (const expressionDoi of expressionsWithoutPaperSnapshot) {
+      // Ignore expression that aren't part of current snapshot
+      const latestSnapshotForEvaluatedExpression = readmodel.paperSnapshotsByEveryMember[expressionDoi];
+      if (latestSnapshotForEvaluatedExpression === undefined) {
+        // eslint-disable-next-line no-continue
+        continue;
+      }
+
+      const dateOfLatestEvalutionByGroup = calculateLastEvaluatedAtForSnapshot(
+        readmodel, groupId as GroupId, latestSnapshotForEvaluatedExpression,
+      ) ?? new Date(); // fallback needed due to types
+      updateEvaluatedPapers(
         readmodel,
-        groupId,
-        paperSnapshotRepresentative,
-        lastEvaluatedAt,
+        groupId as GroupId,
+        latestSnapshotForEvaluatedExpression,
+        dateOfLatestEvalutionByGroup,
       );
     }
-    evaluatedExpressionsWithoutPaperSnapshot.delete(expressionDoi);
-  });
-  updateLastEvaluatedAtForKnownPaper(readmodel, groupId, paperSnapshotRepresentative);
-};
-
-const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>, readmodel: ReadModel) => {
-  const paperSnapshot = Array.from(event.expressionDois);
-  event.expressionDois.forEach((member) => {
-    readmodel.paperSnapshotsByEveryMember[member] = paperSnapshot;
-  });
-  for (
-    const [groupId, expressionsWithoutPaperSnapshot]
-    of R.toEntries(readmodel.evaluatedExpressionsWithoutPaperSnapshot)
-  ) {
-    updatePaperSnapshotRepresentatives(
-      readmodel,
-      groupId,
-      paperSnapshot,
-      expressionsWithoutPaperSnapshot,
-    );
   }
+
+  // Remove all expression from queue of missing snapshots for which we now have a snapshot
+  event.expressionDois.forEach((snapshotMember) => {
+    Object.values(readmodel.evaluatedExpressionsWithoutPaperSnapshot)
+      .forEach((expressions) => { expressions.delete(snapshotMember); });
+  });
 };
 
 export const handleEvent = (
