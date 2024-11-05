@@ -176,11 +176,17 @@ const updatePaperSnapshotRepresentatives = (
   );
   const paperSnapshotRepresentative = pickRepresentative(paperSnapshot);
   paperSnapshot.forEach((expressionDoi) => {
+    if (lastEvaluatedAt === undefined) {
+      evaluatedExpressionsWithoutPaperSnapshot.delete(expressionDoi);
+      return;
+    }
+
+    if (isSnapshotRepresented(readmodel, groupId, paperSnapshot)) {
+      evaluatedExpressionsWithoutPaperSnapshot.delete(expressionDoi);
+      return;
+    }
     const evaluatedPaperExpressionWasNotAlreadyInSnapshot = evaluatedExpressionsWithoutPaperSnapshot.has(expressionDoi);
-    if (evaluatedPaperExpressionWasNotAlreadyInSnapshot
-      && !isSnapshotRepresented(readmodel, groupId, paperSnapshot)
-      && lastEvaluatedAt !== undefined
-    ) {
+    if (evaluatedPaperExpressionWasNotAlreadyInSnapshot) {
       declareEvaluatedPaper(
         readmodel,
         groupId,
