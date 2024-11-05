@@ -1,12 +1,11 @@
-import * as O from 'fp-ts/Option';
-import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { ParameterizedContext } from 'koa';
 import { getAuthenticatedUserIdFromContext, Dependencies as GetLoggedInScietyUserDependencies } from './authentication-and-logging-in-of-sciety-users';
 import { detectClientClassification } from './detect-client-classification';
+import { DependenciesForViews } from '../read-side/dependencies-for-views';
 import { toDefaultErrorHtmlDocument } from '../read-side/html-pages/to-default-error-html-document';
 
-export type Dependencies = GetLoggedInScietyUserDependencies;
+export type Dependencies = GetLoggedInScietyUserDependencies & DependenciesForViews;
 
 export const sendDefaultErrorHtmlResponse = (
   dependencies: Dependencies,
@@ -16,14 +15,10 @@ export const sendDefaultErrorHtmlResponse = (
 ): void => {
   context.response.status = statusCode;
   context.response.type = 'html';
-  const provideLoggedInUserDetails = pipe(
-    context,
-    getAuthenticatedUserIdFromContext,
-    O.chain((id) => dependencies.lookupUser(id)),
-  );
   context.response.body = toDefaultErrorHtmlDocument(
+    dependencies,
+    getAuthenticatedUserIdFromContext(context),
     errorMessage,
     detectClientClassification(context),
-    provideLoggedInUserDetails,
   );
 };

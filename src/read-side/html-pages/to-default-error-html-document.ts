@@ -8,15 +8,23 @@ import { ClientClassification } from './shared-components/head';
 import { renderStandardPageLayout } from './shared-components/standard-page-layout';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
-import { UserDetails } from '../../types/user-details';
+import { UserId } from '../../types/user-id';
+import { DependenciesForViews } from '../dependencies-for-views';
 
 export const toDefaultErrorHtmlDocument = (
+  dependencies: DependenciesForViews,
+  loggedInUserId: O.Option<UserId>,
   errorMessage: string,
   clientClassification: ClientClassification,
-  userDetails: O.Option<UserDetails>,
-): CompleteHtmlDocument => pipe(
-  constructHtmlResponse(userDetails, renderStandardPageLayout, clientClassification)(E.left(toErrorPageViewModel({
-    message: toHtmlFragment(errorMessage),
-    type: DE.unavailable,
-  }))).document,
-);
+): CompleteHtmlDocument => {
+  const userDetails = pipe(
+    loggedInUserId,
+    O.chain((id) => dependencies.lookupUser(id)),
+  );
+  return pipe(
+    constructHtmlResponse(userDetails, renderStandardPageLayout, clientClassification)(E.left(toErrorPageViewModel({
+      message: toHtmlFragment(errorMessage),
+      type: DE.unavailable,
+    }))).document,
+  );
+};
