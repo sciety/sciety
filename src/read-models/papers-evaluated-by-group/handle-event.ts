@@ -175,12 +175,10 @@ const updatePaperSnapshotRepresentatives = (
     paperSnapshot,
   );
   const paperSnapshotRepresentative = pickRepresentative(paperSnapshot);
+  if (lastEvaluatedAt === undefined) {
+    return;
+  }
   paperSnapshot.forEach((expressionDoi) => {
-    if (lastEvaluatedAt === undefined) {
-      evaluatedExpressionsWithoutPaperSnapshot.delete(expressionDoi);
-      return;
-    }
-
     if (isSnapshotRepresented(readmodel, groupId, paperSnapshot)) {
       evaluatedExpressionsWithoutPaperSnapshot.delete(expressionDoi);
       return;
