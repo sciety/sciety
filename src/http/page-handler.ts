@@ -8,7 +8,7 @@ import { detectClientClassification } from './detect-client-classification';
 import { sendHtmlResponse } from './send-html-response';
 import { sendRedirect } from './send-redirect';
 import { ErrorPageViewModel } from '../read-side/html-pages/construct-error-page-view-model';
-import { constructHtmlResponseWithDependencies, Dependencies as ConstructHtmlResponseDependencies } from '../read-side/html-pages/construct-html-response';
+import { constructHtmlResponse, Dependencies as ConstructHtmlResponseDependencies } from '../read-side/html-pages/construct-html-response';
 import { ConstructLoggedInPage, ConstructPage } from '../read-side/html-pages/construct-page';
 import { HtmlPage } from '../read-side/html-pages/html-page';
 import { PageLayout } from '../read-side/html-pages/page-layout';
@@ -21,7 +21,7 @@ const constructAndSendHtmlResponse = (
   context: ParameterizedContext,
 ) => (input: E.Either<ErrorPageViewModel, HtmlPage>) => pipe(
   input,
-  constructHtmlResponseWithDependencies(
+  constructHtmlResponse(
     dependencies,
     pipe(
       context,

@@ -55,31 +55,9 @@ export type HtmlResponse = {
   error: O.Option<DE.DataError>,
 };
 
-type ConstructHtmlResponse = (
-  userDetails: O.Option<UserDetails>,
-  pageLayout: PageLayout,
-  clientClassification: ClientClassification)
-=> (renderedPage: E.Either<ErrorPageViewModel, HtmlPage>)
-=> HtmlResponse;
-
-/**
- * @deprecated replace with constructHtmlResponseWithDependencies
- */
-export const constructHtmlResponse: ConstructHtmlResponse = (
-  userDetails,
-  pageLayout,
-  clientClassification,
-) => (renderedPage) => pipe(
-  renderedPage,
-  E.fold(
-    toErrorResponse(userDetails, clientClassification),
-    pageToSuccessResponse(userDetails, pageLayout, clientClassification),
-  ),
-);
-
 export type Dependencies = DependenciesForViews;
 
-type ConstructHtmlResponseWithDependencies = (
+type ConstructHtmlResponse = (
   dependencies: Dependencies,
   loggedInUserId: O.Option<UserId>,
   pageLayout: PageLayout,
@@ -87,7 +65,7 @@ type ConstructHtmlResponseWithDependencies = (
 => (renderedPage: E.Either<ErrorPageViewModel, HtmlPage>)
 => HtmlResponse;
 
-export const constructHtmlResponseWithDependencies: ConstructHtmlResponseWithDependencies = (
+export const constructHtmlResponse: ConstructHtmlResponse = (
   dependencies,
   loggedInUserId,
   pageLayout,

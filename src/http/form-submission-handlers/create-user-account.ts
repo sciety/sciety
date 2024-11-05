@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { Middleware } from 'koa';
 import { validateAndExecuteCommand, Dependencies as ValidateAndExecuteCommandDependencies } from './validate-and-execute-command';
 import { DependenciesForViews } from '../../read-side/dependencies-for-views';
-import { constructHtmlResponseWithDependencies } from '../../read-side/html-pages/construct-html-response';
+import { constructHtmlResponse } from '../../read-side/html-pages/construct-html-response';
 import { createUserAccountFormPageLayout, renderFormPage } from '../../read-side/html-pages/create-user-account-form-page';
 import {
   Dependencies as GetLoggedInScietyUserDependencies, getAuthenticatedUserIdFromContext,
@@ -25,7 +25,7 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
       },
       renderFormPage(formDetails.fullName, formDetails.handle),
       E.right,
-      constructHtmlResponseWithDependencies(
+      constructHtmlResponse(
         dependencies,
         getAuthenticatedUserIdFromContext(context),
         createUserAccountFormPageLayout,

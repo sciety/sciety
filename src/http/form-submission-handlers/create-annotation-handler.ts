@@ -12,7 +12,7 @@ import {
 import { ensureUserIsLoggedIn } from './ensure-user-is-logged-in';
 import { DependenciesForViews } from '../../read-side/dependencies-for-views';
 import { toErrorPageViewModel } from '../../read-side/html-pages/construct-error-page-view-model';
-import { constructHtmlResponseWithDependencies } from '../../read-side/html-pages/construct-html-response';
+import { constructHtmlResponse } from '../../read-side/html-pages/construct-html-response';
 import { createAnnotationFormPage, paramsCodec } from '../../read-side/html-pages/create-annotation-form-page';
 import { HtmlPage, toHtmlPage } from '../../read-side/html-pages/html-page';
 import { renderStandardPageLayout } from '../../read-side/html-pages/shared-components/standard-page-layout';
@@ -53,7 +53,7 @@ const redisplayFormPage = (
       message: toHtmlFragment(`Something went wrong when you submitted your annotation. ${errorPageBodyViewModel.message}`),
     }),
   ),
-  T.map(constructHtmlResponseWithDependencies(
+  T.map(constructHtmlResponse(
     dependencies,
     getAuthenticatedUserIdFromContext(context),
     renderStandardPageLayout,

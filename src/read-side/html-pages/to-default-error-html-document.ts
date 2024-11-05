@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { CompleteHtmlDocument } from './complete-html-document';
 import { toErrorPageViewModel } from './construct-error-page-view-model';
-import { constructHtmlResponseWithDependencies } from './construct-html-response';
+import { constructHtmlResponse } from './construct-html-response';
 import { ClientClassification } from './shared-components/head';
 import { renderStandardPageLayout } from './shared-components/standard-page-layout';
 import * as DE from '../../types/data-error';
@@ -23,6 +23,6 @@ export const toDefaultErrorHtmlDocument = (
   },
   toErrorPageViewModel,
   E.left,
-  constructHtmlResponseWithDependencies(dependencies, loggedInUserId, renderStandardPageLayout, clientClassification),
+  constructHtmlResponse(dependencies, loggedInUserId, renderStandardPageLayout, clientClassification),
   ({ document }) => document,
 );
