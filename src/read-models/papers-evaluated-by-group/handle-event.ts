@@ -112,11 +112,14 @@ const updateLastEvaluatedAtForKnownPaper = (
   }
 };
 
-const updateLastEvaluationDate = (readmodel: ReadModel, event: EventOfType<'EvaluationPublicationRecorded'>) => {
-  let expressionLastEvaluatedAtForGroup = readmodel.expressionLastEvaluatedAt.get(event.groupId);
+const updateLastEvaluationDate = (
+  expressionLastEvaluatedAt: ReadModel['expressionLastEvaluatedAt'],
+  event: EventOfType<'EvaluationPublicationRecorded'>,
+) => {
+  let expressionLastEvaluatedAtForGroup = expressionLastEvaluatedAt.get(event.groupId);
   if (expressionLastEvaluatedAtForGroup === undefined) {
     expressionLastEvaluatedAtForGroup = new Map();
-    readmodel.expressionLastEvaluatedAt.set(event.groupId, expressionLastEvaluatedAtForGroup);
+    expressionLastEvaluatedAt.set(event.groupId, expressionLastEvaluatedAtForGroup);
   }
 
   const knownPublishedAt = expressionLastEvaluatedAtForGroup.get(event.articleId);
@@ -141,7 +144,7 @@ const isSnapshotRepresented = (
 ) => allKnownRepresentatives(readmodel, groupId).has(pickRepresentative(paperSnapshot));
 
 const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPublicationRecorded'>, readmodel: ReadModel) => {
-  updateLastEvaluationDate(readmodel, event);
+  updateLastEvaluationDate(readmodel.expressionLastEvaluatedAt, event);
   const isPartOfKnownSnapshot = Object.keys(readmodel.paperSnapshotsByEveryMember).includes(event.articleId);
   if (!isPartOfKnownSnapshot) {
     declareEvaluatedExpression(readmodel, event.groupId, event.articleId);
