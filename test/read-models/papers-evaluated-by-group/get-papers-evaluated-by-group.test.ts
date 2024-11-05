@@ -365,6 +365,60 @@ describe('get-papers-evaluated-by-group', () => {
       });
     });
 
+    describe('tbd2', () => {
+      const a = EDOI.fromValidatedString('10.1101/993589');
+      const b = EDOI.fromValidatedString('10.1101/874612');
+      const c = EDOI.fromValidatedString('10.1101/793455');
+      const evaluationA = {
+        ...evaluationRecordedAgainstExpressionDoiA,
+        articleId: a,
+      };
+      const paperSnapshotAB = {
+        ...paperSnapshotWithExpressionDoisAB,
+        expressionDois: new Set([a, b]),
+      };
+      const newlyPublishedEvaluationRecordedAgainstExpressionDoiB = {
+        ...evaluationRecordedAgainstExpressionDoiB,
+        publishedAt: someTimeAfter(evaluationRecordedAgainstExpressionDoiA.publishedAt),
+      };
+      const evaluationB = {
+        ...newlyPublishedEvaluationRecordedAgainstExpressionDoiB,
+        articleId: b,
+      };
+      const newlyPublishedEvaluationRecordedAgainstExpressionDoiC = {
+        ...evaluationRecordedAgainstExpressionDoiC,
+        publishedAt: someTimeAfter(newlyPublishedEvaluationRecordedAgainstExpressionDoiB.publishedAt),
+      };
+      const evaluationC = {
+        ...newlyPublishedEvaluationRecordedAgainstExpressionDoiC,
+        articleId: c,
+      };
+      const paperSnapshotABC = {
+        ...paperSnapshotWithExpressionDoisABC,
+        expressionDois: new Set([a, b, c]),
+      };
+
+      const events = [
+        evaluationA,
+        paperSnapshotAB,
+        evaluationB,
+        evaluationC,
+        paperSnapshotABC,
+      ] satisfies ReadonlyArray<DomainEvent>;
+
+      beforeEach(() => {
+        result = runQuery(events, groupId);
+      });
+
+      it('returns the paper representative', () => {
+        expectSingleExpressionDoiFromSnapshot(result, paperSnapshotABC.expressionDois);
+      });
+
+      it('returns a lastEvaluatedAt', () => {
+        expectLastEvaluatedAt(result, evaluationC.publishedAt);
+      });
+    });
+
     describe('when an expression is evaluated that was not in the first snapshot but in the second snapshot', () => {
       const newlyPublishedEvaluationRecordedAgainstExpressionDoiB = {
         ...evaluationRecordedAgainstExpressionDoiB,
