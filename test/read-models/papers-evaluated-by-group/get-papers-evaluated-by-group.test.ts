@@ -39,17 +39,6 @@ const runQuery = (events: ReadonlyArray<DomainEvent>, queriedGroupId: GroupId) =
   return getPapersEvaluatedByGroup(readModel)(queriedGroupId);
 };
 
-const expectSingleExpressionDoiIn = (
-  result: ReadonlySet<EvaluatedPaper>,
-  representative: ExpressionDoi,
-) => {
-  expect(result.size).toBe(1);
-
-  const onlyElementInTheSet: EvaluatedPaper = result.values().next().value;
-
-  expect(onlyElementInTheSet.representative).toStrictEqual(representative);
-};
-
 const expectSingleExpressionDoiFromSnapshot = (
   result: ReadonlySet<EvaluatedPaper>,
   snapshot: ReadonlySet<ExpressionDoi>,
@@ -522,20 +511,21 @@ describe('get-papers-evaluated-by-group', () => {
     describe('when an evaluation has been recorded, and then a snapshot is recorded containing another expression and the evaluated one', () => {
       const anotherExpressionDoi = arbitraryExpressionDoi();
       const evaluatedExpressionDoi = arbitraryExpressionDoi();
-      const evaluationPublicationRecorded = {
+      const evaluationPublicationRecordedForExpressionY = {
         ...arbitraryEvaluationPublicationRecordedEvent(),
         groupId,
         articleId: evaluatedExpressionDoi,
       };
+      const paperSnapshotWithExpressionDoisXY = {
+        ...arbitraryPaperSnapshotRecordedEvent(),
+        expressionDois: new Set([
+          anotherExpressionDoi,
+          evaluatedExpressionDoi,
+        ]),
+      };
       const events = [
-        evaluationPublicationRecorded,
-        {
-          ...arbitraryPaperSnapshotRecordedEvent(),
-          expressionDois: new Set([
-            anotherExpressionDoi,
-            evaluatedExpressionDoi,
-          ]),
-        },
+        evaluationPublicationRecordedForExpressionY,
+        paperSnapshotWithExpressionDoisXY,
       ] satisfies ReadonlyArray<DomainEvent>;
 
       beforeEach(() => {
@@ -543,11 +533,11 @@ describe('get-papers-evaluated-by-group', () => {
       });
 
       it('returns the paper representative', () => {
-        expectSingleExpressionDoiIn(result, anotherExpressionDoi);
+        expectSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisXY.expressionDois);
       });
 
       it('returns a lastEvaluatedAt', () => {
-        expectLastEvaluatedAt(result, evaluationPublicationRecorded.publishedAt);
+        expectLastEvaluatedAt(result, evaluationPublicationRecordedForExpressionY.publishedAt);
       });
     });
   });
