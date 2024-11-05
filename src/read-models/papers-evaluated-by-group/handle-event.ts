@@ -161,19 +161,22 @@ const updateEvaluatedPapers = (
 };
 
 const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPublicationRecorded'>, readmodel: ReadModel) => {
+  // Keep track of evaluation dates in private part of read model (not used directy by queries)
   updateLastEvaluationDate(readmodel.expressionLastEvaluatedAt, event);
 
+  // We only attempt to update evaluatedPapers if we have snapshot information for the evaluated expression
   const isPartOfKnownSnapshot = Object.keys(readmodel.paperSnapshotsByEveryMember).includes(event.articleId);
   if (!isPartOfKnownSnapshot) {
     addToExpressionsWithoutSnapshot(readmodel, event.groupId, event.articleId);
     return;
   }
 
+  // Now the readmodel has all information needed to update evaluated papers
   const latestSnapshotForEvaluatedExpression = readmodel.paperSnapshotsByEveryMember[event.articleId];
   const dateOfLatestEvalutionByGroup = calculateLastEvaluatedAtForSnapshot(
     readmodel, event.groupId, latestSnapshotForEvaluatedExpression,
-  ) ?? event.publishedAt;
-  // at this point we have all information needed to update evaluated papers for the group
+  ) ?? event.publishedAt; // fallback needed due to types
+
   updateEvaluatedPapers(
     readmodel,
     event.groupId,
