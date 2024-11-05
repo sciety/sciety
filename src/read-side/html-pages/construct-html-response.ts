@@ -45,17 +45,21 @@ const toErrorResponse = (
 );
 
 const pageToSuccessResponse = (
-  user: O.Option<UserDetails>,
+  dependencies: Dependencies,
+  loggedInUserId: O.Option<UserId>,
   pageLayout: PageLayout,
   clientClassification: ClientClassification,
-) => (page: HtmlPage): HtmlResponse => ({
-  document: pipe(
-    page,
-    pageLayout(constructLayoutViewModel(user)),
-    wrapInHtmlDocument({ ...page, loggedInUserId: pipe(user, O.map((u) => u.id)), clientClassification }),
-  ),
-  error: O.none,
-});
+) => (page: HtmlPage): HtmlResponse => {
+  const user = constructLoggedInUserDetails(dependencies, loggedInUserId);
+  return ({
+    document: pipe(
+      page,
+      pageLayout(constructLayoutViewModel(user)),
+      wrapInHtmlDocument({ ...page, loggedInUserId: pipe(user, O.map((u) => u.id)), clientClassification }),
+    ),
+    error: O.none,
+  });
+};
 
 export type HtmlResponse = {
   document: CompleteHtmlDocument,
@@ -79,6 +83,6 @@ export const constructHtmlResponse: ConstructHtmlResponse = (
   renderedPage,
   E.fold(
     toErrorResponse(constructLoggedInUserDetails(dependencies, loggedInUserId), clientClassification),
-    pageToSuccessResponse(constructLoggedInUserDetails(dependencies, loggedInUserId), pageLayout, clientClassification),
+    pageToSuccessResponse(dependencies, loggedInUserId, pageLayout, clientClassification),
   ),
 );
