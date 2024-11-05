@@ -6,8 +6,10 @@ import {
   getPapersEvaluatedByGroup,
 } from '../../../src/read-models/papers-evaluated-by-group/get-papers-evaluated-by-group';
 import { initialState, handleEvent, EvaluatedPaper } from '../../../src/read-models/papers-evaluated-by-group/handle-event';
+import { toEvaluationLocator } from '../../../src/types/evaluation-locator';
 import { ExpressionDoi } from '../../../src/types/expression-doi';
-import { GroupId } from '../../../src/types/group-id';
+import * as EDOI from '../../../src/types/expression-doi';
+import { fromValidatedString, GroupId } from '../../../src/types/group-id';
 import { arbitraryPaperSnapshotRecordedEvent } from '../../domain-events/arbitrary-paper-snapshot-event.helper';
 import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events/evaluation-resource-events.helper';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
@@ -15,7 +17,7 @@ import { arbitraryGroupId } from '../../types/group-id.helper';
 
 const groupId = arbitraryGroupId();
 const anotherGroupId = arbitraryGroupId();
-const consideredGroupIds = [groupId, anotherGroupId];
+const consideredGroupIds = [groupId, anotherGroupId, fromValidatedString('4d6a8908-22a9-45c8-bd56-3c7140647709')];
 
 const someTimeAfter = (date: Date) => {
   const later = new Date(date);
@@ -104,6 +106,73 @@ describe('get-papers-evaluated-by-group', () => {
 
       it('does not return anything', () => {
         expect(result.size).toBe(0);
+      });
+    });
+
+    describe('tbd', () => {
+      const stagingEvaluationRecorded1: EventOfType<'EvaluationPublicationRecorded'> = {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        groupId: fromValidatedString('4d6a8908-22a9-45c8-bd56-3c7140647709'),
+        articleId: EDOI.fromValidatedString('10.1099/acmi.0.000913.v1'),
+        evaluationLocator: toEvaluationLocator('doi:10.1099/acmi.0.000913.v1.2'),
+        authors: [],
+        publishedAt: new Date('2024-09-18T00:00:00.000Z'),
+        date: new Date('2024-10-02 12:35:21.381'),
+        evaluationType: 'review',
+      };
+      const stagingEvaluationRecorded2: EventOfType<'EvaluationPublicationRecorded'> = {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        groupId: fromValidatedString('4d6a8908-22a9-45c8-bd56-3c7140647709'),
+        articleId: EDOI.fromValidatedString('10.1099/acmi.0.000913.v1'),
+        evaluationLocator: toEvaluationLocator('doi:10.1099/acmi.0.000913.v1.3'),
+        authors: [],
+        publishedAt: new Date('2024-10-01T00:00:00.000Z'),
+        date: new Date('2024-10-02 12:35:23.866'),
+        evaluationType: 'review',
+      };
+      const stagingPaperSnapshotRecorded1: EventOfType<'PaperSnapshotRecorded'> = {
+        ...arbitraryPaperSnapshotRecordedEvent(),
+        expressionDois: new Set([EDOI.fromValidatedString('10.1099/acmi.0.000913.v1')]),
+      };
+      const stagingEvaluationRecorded3: EventOfType<'EvaluationPublicationRecorded'> = {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        groupId: fromValidatedString('4d6a8908-22a9-45c8-bd56-3c7140647709'),
+        articleId: EDOI.fromValidatedString('10.1099/acmi.0.000913.v1'),
+        evaluationLocator: toEvaluationLocator('doi:10.1099/acmi.0.000913.v1.4'),
+        authors: [],
+        publishedAt: new Date('2024-10-02T00:00:00.000Z'),
+        date: new Date('2024-10-03 04:35:22.26'),
+        evaluationType: 'review',
+      };
+      const stagingEvaluationRecorded4: EventOfType<'EvaluationPublicationRecorded'> = {
+        ...arbitraryEvaluationPublicationRecordedEvent(),
+        groupId: fromValidatedString('4d6a8908-22a9-45c8-bd56-3c7140647709'),
+        articleId: EDOI.fromValidatedString('10.1099/acmi.0.000913.v2'),
+        evaluationLocator: toEvaluationLocator('doi:10.1099/acmi.0.000913.v2.1'),
+        authors: [],
+        publishedAt: new Date('2024-10-31T00:00:00.000Z'),
+        date: new Date('2024-11-01 14:35:36.949'),
+        evaluationType: 'review',
+      };
+      const stagingPaperSnapshotRecorded2: EventOfType<'PaperSnapshotRecorded'> = {
+        ...arbitraryPaperSnapshotRecordedEvent(),
+        expressionDois: new Set([EDOI.fromValidatedString('10.1099/acmi.0.000913.v2'), EDOI.fromValidatedString('10.1099/acmi.0.000913.v1')]),
+      };
+      const events = [
+        stagingEvaluationRecorded1,
+        stagingEvaluationRecorded2,
+        stagingPaperSnapshotRecorded1,
+        stagingEvaluationRecorded3,
+        stagingEvaluationRecorded4,
+        stagingPaperSnapshotRecorded2,
+      ] satisfies ReadonlyArray<DomainEvent>;
+
+      beforeEach(() => {
+        result = runQuery(events, fromValidatedString('4d6a8908-22a9-45c8-bd56-3c7140647709'));
+      });
+
+      it.failing('returns only one paper', () => {
+        expect(result.size).toBe(1);
       });
     });
 
