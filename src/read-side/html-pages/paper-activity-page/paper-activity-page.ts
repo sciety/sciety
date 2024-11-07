@@ -7,6 +7,7 @@ import { Dependencies } from './construct-view-model/dependencies';
 import { identifyLatestExpressionDoiOfTheSamePaper } from './identify-latest-expression-doi-of-the-same-paper';
 import { renderAsHtml } from './render-as-html';
 import { constructPaperActivityPageHref } from '../../../standards/paths';
+import * as DE from '../../../types/data-error';
 import { ExpressionDoi, expressionDoiCodec } from '../../../types/expression-doi';
 import { userIdCodec } from '../../../types/user-id';
 import { constructErrorPageViewModel } from '../construct-error-page-view-model';
@@ -47,6 +48,8 @@ const rawParamsCodec = t.type({
 
 type RawParams = t.TypeOf<typeof rawParamsCodec>;
 
+const filterOutContentNotToBeDisplayedDueToExceptionalCircumstances = (params: RawParams) => params.expressionDoi !== '10.31235/osf.io/rzjc9';
+
 const extendWithCanonicalForm = (input: RawParams) => ({
   user: input.user,
   canonicalForm: input.expressionDoi.toLowerCase() as ExpressionDoi,
@@ -59,6 +62,10 @@ export const paperActivityPage: PaperActivityPage = (dependencies) => (params) =
   params,
   decodePageParams(dependencies.logger, rawParamsCodec),
   TE.fromEither,
+  TE.filterOrElseW(
+    filterOutContentNotToBeDisplayedDueToExceptionalCircumstances,
+    () => DE.notFound,
+  ),
   TE.mapLeft(constructErrorPageViewModel),
   TE.map(extendWithCanonicalForm),
   TE.filterOrElseW(
