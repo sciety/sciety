@@ -94,16 +94,17 @@ const addToExpressionsWithoutSnapshot = (readmodel: ReadModel, groupId: GroupId,
 const updateEvaluatedPapers = (
   readmodel: ReadModel,
   groupId: GroupId,
-  latestSnapshot: PaperSnapshot,
+  evaluatedExpressionDoi: ExpressionDoi,
 ) => {
   initialiseEvaluatedPapersForGroup(readmodel, groupId);
   const papersEvaluatedByGroup = readmodel.evaluatedPapers[groupId];
+  const latestSnapshotForEvaluatedExpression = readmodel.paperSnapshotsByEveryMember[evaluatedExpressionDoi];
   const dateOfLatestEvaluationByGroup = calculateLastEvaluatedAtForSnapshot(
-    readmodel, groupId, latestSnapshot,
+    readmodel, groupId, latestSnapshotForEvaluatedExpression,
   ) ?? new Date(); // fallback needed due to types
 
   for (const evaluatedPaper of papersEvaluatedByGroup) {
-    if (latestSnapshot.includes(evaluatedPaper.representative)) {
+    if (latestSnapshotForEvaluatedExpression.includes(evaluatedPaper.representative)) {
       evaluatedPaper.lastEvaluatedAt = dateOfLatestEvaluationByGroup;
       return;
     }
@@ -111,7 +112,7 @@ const updateEvaluatedPapers = (
 
   papersEvaluatedByGroup.push({
     lastEvaluatedAt: dateOfLatestEvaluationByGroup,
-    representative: latestSnapshot[0],
+    representative: latestSnapshotForEvaluatedExpression[0],
   });
 };
 
@@ -127,11 +128,10 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
   }
 
   // Now the readmodel has all information needed to update evaluated papers
-  const latestSnapshotForEvaluatedExpression = readmodel.paperSnapshotsByEveryMember[event.articleId];
   updateEvaluatedPapers(
     readmodel,
     event.groupId,
-    latestSnapshotForEvaluatedExpression,
+    event.articleId,
   );
 };
 
@@ -174,11 +174,10 @@ const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>
     )),
   );
   for (const item of evaluatedExpressionsCoveredByNewSnapshot) {
-    const latestSnapshotForEvaluatedExpression = readmodel.paperSnapshotsByEveryMember[item.expressionDoi];
     updateEvaluatedPapers(
       readmodel,
       item.groupId,
-      latestSnapshotForEvaluatedExpression,
+      item.expressionDoi,
     );
   }
 
