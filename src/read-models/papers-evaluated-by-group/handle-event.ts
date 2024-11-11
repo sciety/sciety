@@ -229,6 +229,16 @@ const updateKnownPaperSnapshots = (
   });
 };
 
+const removeExpressionsThatHaveSnapshots = (
+  evaluatedExpressionsWithoutPaperSnapshot: ReadModel['evaluatedExpressionsWithoutPaperSnapshot'],
+  snapshotExpressionDois: EventOfType<'PaperSnapshotRecorded'>['expressionDois'],
+) => {
+  snapshotExpressionDois.forEach((snapshotMember) => {
+    Object.values(evaluatedExpressionsWithoutPaperSnapshot)
+      .forEach((expressions) => { expressions.delete(snapshotMember); });
+  });
+};
+
 const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>, readmodel: ReadModel) => {
   updateKnownPaperSnapshots(readmodel.paperSnapshotsByEveryMember, event.expressionDois);
 
@@ -244,6 +254,8 @@ const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>
       expressionsWithoutPaperSnapshot,
     );
   }
+
+  removeExpressionsThatHaveSnapshots(readmodel.evaluatedExpressionsWithoutPaperSnapshot, event.expressionDois);
 };
 
 export const handleEvent = (
