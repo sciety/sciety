@@ -158,7 +158,7 @@ type EvaluatedExpression = {
   expressionDoi: ExpressionDoi,
 };
 
-const foo = (pendingExpressionsInSnapshot: ReadModel['pendingExpressions']) => pipe(
+const flattenToArray = (pendingExpressionsInSnapshot: ReadModel['pendingExpressions']) => pipe(
   pendingExpressionsInSnapshot,
   R.toEntries,
   RA.flatMap(([groupId, expressionDois]) => pipe(
@@ -174,7 +174,7 @@ const getPendingExpressionsThatArePartOf = (
 ): ReadonlyArray<EvaluatedExpression> => pipe(
   pendingExpressions,
   R.map(intersection(snapshotMembers)),
-  foo,
+  flattenToArray,
 );
 
 const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>, readmodel: ReadModel) => {
