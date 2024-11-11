@@ -219,11 +219,20 @@ const updatePaperSnapshotRepresentatives = (
   updateLastEvaluatedAtForKnownPaper(readmodel, groupId, paperSnapshotRepresentative);
 };
 
-const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>, readmodel: ReadModel) => {
-  const paperSnapshot = Array.from(event.expressionDois);
-  event.expressionDois.forEach((member) => {
-    readmodel.paperSnapshotsByEveryMember[member] = paperSnapshot;
+const updateKnownPaperSnapshots = (
+  paperSnapshotsByEveryMember: ReadModel['paperSnapshotsByEveryMember'],
+  snapshotExpressionDois: EventOfType<'PaperSnapshotRecorded'>['expressionDois'],
+) => {
+  const paperSnapshot = Array.from(snapshotExpressionDois);
+  snapshotExpressionDois.forEach((snapshotMember) => {
+    paperSnapshotsByEveryMember[snapshotMember] = paperSnapshot;
   });
+};
+
+const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>, readmodel: ReadModel) => {
+  updateKnownPaperSnapshots(readmodel.paperSnapshotsByEveryMember, event.expressionDois);
+
+  const paperSnapshot = Array.from(event.expressionDois);
   for (
     const [groupId, expressionsWithoutPaperSnapshot]
     of R.toEntries(readmodel.evaluatedExpressionsWithoutPaperSnapshot)
