@@ -11,7 +11,7 @@ const update = (union: Set<ExpressionDoi>, set: Set<ExpressionDoi>) => {
 export const getExpressionsWithNoAssociatedSnapshot = (
   readModel: ReadModel,
 ) => (): ReadonlyArray<ExpressionDoi> => pipe(
-  Object.values(readModel.evaluatedExpressionsWithoutPaperSnapshot),
+  Object.values(readModel.pendingExpressions),
   RA.reduce(new Set<ExpressionDoi>(), update),
   (set) => Array.from(set),
 );

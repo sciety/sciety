@@ -22,14 +22,15 @@ export type EvaluatedPaper = {
 
 export type ReadModel = {
   evaluatedPapers: Record<GroupId, Array<EvaluatedPaper>>,
-  evaluatedExpressionsWithoutPaperSnapshot: Record<GroupId, Set<ExpressionDoi>>,
+  // Expressions that have been evaluated by a certain group, but are not covered by paperSnapshotsByEveryMember
+  pendingExpressions: Record<GroupId, Set<ExpressionDoi>>,
   paperSnapshotsByEveryMember: Record<ExpressionDoi, PaperSnapshot>,
   expressionLastEvaluatedAt: Map<GroupId, Map<ExpressionDoi, Date>>,
 };
 
 export const initialState = (): ReadModel => ({
   evaluatedPapers: {},
-  evaluatedExpressionsWithoutPaperSnapshot: {},
+  pendingExpressions: {},
   paperSnapshotsByEveryMember: {},
   expressionLastEvaluatedAt: new Map(),
 });
@@ -84,11 +85,11 @@ const updateLastEvaluationDate = (
   }
 };
 
-const addToExpressionsWithoutSnapshot = (readmodel: ReadModel, groupId: GroupId, expressionDoi: ExpressionDoi) => {
-  if (!(groupId in readmodel.evaluatedExpressionsWithoutPaperSnapshot)) {
-    readmodel.evaluatedExpressionsWithoutPaperSnapshot[groupId] = new Set();
+const addPendingExpression = (readmodel: ReadModel, groupId: GroupId, expressionDoi: ExpressionDoi) => {
+  if (!(groupId in readmodel.pendingExpressions)) {
+    readmodel.pendingExpressions[groupId] = new Set();
   }
-  readmodel.evaluatedExpressionsWithoutPaperSnapshot[groupId].add(expressionDoi);
+  readmodel.pendingExpressions[groupId].add(expressionDoi);
 };
 
 const updateEvaluatedPapers = (
@@ -123,7 +124,7 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
   // We only attempt to update evaluatedPapers if we have snapshot information for the evaluated expression
   const isPartOfKnownSnapshot = Object.keys(readmodel.paperSnapshotsByEveryMember).includes(event.articleId);
   if (!isPartOfKnownSnapshot) {
-    addToExpressionsWithoutSnapshot(readmodel, event.groupId, event.articleId);
+    addPendingExpression(readmodel, event.groupId, event.articleId);
     return;
   }
 
@@ -145,12 +146,12 @@ const updateKnownPaperSnapshots = (
   });
 };
 
-const removeExpressionsThatHaveSnapshots = (
-  evaluatedExpressionsWithoutPaperSnapshot: ReadModel['evaluatedExpressionsWithoutPaperSnapshot'],
+const removePendingExpressionsThatAreInSnapshot = (
+  pendingExpressions: ReadModel['pendingExpressions'],
   snapshotExpressionDois: EventOfType<'PaperSnapshotRecorded'>['expressionDois'],
 ) => {
   snapshotExpressionDois.forEach((snapshotMember) => {
-    Object.values(evaluatedExpressionsWithoutPaperSnapshot)
+    Object.values(pendingExpressions)
       .forEach((expressions) => { expressions.delete(snapshotMember); });
   });
 };
@@ -160,11 +161,11 @@ type EvaluatedExpression = {
   expressionDoi: ExpressionDoi,
 };
 
-const getEvaluatedExpressionsThatAreSnapshotMembers = (
-  evaluatedExpressionsWithoutPaperSnapshot: ReadModel['evaluatedExpressionsWithoutPaperSnapshot'],
+const getPendingExpressionsThatAreSnapshotMembers = (
+  pendingExpressions: ReadModel['pendingExpressions'],
   snapshotMembers: EventOfType<'PaperSnapshotRecorded'>['expressionDois'],
 ): ReadonlyArray<EvaluatedExpression> => pipe(
-  evaluatedExpressionsWithoutPaperSnapshot,
+  pendingExpressions,
   R.map(intersection(snapshotMembers)),
   R.toEntries,
   RA.flatMap(([groupId, expressionDois]) => pipe(
@@ -176,11 +177,11 @@ const getEvaluatedExpressionsThatAreSnapshotMembers = (
 const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>, readmodel: ReadModel) => {
   updateKnownPaperSnapshots(readmodel.paperSnapshotsByEveryMember, event.expressionDois);
 
-  const evaluatedExpressionsCoveredByNewSnapshot = getEvaluatedExpressionsThatAreSnapshotMembers(
-    readmodel.evaluatedExpressionsWithoutPaperSnapshot,
+  const pendingExpressionsCoveredByNewSnapshot = getPendingExpressionsThatAreSnapshotMembers(
+    readmodel.pendingExpressions,
     event.expressionDois,
   );
-  for (const item of evaluatedExpressionsCoveredByNewSnapshot) {
+  for (const item of pendingExpressionsCoveredByNewSnapshot) {
     updateEvaluatedPapers(
       readmodel,
       item.groupId,
@@ -188,7 +189,7 @@ const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>
     );
   }
 
-  removeExpressionsThatHaveSnapshots(readmodel.evaluatedExpressionsWithoutPaperSnapshot, event.expressionDois);
+  removePendingExpressionsThatAreInSnapshot(readmodel.pendingExpressions, event.expressionDois);
 };
 
 export const handleEvent = (
