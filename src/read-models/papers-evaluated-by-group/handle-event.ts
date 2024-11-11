@@ -60,11 +60,6 @@ const declareEvaluatedPaper = (
 
 const pickRepresentative = (paperSnapshot: PaperSnapshot): PaperSnapshotRepresentative => paperSnapshot[0];
 
-const findRepresentativeByMember = (
-  readmodel: ReadModel,
-  snapshotMember: ExpressionDoi,
-): PaperSnapshotRepresentative => pickRepresentative(readmodel.paperSnapshotsByEveryMember[snapshotMember]);
-
 const calculateLastEvaluatedAtForSnapshot = (
   readmodel: ReadModel,
   groupId: GroupId,
@@ -112,11 +107,14 @@ const updateLastEvaluatedAtForKnownPaper = (
   }
 };
 
-const updateLastEvaluationDate = (readmodel: ReadModel, event: EventOfType<'EvaluationPublicationRecorded'>) => {
-  let expressionLastEvaluatedAtForGroup = readmodel.expressionLastEvaluatedAt.get(event.groupId);
+const updateLastEvaluationDate = (
+  expressionLastEvaluatedAt: ReadModel['expressionLastEvaluatedAt'],
+  event: EventOfType<'EvaluationPublicationRecorded'>,
+) => {
+  let expressionLastEvaluatedAtForGroup = expressionLastEvaluatedAt.get(event.groupId);
   if (expressionLastEvaluatedAtForGroup === undefined) {
     expressionLastEvaluatedAtForGroup = new Map();
-    readmodel.expressionLastEvaluatedAt.set(event.groupId, expressionLastEvaluatedAtForGroup);
+    expressionLastEvaluatedAt.set(event.groupId, expressionLastEvaluatedAtForGroup);
   }
 
   const knownPublishedAt = expressionLastEvaluatedAtForGroup.get(event.articleId);
@@ -127,7 +125,7 @@ const updateLastEvaluationDate = (readmodel: ReadModel, event: EventOfType<'Eval
   }
 };
 
-const declareEvaluatedExpression = (readmodel: ReadModel, groupId: GroupId, expressionDoi: ExpressionDoi) => {
+const addToExpressionsWithoutSnapshot = (readmodel: ReadModel, groupId: GroupId, expressionDoi: ExpressionDoi) => {
   if (!(groupId in readmodel.evaluatedExpressionsWithoutPaperSnapshot)) {
     readmodel.evaluatedExpressionsWithoutPaperSnapshot[groupId] = new Set();
   }
@@ -140,27 +138,51 @@ const isSnapshotRepresented = (
   paperSnapshot: PaperSnapshot,
 ) => allKnownRepresentatives(readmodel, groupId).has(pickRepresentative(paperSnapshot));
 
+const updateEvaluatedPapers = (
+  readmodel: ReadModel,
+  groupId: GroupId,
+  latestSnapshot: PaperSnapshot,
+  dateOfLatestEvalution: Date,
+) => {
+  initialiseEvaluatedPapersForGroup(readmodel, groupId);
+  const papersEvaluatedByGroup = readmodel.evaluatedPapers[groupId];
+
+  for (const evaluatedPaper of papersEvaluatedByGroup) {
+    if (latestSnapshot.includes(evaluatedPaper.representative)) {
+      evaluatedPaper.lastEvaluatedAt = dateOfLatestEvalution;
+      return;
+    }
+  }
+
+  papersEvaluatedByGroup.push({
+    lastEvaluatedAt: dateOfLatestEvalution,
+    representative: latestSnapshot[0],
+  });
+};
+
 const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPublicationRecorded'>, readmodel: ReadModel) => {
-  updateLastEvaluationDate(readmodel, event);
+  // Keep track of evaluation dates in private part of read model (not used directy by queries)
+  updateLastEvaluationDate(readmodel.expressionLastEvaluatedAt, event);
+
+  // We only attempt to update evaluatedPapers if we have snapshot information for the evaluated expression
   const isPartOfKnownSnapshot = Object.keys(readmodel.paperSnapshotsByEveryMember).includes(event.articleId);
   if (!isPartOfKnownSnapshot) {
-    declareEvaluatedExpression(readmodel, event.groupId, event.articleId);
+    addToExpressionsWithoutSnapshot(readmodel, event.groupId, event.articleId);
     return;
   }
+
+  // Now the readmodel has all information needed to update evaluated papers
   const latestSnapshotForEvaluatedExpression = readmodel.paperSnapshotsByEveryMember[event.articleId];
-  if (!isSnapshotRepresented(readmodel, event.groupId, latestSnapshotForEvaluatedExpression)) {
-    const paperSnapshotRepresentative = pickRepresentative(latestSnapshotForEvaluatedExpression);
-    declareEvaluatedPaper(
-      readmodel,
-      event.groupId,
-      paperSnapshotRepresentative,
-      event.publishedAt,
-    );
-  } else {
-    const evaluatedExpressionDoi = event.articleId;
-    const paperSnapshotRepresentative = findRepresentativeByMember(readmodel, evaluatedExpressionDoi);
-    updateLastEvaluatedAtForKnownPaper(readmodel, event.groupId, paperSnapshotRepresentative);
-  }
+  const dateOfLatestEvalutionByGroup = calculateLastEvaluatedAtForSnapshot(
+    readmodel, event.groupId, latestSnapshotForEvaluatedExpression,
+  ) ?? event.publishedAt; // fallback needed due to types
+
+  updateEvaluatedPapers(
+    readmodel,
+    event.groupId,
+    latestSnapshotForEvaluatedExpression,
+    dateOfLatestEvalutionByGroup,
+  );
 };
 
 const updatePaperSnapshotRepresentatives = (
