@@ -40,30 +40,6 @@ const initialiseEvaluatedPapersForGroup = (readmodel: ReadModel, groupId: GroupI
   }
 };
 
-const allKnownRepresentatives = (readmodel: ReadModel, groupId: GroupId) => {
-  initialiseEvaluatedPapersForGroup(readmodel, groupId);
-  return pipe(
-    readmodel.evaluatedPapers[groupId],
-    RA.map((evaluatedPaper) => evaluatedPaper.representative),
-    (representatives) => new Set(representatives),
-  );
-};
-
-const declareEvaluatedPaper = (
-  readmodel: ReadModel,
-  groupId: GroupId,
-  representative: PaperSnapshotRepresentative,
-  lastEvaluatedAt: Date,
-) => {
-  initialiseEvaluatedPapersForGroup(readmodel, groupId);
-  return readmodel.evaluatedPapers[groupId].push({
-    representative,
-    lastEvaluatedAt,
-  });
-};
-
-const pickRepresentative = (paperSnapshot: PaperSnapshot): PaperSnapshotRepresentative => paperSnapshot[0];
-
 const calculateLastEvaluatedAtForSnapshot = (
   readmodel: ReadModel,
   groupId: GroupId,
@@ -90,27 +66,6 @@ const calculateLastEvaluatedAtForSnapshot = (
   return calculatedDate;
 };
 
-const updateLastEvaluatedAtForKnownPaper = (
-  readmodel: ReadModel,
-  groupId: GroupId,
-  paperSnapshotRepresentative: PaperSnapshotRepresentative,
-) => {
-  const evaluatedPapers = readmodel.evaluatedPapers[groupId];
-  const indexOfExistingEvaluatedPaper = evaluatedPapers.findIndex(
-    (evaluatedPaper) => evaluatedPaper.representative === paperSnapshotRepresentative,
-  );
-  if (indexOfExistingEvaluatedPaper > -1) {
-    const lastEvaluatedAt = calculateLastEvaluatedAtForSnapshot(
-      readmodel,
-      groupId,
-      readmodel.paperSnapshotsByEveryMember[paperSnapshotRepresentative],
-    );
-    if (lastEvaluatedAt !== undefined) {
-      evaluatedPapers[indexOfExistingEvaluatedPaper].lastEvaluatedAt = lastEvaluatedAt;
-    }
-  }
-};
-
 const updateLastEvaluationDate = (
   expressionLastEvaluatedAt: ReadModel['expressionLastEvaluatedAt'],
   event: EventOfType<'EvaluationPublicationRecorded'>,
@@ -135,12 +90,6 @@ const addToExpressionsWithoutSnapshot = (readmodel: ReadModel, groupId: GroupId,
   }
   readmodel.evaluatedExpressionsWithoutPaperSnapshot[groupId].add(expressionDoi);
 };
-
-const isSnapshotRepresented = (
-  readmodel: ReadModel,
-  groupId: GroupId,
-  paperSnapshot: PaperSnapshot,
-) => allKnownRepresentatives(readmodel, groupId).has(pickRepresentative(paperSnapshot));
 
 const updateEvaluatedPapers = (
   readmodel: ReadModel,
@@ -187,41 +136,6 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
     latestSnapshotForEvaluatedExpression,
     dateOfLatestEvalutionByGroup,
   );
-};
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const updatePaperSnapshotRepresentatives = (
-  readmodel: ReadModel,
-  groupId: GroupId,
-  paperSnapshot: PaperSnapshot,
-  evaluatedExpressionsWithoutPaperSnapshot: ReadModel['evaluatedExpressionsWithoutPaperSnapshot'][GroupId],
-) => {
-  const lastEvaluatedAt = calculateLastEvaluatedAtForSnapshot(
-    readmodel,
-    groupId,
-    paperSnapshot,
-  );
-  const paperSnapshotRepresentative = pickRepresentative(paperSnapshot);
-  if (lastEvaluatedAt === undefined) {
-    return;
-  }
-  paperSnapshot.forEach((expressionDoi) => {
-    if (isSnapshotRepresented(readmodel, groupId, paperSnapshot)) {
-      evaluatedExpressionsWithoutPaperSnapshot.delete(expressionDoi);
-      return;
-    }
-    const evaluatedPaperExpressionWasNotAlreadyInSnapshot = evaluatedExpressionsWithoutPaperSnapshot.has(expressionDoi);
-    if (evaluatedPaperExpressionWasNotAlreadyInSnapshot) {
-      declareEvaluatedPaper(
-        readmodel,
-        groupId,
-        paperSnapshotRepresentative,
-        lastEvaluatedAt,
-      );
-    }
-    evaluatedExpressionsWithoutPaperSnapshot.delete(expressionDoi);
-  });
-  updateLastEvaluatedAtForKnownPaper(readmodel, groupId, paperSnapshotRepresentative);
 };
 
 const updateKnownPaperSnapshots = (
