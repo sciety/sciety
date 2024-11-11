@@ -239,8 +239,28 @@ const removeExpressionsThatHaveSnapshots = (
   });
 };
 
+type EvaluatedExpressionCoveredByNewSnapshot = {
+  groupId: GroupId,
+  expressionDoi: ExpressionDoi,
+};
+
 const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>, readmodel: ReadModel) => {
   updateKnownPaperSnapshots(readmodel.paperSnapshotsByEveryMember, event.expressionDois);
+
+  // Loop over all evaluated expressions for which we previously had no snapshots
+  const evaluatedExpressionsCoveredByNewSnapshot: ReadonlyArray<EvaluatedExpressionCoveredByNewSnapshot> = [];
+  for (const item of evaluatedExpressionsCoveredByNewSnapshot) {
+    const latestSnapshotForEvaluatedExpression = readmodel.paperSnapshotsByEveryMember[item.expressionDoi];
+    const dateOfLatestEvalutionByGroup = calculateLastEvaluatedAtForSnapshot(
+      readmodel, item.groupId, latestSnapshotForEvaluatedExpression,
+    ) ?? new Date(); // fallback needed due to types
+    updateEvaluatedPapers(
+      readmodel,
+      item.groupId,
+      latestSnapshotForEvaluatedExpression,
+      dateOfLatestEvalutionByGroup,
+    );
+  }
 
   const paperSnapshot = Array.from(event.expressionDois);
   for (
