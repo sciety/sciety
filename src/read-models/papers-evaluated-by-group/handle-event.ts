@@ -95,20 +95,22 @@ const updateEvaluatedPapers = (
   readmodel: ReadModel,
   groupId: GroupId,
   latestSnapshot: PaperSnapshot,
-  dateOfLatestEvalution: Date,
 ) => {
   initialiseEvaluatedPapersForGroup(readmodel, groupId);
   const papersEvaluatedByGroup = readmodel.evaluatedPapers[groupId];
+  const dateOfLatestEvaluationByGroup = calculateLastEvaluatedAtForSnapshot(
+    readmodel, groupId, latestSnapshot,
+  ) ?? new Date(); // fallback needed due to types
 
   for (const evaluatedPaper of papersEvaluatedByGroup) {
     if (latestSnapshot.includes(evaluatedPaper.representative)) {
-      evaluatedPaper.lastEvaluatedAt = dateOfLatestEvalution;
+      evaluatedPaper.lastEvaluatedAt = dateOfLatestEvaluationByGroup;
       return;
     }
   }
 
   papersEvaluatedByGroup.push({
-    lastEvaluatedAt: dateOfLatestEvalution,
+    lastEvaluatedAt: dateOfLatestEvaluationByGroup,
     representative: latestSnapshot[0],
   });
 };
@@ -126,15 +128,10 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
 
   // Now the readmodel has all information needed to update evaluated papers
   const latestSnapshotForEvaluatedExpression = readmodel.paperSnapshotsByEveryMember[event.articleId];
-  const dateOfLatestEvalutionByGroup = calculateLastEvaluatedAtForSnapshot(
-    readmodel, event.groupId, latestSnapshotForEvaluatedExpression,
-  ) ?? event.publishedAt; // fallback needed due to types
-
   updateEvaluatedPapers(
     readmodel,
     event.groupId,
     latestSnapshotForEvaluatedExpression,
-    dateOfLatestEvalutionByGroup,
   );
 };
 
@@ -178,14 +175,10 @@ const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>
   );
   for (const item of evaluatedExpressionsCoveredByNewSnapshot) {
     const latestSnapshotForEvaluatedExpression = readmodel.paperSnapshotsByEveryMember[item.expressionDoi];
-    const dateOfLatestEvalutionByGroup = calculateLastEvaluatedAtForSnapshot(
-      readmodel, item.groupId, latestSnapshotForEvaluatedExpression,
-    ) ?? new Date(); // fallback needed due to types
     updateEvaluatedPapers(
       readmodel,
       item.groupId,
       latestSnapshotForEvaluatedExpression,
-      dateOfLatestEvalutionByGroup,
     );
   }
 
