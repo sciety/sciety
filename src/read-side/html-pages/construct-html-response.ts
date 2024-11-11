@@ -26,23 +26,27 @@ const constructLayoutViewModel = (user: O.Option<UserDetails>): PageLayoutViewMo
 });
 
 const toErrorResponse = (
-  user: O.Option<UserDetails>,
+  dependencies: Dependencies,
+  loggedInUserId: O.Option<UserId>,
   clientClassification: ClientClassification,
 ) => (
   error: ErrorPageViewModel,
-): HtmlResponse => pipe(
-  renderOopsMessage(error.message),
-  (content) => toHtmlPage({
-    title: 'Error',
-    content,
-  }),
-  renderStandardPageLayout(constructLayoutViewModel(user)),
-  wrapInHtmlDocument({ title: 'Error', loggedInUserId: pipe(user, O.map((u) => u.id)), clientClassification }),
-  (document) => ({
-    document,
-    error: O.some(error.type),
-  }),
-);
+): HtmlResponse => {
+  const user = constructLoggedInUserDetails(dependencies, loggedInUserId);
+  return pipe(
+    renderOopsMessage(error.message),
+    (content) => toHtmlPage({
+      title: 'Error',
+      content,
+    }),
+    renderStandardPageLayout(constructLayoutViewModel(user)),
+    wrapInHtmlDocument({ title: 'Error', loggedInUserId: pipe(user, O.map((u) => u.id)), clientClassification }),
+    (document) => ({
+      document,
+      error: O.some(error.type),
+    }),
+  );
+};
 
 const pageToSuccessResponse = (
   dependencies: Dependencies,
@@ -82,7 +86,7 @@ export const constructHtmlResponse: ConstructHtmlResponse = (
 ) => (renderedPage) => pipe(
   renderedPage,
   E.fold(
-    toErrorResponse(constructLoggedInUserDetails(dependencies, loggedInUserId), clientClassification),
+    toErrorResponse(dependencies, loggedInUserId, clientClassification),
     pageToSuccessResponse(dependencies, loggedInUserId, pageLayout, clientClassification),
   ),
 );
