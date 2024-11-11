@@ -7,6 +7,10 @@ import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events';
 import { ExpressionDoi } from '../../types/expression-doi';
 import { GroupId } from '../../types/group-id';
 
+const intersection = <T>(
+  set1: ReadonlySet<T>,
+) => (set2: ReadonlySet<T>): Set<T> => new Set([...set2].filter((value) => set1.has(value)));
+
 type PaperSnapshotRepresentative = ExpressionDoi;
 
 type PaperSnapshot = ReadonlyArray<ExpressionDoi>;
@@ -185,6 +189,7 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
   );
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const updatePaperSnapshotRepresentatives = (
   readmodel: ReadModel,
   groupId: GroupId,
@@ -239,7 +244,7 @@ const removeExpressionsThatHaveSnapshots = (
   });
 };
 
-type EvaluatedExpressionCoveredByNewSnapshot = {
+type EvaluatedExpression = {
   groupId: GroupId,
   expressionDoi: ExpressionDoi,
 };
@@ -248,7 +253,15 @@ const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>
   updateKnownPaperSnapshots(readmodel.paperSnapshotsByEveryMember, event.expressionDois);
 
   // Loop over all evaluated expressions for which we previously had no snapshots
-  const evaluatedExpressionsCoveredByNewSnapshot: ReadonlyArray<EvaluatedExpressionCoveredByNewSnapshot> = [];
+  const evaluatedExpressionsCoveredByNewSnapshot: ReadonlyArray<EvaluatedExpression> = pipe(
+    readmodel.evaluatedExpressionsWithoutPaperSnapshot,
+    R.map(intersection(event.expressionDois)),
+    R.toEntries,
+    RA.flatMap(([groupId, expressionDois]) => pipe(
+      Array.from(expressionDois),
+      RA.map((expressionDoi) => ({ expressionDoi, groupId })),
+    )),
+  );
   for (const item of evaluatedExpressionsCoveredByNewSnapshot) {
     const latestSnapshotForEvaluatedExpression = readmodel.paperSnapshotsByEveryMember[item.expressionDoi];
     const dateOfLatestEvalutionByGroup = calculateLastEvaluatedAtForSnapshot(
@@ -259,19 +272,6 @@ const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>
       item.groupId,
       latestSnapshotForEvaluatedExpression,
       dateOfLatestEvalutionByGroup,
-    );
-  }
-
-  const paperSnapshot = Array.from(event.expressionDois);
-  for (
-    const [groupId, expressionsWithoutPaperSnapshot]
-    of R.toEntries(readmodel.evaluatedExpressionsWithoutPaperSnapshot)
-  ) {
-    updatePaperSnapshotRepresentatives(
-      readmodel,
-      groupId,
-      paperSnapshot,
-      expressionsWithoutPaperSnapshot,
     );
   }
 
