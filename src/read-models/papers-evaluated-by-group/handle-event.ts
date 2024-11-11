@@ -94,12 +94,13 @@ const addPendingExpression = (readmodel: ReadModel, groupId: GroupId, expression
 
 const updateEvaluatedPapers = (
   readmodel: ReadModel,
-  groupId: GroupId,
-  evaluatedExpressionDoi: ExpressionDoi,
+) => (
+  evaluatedExpression: EvaluatedExpression,
 ) => {
+  const groupId = evaluatedExpression.groupId;
   initialiseEvaluatedPapersForGroup(readmodel, groupId);
   const papersEvaluatedByGroup = readmodel.evaluatedPapers[groupId];
-  const latestSnapshotForEvaluatedExpression = readmodel.paperSnapshotsByEveryMember[evaluatedExpressionDoi];
+  const latestSnapshotForEvaluatedExpression = readmodel.paperSnapshotsByEveryMember[evaluatedExpression.expressionDoi];
   const dateOfLatestEvaluationByGroup = calculateLastEvaluatedAtForSnapshot(
     readmodel, groupId, latestSnapshotForEvaluatedExpression,
   ) ?? new Date(); // fallback needed due to types
@@ -129,11 +130,7 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
   }
 
   // Now the readmodel has all information needed to update evaluated papers
-  updateEvaluatedPapers(
-    readmodel,
-    event.groupId,
-    event.articleId,
-  );
+  updateEvaluatedPapers(readmodel)({ groupId: event.groupId, expressionDoi: event.articleId });
 };
 
 const updateKnownPaperSnapshots = (
@@ -161,9 +158,10 @@ type EvaluatedExpression = {
   expressionDoi: ExpressionDoi,
 };
 
-const getPendingExpressionsThatAreSnapshotMembers = (
-  pendingExpressions: ReadModel['pendingExpressions'],
+const getPendingExpressionsThatArePartOf = (
   snapshotMembers: EventOfType<'PaperSnapshotRecorded'>['expressionDois'],
+) => (
+  pendingExpressions: ReadModel['pendingExpressions'],
 ): ReadonlyArray<EvaluatedExpression> => pipe(
   pendingExpressions,
   R.map(intersection(snapshotMembers)),
@@ -177,17 +175,11 @@ const getPendingExpressionsThatAreSnapshotMembers = (
 const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>, readmodel: ReadModel) => {
   updateKnownPaperSnapshots(readmodel.paperSnapshotsByEveryMember, event.expressionDois);
 
-  const pendingExpressionsCoveredByNewSnapshot = getPendingExpressionsThatAreSnapshotMembers(
+  pipe(
     readmodel.pendingExpressions,
-    event.expressionDois,
+    getPendingExpressionsThatArePartOf(event.expressionDois),
+    RA.map(updateEvaluatedPapers(readmodel)),
   );
-  for (const item of pendingExpressionsCoveredByNewSnapshot) {
-    updateEvaluatedPapers(
-      readmodel,
-      item.groupId,
-      item.expressionDoi,
-    );
-  }
 
   removePendingExpressionsThatAreInSnapshot(readmodel.pendingExpressions, event.expressionDois);
 };
