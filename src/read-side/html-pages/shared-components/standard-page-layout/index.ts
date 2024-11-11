@@ -1,1 +1,1 @@
-export { renderStandardPageLayout } from './standard-page-layout';
+export { renderStandardPageLayout } from './render-standard-page-layout';

@@ -14,7 +14,7 @@ import {
 } from './login-middlewares';
 import { DependenciesForViews } from '../../read-side/dependencies-for-views';
 import { createPageFromParams } from '../../read-side/html-pages/create-page-from-params';
-import { paramsCodec as createUserAccountFormPageParamsCodec, createUserAccountFormPageLayout, createUserAccountFormPage } from '../../read-side/html-pages/create-user-account-form-page';
+import { paramsCodec as createUserAccountFormPageParamsCodec, renderCreateUserAccountFormPageLayout, createUserAccountFormPage } from '../../read-side/html-pages/create-user-account-form-page';
 import { DependenciesForCommands } from '../../write-side';
 import { saveAuthenticationDestination } from '../authentication-destination';
 import { catchErrors } from '../catch-errors';
@@ -46,7 +46,7 @@ const configureAuth0Routes = (
     pageHandler(
       dependencies,
       createPageFromParams(dependencies.logger, createUserAccountFormPageParamsCodec, createUserAccountFormPage),
-      createUserAccountFormPageLayout,
+      renderCreateUserAccountFormPageLayout,
     ),
   );
 

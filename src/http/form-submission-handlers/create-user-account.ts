@@ -5,7 +5,7 @@ import { Middleware } from 'koa';
 import { validateAndExecuteCommand, Dependencies as ValidateAndExecuteCommandDependencies } from './validate-and-execute-command';
 import { DependenciesForViews } from '../../read-side/dependencies-for-views';
 import { constructHtmlResponse } from '../../read-side/html-pages/construct-html-response';
-import { createUserAccountFormPageLayout, renderFormPage } from '../../read-side/html-pages/create-user-account-form-page';
+import { renderCreateUserAccountFormPageLayout, renderFormPage } from '../../read-side/html-pages/create-user-account-form-page';
 import {
   Dependencies as GetLoggedInScietyUserDependencies, getAuthenticatedUserIdFromContext,
 } from '../authentication-and-logging-in-of-sciety-users';
@@ -28,7 +28,7 @@ export const createUserAccount = (dependencies: Dependencies): Middleware => asy
       constructHtmlResponse(
         dependencies,
         getAuthenticatedUserIdFromContext(context),
-        createUserAccountFormPageLayout,
+        renderCreateUserAccountFormPageLayout,
         detectClientClassification(context),
       ),
     );

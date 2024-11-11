@@ -3,7 +3,7 @@ import { toHtmlFragment } from '../../../types/html-fragment';
 import { PageLayout } from '../page-layout';
 import { commonLayout } from '../shared-components/common-layout';
 
-export const homePageLayout: PageLayout = (viewModel) => (page) => pipe(
+export const renderHomePageLayout: PageLayout = (viewModel) => (page) => pipe(
   `
   <main id="mainContent">
     ${page.content}

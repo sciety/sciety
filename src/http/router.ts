@@ -27,7 +27,7 @@ import { createPageFromParams } from '../read-side/html-pages/create-page-from-p
 import { editListDetailsFormPage, editListDetailsFormPageParamsCodec } from '../read-side/html-pages/edit-list-details-form-page';
 import { page as explorePage } from '../read-side/html-pages/explore-page';
 import { groupsPage } from '../read-side/html-pages/groups-page';
-import { homePage, homePageLayout } from '../read-side/html-pages/home-page';
+import { homePage, renderHomePageLayout } from '../read-side/html-pages/home-page';
 import { legalPage } from '../read-side/html-pages/legal-page';
 import { page as listPage, paramsCodec as listPageParams } from '../read-side/html-pages/list-page';
 import { listsPage, paramsCodec as listsPageParamsCodec } from '../read-side/html-pages/lists-page';
@@ -36,7 +36,7 @@ import { paperActivityPage } from '../read-side/html-pages/paper-activity-page';
 import { saveArticleFormPage } from '../read-side/html-pages/save-article-form-page';
 import { page as searchPage } from '../read-side/html-pages/search-page';
 import { searchResultsPage, paramsCodec as searchResultsPageParams } from '../read-side/html-pages/search-results-page';
-import { fullWidthPageLayout } from '../read-side/html-pages/shared-components/full-width-page-layout';
+import { renderFullWidthPageLayout } from '../read-side/html-pages/shared-components/render-full-width-page-layout';
 import { referencePage, sharedComponentsPage, indexPage } from '../read-side/html-pages/style-guide-page';
 import { subscribeToListPage } from '../read-side/html-pages/subscribe-to-list-page';
 import { userPage as userFollowingPage, userPageParams as userFollowingPageParams } from '../read-side/html-pages/user-page/user-following-page';
@@ -177,7 +177,7 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
   const simpleHtmlPages = [
     {
       endpoint: '/',
-      handler: pageHandler(dependencies, () => TE.right(homePage(dependencies)), homePageLayout),
+      handler: pageHandler(dependencies, () => TE.right(homePage(dependencies)), renderHomePageLayout),
     },
     {
       endpoint: '/about',
@@ -189,7 +189,7 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
     },
     {
       endpoint: paperActivityPagePathSpecification,
-      handler: pageHandler(dependencies, paperActivityPage(dependencies), fullWidthPageLayout),
+      handler: pageHandler(dependencies, paperActivityPage(dependencies), renderFullWidthPageLayout),
     },
     {
       endpoint: '/groups',
@@ -240,7 +240,7 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
         dependencies.logger,
         listPageParams,
         listPage(dependencies),
-      ), fullWidthPageLayout),
+      ), renderFullWidthPageLayout),
     },
     {
       endpoint: '/users/:handle/lists',
