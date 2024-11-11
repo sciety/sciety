@@ -160,18 +160,25 @@ type EvaluatedExpression = {
   expressionDoi: ExpressionDoi,
 };
 
+const getEvaluatedExpressionsThatAreSnapshotMembers = (
+  evaluatedExpressionsWithoutPaperSnapshot: ReadModel['evaluatedExpressionsWithoutPaperSnapshot'],
+  snapshotMembers: EventOfType<'PaperSnapshotRecorded'>['expressionDois'],
+): ReadonlyArray<EvaluatedExpression> => pipe(
+  evaluatedExpressionsWithoutPaperSnapshot,
+  R.map(intersection(snapshotMembers)),
+  R.toEntries,
+  RA.flatMap(([groupId, expressionDois]) => pipe(
+    Array.from(expressionDois),
+    RA.map((expressionDoi) => ({ expressionDoi, groupId })),
+  )),
+);
+
 const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>, readmodel: ReadModel) => {
   updateKnownPaperSnapshots(readmodel.paperSnapshotsByEveryMember, event.expressionDois);
 
-  // Loop over all evaluated expressions for which we previously had no snapshots
-  const evaluatedExpressionsCoveredByNewSnapshot: ReadonlyArray<EvaluatedExpression> = pipe(
+  const evaluatedExpressionsCoveredByNewSnapshot = getEvaluatedExpressionsThatAreSnapshotMembers(
     readmodel.evaluatedExpressionsWithoutPaperSnapshot,
-    R.map(intersection(event.expressionDois)),
-    R.toEntries,
-    RA.flatMap(([groupId, expressionDois]) => pipe(
-      Array.from(expressionDois),
-      RA.map((expressionDoi) => ({ expressionDoi, groupId })),
-    )),
+    event.expressionDois,
   );
   for (const item of evaluatedExpressionsCoveredByNewSnapshot) {
     updateEvaluatedPapers(
