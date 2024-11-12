@@ -28,7 +28,7 @@ export type ReadModel = {
   expressionLastEvaluatedAt: Map<GroupId, Map<ExpressionDoi, Date>>,
 };
 
-type Expression = {
+type EvaluatedExpression = {
   groupId: GroupId,
   expressionDoi: ExpressionDoi,
 };
@@ -90,7 +90,7 @@ const updateLastEvaluationDate = (
   }
 };
 
-const addPendingExpression = (readmodel: ReadModel, pendingExpression: Expression) => {
+const addPendingExpression = (readmodel: ReadModel, pendingExpression: EvaluatedExpression) => {
   if (!(pendingExpression.groupId in readmodel.pendingExpressions)) {
     readmodel.pendingExpressions[pendingExpression.groupId] = new Set();
   }
@@ -100,7 +100,7 @@ const addPendingExpression = (readmodel: ReadModel, pendingExpression: Expressio
 const upsertEvaluatedPaper = (
   readmodel: ReadModel,
 ) => (
-  readyExpression: Expression,
+  readyExpression: EvaluatedExpression,
 ) => {
   const groupId = readyExpression.groupId;
   initialiseEvaluatedPapersForGroup(readmodel, groupId);
@@ -126,7 +126,7 @@ const upsertEvaluatedPaper = (
 const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPublicationRecorded'>, readmodel: ReadModel) => {
   // Keep track of evaluation dates in private part of read model (not used directy by queries)
   updateLastEvaluationDate(readmodel.expressionLastEvaluatedAt, event);
-  const expression: Expression = {
+  const expression: EvaluatedExpression = {
     expressionDoi: event.articleId,
     groupId: event.groupId,
   };
@@ -166,7 +166,7 @@ const identifyReadyExpression = (pendingExpressions: ReadModel['pendingExpressio
   flattenToArray,
 );
 
-const removeFrom = (pendingExpressions: ReadModel['pendingExpressions']) => (readyExpression: Expression) => {
+const removeFrom = (pendingExpressions: ReadModel['pendingExpressions']) => (readyExpression: EvaluatedExpression) => {
   pendingExpressions[readyExpression.groupId].delete(readyExpression.expressionDoi);
 };
 
