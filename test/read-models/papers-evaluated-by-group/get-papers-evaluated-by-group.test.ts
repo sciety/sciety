@@ -45,9 +45,13 @@ const expectSingleExpressionDoiFromSnapshot = (
 ) => {
   expect(result.size).toBe(1);
 
-  const onlyPaper: EvaluatedPaper = result.values().next().value;
+  const onlyPaper = result.values().next();
 
-  expect(snapshot.has(onlyPaper.representative)).toBe(true);
+  if (onlyPaper.value === undefined) {
+    throw new Error('Unexpected empty Set');
+  }
+
+  expect(snapshot.has(onlyPaper.value.representative)).toBe(true);
 };
 
 const expectLastEvaluatedAt = (
@@ -56,10 +60,14 @@ const expectLastEvaluatedAt = (
 ) => {
   expect(result.size).toBe(1);
 
-  const onlyElementInTheSet: EvaluatedPaper = result.values().next().value;
+  const onlyElementInTheSet = result.values().next();
+
+  if (onlyElementInTheSet.value === undefined) {
+    throw new Error('Unexpected empty Set');
+  }
 
   expect(
-    onlyElementInTheSet.lastEvaluatedAt,
+    onlyElementInTheSet.value.lastEvaluatedAt,
   ).toStrictEqual(
     lastEvaluatedAt,
   );
