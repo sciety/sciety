@@ -4,6 +4,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
 import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events';
+import { Logger } from '../../logger';
 import { ExpressionDoi } from '../../types/expression-doi';
 import { GroupId } from '../../types/group-id';
 
@@ -98,6 +99,7 @@ const addPendingExpression = (readmodel: ReadModel, pending: EvaluatedExpression
 };
 
 const upsertEvaluatedPaper = (
+  logger: Logger,
   readmodel: ReadModel,
 ) => (
   ready: EvaluatedExpression,
@@ -108,7 +110,12 @@ const upsertEvaluatedPaper = (
   const latestSnapshotForEvaluatedExpression = readmodel.paperSnapshotsByEveryMember[ready.expressionDoi];
   const dateOfLatestEvaluationByGroup = calculateLastEvaluatedAtForSnapshot(
     readmodel, groupId, latestSnapshotForEvaluatedExpression,
-  ) ?? new Date(); // fallback needed due to types
+  );
+
+  if (dateOfLatestEvaluationByGroup === undefined) {
+    logger('error', 'Unreachable state in papers-evaluated-by-group read model', { ready });
+    return;
+  }
 
   for (const evaluatedPaper of papersEvaluatedByGroup) {
     if (latestSnapshotForEvaluatedExpression.includes(evaluatedPaper.representative)) {
@@ -123,7 +130,7 @@ const upsertEvaluatedPaper = (
   });
 };
 
-const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPublicationRecorded'>, readmodel: ReadModel) => {
+const handleEvaluationPublicationRecorded = (logger: Logger, event: EventOfType<'EvaluationPublicationRecorded'>, readmodel: ReadModel) => {
   // Keep track of evaluation dates in private part of read model (not used directy by queries)
   updateLastEvaluationDate(readmodel.expressionLastEvaluatedAt, event);
   const evaluatedExpression: EvaluatedExpression = {
@@ -139,7 +146,7 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
     return;
   }
 
-  upsertEvaluatedPaper(readmodel)(evaluatedExpression);
+  upsertEvaluatedPaper(logger, readmodel)(evaluatedExpression);
 };
 
 const updateKnownPaperSnapshots = (
@@ -171,26 +178,27 @@ const removeFrom = (pendingExpressions: ReadModel['pendingExpressions']) => (eva
   pendingExpressions[evaluatedExpression.groupId].delete(evaluatedExpression.expressionDoi);
 };
 
-const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>, readmodel: ReadModel) => {
+const handlePaperSnapshotRecorded = (logger: Logger, event: EventOfType<'PaperSnapshotRecorded'>, readmodel: ReadModel) => {
   const snapshotMembers = event.expressionDois;
   updateKnownPaperSnapshots(readmodel.paperSnapshotsByEveryMember, snapshotMembers);
 
   const readyExpressions = identifyReadyExpression(readmodel.pendingExpressions, snapshotMembers);
   readyExpressions.forEach(removeFrom(readmodel.pendingExpressions));
 
-  readyExpressions.forEach(upsertEvaluatedPaper(readmodel));
+  readyExpressions.forEach(upsertEvaluatedPaper(logger, readmodel));
 };
 
 export const handleEvent = (
+  logger: Logger,
   consideredGroupIds: ReadonlyArray<GroupId>,
 ) => (readmodel: ReadModel, event: DomainEvent): ReadModel => {
   if (isEventOfType('EvaluationPublicationRecorded')(event)) {
     if (consideredGroupIds.includes(event.groupId)) {
-      handleEvaluationPublicationRecorded(event, readmodel);
+      handleEvaluationPublicationRecorded(logger, event, readmodel);
     }
   }
   if (isEventOfType('PaperSnapshotRecorded')(event)) {
-    handlePaperSnapshotRecorded(event, readmodel);
+    handlePaperSnapshotRecorded(logger, event, readmodel);
   }
   return readmodel;
 };

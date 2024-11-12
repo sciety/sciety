@@ -7,6 +7,7 @@ import {
 import { initialState, handleEvent } from '../../../src/read-models/papers-evaluated-by-group/handle-event';
 import { arbitraryPaperSnapshotRecordedEvent } from '../../domain-events/arbitrary-paper-snapshot-event.helper';
 import { arbitraryEvaluationPublicationRecordedEvent } from '../../domain-events/evaluation-resource-events.helper';
+import { dummyLogger } from '../../dummy-logger';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 import { arbitraryGroupId } from '../../types/group-id.helper';
 
@@ -17,7 +18,7 @@ const consideredGroupIds = [groupId, anotherGroupId];
 const runQuery = (events: ReadonlyArray<DomainEvent>) => {
   const readModel = pipe(
     events,
-    RA.reduce(initialState(), handleEvent(consideredGroupIds)),
+    RA.reduce(initialState(), handleEvent(dummyLogger, consideredGroupIds)),
   );
   return getExpressionsWithNoAssociatedSnapshot(readModel)();
 };

@@ -15,7 +15,7 @@ export const queries = {
 export const constructPapersEvaluatedByGroup = (logger: Logger) => ({
   queries,
   initialState,
-  handleEvent: handleEvent([GID.fromValidatedString('4d6a8908-22a9-45c8-bd56-3c7140647709')]),
+  handleEvent: handleEvent(logger, [GID.fromValidatedString('4d6a8908-22a9-45c8-bd56-3c7140647709')]),
 });
 
 export { byLastEvaluatedAt, byRepresentative } from './get-papers-evaluated-by-group';
