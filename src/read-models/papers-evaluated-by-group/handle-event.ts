@@ -107,9 +107,9 @@ const upsertEvaluatedPaper = (
   const groupId = ready.groupId;
   initialiseEvaluatedPapersForGroup(readmodel, groupId);
   const papersEvaluatedByGroup = readmodel.evaluatedPapers[groupId];
-  const latestSnapshotForEvaluatedExpression = readmodel.paperSnapshotsByEveryMember[ready.expressionDoi];
+  const currentSnapshotForEvaluatedExpression = readmodel.paperSnapshotsByEveryMember[ready.expressionDoi];
   const dateOfLatestEvaluationByGroup = calculateLastEvaluatedAtForSnapshot(
-    readmodel, groupId, latestSnapshotForEvaluatedExpression,
+    readmodel, groupId, currentSnapshotForEvaluatedExpression,
   );
 
   if (dateOfLatestEvaluationByGroup === undefined) {
@@ -118,15 +118,16 @@ const upsertEvaluatedPaper = (
   }
 
   for (const evaluatedPaper of papersEvaluatedByGroup) {
-    if (latestSnapshotForEvaluatedExpression.includes(evaluatedPaper.representative)) {
+    if (currentSnapshotForEvaluatedExpression.includes(evaluatedPaper.representative)) {
       evaluatedPaper.lastEvaluatedAt = dateOfLatestEvaluationByGroup;
       return;
     }
   }
 
+  const alphabeticallyFirstExpressionFromCurrentSnapshot = Array.from(currentSnapshotForEvaluatedExpression).sort()[0];
   papersEvaluatedByGroup.push({
     lastEvaluatedAt: dateOfLatestEvaluationByGroup,
-    representative: Array.from(latestSnapshotForEvaluatedExpression).sort()[0],
+    representative: alphabeticallyFirstExpressionFromCurrentSnapshot,
   });
 };
 
