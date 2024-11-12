@@ -92,15 +92,20 @@ const addPendingExpression = (readmodel: ReadModel, groupId: GroupId, expression
   readmodel.pendingExpressions[groupId].add(expressionDoi);
 };
 
+type ReadyExpression = {
+  groupId: GroupId,
+  expressionDoi: ExpressionDoi,
+};
+
 const updateEvaluatedPapers = (
   readmodel: ReadModel,
 ) => (
-  evaluatedExpression: EvaluatedExpression,
+  readyExpression: ReadyExpression,
 ) => {
-  const groupId = evaluatedExpression.groupId;
+  const groupId = readyExpression.groupId;
   initialiseEvaluatedPapersForGroup(readmodel, groupId);
   const papersEvaluatedByGroup = readmodel.evaluatedPapers[groupId];
-  const latestSnapshotForEvaluatedExpression = readmodel.paperSnapshotsByEveryMember[evaluatedExpression.expressionDoi];
+  const latestSnapshotForEvaluatedExpression = readmodel.paperSnapshotsByEveryMember[readyExpression.expressionDoi];
   const dateOfLatestEvaluationByGroup = calculateLastEvaluatedAtForSnapshot(
     readmodel, groupId, latestSnapshotForEvaluatedExpression,
   ) ?? new Date(); // fallback needed due to types
@@ -153,11 +158,6 @@ const removePendingExpressionsThatAreInSnapshot = (
   });
 };
 
-type EvaluatedExpression = {
-  groupId: GroupId,
-  expressionDoi: ExpressionDoi,
-};
-
 const flattenToArray = (pendingExpressionsInSnapshot: ReadModel['pendingExpressions']) => pipe(
   pendingExpressionsInSnapshot,
   R.toEntries,
@@ -167,14 +167,18 @@ const flattenToArray = (pendingExpressionsInSnapshot: ReadModel['pendingExpressi
   )),
 );
 
+const identifyReadyExpression = (pendingExpressions: ReadModel['pendingExpressions'], snapshotMembers: ReadonlySet<ExpressionDoi>) => pipe(
+  pendingExpressions,
+  R.map(intersection(snapshotMembers)),
+  flattenToArray,
+);
+
 const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>, readmodel: ReadModel) => {
   const snapshotMembers = event.expressionDois;
   updateKnownPaperSnapshots(readmodel.paperSnapshotsByEveryMember, snapshotMembers);
 
   pipe(
-    readmodel.pendingExpressions,
-    R.map(intersection(snapshotMembers)),
-    flattenToArray,
+    identifyReadyExpression(readmodel.pendingExpressions, snapshotMembers),
     RA.map(updateEvaluatedPapers(readmodel)),
   );
 
