@@ -39,7 +39,7 @@ const runQuery = (events: ReadonlyArray<DomainEvent>, queriedGroupId: GroupId) =
   return getPapersEvaluatedByGroup(readModel)(queriedGroupId);
 };
 
-const expectSingleExpressionDoiFromSnapshot = (
+const expectDeterministicSingleExpressionDoiFromSnapshot = (
   result: ReadonlySet<EvaluatedPaper>,
   snapshot: ReadonlySet<ExpressionDoi>,
 ) => {
@@ -128,7 +128,7 @@ describe('get-papers-evaluated-by-group', () => {
       });
 
       it('returns the paper representative', () => {
-        expectSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisAB.expressionDois);
+        expectDeterministicSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisAB.expressionDois);
       });
 
       it('returns a lastEvaluatedAt', () => {
@@ -147,7 +147,7 @@ describe('get-papers-evaluated-by-group', () => {
       });
 
       it('returns the paper representative', () => {
-        expectSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisAB.expressionDois);
+        expectDeterministicSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisAB.expressionDois);
       });
 
       it('returns a lastEvaluatedAt', () => {
@@ -173,7 +173,7 @@ describe('get-papers-evaluated-by-group', () => {
       });
 
       it('returns the paper representative', () => {
-        expectSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisAB.expressionDois);
+        expectDeterministicSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisAB.expressionDois);
       });
 
       it('returns a lastEvaluatedAt', () => {
@@ -199,7 +199,7 @@ describe('get-papers-evaluated-by-group', () => {
       });
 
       it('returns the paper representative', () => {
-        expectSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisAB.expressionDois);
+        expectDeterministicSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisAB.expressionDois);
       });
 
       it('returns a lastEvaluatedAt', () => {
@@ -225,7 +225,7 @@ describe('get-papers-evaluated-by-group', () => {
       });
 
       it('returns the paper representative', () => {
-        expectSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisAB.expressionDois);
+        expectDeterministicSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisAB.expressionDois);
       });
 
       it('returns a lastEvaluatedAt', () => {
@@ -250,7 +250,7 @@ describe('get-papers-evaluated-by-group', () => {
       });
 
       it('returns the paper representative', () => {
-        expectSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisAB.expressionDois);
+        expectDeterministicSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisAB.expressionDois);
       });
 
       it('returns a lastEvaluatedAt', () => {
@@ -274,7 +274,7 @@ describe('get-papers-evaluated-by-group', () => {
       });
 
       it('returns the paper representative', () => {
-        expectSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisAB.expressionDois);
+        expectDeterministicSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisAB.expressionDois);
       });
 
       it('returns a lastEvaluatedAt', () => {
@@ -298,7 +298,7 @@ describe('get-papers-evaluated-by-group', () => {
       });
 
       it('returns the paper representative', () => {
-        expectSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisAB.expressionDois);
+        expectDeterministicSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisAB.expressionDois);
       });
 
       it('returns a lastEvaluatedAt', () => {
@@ -328,7 +328,7 @@ describe('get-papers-evaluated-by-group', () => {
       });
 
       it('returns the paper representative', () => {
-        expectSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisABC.expressionDois);
+        expectDeterministicSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisABC.expressionDois);
       });
 
       it('returns a lastEvaluatedAt', () => {
@@ -360,7 +360,7 @@ describe('get-papers-evaluated-by-group', () => {
       });
 
       it('returns the paper representative', () => {
-        expectSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisAB.expressionDois);
+        expectDeterministicSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisAB.expressionDois);
       });
 
       it('returns a lastEvaluatedAt', () => {
@@ -387,7 +387,7 @@ describe('get-papers-evaluated-by-group', () => {
         });
 
         it('returns the paper representative', () => {
-          expectSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisAB.expressionDois);
+          expectDeterministicSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisAB.expressionDois);
         });
 
         it('returns a lastEvaluatedAt', () => {
@@ -399,7 +399,7 @@ describe('get-papers-evaluated-by-group', () => {
         it('returns the paper representative', () => {
           result = runQuery(events, anotherGroupId);
 
-          expectSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisAB.expressionDois);
+          expectDeterministicSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisAB.expressionDois);
         });
 
         it('returns a lastEvaluatedAt', () => {
@@ -426,7 +426,7 @@ describe('get-papers-evaluated-by-group', () => {
         });
 
         it('returns the paper representative', () => {
-          expectSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisABC.expressionDois);
+          expectDeterministicSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisABC.expressionDois);
         });
 
         it('returns a lastEvaluatedAt', () => {
@@ -440,7 +440,7 @@ describe('get-papers-evaluated-by-group', () => {
         });
 
         it('returns the paper representative', () => {
-          expectSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisABC.expressionDois);
+          expectDeterministicSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisABC.expressionDois);
         });
 
         it('returns a lastEvaluatedAt', () => {
@@ -474,7 +474,7 @@ describe('get-papers-evaluated-by-group', () => {
       });
 
       it('returns the paper representative', () => {
-        expectSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisXY.expressionDois);
+        expectDeterministicSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisXY.expressionDois);
       });
 
       it('returns a lastEvaluatedAt', () => {
