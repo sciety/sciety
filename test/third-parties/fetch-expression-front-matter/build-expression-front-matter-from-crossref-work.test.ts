@@ -51,6 +51,15 @@ const extractAuthorsFromFrontMatter = (partialResponse: string) => {
   );
 };
 
+const extractTitleFromFrontMatter = (partialResponse: string) => {
+  const response = crossrefResponseWith(partialResponse);
+  return pipe(
+    buildExpressionFrontMatterFromCrossrefWork(response, dummyLogger, arbitraryExpressionDoi()),
+    E.getOrElseW(abortTest('Failed to build expression front matter')),
+    (frontMatter) => frontMatter.title,
+  );
+};
+
 describe('build-expression-front-matter-from-crossref-work', () => {
   const parser = new DOMParser({
     errorHandler: (_, msg) => {
@@ -309,14 +318,12 @@ describe('build-expression-front-matter-from-crossref-work', () => {
   // has been defined.
   describe('parsing the title', () => {
     it('extracts a title from the XML response', async () => {
-      const response = crossrefResponseWith(`
+      const title = extractTitleFromFrontMatter(`
         <titles>
           <title>An article title</title>
         </titles>`);
-      const doc = parser.parseFromString(response, 'text/xml');
-      const title = getTitle(doc);
 
-      expect(title).toStrictEqual(O.some('An article title'));
+      expect(title).toBe('An article title');
     });
 
     it('trims leading and trailing whitespace', () => {
