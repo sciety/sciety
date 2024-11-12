@@ -70,6 +70,7 @@ describe('get-papers-evaluated-by-group', () => {
   const expressionDoiA = arbitraryExpressionDoi();
   const expressionDoiB = arbitraryExpressionDoi();
   const expressionDoiC = arbitraryExpressionDoi();
+  const arbitraryOrderSet = (input: ReadonlyArray<ExpressionDoi>) => new Set(input);
   const evaluationRecordedAgainstExpressionDoiA: EventOfType<'EvaluationPublicationRecorded'> = {
     ...arbitraryEvaluationPublicationRecordedEvent(),
     groupId,
@@ -87,11 +88,11 @@ describe('get-papers-evaluated-by-group', () => {
   };
   const paperSnapshotWithExpressionDoisAB: EventOfType<'PaperSnapshotRecorded'> = {
     ...arbitraryPaperSnapshotRecordedEvent(),
-    expressionDois: new Set([expressionDoiA, expressionDoiB]),
+    expressionDois: arbitraryOrderSet([expressionDoiA, expressionDoiB]),
   };
   const paperSnapshotWithExpressionDoisABC: EventOfType<'PaperSnapshotRecorded'> = {
     ...arbitraryPaperSnapshotRecordedEvent(),
-    expressionDois: new Set([expressionDoiA, expressionDoiB, expressionDoiC]),
+    expressionDois: arbitraryOrderSet([expressionDoiA, expressionDoiB, expressionDoiC]),
   };
   let result: ReadonlySet<EvaluatedPaper>;
 
@@ -133,7 +134,7 @@ describe('get-papers-evaluated-by-group', () => {
       };
       const stagingPaperSnapshotRecorded1: EventOfType<'PaperSnapshotRecorded'> = {
         ...arbitraryPaperSnapshotRecordedEvent(),
-        expressionDois: new Set([EDOI.fromValidatedString('10.1099/acmi.0.000913.v1')]),
+        expressionDois: arbitraryOrderSet([EDOI.fromValidatedString('10.1099/acmi.0.000913.v1')]),
       };
       const stagingEvaluationRecorded3: EventOfType<'EvaluationPublicationRecorded'> = {
         ...arbitraryEvaluationPublicationRecordedEvent(),
@@ -157,7 +158,7 @@ describe('get-papers-evaluated-by-group', () => {
       };
       const stagingPaperSnapshotRecorded2: EventOfType<'PaperSnapshotRecorded'> = {
         ...arbitraryPaperSnapshotRecordedEvent(),
-        expressionDois: new Set([EDOI.fromValidatedString('10.1099/acmi.0.000913.v2'), EDOI.fromValidatedString('10.1099/acmi.0.000913.v1')]),
+        expressionDois: arbitraryOrderSet([EDOI.fromValidatedString('10.1099/acmi.0.000913.v2'), EDOI.fromValidatedString('10.1099/acmi.0.000913.v1')]),
       };
       const events = [
         stagingEvaluationRecorded1,
@@ -376,7 +377,7 @@ describe('get-papers-evaluated-by-group', () => {
       };
       const paperSnapshotAB = {
         ...paperSnapshotWithExpressionDoisAB,
-        expressionDois: new Set([a, b]),
+        expressionDois: arbitraryOrderSet([a, b]),
       };
       const newlyPublishedEvaluationRecordedAgainstExpressionDoiB = {
         ...evaluationRecordedAgainstExpressionDoiB,
@@ -396,7 +397,7 @@ describe('get-papers-evaluated-by-group', () => {
       };
       const paperSnapshotABC = {
         ...paperSnapshotWithExpressionDoisABC,
-        expressionDois: new Set([a, b, c]),
+        expressionDois: arbitraryOrderSet([a, b, c]),
       };
 
       const events = [
@@ -460,7 +461,7 @@ describe('get-papers-evaluated-by-group', () => {
 
       const paperSnapshotWithExpressionDoiB = {
         ...arbitraryPaperSnapshotRecordedEvent(),
-        expressionDois: new Set([expressionDoiB]),
+        expressionDois: arbitraryOrderSet([expressionDoiB]),
       };
 
       const events = [
@@ -573,7 +574,7 @@ describe('get-papers-evaluated-by-group', () => {
       };
       const paperSnapshotWithExpressionDoisXY = {
         ...arbitraryPaperSnapshotRecordedEvent(),
-        expressionDois: new Set([
+        expressionDois: arbitraryOrderSet([
           anotherExpressionDoi,
           evaluatedExpressionDoi,
         ]),
@@ -603,7 +604,7 @@ describe('get-papers-evaluated-by-group', () => {
     describe('when an evaluation has been recorded against an expression which is the only member of a subsequently recorded paper snapshot', () => {
       const paperSnapshotWithExpressionDoiA: EventOfType<'PaperSnapshotRecorded'> = {
         ...arbitraryPaperSnapshotRecordedEvent(),
-        expressionDois: new Set([expressionDoiA]),
+        expressionDois: arbitraryOrderSet([expressionDoiA]),
       };
       const events = [
         {
