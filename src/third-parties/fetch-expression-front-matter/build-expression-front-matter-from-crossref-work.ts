@@ -67,7 +67,7 @@ const getAbstract = (
   );
 };
 
-export const getTitle = (doc: Document): O.Option<SanitisedHtmlFragment> => {
+const getTitle = (doc: Document): O.Option<SanitisedHtmlFragment> => {
   const titlesElement = getElement(doc, 'titles');
   const titleElement = titlesElement?.getElementsByTagName('title')[0];
   if (titleElement) {

@@ -1,10 +1,10 @@
-import { DOMParser } from '@xmldom/xmldom';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import {
-  buildExpressionFrontMatterFromCrossrefWork, getTitle,
+  buildExpressionFrontMatterFromCrossrefWork,
 } from '../../../src/third-parties/fetch-expression-front-matter/build-expression-front-matter-from-crossref-work';
+import * as DE from '../../../src/types/data-error';
 import { abortTest } from '../../abort-test';
 import { dummyLogger } from '../../dummy-logger';
 import { arbitraryString } from '../../helpers';
@@ -61,12 +61,6 @@ const extractTitleFromFrontMatter = (partialResponse: string) => {
 };
 
 describe('build-expression-front-matter-from-crossref-work', () => {
-  const parser = new DOMParser({
-    errorHandler: (_, msg) => {
-      throw msg;
-    },
-  });
-
   describe('parsing the abstract', () => {
     it('extracts the abstract text from the XML response', async () => {
       const abstract = extractAbstractFromFrontMatter(`
@@ -337,12 +331,13 @@ describe('build-expression-front-matter-from-crossref-work', () => {
       expect(title).toBe('An article title');
     });
 
-    it('returns `Unknown title` when no title present', async () => {
-      const response = crossrefResponseWith('');
-      const doc = parser.parseFromString(response, 'text/xml');
-      const title = getTitle(doc);
+    it('returns on the left when no title present', async () => {
+      const result = pipe(
+        crossrefResponseWith(''),
+        (response) => buildExpressionFrontMatterFromCrossrefWork(response, dummyLogger, arbitraryExpressionDoi()),
+      );
 
-      expect(title).toStrictEqual(O.none);
+      expect(result).toStrictEqual(E.left(DE.unavailable));
     });
 
     it('extracts a title containing inline HTML tags from the XML response', async () => {
