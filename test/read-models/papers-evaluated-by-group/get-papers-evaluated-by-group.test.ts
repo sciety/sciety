@@ -329,7 +329,7 @@ describe('get-papers-evaluated-by-group', () => {
         result = runQuery(events, groupId);
       });
 
-      it('returns the paper representative', () => {
+      it('returns the paper representative, chosen from the first snapshot', () => {
         expectDeterministicSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisAB.expressionDois);
       });
 
@@ -361,7 +361,7 @@ describe('get-papers-evaluated-by-group', () => {
         result = runQuery(events, groupId);
       });
 
-      it('returns the paper representative', () => {
+      it('returns the paper representative, chosen from the first snapshot', () => {
         expectDeterministicSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoiB.expressionDois);
       });
 
@@ -427,7 +427,7 @@ describe('get-papers-evaluated-by-group', () => {
           result = runQuery(events, groupId);
         });
 
-        it('returns the paper representative', () => {
+        it('returns the paper representative, chosen from the snapshot that makes the paper visible for the first group', () => {
           expectDeterministicSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisAB.expressionDois);
         });
 
@@ -441,7 +441,7 @@ describe('get-papers-evaluated-by-group', () => {
           result = runQuery(events, anotherGroupId);
         });
 
-        it('returns the paper representative', () => {
+        it('returns the paper representative, chosen from the snapshot that makes the paper visible for the other group', () => {
           expectDeterministicSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisABC.expressionDois);
         });
 
