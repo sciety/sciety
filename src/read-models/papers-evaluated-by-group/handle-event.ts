@@ -28,6 +28,11 @@ export type ReadModel = {
   expressionLastEvaluatedAt: Map<GroupId, Map<ExpressionDoi, Date>>,
 };
 
+type Expression = {
+  groupId: GroupId,
+  expressionDoi: ExpressionDoi,
+};
+
 export const initialState = (): ReadModel => ({
   evaluatedPapers: {},
   pendingExpressions: {},
@@ -85,22 +90,17 @@ const updateLastEvaluationDate = (
   }
 };
 
-const addPendingExpression = (readmodel: ReadModel, groupId: GroupId, expressionDoi: ExpressionDoi) => {
-  if (!(groupId in readmodel.pendingExpressions)) {
-    readmodel.pendingExpressions[groupId] = new Set();
+const addPendingExpression = (readmodel: ReadModel, pendingExpression: Expression) => {
+  if (!(pendingExpression.groupId in readmodel.pendingExpressions)) {
+    readmodel.pendingExpressions[pendingExpression.groupId] = new Set();
   }
-  readmodel.pendingExpressions[groupId].add(expressionDoi);
-};
-
-type ReadyExpression = {
-  groupId: GroupId,
-  expressionDoi: ExpressionDoi,
+  readmodel.pendingExpressions[pendingExpression.groupId].add(pendingExpression.expressionDoi);
 };
 
 const upsertEvaluatedPaper = (
   readmodel: ReadModel,
 ) => (
-  readyExpression: ReadyExpression,
+  readyExpression: Expression,
 ) => {
   const groupId = readyExpression.groupId;
   initialiseEvaluatedPapersForGroup(readmodel, groupId);
@@ -126,15 +126,19 @@ const upsertEvaluatedPaper = (
 const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPublicationRecorded'>, readmodel: ReadModel) => {
   // Keep track of evaluation dates in private part of read model (not used directy by queries)
   updateLastEvaluationDate(readmodel.expressionLastEvaluatedAt, event);
+  const expression: Expression = {
+    expressionDoi: event.articleId,
+    groupId: event.groupId,
+  };
 
   // We only attempt to update evaluatedPapers if we have snapshot information for the evaluated expression
-  const isPartOfKnownSnapshot = Object.keys(readmodel.paperSnapshotsByEveryMember).includes(event.articleId);
+  const isPartOfKnownSnapshot = Object.keys(readmodel.paperSnapshotsByEveryMember).includes(expression.expressionDoi);
   if (!isPartOfKnownSnapshot) {
-    addPendingExpression(readmodel, event.groupId, event.articleId);
+    addPendingExpression(readmodel, expression);
     return;
   }
 
-  upsertEvaluatedPaper(readmodel)({ groupId: event.groupId, expressionDoi: event.articleId });
+  upsertEvaluatedPaper(readmodel)(expression);
 };
 
 const updateKnownPaperSnapshots = (
@@ -162,7 +166,7 @@ const identifyReadyExpression = (pendingExpressions: ReadModel['pendingExpressio
   flattenToArray,
 );
 
-const removeFrom = (pendingExpressions: ReadModel['pendingExpressions']) => (readyExpression: ReadyExpression) => {
+const removeFrom = (pendingExpressions: ReadModel['pendingExpressions']) => (readyExpression: Expression) => {
   pendingExpressions[readyExpression.groupId].delete(readyExpression.expressionDoi);
 };
 
