@@ -5,6 +5,7 @@ import { CompleteHtmlDocument } from './complete-html-document';
 import { ErrorPageViewModel } from './construct-error-page-view-model';
 import { constructLayoutViewModel } from './construct-layout-view-model';
 import { HtmlPage, toHtmlPage } from './html-page';
+import { HtmlPageWithSpecifiedLayout } from './html-page-with-specified-layout';
 import { renderOopsMessage } from './render-oops-message';
 import { RenderPageLayout } from './render-page-layout';
 import { ClientClassification } from './shared-components/head';
@@ -60,7 +61,7 @@ type ConstructHtmlResponse = (
   loggedInUserId: O.Option<UserId>,
   pageLayout: RenderPageLayout,
   clientClassification: ClientClassification)
-=> (renderedPage: E.Either<ErrorPageViewModel, HtmlPage>)
+=> (renderedPage: E.Either<ErrorPageViewModel, HtmlPageWithSpecifiedLayout>)
 => HtmlResponse;
 
 export const constructHtmlResponse: ConstructHtmlResponse = (

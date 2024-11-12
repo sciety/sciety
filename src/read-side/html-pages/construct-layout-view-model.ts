@@ -4,7 +4,7 @@ import { PageLayoutViewModel } from './page-layout-view-model';
 import { UserId } from '../../types/user-id';
 import { DependenciesForViews } from '../dependencies-for-views';
 
-type Dependencies = DependenciesForViews;
+export type Dependencies = DependenciesForViews;
 
 const constructLoggedInUserDetails = (dependencies: Dependencies, loggedInUserId: O.Option<UserId>) => pipe(
   loggedInUserId,
