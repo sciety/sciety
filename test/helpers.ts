@@ -43,3 +43,23 @@ export const arbitraryDate = (): Date => (
 );
 
 export const arbitraryBoolean = (): boolean => arbitraryNumber(0, 1) === 1;
+
+const shuffle = <T>(originalArray: ReadonlyArray<T>) => {
+  const array = Array.from(originalArray);
+  let currentIndex = array.length;
+
+  // While there remain elements to shuffle...
+  // eslint-disable-next-line no-loops/no-loops
+  while (currentIndex !== 0) {
+    // Pick a remaining element...
+    const randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+  return array;
+};
+
+export const arbitraryOrderSet = <T>(input: ReadonlyArray<T>): Set<T> => new Set(shuffle(input));
