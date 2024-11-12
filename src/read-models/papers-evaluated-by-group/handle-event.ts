@@ -167,26 +167,18 @@ const flattenToArray = (pendingExpressionsInSnapshot: ReadModel['pendingExpressi
   )),
 );
 
-const getPendingExpressionsThatArePartOf = (
-  snapshotMembers: EventOfType<'PaperSnapshotRecorded'>['expressionDois'],
-) => (
-  pendingExpressions: ReadModel['pendingExpressions'],
-): ReadonlyArray<EvaluatedExpression> => pipe(
-  pendingExpressions,
-  R.map(intersection(snapshotMembers)),
-  flattenToArray,
-);
-
 const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>, readmodel: ReadModel) => {
-  updateKnownPaperSnapshots(readmodel.paperSnapshotsByEveryMember, event.expressionDois);
+  const snapshotMembers = event.expressionDois;
+  updateKnownPaperSnapshots(readmodel.paperSnapshotsByEveryMember, snapshotMembers);
 
   pipe(
     readmodel.pendingExpressions,
-    getPendingExpressionsThatArePartOf(event.expressionDois),
+    R.map(intersection(snapshotMembers)),
+    flattenToArray,
     RA.map(updateEvaluatedPapers(readmodel)),
   );
 
-  removePendingExpressionsThatAreInSnapshot(readmodel.pendingExpressions, event.expressionDois);
+  removePendingExpressionsThatAreInSnapshot(readmodel.pendingExpressions, snapshotMembers);
 };
 
 export const handleEvent = (
