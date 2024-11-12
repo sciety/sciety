@@ -66,11 +66,29 @@ const expectLastEvaluatedAt = (
   );
 };
 
+const shuffle = (originalArray: ReadonlyArray<ExpressionDoi>) => {
+  const array = Array.from(originalArray);
+  let currentIndex = array.length;
+
+  // While there remain elements to shuffle...
+  // eslint-disable-next-line no-loops/no-loops
+  while (currentIndex !== 0) {
+    // Pick a remaining element...
+    const randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+  return array;
+};
+
 describe('get-papers-evaluated-by-group', () => {
   const expressionDoiA = arbitraryExpressionDoi();
   const expressionDoiB = arbitraryExpressionDoi();
   const expressionDoiC = arbitraryExpressionDoi();
-  const arbitraryOrderSet = (input: ReadonlyArray<ExpressionDoi>) => new Set(input);
+  const arbitraryOrderSet = (input: ReadonlyArray<ExpressionDoi>) => new Set(shuffle(input));
   const evaluationRecordedAgainstExpressionDoiA: EventOfType<'EvaluationPublicationRecorded'> = {
     ...arbitraryEvaluationPublicationRecordedEvent(),
     groupId,
