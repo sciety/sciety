@@ -97,7 +97,7 @@ type ReadyExpression = {
   expressionDoi: ExpressionDoi,
 };
 
-const updateEvaluatedPapers = (
+const upsertEvaluatedPaper = (
   readmodel: ReadModel,
 ) => (
   readyExpression: ReadyExpression,
@@ -134,8 +134,7 @@ const handleEvaluationPublicationRecorded = (event: EventOfType<'EvaluationPubli
     return;
   }
 
-  // Now the readmodel has all information needed to update evaluated papers
-  updateEvaluatedPapers(readmodel)({ groupId: event.groupId, expressionDoi: event.articleId });
+  upsertEvaluatedPaper(readmodel)({ groupId: event.groupId, expressionDoi: event.articleId });
 };
 
 const updateKnownPaperSnapshots = (
@@ -174,7 +173,7 @@ const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>
   const readyExpressions = identifyReadyExpression(readmodel.pendingExpressions, snapshotMembers);
   readyExpressions.forEach(removeFrom(readmodel.pendingExpressions));
 
-  readyExpressions.forEach(updateEvaluatedPapers(readmodel));
+  readyExpressions.forEach(upsertEvaluatedPaper(readmodel));
 };
 
 export const handleEvent = (
