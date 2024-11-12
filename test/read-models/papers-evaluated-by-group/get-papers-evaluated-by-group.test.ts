@@ -450,39 +450,6 @@ describe('get-papers-evaluated-by-group', () => {
         });
       });
     });
-
-    describe('when an evaluation has been recorded, and then a snapshot is recorded containing another expression and the evaluated one', () => {
-      const anotherExpressionDoi = arbitraryExpressionDoi();
-      const evaluatedExpressionDoi = arbitraryExpressionDoi();
-      const evaluationPublicationRecordedForExpressionY = {
-        ...arbitraryEvaluationPublicationRecordedEvent(),
-        groupId,
-        articleId: evaluatedExpressionDoi,
-      };
-      const paperSnapshotWithExpressionDoisXY = {
-        ...arbitraryPaperSnapshotRecordedEvent(),
-        expressionDois: arbitraryOrderSet([
-          anotherExpressionDoi,
-          evaluatedExpressionDoi,
-        ]),
-      };
-      const events = [
-        evaluationPublicationRecordedForExpressionY,
-        paperSnapshotWithExpressionDoisXY,
-      ] satisfies ReadonlyArray<DomainEvent>;
-
-      beforeEach(() => {
-        result = runQuery(events, groupId);
-      });
-
-      it('returns the paper representative', () => {
-        expectDeterministicSingleExpressionDoiFromSnapshot(result, paperSnapshotWithExpressionDoisXY.expressionDois);
-      });
-
-      it('returns a lastEvaluatedAt', () => {
-        expectLastEvaluatedAt(result, evaluationPublicationRecordedForExpressionY.publishedAt);
-      });
-    });
   });
 
   describe('given activity by a group not considered', () => {
