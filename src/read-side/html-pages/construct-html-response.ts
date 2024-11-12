@@ -3,9 +3,9 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { CompleteHtmlDocument } from './complete-html-document';
 import { ErrorPageViewModel } from './construct-error-page-view-model';
+import { constructLayoutViewModel } from './construct-layout-view-model';
 import { HtmlPage, toHtmlPage } from './html-page';
 import { PageLayout } from './page-layout';
-import { PageLayoutViewModel } from './page-layout-view-model';
 import { renderOopsMessage } from './render-oops-message';
 import { ClientClassification } from './shared-components/head';
 import { renderStandardPageLayout } from './shared-components/standard-page-layout';
@@ -15,21 +15,6 @@ import { UserId } from '../../types/user-id';
 import { DependenciesForViews } from '../dependencies-for-views';
 
 export type Dependencies = DependenciesForViews;
-
-const constructLoggedInUserDetails = (dependencies: Dependencies, loggedInUserId: O.Option<UserId>) => pipe(
-  loggedInUserId,
-  O.chain((id) => dependencies.lookupUser(id)),
-);
-
-const constructLayoutViewModel = (
-  dependencies: Dependencies,
-  loggedInUserId: O.Option<UserId>,
-): PageLayoutViewModel => {
-  const user = constructLoggedInUserDetails(dependencies, loggedInUserId);
-  return ({
-    userDetails: user,
-  });
-};
 
 const toErrorResponse = (
   dependencies: Dependencies,
