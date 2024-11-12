@@ -148,16 +148,6 @@ const updateKnownPaperSnapshots = (
   });
 };
 
-const removePendingExpressionsThatAreInSnapshot = (
-  pendingExpressions: ReadModel['pendingExpressions'],
-  snapshotExpressionDois: EventOfType<'PaperSnapshotRecorded'>['expressionDois'],
-) => {
-  snapshotExpressionDois.forEach((snapshotMember) => {
-    Object.values(pendingExpressions)
-      .forEach((expressions) => { expressions.delete(snapshotMember); });
-  });
-};
-
 const flattenToArray = (pendingExpressionsInSnapshot: ReadModel['pendingExpressions']) => pipe(
   pendingExpressionsInSnapshot,
   R.toEntries,
@@ -179,10 +169,12 @@ const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>
 
   pipe(
     identifyReadyExpression(readmodel.pendingExpressions, snapshotMembers),
+    RA.map((readyExpression) => {
+      readmodel.pendingExpressions[readyExpression.groupId].delete(readyExpression.expressionDoi);
+      return readyExpression;
+    }),
     RA.map(updateEvaluatedPapers(readmodel)),
   );
-
-  removePendingExpressionsThatAreInSnapshot(readmodel.pendingExpressions, snapshotMembers);
 };
 
 export const handleEvent = (
