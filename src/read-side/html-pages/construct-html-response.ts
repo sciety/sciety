@@ -5,8 +5,8 @@ import { CompleteHtmlDocument } from './complete-html-document';
 import { ErrorPageViewModel } from './construct-error-page-view-model';
 import { constructLayoutViewModel } from './construct-layout-view-model';
 import { HtmlPage, toHtmlPage } from './html-page';
-import { PageLayout } from './page-layout';
 import { renderOopsMessage } from './render-oops-message';
+import { RenderPageLayout } from './render-page-layout';
 import { ClientClassification } from './shared-components/head';
 import { renderStandardPageLayout } from './shared-components/standard-page-layout';
 import { wrapInHtmlDocument } from './wrap-in-html-document';
@@ -39,7 +39,7 @@ const toErrorResponse = (
 const pageToSuccessResponse = (
   dependencies: Dependencies,
   loggedInUserId: O.Option<UserId>,
-  pageLayout: PageLayout,
+  pageLayout: RenderPageLayout,
   clientClassification: ClientClassification,
 ) => (page: HtmlPage): HtmlResponse => ({
   document: pipe(
@@ -58,7 +58,7 @@ export type HtmlResponse = {
 type ConstructHtmlResponse = (
   dependencies: Dependencies,
   loggedInUserId: O.Option<UserId>,
-  pageLayout: PageLayout,
+  pageLayout: RenderPageLayout,
   clientClassification: ClientClassification)
 => (renderedPage: E.Either<ErrorPageViewModel, HtmlPage>)
 => HtmlResponse;

@@ -1,9 +1,9 @@
 import { pipe } from 'fp-ts/function';
 import { toHtmlFragment } from '../../../../types/html-fragment';
-import { PageLayout } from '../../page-layout';
+import { RenderPageLayout } from '../../render-page-layout';
 import { commonLayout } from '../common-layout';
 
-export const renderStandardPageLayout: PageLayout = (viewModel) => (page) => pipe(
+export const renderStandardPageLayout: RenderPageLayout = (viewModel) => (page) => pipe(
   `
   <main id="mainContent">
     <div class="page-content">

@@ -11,13 +11,13 @@ import { ErrorPageViewModel } from '../read-side/html-pages/construct-error-page
 import { constructHtmlResponse, Dependencies as ConstructHtmlResponseDependencies } from '../read-side/html-pages/construct-html-response';
 import { ConstructLoggedInPage, ConstructPage } from '../read-side/html-pages/construct-page';
 import { HtmlPage } from '../read-side/html-pages/html-page';
-import { PageLayout } from '../read-side/html-pages/page-layout';
 import { RedirectTarget } from '../read-side/html-pages/redirect-target';
+import { RenderPageLayout } from '../read-side/html-pages/render-page-layout';
 import { renderStandardPageLayout } from '../read-side/html-pages/shared-components/standard-page-layout';
 
 const constructAndSendHtmlResponse = (
   dependencies: ConstructHtmlResponseDependencies,
-  pageLayout: PageLayout,
+  pageLayout: RenderPageLayout,
   context: ParameterizedContext,
 ) => (input: E.Either<ErrorPageViewModel, HtmlPage>) => pipe(
   input,
@@ -36,7 +36,7 @@ const constructAndSendHtmlResponse = (
 const sendHtmlResponseOrRedirect = (
   dependencies: ConstructHtmlResponseDependencies,
   context: ParameterizedContext,
-  pageLayout: PageLayout,
+  pageLayout: RenderPageLayout,
   result: E.Either<ErrorPageViewModel | RedirectTarget, HtmlPage>,
 ) => {
   if (E.isRight(result)) {
@@ -56,7 +56,7 @@ const sendHtmlResponseOrRedirect = (
 export const pageHandler = (
   dependencies: ConstructHtmlResponseDependencies,
   handler: ConstructPage,
-  pageLayout: PageLayout = renderStandardPageLayout,
+  pageLayout: RenderPageLayout = renderStandardPageLayout,
 ): Middleware => async (context, next) => {
   const result = await pipe(
     {
@@ -88,7 +88,7 @@ export const pageHandler = (
 export const pageHandlerWithLoggedInUser = (
   dependencies: ConstructHtmlResponseDependencies,
   handler: ConstructLoggedInPage,
-  pageLayout: PageLayout = renderStandardPageLayout,
+  pageLayout: RenderPageLayout = renderStandardPageLayout,
 ): Middleware => async (context, next) => {
   const loggedInUserId = getAuthenticatedUserIdFromContext(context);
   if (O.isNone(loggedInUserId)) {
