@@ -163,18 +163,18 @@ const identifyReadyExpression = (pendingExpressions: ReadModel['pendingExpressio
   flattenToArray,
 );
 
+const removeFrom = (pendingExpressions: ReadModel['pendingExpressions']) => (readyExpression: ReadyExpression) => {
+  pendingExpressions[readyExpression.groupId].delete(readyExpression.expressionDoi);
+};
+
 const handlePaperSnapshotRecorded = (event: EventOfType<'PaperSnapshotRecorded'>, readmodel: ReadModel) => {
   const snapshotMembers = event.expressionDois;
   updateKnownPaperSnapshots(readmodel.paperSnapshotsByEveryMember, snapshotMembers);
 
-  pipe(
-    identifyReadyExpression(readmodel.pendingExpressions, snapshotMembers),
-    RA.map((readyExpression) => {
-      readmodel.pendingExpressions[readyExpression.groupId].delete(readyExpression.expressionDoi);
-      return readyExpression;
-    }),
-    RA.map(updateEvaluatedPapers(readmodel)),
-  );
+  const readyExpressions = identifyReadyExpression(readmodel.pendingExpressions, snapshotMembers);
+  readyExpressions.forEach(removeFrom(readmodel.pendingExpressions));
+
+  readyExpressions.forEach(updateEvaluatedPapers(readmodel));
 };
 
 export const handleEvent = (
