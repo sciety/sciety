@@ -51,11 +51,9 @@ const expectDeterministicSingleExpressionDoiFromSnapshot = (
     throw new Error('Unexpected empty Set');
   }
 
-  expect(snapshot.has(onlyPaper.value.representative)).toBe(true);
+  const alphabeticallyFirst = Array.from(snapshot).sort()[0];
 
-  // const alphabeticallyFirst = Array.from(snapshot).sort()[0];
-
-  // expect(onlyPaper.value.representative).toBe(alphabeticallyFirst);
+  expect(onlyPaper.value.representative).toBe(alphabeticallyFirst);
 };
 
 const expectLastEvaluatedAt = (

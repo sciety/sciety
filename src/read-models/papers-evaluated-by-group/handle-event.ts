@@ -126,7 +126,7 @@ const upsertEvaluatedPaper = (
 
   papersEvaluatedByGroup.push({
     lastEvaluatedAt: dateOfLatestEvaluationByGroup,
-    representative: latestSnapshotForEvaluatedExpression[0],
+    representative: Array.from(latestSnapshotForEvaluatedExpression).sort()[0],
   });
 };
 
