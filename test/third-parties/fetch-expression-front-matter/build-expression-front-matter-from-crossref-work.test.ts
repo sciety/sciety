@@ -327,16 +327,14 @@ describe('build-expression-front-matter-from-crossref-work', () => {
     });
 
     it('trims leading and trailing whitespace', () => {
-      const response = crossrefResponseWith(`
+      const title = extractTitleFromFrontMatter(`
         <titles>
           <title>
             An article title
           </title>
         </titles>`);
-      const doc = parser.parseFromString(response, 'text/xml');
-      const title = getTitle(doc);
 
-      expect(title).toStrictEqual(O.some('An article title'));
+      expect(title).toBe('An article title');
     });
 
     it('returns `Unknown title` when no title present', async () => {
@@ -348,25 +346,21 @@ describe('build-expression-front-matter-from-crossref-work', () => {
     });
 
     it('extracts a title containing inline HTML tags from the XML response', async () => {
-      const response = crossrefResponseWith(`
+      const title = extractTitleFromFrontMatter(`
         <titles>
           <title>An article title for <i>C. elegans</i></title>
         </titles>`);
-      const doc = parser.parseFromString(response, 'text/xml');
-      const title = getTitle(doc);
 
-      expect(title).toStrictEqual(O.some('An article title for <i>C. elegans</i>'));
+      expect(title).toBe('An article title for <i>C. elegans</i>');
     });
 
     it('strips non html tags from the title', async () => {
-      const response = crossrefResponseWith(`
+      const title = extractTitleFromFrontMatter(`
         <titles>
           <title>An article title for <scp>C. elegans</scp></title>
         </titles>`);
-      const doc = parser.parseFromString(response, 'text/xml');
-      const title = getTitle(doc);
 
-      expect(title).toStrictEqual(O.some('An article title for C. elegans'));
+      expect(title).toBe('An article title for C. elegans');
     });
   });
 });
