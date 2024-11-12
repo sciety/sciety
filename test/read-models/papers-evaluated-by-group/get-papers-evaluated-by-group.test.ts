@@ -52,6 +52,10 @@ const expectDeterministicSingleExpressionDoiFromSnapshot = (
   }
 
   expect(snapshot.has(onlyPaper.value.representative)).toBe(true);
+
+  // const alphabeticallyFirst = Array.from(snapshot).sort()[0];
+
+  // expect(onlyPaper.value.representative).toBe(alphabeticallyFirst);
 };
 
 const expectLastEvaluatedAt = (
