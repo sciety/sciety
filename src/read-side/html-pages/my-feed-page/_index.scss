@@ -1,8 +1,9 @@
 @use 'card';
-@use '../../../sass/feed-page-numbers';
+@use 'typography';
 
 .my-feed-page-numbers {
-  @include feed-page-numbers.feed-page-numbers();
+  margin-bottom: 1rem;
+  @include typography.details();
 }
 
 .my-feed__list_item {
