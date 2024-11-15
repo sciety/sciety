@@ -7,4 +7,5 @@
 .page-content {
   display: flex;
   padding-bottom: 3rem;
+  @include layout.page-content-horizontal-margins();
 }
