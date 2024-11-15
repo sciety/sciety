@@ -31,7 +31,7 @@
 .article-page-header-wrapper--with-curation-statements {
   padding-bottom: local-settings.$component-vertical-spacing;
   background-color: settings.$colour-background-grey;
-  margin-top: calc(-1 * settings.$border-width);
+  margin-top: calc(-1 * #{settings.$border-width});
   @include layout.allow-edge-to-edge-content-when-narrow();
   @include _apply-page-gutter-as-padding();
 }
