@@ -358,4 +358,14 @@ describe('build-expression-front-matter-from-crossref-work', () => {
       expect(title).toBe('An article title for C. elegans');
     });
   });
+
+  describe('detecting unrecoverable errors', () => {
+    describe('when the response does not contain a <crossref> tag', () => {
+      it.todo('detects an unrecoverable error');
+    });
+
+    describe('when the response contains a <crossref> tag with its only child an <error> tag', () => {
+      it.todo('detects an unrecoverable error');
+    });
+  });
 });

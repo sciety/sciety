@@ -1,7 +1,6 @@
 import { DOMParser } from '@xmldom/xmldom';
 import * as O from 'fp-ts/Option';
 import { detectUnrecoverableError } from '../../../src/third-parties/fetch-expression-front-matter/detect-unrecoverable-error';
-import { arbitraryString } from '../../helpers';
 
 describe('detect-unrecoverable-error', () => {
   const parser = new DOMParser({
@@ -26,28 +25,6 @@ describe('detect-unrecoverable-error', () => {
 
       it('detects an unrecoverable error', () => {
         expect(result).toStrictEqual(O.some('contains-error-xml-element'));
-      });
-    });
-
-    describe('contains an ordinary crossref record', () => {
-      const input = `
-        <?xml version="1.0" encoding="UTF-8"?>
-        <doi_records>
-          <doi_record>
-            <crossref>
-              <posted_content>
-                <titles>
-                  <title>${arbitraryString()}</title>
-                </titles>
-              </posted_content>
-            </crossref>
-          </doi_record>
-        </doi_records>
-      `;
-      const result = detectUnrecoverableError(parser.parseFromString(input, 'text/xml'));
-
-      it('does not detect an unrecoverable error', () => {
-        expect(result).toStrictEqual(O.none);
       });
     });
   });
