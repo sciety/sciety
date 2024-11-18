@@ -75,5 +75,13 @@ export const handleEvent = (readmodel: ReadModel, event: DomainEvent): ReadModel
       });
     }
   }
+  if (isEventOfType('ListDeleted')(event)) {
+    const removedListId = event.listId;
+    readmodel.groups.forEach((listId, groupId) => {
+      if (listId === removedListId) {
+        readmodel.groups.delete(groupId);
+      }
+    });
+  }
   return readmodel;
 };

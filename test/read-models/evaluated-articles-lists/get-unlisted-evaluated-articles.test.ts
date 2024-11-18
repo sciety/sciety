@@ -74,7 +74,7 @@ describe('get-unlisted-evaluated-articles', () => {
     );
     const result = getUnlistedEvaluatedArticles(readmodel)();
 
-    it.failing('ignores evaluations by the group', () => {
+    it('ignores evaluations by the group', () => {
       expect(result).toHaveLength(0);
     });
   });
