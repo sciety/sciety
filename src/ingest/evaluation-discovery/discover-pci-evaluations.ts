@@ -40,6 +40,8 @@ const identifyCandidates = (since: Date) => (feed: string) => {
 
 /**
  * @deprecated extend and use supportedArticleIdFromLink instead.
+ * This is a non trivial change, that would also change the behaviour.
+ * supportedArticleIdFromLink supports arxiv and osf link, but not their dois and doi.org links
  */
 const linkContainingDoiRegex = /^\s*(?:doi:|(?:(?:https?:\/\/)?(?:(?:dx|www)\.)?doi\.org\/))?(10\.[0-9]+\/(?:[^%"#?\s])+)\s*$/;
 
