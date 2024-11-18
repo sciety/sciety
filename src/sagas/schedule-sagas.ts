@@ -19,7 +19,7 @@ export const scheduleSagas = (
   }
   dependencies.logger('info', 'Scheduling sagas');
   runPeriodically(dependencies.logger, ensureEvaluationsAreListed(dependencies), 317);
-  runPeriodically(dependencies.logger, maintainSnapshotsForEvaluatedExpressions(dependencies), 331);
+  runPeriodically(dependencies.logger, maintainSnapshotsForEvaluatedExpressions(dependencies), 61);
   if (env.COAR_NOTIFICATION_DELIVERY_ENABLED) {
     runPeriodically(
       dependencies.logger,
