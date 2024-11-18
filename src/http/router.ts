@@ -110,7 +110,7 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
 
   router.get(
     '/annotations/create-annotation-form',
-    requireLoggedInUser(dependencies),
+    requireLoggedInUser(),
     pageHandler(dependencies, createPageFromParams(
       dependencies.logger,
       createAnnotationFormPageParamsCodec,

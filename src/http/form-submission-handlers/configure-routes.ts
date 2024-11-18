@@ -52,7 +52,7 @@ export const configureRoutes = (router: Router, dependencies: Dependencies): voi
     router.post(
       route.path,
       bodyParser({ enableTypes: ['form'] }),
-      requireLoggedInUser(dependencies),
+      requireLoggedInUser(),
       route.handler,
     );
   });
