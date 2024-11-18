@@ -1,5 +1,3 @@
-import * as TE from 'fp-ts/TaskEither';
-import { DiscoverPublishedEvaluations } from './discover-published-evaluations';
 import { discoverAccessMicrobiologyEvaluations } from './evaluation-discovery/discover-access-microbiology-evaluations';
 import { discoverEvaluationsFromCrossrefViaBiorxiv } from './evaluation-discovery/discover-evaluations-from-crossref-via-biorxiv';
 import { discoverEvaluationsFromHypothesisGroup } from './evaluation-discovery/discover-evaluations-from-hypothesis-group';
@@ -10,11 +8,6 @@ import { discoverPrereviewEvaluations } from './evaluation-discovery/discover-pr
 import { discoverRapidReviewsEvaluations } from './evaluation-discovery/discover-rapid-reviews-evaluations';
 import { Configuration } from './generate-configuration-from-environment';
 import { EvaluationDiscoveryProcess } from './update-all';
-
-const stubbedDiscoverPublishEvaluation: DiscoverPublishedEvaluations = () => () => TE.right({
-  understood: [],
-  skipped: [],
-});
 
 // addArticleToEvaluatedArticlesList policy needs to be updated BEFORE adding a new group to this configuration
 export const evaluationDiscoveryProcesses = (environment: Configuration): Array<EvaluationDiscoveryProcess> => [
@@ -146,8 +139,6 @@ export const evaluationDiscoveryProcesses = (environment: Configuration): Array<
   {
     groupId: '4d6a8908-22a9-45c8-bd56-3c7140647709',
     name: 'Access Microbiology',
-    discoverPublishedEvaluations: environment.experimentEnabled
-      ? discoverAccessMicrobiologyEvaluations
-      : stubbedDiscoverPublishEvaluation,
+    discoverPublishedEvaluations: discoverAccessMicrobiologyEvaluations,
   },
 ];
