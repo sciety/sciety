@@ -307,9 +307,6 @@ describe('build-expression-front-matter-from-crossref-work', () => {
     });
   });
 
-  // TODO: these assertions appear to expect a string, but should expect a SanitisedHtmlFragment
-  // There is coupling between these expectations and the way the SanitisedHtmlFragment type
-  // has been defined.
   describe('parsing the title', () => {
     it('extracts a title from the XML response', async () => {
       const title = extractTitleFromFrontMatter(`
