@@ -153,39 +153,9 @@ feature-test: node_modules clean-db build
 
 download-exploratory-test-from-prod:
 	rm -rf "./data/exploratory-test-from-prod.csv"
-	kubectl run --rm --attach ship-events \
-		--image=amazon/aws-cli:2.4.23 \
-		--command=true \
-		--restart=Never \
-		--env=PGHOST=$$(kubectl get configmap sciety--prod--public-env-vars -o json | jq -r '.data.PGHOST') \
-		--env=PGDATABASE=$$(kubectl get configmap sciety--prod--public-env-vars -o json | jq -r '.data.PGDATABASE') \
-		--env=PGUSER=$$(kubectl get configmap sciety--prod--public-env-vars -o json | jq -r '.data.PGUSER') \
-		--env=PGPASSWORD=$$(kubectl get secret sciety--prod--secret-env-vars -o json | jq -r '.data.PGPASSWORD'| base64 -d) \
-		--env=AWS_ACCESS_KEY_ID=$$(kubectl get secret sciety-events-shipper-aws-credentials -o json | jq -r '.data."id"'| base64 -d) \
-		--env=AWS_SECRET_ACCESS_KEY=$$(kubectl get secret sciety-events-shipper-aws-credentials -o json | jq -r '.data."secret"'| base64 -d) \
-		-- \
-		bash -c 'yum install --assumeyes --quiet postgresql \
-			&& psql -c "COPY (SELECT * FROM events ORDER BY date ASC) TO STDOUT CSV;" > ./events.csv \
-			&& aws s3 cp "./events.csv" "s3://sciety-data-extractions/exploratory-test-from-prod.csv" \
-		'
 	aws s3 cp "s3://sciety-data-extractions/exploratory-test-from-prod.csv" "./data/exploratory-test-from-prod.csv"
 
 download-exploratory-test-from-staging:
-	kubectl run --rm --attach ship-events \
-		--image=amazon/aws-cli:2.4.23 \
-		--command=true \
-		--restart=Never \
-		--env=PGHOST=$$(kubectl get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGHOST') \
-		--env=PGDATABASE=$$(kubectl get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGDATABASE') \
-		--env=PGUSER=$$(kubectl get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGUSER') \
-		--env=PGPASSWORD=$$(kubectl get secret sciety--staging--secret-env-vars -o json | jq -r '.data.PGPASSWORD'| base64 -d | sed -e 's/\$$\$$/$$$$$$$$/g') \
-		--env=AWS_ACCESS_KEY_ID=$$(kubectl get secret sciety-events-shipper-aws-credentials -o json | jq -r '.data."id"'| base64 -d) \
-		--env=AWS_SECRET_ACCESS_KEY=$$(kubectl get secret sciety-events-shipper-aws-credentials -o json | jq -r '.data."secret"'| base64 -d) \
-		-- \
-		bash -c 'yum install --assumeyes --quiet postgresql \
-			&& psql -c "COPY (SELECT * FROM events ORDER BY date ASC) TO STDOUT CSV;" > ./events.csv \
-			&& aws s3 cp "./events.csv" "s3://sciety-data-extractions/exploratory-test-from-staging.csv" \
-		'
 	aws s3 cp "s3://sciety-data-extractions/exploratory-test-from-staging.csv" "./data/exploratory-test-from-staging.csv"
 
 exploratory-test-from-prod: node_modules clean-db build
