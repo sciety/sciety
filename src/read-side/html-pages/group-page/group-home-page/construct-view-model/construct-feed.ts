@@ -65,7 +65,7 @@ const toPageOfFeedContent = (
 );
 
 const getExpressionDoisForFeed = (dependencies: Dependencies) => (groupId: GroupId) => {
-  if (process.env.EXPERIMENT_ENABLED === 'true' && groupId === GID.fromValidatedString('4d6a8908-22a9-45c8-bd56-3c7140647709')) {
+  if (groupId === GID.fromValidatedString('4d6a8908-22a9-45c8-bd56-3c7140647709')) {
     return E.right(constructSortedFeed(dependencies, groupId));
   }
   return getEvaluatedExpressionDois(dependencies)(groupId);
