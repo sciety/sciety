@@ -9,7 +9,7 @@ import * as LOID from '../../../../src/types/list-owner-id';
 import { TestFramework, createTestFramework } from '../../../framework';
 import { arbitrarySanitisedHtmlFragment } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
-import { arbitraryArticleDetails } from '../../../third-parties/external-queries.helper';
+import { arbitraryExpressionFrontMatter } from '../../../third-parties/external-queries.helper';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 import { arbitraryListId } from '../../../types/list-id.helper';
 import { arbitraryCreateUserAccountCommand } from '../../../write-side/commands/create-user-account-command.helper';
@@ -41,7 +41,7 @@ describe('construct-view-model', () => {
           {
             ...framework.dependenciesForViews,
             fetchExpressionFrontMatter: () => TE.right({
-              ...arbitraryArticleDetails(),
+              ...arbitraryExpressionFrontMatter(),
               title,
             }),
           },
