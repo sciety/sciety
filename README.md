@@ -189,13 +189,19 @@ curl -v -H "Authorization: Bearer $SCIETY_TEAM_API_BEARER_TOKEN" -X POST https:/
 
 #### Adding a group
 
+Prior to adding a group three files need to be made available:
+- square avatar [Group static files](https://github.com/sciety/group-static-files)
+- large logo [Sciety repo](/static/groups/large-logos/)
+- group description [Sciety repo](/static/groups/)
+
+Aim for a large horizontal logo of 600px width. Refer to the [group page sass](src/html-pages/group-page/common-components/_index.scss).
+
 ```sh
-curl -v -H "Authorization: Bearer $SCIETY_TEAM_API_BEARER_TOKEN" -X POST http://localhost:8080/api/add-group -H "Content-type: application/json" -d '{"groupId": "1480d2dd-463f-4834-8e81-d89c8ae2b86f", "avatarPath": "https://raw.githubusercontent.com/sciety/group-static-files/main/example-group.png", "descriptionPath": "life-science-editors--1480d2dd-463f-4834-8e81-d89c8ae2b86f.md", "homepage": "https://www.lifescienceeditors.com", "name": "Life Science Editors", "shortDescription": "Life Science Editors is a group of former journal editors and grant specialists who are passionate about helping scientists and science reach their full potential.", "slug": "life-science-editors"}'
+curl -v -H "Authorization: Bearer ${SCIETY_TEAM_API_BEARER_TOKEN}" \
+	-X POST https://staging.sciety.org/api/add-group \
+	-H "Content-type: application/json" \
+	-d '{"groupId": "cc4c8e79-402f-40e7-80fd-1062145d24ec", "avatarPath": "https://raw.githubusercontent.com/sciety/group-static-files/main/metaror.png", "descriptionPath": "metaror.md", "homepage": "https://metaror.org/", "name": "MetaROR", "shortDescription": "MetaROR is a collaborative initiative led jointly by the Research on Research Institute (RoRI) and the Association for Interdisciplinary Meta-Research and Open Science (AIMOS), which are working together to build a platform to leverage the strengths of the Publish – Review – Curate approach for the various metaresearch disciplines.", "slug": "metaror", "largeLogoPath": "/static/groups/large-logos/metaror.png"}'
 ```
-
-#### Group large logos
-
-Aim for a horizontal logo of 600px width. Refer to the [group page sass](src/html-pages/group-page/common-components/_index.scss).
 
 License
 -------
