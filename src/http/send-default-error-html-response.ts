@@ -2,8 +2,9 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { ParameterizedContext } from 'koa';
-import { getAuthenticatedUserIdFromContext, Dependencies as GetLoggedInScietyUserDependencies } from './authentication-and-logging-in-of-sciety-users';
+import { getAuthenticatedUserIdFromContext } from './authentication-and-logging-in-of-sciety-users';
 import { detectClientClassification } from './detect-client-classification';
+import { GetLoggedInScietyUserDependencies } from './page-handler';
 import { toDefaultErrorHtmlDocument } from '../read-side/html-pages/to-default-error-html-document';
 
 export type Dependencies = GetLoggedInScietyUserDependencies;

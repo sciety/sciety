@@ -3,7 +3,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import { ParameterizedContext } from 'koa';
-import { getLoggedInScietyUser, Dependencies as GetLoggedInScietyUserDependencies, getAuthenticatedUserIdFromContext } from './authentication-and-logging-in-of-sciety-users';
+import { getAuthenticatedUserIdFromContext } from './authentication-and-logging-in-of-sciety-users';
 import { detectClientClassification } from './detect-client-classification';
 import { sendHtmlResponse } from './send-html-response';
 import { sendRedirect } from './send-redirect';
@@ -15,6 +15,26 @@ import { HtmlPage } from '../read-side/html-pages/html-page';
 import { PageLayout } from '../read-side/html-pages/page-layout';
 import { RedirectTarget } from '../read-side/html-pages/redirect-target';
 import { standardPageLayout } from '../read-side/html-pages/shared-components/standard-page-layout';
+import { UserDetails } from '../types/user-details';
+
+export type GetLoggedInScietyUserDependencies = Pick<Queries, 'lookupUser'>;
+/**
+ * @deprecated
+ *
+ * - If only the UserId is necessary, replace with call to getAuthenticatedUserIdFromContext.
+ *
+ * - If you require UserDetails, inline this pipe or hide a copy of this function into the caller.
+ * This exposes the query and makes it possible to move it down into the read-side
+ * e.g. with a layout view we don't have yet.
+ */
+const getLoggedInScietyUser = (
+  dependencies: GetLoggedInScietyUserDependencies,
+  context: ParameterizedContext,
+): O.Option<UserDetails> => pipe(
+  context,
+  getAuthenticatedUserIdFromContext,
+  O.chain((id) => dependencies.lookupUser(id)),
+);
 
 const constructAndSendHtmlResponse = (
   dependencies: GetLoggedInScietyUserDependencies,

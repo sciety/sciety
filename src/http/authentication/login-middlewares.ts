@@ -3,8 +3,9 @@ import { pipe } from 'fp-ts/function';
 import * as tt from 'io-ts-types';
 import { Middleware, ParameterizedContext } from 'koa';
 import koaPassport from 'koa-passport';
-import { Dependencies as GetLoggedInScietyUserDependencies, getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
+import { getAuthenticatedUserIdFromContext } from '../authentication-and-logging-in-of-sciety-users';
 import { redirectToAuthenticationDestination } from '../authentication-destination';
+import { GetLoggedInScietyUserDependencies } from '../page-handler';
 
 const oAuthScope = 'openid profile';
 

@@ -7,10 +7,11 @@ import { constructHtmlResponse } from '../../read-side/html-pages/construct-html
 import { createUserAccountFormPageLayout, renderFormPage } from '../../read-side/html-pages/create-user-account-form-page';
 import { UserDetails } from '../../types/user-details';
 import {
-  Dependencies as GetLoggedInScietyUserDependencies, getAuthenticatedUserIdFromContext,
+  getAuthenticatedUserIdFromContext,
 } from '../authentication-and-logging-in-of-sciety-users';
 import { redirectToAuthenticationDestination } from '../authentication-destination';
 import { detectClientClassification } from '../detect-client-classification';
+import { GetLoggedInScietyUserDependencies } from '../page-handler';
 import { sendHtmlResponse } from '../send-html-response';
 
 type Dependencies = GetLoggedInScietyUserDependencies & ValidateAndExecuteCommandDependencies;
