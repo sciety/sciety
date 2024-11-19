@@ -18,15 +18,7 @@ import { standardPageLayout } from '../read-side/html-pages/shared-components/st
 import { UserDetails } from '../types/user-details';
 
 export type GetLoggedInScietyUserDependencies = Pick<Queries, 'lookupUser'>;
-/**
- * @deprecated
- *
- * - If only the UserId is necessary, replace with call to getAuthenticatedUserIdFromContext.
- *
- * - If you require UserDetails, inline this pipe or hide a copy of this function into the caller.
- * This exposes the query and makes it possible to move it down into the read-side
- * e.g. with a layout view we don't have yet.
- */
+
 const getLoggedInScietyUser = (
   dependencies: GetLoggedInScietyUserDependencies,
   context: ParameterizedContext,
