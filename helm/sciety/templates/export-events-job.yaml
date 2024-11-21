@@ -27,12 +27,12 @@ spec:
                     name: {{ .Release.Name }}--public-env-vars
                 - secretRef:
                     name: {{ .Release.Name }}--secret-env-vars
-              
+
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: {{ .Release.Name }}--sciety-export-events
   annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::540790251273:role/ScietyEventsShipper
+    eks.amazonaws.com/role-arn: {{ .Values.eventShipperIAMRoleARN }}
 {{ end }}
