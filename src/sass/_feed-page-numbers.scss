@@ -1,6 +1,0 @@
-@use 'typography';
-
-@mixin feed-page-numbers() {
-  margin-bottom: 1rem;
-  @include typography.details();
-}

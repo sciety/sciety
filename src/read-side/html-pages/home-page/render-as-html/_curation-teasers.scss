@@ -3,7 +3,7 @@
 @use 'layout';
 @use 'settings';
 @use 'breakpoints';
-@use '../../../../sass/curation-statement';
+@use 'curation-statement';
 @use 'common';
 
 $_arbitrary-large-amount-of-px: 9000px;

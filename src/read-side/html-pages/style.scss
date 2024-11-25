@@ -1,6 +1,5 @@
-@use '../../sass/normalise';
-@use '../../sass/page-content';
-@use '../../sass/fonts';
+@use 'normalise';
+@use 'fonts';
 
 @use 'shared-components';
 @use 'form-rules';
@@ -12,9 +11,9 @@
 @use 'edit-list-details-form-page';
 @use 'explore-page';
 @use 'group-page';
+@use 'groups-page';
 @use 'home-page';
 @use 'list-page';
 @use 'my-feed-page';
 @use 'search-results-page';
 @use 'user-page';
-@use '../../sass/supplementary';
