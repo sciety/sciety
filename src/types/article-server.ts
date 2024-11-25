@@ -23,27 +23,27 @@ type ServerInfo = {
 export const articleServers: Record<ArticleServer, ServerInfo> = {
   biorxiv: {
     name: 'bioRxiv',
-    avatarUrl: '/static/images/biorxiv.jpg',
+    avatarUrl: '/static/images/article-servers/biorxiv.jpg',
     domain: 'biorxiv.org',
   },
   medrxiv: {
     name: 'medRxiv',
-    avatarUrl: '/static/images/medrxiv.jpg',
+    avatarUrl: '/static/images/article-servers/medrxiv.jpg',
     domain: 'medrxiv.org',
   },
   researchsquare: {
     name: 'Research Square',
-    avatarUrl: '/static/images/researchsquare.png',
+    avatarUrl: '/static/images/article-servers/researchsquare.png',
     domain: 'www.researchsquare.com',
   },
   scielopreprints: {
     name: 'SciELO Preprints',
-    avatarUrl: '/static/images/scielo.svg',
+    avatarUrl: '/static/images/article-servers/scielo.svg',
     domain: 'preprints.scielo.org',
   },
   osf: {
     name: 'OSF Preprints',
-    avatarUrl: '/static/images/osf.png',
+    avatarUrl: '/static/images/article-servers/osf.png',
     domain: 'osf.io',
   },
   accessmicrobiology: {
@@ -53,7 +53,7 @@ export const articleServers: Record<ArticleServer, ServerInfo> = {
   },
   elife: {
     name: 'eLife',
-    avatarUrl: '/static/images/elife.png',
+    avatarUrl: '/static/images/article-servers/elife.png',
     domain: 'elifesciences.org',
   },
 };
