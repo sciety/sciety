@@ -194,7 +194,7 @@ replace-staging-database-with-snapshot-from-prod: download-exploratory-test-from
 	kubectl exec psql -- psql -c "DELETE FROM events"
 	kubectl exec psql -- mkdir /data
 	kubectl cp ./data/exploratory-test-from-prod.csv psql:/data/exploratory-test-from-prod.csv
-	kubectl exec psql -- psql -c "\copy events FROM '/data/exploratory-test-from-prod.csv' WITH CSV"
+	kubectl exec psql -- psql -c "\copy events FROM '/data/exploratory-test-from-prod.csv' WITH CSV HEADER"
 	kubectl delete --wait=false pod psql
 	kubectl rollout restart deployment sciety--staging--frontend
 
