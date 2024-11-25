@@ -48,7 +48,7 @@ export const articleServers: Record<ArticleServer, ServerInfo> = {
   },
   accessmicrobiology: {
     name: 'Access Microbiology',
-    avatarUrl: 'https://raw.githubusercontent.com/sciety/group-static-files/main/access-microbiology.png',
+    avatarUrl: '/static/images/article-servers/access-microbiology.png',
     domain: 'www.microbiologyresearch.org',
   },
   elife: {
