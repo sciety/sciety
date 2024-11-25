@@ -17,7 +17,7 @@ describe('supported-article-id-from-link', () => {
       ['research square DOI link', 'https://doi.org/10.21203/rs.3.rs-885194/v1', '10.21203/rs.3.rs-885194/v1'],
       ['SciELO link', 'https://preprints.scielo.org/index.php/scielo/preprint/download/4639/8936/9328', '10.1590/SciELOPreprints.4639'],
       ['OSF short link', 'https://osf.io/vrmpf/', '10.31219/osf.io/vrmpf'],
-      // ['OSF link', 'https://osf.io/preprints/osf/uwt3b', '10.31219/osf.io/uwt3b'],
+      ['OSF link', 'https://osf.io/preprints/osf/uwt3b', '10.31219/osf.io/uwt3b'],
       // ['Socarxiv link', 'https://osf.io/preprints/socarxiv/b2ra3', '10.31235/osf.io/b2ra3'],
       ['PsyArXiv link', 'https://psyarxiv.com/mgn32', '10.31234/osf.io/mgn32'],
       ['arXiv link', 'https://arxiv.org/abs/2212.00741', '10.48550/arXiv.2212.00741'],

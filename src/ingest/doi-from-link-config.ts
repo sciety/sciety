@@ -25,7 +25,7 @@ export const doiFromLinkConfig: DoiFromLinkConfig = {
   },
   osf: {
     startOfDoi: '10.31219/osf.io/',
-    regexToCaptureEndOfDoi: /https:\/\/osf\.io\/(.+)\//,
+    regexToCaptureEndOfDoi: /https:\/\/osf\.io\/.*([a-z0-9]{5})\/?$/,
     prefix: '10.31219',
   },
   psyarxiv: {
