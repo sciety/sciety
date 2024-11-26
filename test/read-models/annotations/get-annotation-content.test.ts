@@ -14,7 +14,6 @@ import { arbitraryUnsafeUserInput } from '../../types/unsafe-user-input.helper';
 describe('get-annotation-content', () => {
   const listId = arbitraryListId();
   const expressionDoi = arbitraryExpressionDoi();
-  /** @deprecated roll out expressionDois in list resource events */
   const articleId = new ArticleId(expressionDoi);
   const content = arbitraryUnsafeUserInput();
   const runQuery = (events: ReadonlyArray<DomainEvent>) => {
