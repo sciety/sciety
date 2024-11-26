@@ -10,7 +10,7 @@ import { dummyLogger } from '../../dummy-logger';
 import { arbitraryString } from '../../helpers';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 
-const crossrefResponseWith = (content: string): string => `
+const postedContentCrossrefResponseWith = (content: string): string => `
   <?xml version="1.0" encoding="UTF-8"?>
   <doi_records>
     <doi_record>
@@ -22,6 +22,28 @@ const crossrefResponseWith = (content: string): string => `
     </doi_record>
   </doi_records>
 `;
+
+const journalCrossrefResponseWith = (content: string): string => `
+  <?xml version="1.0" encoding="UTF-8"?>
+  <doi_records>
+    <doi_record>
+      <crossref>
+        <journal>
+          <journal_article>
+            ${content}
+          </journal_article>
+        </journal>
+      </crossref>
+    </doi_record>
+  </doi_records>
+`;
+
+const crossrefResponseWith = (content: string) => {
+  if (Math.random() > 0.5) {
+    return postedContentCrossrefResponseWith(content);
+  }
+  return journalCrossrefResponseWith(content);
+};
 
 const extractAbstractFromFrontMatter = (partialResponse: string) => {
   const response = crossrefResponseWith(`
