@@ -13,26 +13,26 @@ Sciety uses the PReF (preprint review features) descriptors to describe key elem
 
 <dl class="group-page-pref">
     <dt>Review requested by</dt>
-    <dd>To be confirmed</dd>
+    <dd>Authors</dd>
     <dt>Reviewer selected by</dt>
-    <dd>To be confirmed</dd>
+    <dd>Editor, service, or community</dd>
     <dt>Public interaction</dt>
-    <dd>To be confirmed</dd>
+    <dd>No</dd>
     <dt>Inclusion of author response</dt>
-    <dd>To be confirmed</dd>
+    <dd>Yes</dd>
     <dt>Decision</dt>
     <dd>To be confirmed</dd>
     <dt>Review coverage</dt>
-    <dd>To be confirmed</dd>
+    <dd>Complete paper</dd>
     <dt>Reviewer identity known to</dt>
-    <dd>To be confirmed</dd>
+    <dd>Editor or service, Public</dd>
     <dt>Competing interests</dt>
-    <dd>To be confirmed</dd>
+    <dd>Displayed</dd>
 </dl>
 
 ## People
 
-To be confirmed.
+[Group members](https://metaror.org/about-our-team/).
 
 ## Content license
 
