@@ -1,4 +1,5 @@
 import { DOMParser, XMLSerializer } from '@xmldom/xmldom';
+import { XMLParser } from 'fast-xml-parser';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
@@ -126,6 +127,13 @@ const getAuthors = (doc: Document): ArticleAuthors => {
   return pipe(authors, O.sequenceArray);
 };
 
+const parser = new XMLParser({});
+
+const parseXmlDocument = (s: string) => E.tryCatch(
+  () => parser.parse(s) as unknown,
+  () => 'Failed to parse XML',
+);
+
 export const buildExpressionFrontMatterFromCrossrefWork = (
   crossrefWorkXml: string,
   logger: Logger,
@@ -135,7 +143,13 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
     logger('error', 'crossref/fetch-expression-front-matter: Empty document', { doi: expressionDoi, crossrefWorkXml });
     return E.left(DE.unavailable);
   }
-  const parser = new DOMParser({
+  const parsedCrossrefWork = parseXmlDocument(crossrefWorkXml);
+  if (E.isLeft(parsedCrossrefWork)) {
+    logger('error', 'crossref/fetch-expression-front-matter: Failed to parse XML', { doi: expressionDoi, crossrefWorkXml });
+    return E.left(DE.unavailable);
+  }
+
+  const legacyParser = new DOMParser({
     errorHandler: (_, msg) => {
       throw msg;
     },
@@ -144,7 +158,7 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
   let authors: ArticleAuthors;
   let title: O.Option<SanitisedHtmlFragment>;
   try {
-    const parsedXml = parser.parseFromString(crossrefWorkXml, 'text/xml');
+    const parsedXml = legacyParser.parseFromString(crossrefWorkXml, 'text/xml');
 
     const unrecoverableError = detectUnrecoverableError(parsedXml);
     if (O.isSome(unrecoverableError)) {
