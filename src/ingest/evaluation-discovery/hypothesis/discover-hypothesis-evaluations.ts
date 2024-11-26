@@ -4,8 +4,8 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Annotation } from './annotation';
 import { hypothesisResponseCodec } from './response';
-import { decodeAndReportFailures } from '../../decode-and-report-failures';
 import { FetchData } from '../../fetch-data';
+import { decodeAndReportFailures } from '../decode-and-report-failures';
 
 const latestDateOf = (items: ReadonlyArray<Annotation>) => (
   encodeURIComponent(items[items.length - 1].created)
