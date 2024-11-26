@@ -70,6 +70,10 @@ const pciEvaluationsCodec = t.strict({
   links: t.union([arrayOfLinkElements, emptyLinksElement]),
 }, 'pciEvaluationsCodec');
 
+const isCandidateInsideIngestionWindow = (ingestDays: number) => (
+  candidate: { date: string },
+) => new Date(candidate.date).getTime() > ingestionWindowStartDate(ingestDays).getTime();
+
 export const discoverPciEvaluations = (
   url: string,
 ): DiscoverPublishedEvaluations => (
@@ -86,7 +90,7 @@ export const discoverPciEvaluations = (
     reviewId: item.resource.doi,
     articleId: item.doi,
   }))),
-  TE.map(RA.filter((candidate) => new Date(candidate.date).getTime() > ingestionWindowStartDate(ingestDays).getTime())),
+  TE.map(RA.filter(isCandidateInsideIngestionWindow(ingestDays))),
   TE.map(RA.map(toEvaluationOrSkip)),
   TE.map((items) => ({
     understood: RA.rights(items),
