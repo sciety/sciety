@@ -9,7 +9,6 @@ import { discoverRapidReviewsEvaluations } from './evaluation-discovery/discover
 import { Configuration } from './generate-configuration-from-environment';
 import { EvaluationDiscoveryProcess } from './update-all';
 
-// addArticleToEvaluatedArticlesList policy needs to be updated BEFORE adding a new group to this configuration
 export const evaluationDiscoveryProcesses = (environment: Configuration): Array<EvaluationDiscoveryProcess> => [
   {
     groupId: 'bc1f956b-12e8-4f5c-aadc-70f91347bd18',
