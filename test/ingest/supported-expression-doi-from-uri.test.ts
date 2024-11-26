@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either';
-import { supportedArticleIdFromLink } from '../../src/ingest/supported-article-id-from-link';
+import { supportedExpressionDoiFromUri } from '../../src/ingest/supported-expression-doi-from-uri';
 
-describe('supported-article-id-from-link', () => {
+describe('supported-expression-doi-from-uri', () => {
   describe('when the input is supported', () => {
     describe.each([
       ['medrxiv link', 'https://www.medrxiv.org/content/10.1101/2021.06.18.21258689v1', '10.1101/2021.06.18.21258689'],
@@ -23,7 +23,7 @@ describe('supported-article-id-from-link', () => {
       ['arXiv link', 'https://arxiv.org/abs/2212.00741', '10.48550/arXiv.2212.00741'],
     ])('%s', (_, input, expectedDoi) => {
       it('extracts the doi from the input', () => {
-        const result = supportedArticleIdFromLink(input);
+        const result = supportedExpressionDoiFromUri(input);
 
         expect(result).toStrictEqual(E.right(expectedDoi));
       });
@@ -46,7 +46,7 @@ describe('supported-article-id-from-link', () => {
       ['invalid SciELO link', 'https://preprints.scielo.org/index.php/scielo/preprint/4639/8936/9328'],
     ])('%s', (_, input) => {
       it('returns a left', () => {
-        const result = supportedArticleIdFromLink(input);
+        const result = supportedExpressionDoiFromUri(input);
 
         expect(result).toStrictEqual(E.left(expect.stringContaining(input)));
       });

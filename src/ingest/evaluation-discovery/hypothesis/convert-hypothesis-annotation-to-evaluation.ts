@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
 import { Annotation } from './annotation';
-import { supportedArticleIdFromLink } from '../../supported-article-id-from-link';
+import { supportedExpressionDoiFromUri } from '../../supported-expression-doi-from-uri';
 import { PublishedEvaluation, constructPublishedEvaluation } from '../../types/published-evaluation';
 import { SkippedEvaluation } from '../../types/skipped-evaluation';
 
@@ -28,16 +28,16 @@ export const convertHypothesisAnnotationToEvaluation = (
   annotation: Annotation,
 ): E.Either<SkippedEvaluation, PublishedEvaluation> => pipe(
   annotation.uri,
-  supportedArticleIdFromLink,
+  supportedExpressionDoiFromUri,
   E.filterOrElse(
     () => annotationContainsText(annotation),
     () => 'annotation text field is empty',
   ),
   E.bimap(
     (reason) => ({ item: annotation.uri, reason }),
-    (articleDoi) => constructPublishedEvaluation({
+    (expressionDoi) => constructPublishedEvaluation({
       publishedOn: new Date(annotation.created),
-      paperExpressionDoi: articleDoi,
+      paperExpressionDoi: expressionDoi,
       evaluationLocator: `hypothesis:${annotation.id}`,
       evaluationType: mapTagToType(
         annotation.tags,
