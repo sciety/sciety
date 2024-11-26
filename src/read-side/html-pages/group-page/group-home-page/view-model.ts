@@ -15,6 +15,7 @@ export type OrderedArticleCards = PaginationControlsViewModel & {
 type Feed = NoActivity | OrderedArticleCards;
 
 export type PageHeaderViewModel = {
+  title: string,
   group: Group,
   isFollowing: boolean,
   followerCount: number,

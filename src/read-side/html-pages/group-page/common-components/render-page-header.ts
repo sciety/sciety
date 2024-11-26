@@ -10,7 +10,7 @@ export type ViewModel = {
   group: Group,
 };
 
-const renderPageHeaderIdentity = (viewModel: ViewModel) => pipe(
+export const renderPageHeaderIdentity = (viewModel: ViewModel): HtmlFragment => pipe(
   viewModel.group.largeLogoPath,
   O.match(
     () => `<h1>${htmlEscape(viewModel.title)}</h1>`,
@@ -21,6 +21,7 @@ const renderPageHeaderIdentity = (viewModel: ViewModel) => pipe(
     </h1>
   `,
   ),
+  toHtmlFragment,
 );
 
 export const renderPageHeader = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`

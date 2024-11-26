@@ -33,6 +33,7 @@ const showManagementLinkToAdmins = (dependencies: Dependencies, user: Params['us
 );
 
 export const constructHeader = (dependencies: Dependencies, user: Params['user']) => (group: Group): ViewModel['header'] => ({
+  title: group.name,
   group,
   isFollowing: checkFollowingStatus(user, dependencies, group.id),
   followerCount: RA.size(dependencies.getFollowers(group.id)),
