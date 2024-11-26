@@ -1,10 +1,11 @@
+import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { discoverPciEvaluations } from '../../../src/ingest/evaluation-discovery/discover-pci-evaluations';
 import { ingestionWindowStartDate } from '../../../src/ingest/evaluation-discovery/ingestion-window-start-date';
 import { DiscoveredPublishedEvaluations } from '../../../src/ingest/types/discovered-published-evaluations';
 import { constructPublishedEvaluation } from '../../../src/ingest/types/published-evaluation';
-import { arbitraryUri, arbitraryWord } from '../../helpers';
+import { arbitraryString, arbitraryUri, arbitraryWord } from '../../helpers';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 
@@ -35,6 +36,25 @@ const constructPciXmlResponseForOneItem = (evaluationDoi: string, publishedDate:
 describe('discover-pci-evaluations', () => {
   const evaluationDoi = arbitraryExpressionDoi();
   let result: DiscoveredPublishedEvaluations;
+
+  describe('when the response is not parseable as XML', () => {
+    const notValidXml = arbitraryString();
+    let unhappyResult: E.Either<unknown, unknown>;
+
+    beforeEach(async () => {
+      unhappyResult = await pipe(
+        {
+          fetchData: <D>() => TE.right(notValidXml as unknown as D),
+          fetchGoogleSheet: shouldNotBeCalled,
+        },
+        discoverPciEvaluations(arbitraryUri())(ingestDays),
+      )();
+    });
+
+    it('returns on the left', () => {
+      expect(unhappyResult).toStrictEqual(E.left(expect.anything()));
+    });
+  });
 
   describe('when there are no evaluations', () => {
     const pciXmlResponse = `
