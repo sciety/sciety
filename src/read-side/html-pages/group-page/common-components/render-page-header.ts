@@ -10,7 +10,7 @@ export type ViewModel = {
   group: Group,
 };
 
-export const renderPageHeaderIdentity = (viewModel: ViewModel): HtmlFragment => pipe(
+const renderPageHeaderIdentity = (viewModel: ViewModel): HtmlFragment => pipe(
   viewModel.group.largeLogoPath,
   O.match(
     () => `<h1>${htmlEscape(viewModel.title)}</h1>`,
@@ -24,14 +24,18 @@ export const renderPageHeaderIdentity = (viewModel: ViewModel): HtmlFragment => 
   toHtmlFragment,
 );
 
-export const renderPageHeader = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
-  <header class="page-header">
+export const renderIdentityAndDescription = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
     <div class="page-header__identity">
       ${renderPageHeaderIdentity(viewmodel)}
     </div>
     <p class="group-page-short-description">
       ${htmlEscape(viewmodel.group.shortDescription)}
     </p>
+`);
+
+export const renderPageHeader = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment(`
+  <header class="page-header">
+    ${renderIdentityAndDescription(viewmodel)}
     <a href="${constructGroupPagePath.home.href(viewmodel.group)}" class="group-sub-page-back-link">Back to ${viewmodel.group.name}'s group page</a>
   </header>
 `);
