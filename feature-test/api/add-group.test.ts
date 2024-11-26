@@ -27,7 +27,7 @@ describe('add-group', () => {
     await goto('localhost:8080/groups');
     const link = $(`[href="/groups/${addGroupCommand.slug}"].group-card__link`);
     await click(link);
-    const groupName = await $('h1 img').attribute('alt');
+    const groupName = await $('h1').text();
 
     expect(groupName).toBe(addGroupCommand.name);
   });
