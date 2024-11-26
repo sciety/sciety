@@ -2,11 +2,11 @@ import { XMLParser } from 'fast-xml-parser';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
 import * as t from 'io-ts';
-import { formatValidationErrors } from 'io-ts-reporters';
 import { ingestionWindowStartDate } from './ingestion-window-start-date';
+import { decodeAndReportFailures } from '../decode-and-report-failures';
 import { DiscoverPublishedEvaluations } from '../discover-published-evaluations';
 import { constructPublishedEvaluation } from '../types/published-evaluation';
 
@@ -79,11 +79,7 @@ export const discoverPciEvaluations = (
 ) => pipe(
   dependencies.fetchData<string>(url),
   TE.chainEitherK(parseXmlDocument),
-  TE.chainEitherKW(flow(
-    pciEvaluationsCodec.decode,
-    E.mapLeft(formatValidationErrors),
-    E.mapLeft((errors) => errors.join('\n')),
-  )),
+  TE.chainEitherKW(decodeAndReportFailures(pciEvaluationsCodec)),
   TE.map((decodedResponse) => (decodedResponse.links === '' ? [] : decodedResponse.links.link)),
   TE.map(RA.map((item) => ({
     date: item.resource.date,
