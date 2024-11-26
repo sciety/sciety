@@ -68,7 +68,7 @@ const emptyLinksElement = t.literal('');
 
 const pciEvaluationsCodec = t.strict({
   links: t.union([arrayOfLinkElements, emptyLinksElement]),
-});
+}, 'pciEvaluationsCodec');
 
 export const discoverPciEvaluations = (
   url: string,
