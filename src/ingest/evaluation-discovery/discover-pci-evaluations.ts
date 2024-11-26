@@ -1,9 +1,11 @@
-import { DOMParser } from '@xmldom/xmldom';
+import { XMLParser } from 'fast-xml-parser';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import * as S from 'fp-ts/string';
+import * as t from 'io-ts';
+import { formatValidationErrors } from 'io-ts-reporters';
 import { ingestionWindowStartDate } from './ingestion-window-start-date';
 import { DiscoverPublishedEvaluations } from '../discover-published-evaluations';
 import { constructPublishedEvaluation } from '../types/published-evaluation';
@@ -12,28 +14,6 @@ type Candidate = {
   date: string,
   articleId: string,
   reviewId: string,
-};
-
-const identifyCandidates = (feed: string) => {
-  const parser = new DOMParser({
-    errorHandler: (_, msg) => {
-      throw msg;
-    },
-  });
-  const doc = parser.parseFromString(feed, 'text/xml');
-  const candidates = [];
-  // eslint-disable-next-line no-loops/no-loops
-  for (const link of Array.from(doc.getElementsByTagName('link'))) {
-    const articleDoiString = link.getElementsByTagName('doi')[1]?.textContent ?? '';
-    const reviewDoiString = link.getElementsByTagName('doi')[0]?.textContent ?? '';
-    const date = link.getElementsByTagName('date')[0]?.textContent ?? '';
-    candidates.push({
-      date,
-      articleId: articleDoiString,
-      reviewId: reviewDoiString,
-    });
-  }
-  return candidates;
 };
 
 /**
@@ -65,6 +45,31 @@ const toEvaluationOrSkip = (candidate: Candidate) => {
   });
 };
 
+const parser = new XMLParser({
+  isArray: (name) => name === 'link',
+});
+
+const parseXmlDocument = (s: string) => E.tryCatch(
+  () => parser.parse(s) as unknown,
+  () => 'Failed to parse XML',
+);
+
+const arrayOfLinkElements = t.strict({
+  link: t.readonlyArray(t.strict({
+    doi: t.string,
+    resource: t.strict({
+      doi: t.string,
+      date: t.string,
+    }),
+  })),
+});
+
+const emptyLinksElement = t.literal('');
+
+const pciEvaluationsCodec = t.strict({
+  links: t.union([arrayOfLinkElements, emptyLinksElement]),
+});
+
 export const discoverPciEvaluations = (
   url: string,
 ): DiscoverPublishedEvaluations => (
@@ -73,7 +78,18 @@ export const discoverPciEvaluations = (
   dependencies,
 ) => pipe(
   dependencies.fetchData<string>(url),
-  TE.map(identifyCandidates),
+  TE.chainEitherK(parseXmlDocument),
+  TE.chainEitherKW(flow(
+    pciEvaluationsCodec.decode,
+    E.mapLeft(formatValidationErrors),
+    E.mapLeft((errors) => errors.join('\n')),
+  )),
+  TE.map((decodedResponse) => (decodedResponse.links === '' ? [] : decodedResponse.links.link)),
+  TE.map(RA.map((item) => ({
+    date: item.resource.date,
+    reviewId: item.resource.doi,
+    articleId: item.doi,
+  }))),
   TE.map(RA.filter((candidate) => new Date(candidate.date).getTime() > ingestionWindowStartDate(ingestDays).getTime())),
   TE.map(RA.map(toEvaluationOrSkip)),
   TE.map((items) => ({
