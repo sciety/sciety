@@ -22,7 +22,12 @@ const byDateDescending: Ord.Ord<FeedItem> = pipe(
 );
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const constructCassyniSeminarFeedItems = (history: PH.PublishingHistory) => [];
+const constructCassyniSeminarFeedItems = (history: PH.PublishingHistory) => {
+  if (process.env.EXPERIMENT_ENABLED === 'true') {
+    return [];
+  }
+  return [];
+};
 
 type GetFeedItemsByDateDescending = (dependencies: Dependencies)
 => (history: PH.PublishingHistory)
