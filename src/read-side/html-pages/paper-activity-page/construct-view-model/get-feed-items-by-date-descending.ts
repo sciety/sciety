@@ -21,6 +21,9 @@ const byDateDescending: Ord.Ord<FeedItem> = pipe(
   Ord.reverse,
 );
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const constructCassyniSeminarFeedItems = (history: PH.PublishingHistory) => [];
+
 type GetFeedItemsByDateDescending = (dependencies: Dependencies)
 => (history: PH.PublishingHistory)
 => T.Task<ReadonlyArray<FeedItem>>;
@@ -43,6 +46,6 @@ export const getFeedItemsByDateDescending: GetFeedItemsByDateDescending = (
     ),
   }),
   sequenceS(T.ApplyPar),
-  T.map((items) => [...items.evaluations, ...items.expressions]),
+  T.map((items) => [...items.evaluations, ...items.expressions, ...constructCassyniSeminarFeedItems(history)]),
   T.map(RA.sort(byDateDescending)),
 );
