@@ -3,6 +3,7 @@ import { XMLParser } from 'fast-xml-parser';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
 import { detectUnrecoverableError } from './detect-unrecoverable-error';
 import { getElement } from './get-element';
 import { Logger } from '../../logger';
@@ -86,8 +87,50 @@ const legacyGetTitle = (doc: Document): O.Option<SanitisedHtmlFragment> => {
   return O.none;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const getTitle = (work: unknown): O.Option<SanitisedHtmlFragment> => O.none;
+const postedContentCodec = t.strict({
+  posted_content: t.strict({
+    titles: t.strict({
+      title: t.string,
+    }),
+  }),
+});
+
+const journalCodec = t.strict({
+  journal: t.strict({
+    journal_article: t.strict({
+      titles: t.strict({
+        title: t.string,
+      }),
+    }),
+  }),
+});
+
+const bar = t.strict({
+  doi_records: t.strict({
+    doi_record: t.strict({
+      crossref: t.union([
+        journalCodec, postedContentCodec,
+      ]),
+    }),
+  }),
+});
+
+const extractTitle = (journalOrPostedContent: t.TypeOf<typeof bar>['doi_records']['doi_record']['crossref']) => {
+  if ('journal' in journalOrPostedContent) {
+    return journalOrPostedContent.journal.journal_article.titles.title;
+  }
+  return journalOrPostedContent.posted_content.titles.title;
+};
+
+const getTitle = (work: unknown): O.Option<SanitisedHtmlFragment> => pipe(
+  work,
+  bar.decode,
+  O.fromEither,
+  O.map((result) => result.doi_records.doi_record.crossref),
+  O.map(extractTitle),
+  O.map(toHtmlFragment),
+  O.map(sanitise),
+);
 
 const personAuthor = (person: Element) => {
   const givenName = person.getElementsByTagName('given_name')[0]?.textContent;
