@@ -4,7 +4,10 @@ import { renderEvaluationPublishedFeedItem } from './render-evaluation-published
 import { renderExpressionPublishedFeedItem } from './render-expression-published-feed-item';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 import { renderListItems } from '../../shared-components/list-items';
-import { FeedItem } from '../view-model';
+import { CassyniSeminarPublishedFeedItem, FeedItem } from '../view-model';
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const renderCassyniSeminarPublishedFeedItem = (feedItem: CassyniSeminarPublishedFeedItem) => toHtmlFragment('');
 
 const renderFeedItem = (feedItem: FeedItem) => {
   switch (feedItem.type) {
@@ -12,6 +15,8 @@ const renderFeedItem = (feedItem: FeedItem) => {
       return renderExpressionPublishedFeedItem(feedItem);
     case 'evaluation-published':
       return renderEvaluationPublishedFeedItem(feedItem, 850);
+    case 'cassyni-seminar-published':
+      return renderCassyniSeminarPublishedFeedItem(feedItem);
   }
 };
 

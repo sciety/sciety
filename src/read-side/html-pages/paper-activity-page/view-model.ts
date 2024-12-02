@@ -38,9 +38,15 @@ export type ExpressionPublishedFeedItem = {
   publishedTo: string,
 };
 
+export type CassyniSeminarPublishedFeedItem = {
+  type: 'cassyni-seminar-published',
+  publishedAt: Date,
+};
+
 export type FeedItem =
   | EvaluationPublishedFeedItem
-  | ExpressionPublishedFeedItem;
+  | ExpressionPublishedFeedItem
+  | CassyniSeminarPublishedFeedItem;
 
 type ListSummary = {
   listName: string,
