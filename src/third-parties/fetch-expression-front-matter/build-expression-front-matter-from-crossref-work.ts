@@ -68,7 +68,7 @@ const getAbstract = (
   );
 };
 
-const getTitle = (doc: Document): O.Option<SanitisedHtmlFragment> => {
+const legacyGetTitle = (doc: Document): O.Option<SanitisedHtmlFragment> => {
   const titlesElement = getElement(doc, 'titles');
   const titleElement = titlesElement?.getElementsByTagName('title')[0];
   if (titleElement) {
@@ -85,6 +85,9 @@ const getTitle = (doc: Document): O.Option<SanitisedHtmlFragment> => {
   }
   return O.none;
 };
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const getTitle = (work: unknown): O.Option<SanitisedHtmlFragment> => O.none;
 
 const personAuthor = (person: Element) => {
   const givenName = person.getElementsByTagName('given_name')[0]?.textContent;
@@ -176,7 +179,8 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
       logger('warn', 'build-expression-front-matter-from-crossref-work: Unable to find abstract', { expressionDoi, crossrefWorkXml });
     }
 
-    title = getTitle(parsedXml);
+    title = legacyGetTitle(parsedXml);
+    getTitle(parsedCrossrefWork);
     if (O.isNone(title)) {
       logger('error', 'build-expression-front-matter-from-crossref-work: Unable to find title', { expressionDoi, crossrefWorkXml });
       return E.left(DE.unavailable);
