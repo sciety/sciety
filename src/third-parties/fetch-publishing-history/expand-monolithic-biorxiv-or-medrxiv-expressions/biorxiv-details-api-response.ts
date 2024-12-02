@@ -25,4 +25,4 @@ const responseNoVersionsFound = t.type({
 export const biorxivDetailsApiResponse = t.union([
   responseWithVersions,
   responseNoVersionsFound,
-]);
+], 'biorxivDetailsApiResponse');
