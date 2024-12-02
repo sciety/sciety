@@ -14,9 +14,7 @@ const renderCassyniSeminarPublishedFeedItem = (feedItem: CassyniSeminarPublished
       
       <div class="activity-feed__item__meta">
         <div class="activity-feed__item__title">
-          <a href="#">
-            Version published to 
-          </a>
+          TBD
         </div>
         ${templateDate(feedItem.publishedAt, 'activity-feed__item__date')}
       </div>
