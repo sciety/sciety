@@ -7,9 +7,10 @@ import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
 import { toEvaluationPublishedFeedItem } from './to-evaluation-published-feed-item';
 import { toExpressionPublishedFeedItem } from './to-expression-published-feed-item';
+import * as EDOI from '../../../../types/expression-doi';
 import * as PH from '../../../../types/publishing-history';
 import { constructEvaluationHistory } from '../../../construct-evaluation-history';
-import { FeedItem } from '../view-model';
+import { CassyniSeminarPublishedFeedItem, FeedItem } from '../view-model';
 
 const byDate: Ord.Ord<FeedItem> = pipe(
   D.Ord,
@@ -21,10 +22,16 @@ const byDateDescending: Ord.Ord<FeedItem> = pipe(
   Ord.reverse,
 );
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const constructCassyniSeminarFeedItems = (history: PH.PublishingHistory) => {
+const constructCassyniSeminarFeedItems = (
+  history: PH.PublishingHistory,
+): ReadonlyArray<CassyniSeminarPublishedFeedItem> => {
   if (process.env.EXPERIMENT_ENABLED === 'true') {
-    return [];
+    if (PH.getAllExpressionDois(history).includes(EDOI.fromValidatedString('10.46471/gigabyte.137'))) {
+      return [{
+        type: 'cassyni-seminar-published',
+        publishedAt: new Date('2024-10-24'),
+      }];
+    }
   }
   return [];
 };
