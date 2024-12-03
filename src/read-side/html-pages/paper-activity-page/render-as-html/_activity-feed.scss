@@ -102,6 +102,17 @@ p.activity-feed__item__title {
   }
 }
 
+.activity-feed__item__video_link {
+  display: block;
+  position: relative;
+}
+
+.activity-feed__item__play_icon {
+  position: absolute;
+  top: calc(50% - 50px);
+  left: calc(50% - 50px);
+}
+
 .activity-feed__item__title {
   a {
     @include link.normal-state {
