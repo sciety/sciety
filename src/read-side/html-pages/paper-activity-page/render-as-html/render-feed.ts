@@ -11,7 +11,7 @@ import { CassyniSeminarPublishedFeedItem, FeedItem } from '../view-model';
 const renderCassyniSeminarPublishedFeedItem = (feedItem: CassyniSeminarPublishedFeedItem) => toHtmlFragment(`
   <div class="activity-feed__item__contents">
     <header class="activity-feed__item__header">
-      
+
       <div class="activity-feed__item__meta">
         <div class="activity-feed__item__title">
           <span class="visually-hidden">New bioinformatics resources from The International Cannabis Genome Research Consortium</span>
@@ -23,8 +23,15 @@ const renderCassyniSeminarPublishedFeedItem = (feedItem: CassyniSeminarPublished
       <a class="activity-feed__item__video_link" href="https://doi.org/10.52843/cassyni.y1p61f">
         <img src="https://api.cassyni.com/api/videos/MH5YFnwYt2VpYChF8Jj9EE/poster?embedded=false" alt="Thumbnail for Cassyni video seminar">
         <svg class="activity-feed__item__play_icon">
-          <circle cx="50" cy="50" r="50" fill="#00000090"/>
-          <polygon points="30 20, 80 50, 30 80" fill="#ffffff"></polygon>
+          <style>
+            .icon:hover circle {
+              fill: rgb(206, 72, 26, 0.8);
+            }
+          </style>
+          <g class="icon">
+            <circle cx="50" cy="50" r="50" fill="#00000090"/>
+            <polygon points="30 20, 80 50, 30 80" fill="#ffffff"></polygon>
+          </g>
         </svg>
       </a>
     </div>
