@@ -380,11 +380,7 @@ describe('build-expression-front-matter-from-crossref-work', () => {
     describe('detecting unrecoverable errors', () => {
       describe('when the response does not contain a <crossref> tag', () => {
         const input = '<?xml version="1.0" encoding="UTF-8"?>\n<doi_records>\r\n  <doi_record>\r\n      </doi_record>\r\n</doi_records>';
-        const result = pipe(
-          input,
-          crossrefResponseWith,
-          (response) => buildExpressionFrontMatterFromCrossrefWork(response, dummyLogger, arbitraryExpressionDoi()),
-        );
+        const result = buildExpressionFrontMatterFromCrossrefWork(input, dummyLogger, arbitraryExpressionDoi());
 
         it('returns on the left', () => {
           expect(result).toStrictEqual(E.left(expect.anything()));
@@ -393,11 +389,7 @@ describe('build-expression-front-matter-from-crossref-work', () => {
 
       describe('when the response contains a <crossref> tag with its only child an <error> tag', () => {
         const input = '<?xml version="1.0" encoding="UTF-8"?>\n<doi_records>\r\n  <doi_record>\r\n    <crossref>\r\n      <error>doi:10.21203/rs.3.rs-3869684/v1</error>\r\n    </crossref>\r\n  </doi_record>\r\n</doi_records>';
-        const result = pipe(
-          input,
-          crossrefResponseWith,
-          (response) => buildExpressionFrontMatterFromCrossrefWork(response, dummyLogger, arbitraryExpressionDoi()),
-        );
+        const result = buildExpressionFrontMatterFromCrossrefWork(input, dummyLogger, arbitraryExpressionDoi());
 
         it('returns on the left', () => {
           expect(result).toStrictEqual(E.left(expect.anything()));
