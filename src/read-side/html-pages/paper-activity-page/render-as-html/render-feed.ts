@@ -11,10 +11,9 @@ import { CassyniSeminarPublishedFeedItem, FeedItem } from '../view-model';
 const renderCassyniSeminarPublishedFeedItem = (feedItem: CassyniSeminarPublishedFeedItem) => toHtmlFragment(`
   <div class="activity-feed__item__contents">
     <header class="activity-feed__item__header">
-
       <div class="activity-feed__item__meta">
         <div class="activity-feed__item__title">
-          <span class="visually-hidden">New bioinformatics resources from The International Cannabis Genome Research Consortium</span>
+          Video seminar held on Cassyni
         </div>
         ${templateDate(feedItem.publishedAt, 'activity-feed__item__date')}
       </div>
@@ -34,6 +33,7 @@ const renderCassyniSeminarPublishedFeedItem = (feedItem: CassyniSeminarPublished
           </g>
         </svg>
       </a>
+      <p>New bioinformatics resources from The International Cannabis Genome Research Consortium</p>
     </div>
   </div>
 `);
