@@ -14,7 +14,7 @@ const renderCassyniSeminarPublishedFeedItem = (feedItem: CassyniSeminarPublished
       
       <div class="activity-feed__item__meta">
         <div class="activity-feed__item__title">
-          TBD
+          <span class="visually-hidden">New bioinformatics resources from The International Cannabis Genome Research Consortium</span>
         </div>
         ${templateDate(feedItem.publishedAt, 'activity-feed__item__date')}
       </div>
