@@ -223,7 +223,7 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
     }
 
     title = legacyGetTitle(parsedXml);
-    getTitle(parsedCrossrefWork);
+    getTitle(parsedCrossrefWork.right);
     if (O.isNone(title)) {
       logger('error', 'build-expression-front-matter-from-crossref-work: Unable to find title', { expressionDoi, crossrefWorkXml });
       return E.left(DE.unavailable);
