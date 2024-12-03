@@ -107,7 +107,7 @@ jobs:
             --set prereviewBearerToken=${PREREVIEW_BEARER_TOKEN} \
             --set healthchecksPingKey=${HEALTHCHECKS_PING_KEY} \
             --set eventShipperIAMRoleARN="arn:aws:iam::540790251273:role/ScietyEventsShipper" \
-            --set exportBucketName="sciety-data-extraction" \
+            --set exportBucketName="sciety-data-extractions" \
             --wait \
             helm/sciety
         env:
@@ -146,7 +146,7 @@ jobs:
             --set prereviewBearerToken=${PREREVIEW_BEARER_TOKEN} \
             --set healthchecksPingKey=${HEALTHCHECKS_PING_KEY} \
             --set eventShipperIAMRoleARN="arn:aws:iam::540790251273:role/ScietyEventsShipper" \
-            --set exportBucketName="sciety-data-extraction" \
+            --set exportBucketName="sciety-data-extractions" \
             --wait \
             helm/sciety
         env:
