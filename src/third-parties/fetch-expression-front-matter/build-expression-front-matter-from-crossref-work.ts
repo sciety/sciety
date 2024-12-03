@@ -69,24 +69,6 @@ const getAbstract = (
   );
 };
 
-const legacyGetTitle = (doc: Document): O.Option<SanitisedHtmlFragment> => {
-  const titlesElement = getElement(doc, 'titles');
-  const titleElement = titlesElement?.getElementsByTagName('title')[0];
-  if (titleElement) {
-    const title = new XMLSerializer()
-      .serializeToString(titleElement)
-      .replace(/^<title(?:.?)>([\s\S]*)<\/title>$/, '$1')
-      .trim();
-    return pipe(
-      title,
-      toHtmlFragment,
-      sanitise,
-      O.some,
-    );
-  }
-  return O.none;
-};
-
 const postedContentCodec = t.strict({
   posted_content: t.strict({
     titles: t.strict({
@@ -128,6 +110,7 @@ const getTitle = (work: unknown): O.Option<SanitisedHtmlFragment> => pipe(
   O.fromEither,
   O.map((result) => result.doi_records.doi_record.crossref),
   O.map(extractTitle),
+  O.map((title) => title.trim()),
   O.map(toHtmlFragment),
   O.map(sanitise),
 );
@@ -224,8 +207,7 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
       logger('warn', 'build-expression-front-matter-from-crossref-work: Unable to find abstract', { expressionDoi, crossrefWorkXml });
     }
 
-    title = legacyGetTitle(parsedXml);
-    getTitle(parsedCrossrefWork.right);
+    title = getTitle(parsedCrossrefWork.right);
     if (O.isNone(title)) {
       logger('error', 'build-expression-front-matter-from-crossref-work: Unable to find title', { expressionDoi, crossrefWorkXml });
       return E.left(DE.unavailable);
