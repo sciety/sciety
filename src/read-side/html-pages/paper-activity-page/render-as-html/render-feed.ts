@@ -23,7 +23,7 @@ const renderCassyniSeminarPublishedFeedItem = (feedItem: CassyniSeminarPublished
       <a class="activity-feed__item__video_link" href="https://doi.org/10.52843/cassyni.y1p61f">
         <img src="https://api.cassyni.com/api/videos/MH5YFnwYt2VpYChF8Jj9EE/poster?embedded=false" alt="Thumbnail for Cassyni video seminar">
         <svg class="activity-feed__item__play_icon">
-          <circle cx="50" cy="50" r="50" fill="#00000030"/>
+          <circle cx="50" cy="50" r="50" fill="#00000090"/>
           <polygon points="30 20, 80 50, 30 80" fill="#ffffff"></polygon>
         </svg>
       </a>
