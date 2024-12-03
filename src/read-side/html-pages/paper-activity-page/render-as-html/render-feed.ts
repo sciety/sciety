@@ -11,6 +11,7 @@ import { CassyniSeminarPublishedFeedItem, FeedItem } from '../view-model';
 const renderCassyniSeminarPublishedFeedItem = (feedItem: CassyniSeminarPublishedFeedItem) => toHtmlFragment(`
   <div class="activity-feed__item__contents">
     <header class="activity-feed__item__header">
+      <img class="activity-feed__item__avatar" src="/static/images/cassyni-logo.png" alt="">
       <div class="activity-feed__item__meta">
         <div class="activity-feed__item__title">
           <b>Video seminar held on Cassyni</b>
