@@ -173,7 +173,9 @@ const getAuthors = (doc: Document): ArticleAuthors => {
   return pipe(authors, O.sequenceArray);
 };
 
-const parser = new XMLParser({});
+const parser = new XMLParser({
+  stopNodes: ['*.title'],
+});
 
 const parseXmlDocument = (s: string) => E.tryCatch(
   () => parser.parse(s) as unknown,
