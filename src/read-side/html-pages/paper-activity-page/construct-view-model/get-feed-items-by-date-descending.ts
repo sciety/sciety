@@ -25,13 +25,11 @@ const byDateDescending: Ord.Ord<FeedItem> = pipe(
 const constructCassyniSeminarFeedItems = (
   history: PH.PublishingHistory,
 ): ReadonlyArray<CassyniSeminarPublishedFeedItem> => {
-  if (process.env.EXPERIMENT_ENABLED === 'true') {
-    if (PH.getAllExpressionDois(history).includes(EDOI.fromValidatedString('10.46471/gigabyte.137'))) {
-      return [{
-        type: 'cassyni-seminar-published',
-        publishedAt: new Date('2024-10-24'),
-      }];
-    }
+  if (PH.getAllExpressionDois(history).includes(EDOI.fromValidatedString('10.46471/gigabyte.137'))) {
+    return [{
+      type: 'cassyni-seminar-published',
+      publishedAt: new Date('2024-10-24'),
+    }];
   }
   return [];
 };

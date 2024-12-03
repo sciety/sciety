@@ -7,7 +7,6 @@ import { templateDate } from '../../shared-components/date';
 import { renderListItems } from '../../shared-components/list-items';
 import { CassyniSeminarPublishedFeedItem, FeedItem } from '../view-model';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const renderCassyniSeminarPublishedFeedItem = (feedItem: CassyniSeminarPublishedFeedItem) => toHtmlFragment(`
   <div class="activity-feed__item__contents">
     <header class="activity-feed__item__header">
