@@ -19,7 +19,11 @@ const renderCassyniSeminarPublishedFeedItem = (feedItem: CassyniSeminarPublished
         ${templateDate(feedItem.publishedAt, 'activity-feed__item__date')}
       </div>
     </header>
-    <a href="https://doi.org/10.52843/cassyni.y1p61f">A link</a>
+    <div class="activity-feed__item__body">
+      <a href="https://doi.org/10.52843/cassyni.y1p61f">
+        <img src="https://api.cassyni.com/api/videos/MH5YFnwYt2VpYChF8Jj9EE/poster?embedded=false" alt="Thumbnail for Cassyni video seminar">
+      </a>
+    </div>
   </div>
 `);
 
