@@ -20,9 +20,9 @@ const renderCassyniSeminarPublishedFeedItem = (feedItem: CassyniSeminarPublished
     </header>
     <div class="activity-feed__item__body">
       <p>Seminar title: New bioinformatics resources from The International Cannabis Genome Research Consortium</p>
-      <p>This video starts at 25m 16s.</p>
+      <p>The following video starts at 25min 16sec.</p>
       <a class="activity-feed__item__video_link" href="https://cassyni.com/events/6ttAf8cL1ruzkWZznh5Xed?t=1516s">
-        <span class="visually-hidden">Go to the seminar on Cassyni</span>
+        <span class="visually-hidden">Go to the seminar on Cassyni starting at the relevant time stamp.</span>
         <img src="https://api.cassyni.com/api/videos/MH5YFnwYt2VpYChF8Jj9EE/poster?embedded=false" alt="">
         <svg class="activity-feed__item__play_icon">
           <style>
@@ -36,7 +36,7 @@ const renderCassyniSeminarPublishedFeedItem = (feedItem: CassyniSeminarPublished
           </g>
         </svg>
       </a>
-      <p><a href="https://doi.org/10.52843/cassyni.y1p61f">Watch the whole seminar</a> on Cassyni.</p>
+      <p><a href="https://doi.org/10.52843/cassyni.y1p61f">Watch the whole seminar on Cassyni.</a></p>
     </div>
   </div>
 `);
