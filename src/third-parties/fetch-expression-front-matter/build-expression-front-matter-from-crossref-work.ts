@@ -13,6 +13,7 @@ import { ExpressionDoi } from '../../types/expression-doi';
 import { ExpressionFrontMatter } from '../../types/expression-front-matter';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
+import { decodeAndLogFailures } from '../decode-and-log-failures';
 
 const getAbstract = (
   doc: Document,
@@ -104,9 +105,13 @@ const extractTitle = (journalOrPostedContent: t.TypeOf<typeof bar>['doi_records'
   return journalOrPostedContent.posted_content.titles[0].title;
 };
 
-const getTitle = (work: unknown): O.Option<SanitisedHtmlFragment> => pipe(
+const getTitle = (
+  logger: Logger,
+  work: unknown,
+  payload: Record<string, unknown>,
+): O.Option<SanitisedHtmlFragment> => pipe(
   work,
-  bar.decode,
+  decodeAndLogFailures(logger, bar, payload),
   O.fromEither,
   O.map((result) => result.doi_records.doi_record.crossref),
   O.map(extractTitle),
@@ -208,9 +213,10 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
       logger('warn', 'build-expression-front-matter-from-crossref-work: Unable to find abstract', { expressionDoi, crossrefWorkXml });
     }
 
-    title = getTitle(parsedCrossrefWork.right);
+    const payload = { expressionDoi, crossrefWorkXml };
+    title = getTitle(logger, parsedCrossrefWork.right, payload);
     if (O.isNone(title)) {
-      logger('error', 'build-expression-front-matter-from-crossref-work: Unable to find title', { expressionDoi, crossrefWorkXml });
+      logger('error', 'build-expression-front-matter-from-crossref-work: Unable to find title', payload);
       return E.left(DE.unavailable);
     }
   } catch (error: unknown) {
