@@ -88,7 +88,7 @@ const journalCodec = t.strict({
   }),
 });
 
-const bar = t.strict({
+const frontMatterCrossrefXmlResponseTitleCodec = t.strict({
   doi_records: t.strict({
     doi_record: t.strict({
       crossref: t.union([
@@ -96,9 +96,9 @@ const bar = t.strict({
       ]),
     }),
   }),
-});
+}, 'frontMatterCrossrefXmlResponseTitleCodec');
 
-const extractTitle = (journalOrPostedContent: t.TypeOf<typeof bar>['doi_records']['doi_record']['crossref']) => {
+const extractTitle = (journalOrPostedContent: t.TypeOf<typeof frontMatterCrossrefXmlResponseTitleCodec>['doi_records']['doi_record']['crossref']) => {
   if ('journal' in journalOrPostedContent) {
     return journalOrPostedContent.journal.journal_article.titles[0].title;
   }
@@ -111,7 +111,7 @@ const getTitle = (
   payload: Record<string, unknown>,
 ): O.Option<SanitisedHtmlFragment> => pipe(
   work,
-  decodeAndLogFailures(logger, bar, payload),
+  decodeAndLogFailures(logger, frontMatterCrossrefXmlResponseTitleCodec, payload),
   O.fromEither,
   O.map((result) => result.doi_records.doi_record.crossref),
   O.map(extractTitle),
