@@ -376,7 +376,7 @@ describe('build-expression-front-matter-from-crossref-work', () => {
         expect(title).toBe('An article title for C. elegans');
       });
 
-      it.failing('picks the first available title when multiple entries are present', async () => {
+      it('picks the first available title when multiple entries are present', async () => {
         const title = extractTitleFromFrontMatter(`
           <titles>
             <title>Airway recommendations for perioperative patients during the COVID-19 pandemic: a scoping review</title>

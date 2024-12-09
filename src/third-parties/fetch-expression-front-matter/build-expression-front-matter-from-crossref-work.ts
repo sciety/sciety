@@ -71,18 +71,18 @@ const getAbstract = (
 
 const postedContentCodec = t.strict({
   posted_content: t.strict({
-    titles: t.strict({
+    titles: t.readonlyArray(t.strict({
       title: t.string,
-    }),
+    })),
   }),
 });
 
 const journalCodec = t.strict({
   journal: t.strict({
     journal_article: t.strict({
-      titles: t.strict({
+      titles: t.readonlyArray(t.strict({
         title: t.string,
-      }),
+      })),
     }),
   }),
 });
@@ -99,9 +99,9 @@ const bar = t.strict({
 
 const extractTitle = (journalOrPostedContent: t.TypeOf<typeof bar>['doi_records']['doi_record']['crossref']) => {
   if ('journal' in journalOrPostedContent) {
-    return journalOrPostedContent.journal.journal_article.titles.title;
+    return journalOrPostedContent.journal.journal_article.titles[0].title;
   }
-  return journalOrPostedContent.posted_content.titles.title;
+  return journalOrPostedContent.posted_content.titles[0].title;
 };
 
 const getTitle = (work: unknown): O.Option<SanitisedHtmlFragment> => pipe(
@@ -158,6 +158,7 @@ const getAuthors = (doc: Document): ArticleAuthors => {
 
 const parser = new XMLParser({
   stopNodes: ['*.title'],
+  isArray: (name) => name === 'titles',
 });
 
 const parseXmlDocument = (s: string) => E.tryCatch(
