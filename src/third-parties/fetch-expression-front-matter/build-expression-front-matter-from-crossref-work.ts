@@ -216,7 +216,6 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
     const payload = { expressionDoi, crossrefWorkXml };
     title = getTitle(logger, parsedCrossrefWork.right, payload);
     if (O.isNone(title)) {
-      logger('error', 'build-expression-front-matter-from-crossref-work: Unable to find title', payload);
       return E.left(DE.unavailable);
     }
   } catch (error: unknown) {
