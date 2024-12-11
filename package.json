@@ -65,7 +65,7 @@
     "dependency-cruiser": "16.7.0",
     "esbuild": "^0.24.0",
     "esbuild-jest": "^0.5.0",
-    "eslint": "^8.57.1",
+    "eslint": "^9.16.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^18.0.0",
     "eslint-import-resolver-typescript": "^3.7.0",
