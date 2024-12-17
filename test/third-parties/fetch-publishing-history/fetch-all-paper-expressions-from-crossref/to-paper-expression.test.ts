@@ -4,6 +4,7 @@ import { CrossrefWork } from '../../../../src/third-parties/fetch-publishing-his
 import { toPaperExpression } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/to-paper-expression';
 import { arbitraryString, arbitraryUri } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 
 describe('to-paper-expression', () => {
   describe('when the Crossref work is of type posted-content', () => {
@@ -49,7 +50,7 @@ describe('to-paper-expression', () => {
   describe('when the Crossref work is of unknown type', () => {
     const crossrefWork: CrossrefWork = {
       type: 'other',
-      DOI: arbitraryString(),
+      DOI: arbitraryExpressionDoi(),
       relation: { },
     };
     const result = toPaperExpression(crossrefWork);

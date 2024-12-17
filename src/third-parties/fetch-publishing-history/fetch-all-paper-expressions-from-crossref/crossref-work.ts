@@ -65,7 +65,7 @@ const otherTypeCodec = new t.Type<OtherWorkType, string, unknown>(
 
 const otherCrossrefWorkCodec = t.strict({
   type: otherTypeCodec,
-  DOI: t.string,
+  DOI: canonicalExpressionDoiCodec,
   relation: relationshipsCodec,
 });
 
