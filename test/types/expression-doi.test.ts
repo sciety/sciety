@@ -31,6 +31,15 @@ describe('expression-doi', () => {
     });
   });
 
+  describe('given a value prefixed with `doi: `', () => {
+    const expressionDoi = arbitraryExpressionDoi();
+
+    it('returns on the left', () => {
+      expect(E.isLeft(expressionDoiCodec.decode(`doi: ${expressionDoi}`))).toBe(true);
+      expect(E.isLeft(canonicalExpressionDoiCodec.decode(`doi: ${expressionDoi}`))).toBe(true);
+    });
+  });
+
   describe('when decoding a value that is not a doi', () => {
     const decoded = expressionDoiCodec.decode(arbitraryString());
 
