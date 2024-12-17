@@ -2,6 +2,7 @@ import { CrossrefWork } from '../../../../src/third-parties/fetch-publishing-his
 import {
   enqueueAllRelatedDoisNotYetCollected,
 } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/enqueue-all-related-dois-not-yet-collected';
+import * as EDOI from '../../../../src/types/expression-doi';
 import { arbitraryString } from '../../../helpers';
 
 describe('enqueue-all-related-dois-not-yet-collected', () => {
@@ -61,7 +62,7 @@ describe('enqueue-all-related-dois-not-yet-collected', () => {
         relation: {
           'is-version-of': [{
             'id-type': 'doi' as const,
-            id: '10.21203/rs.3.rs-1828415/v1',
+            id: EDOI.fromValidatedString('10.21203/rs.3.rs-1828415/v1'),
           }],
         },
       }],
@@ -79,7 +80,7 @@ describe('enqueue-all-related-dois-not-yet-collected', () => {
         relation: {
           'has-version': [{
             'id-type': 'doi' as const,
-            id: '10.21203/rs.3.rs-1828415/v2',
+            id: EDOI.fromValidatedString('10.21203/rs.3.rs-1828415/v2'),
           }],
         },
       }],
@@ -111,7 +112,7 @@ describe('enqueue-all-related-dois-not-yet-collected', () => {
         relation: {
           'is-version-of': [{
             'id-type': 'doi' as const,
-            id: '10.21203/rs.3.rs-1828415/v1',
+            id: EDOI.fromValidatedString('10.21203/rs.3.rs-1828415/v1'),
           }],
         },
       }],
@@ -129,7 +130,7 @@ describe('enqueue-all-related-dois-not-yet-collected', () => {
         relation: {
           'has-version': [{
             'id-type': 'doi' as const,
-            id: '10.21203/RS.3.rs-1828415/v2',
+            id: EDOI.fromValidatedString('10.21203/RS.3.rs-1828415/v2'),
           }],
         },
       }],

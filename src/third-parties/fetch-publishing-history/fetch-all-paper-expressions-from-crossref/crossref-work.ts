@@ -2,10 +2,11 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as crossrefDate from './date-stamp';
+import { canonicalExpressionDoiCodec } from '../../../types/expression-doi';
 
 const relationCodec = t.strict({
   'id-type': t.literal('doi'),
-  id: t.string,
+  id: canonicalExpressionDoiCodec,
 });
 
 const relationsCodec = t.readonlyArray(relationCodec);
