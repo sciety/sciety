@@ -26,7 +26,7 @@ const resourceCodec = t.strict({
 
 const journalArticleCodec = t.strict({
   type: t.literal('journal-article'),
-  DOI: t.string,
+  DOI: canonicalExpressionDoiCodec,
   published: crossrefDate.codec,
   resource: resourceCodec,
   relation: relationshipsCodec,
@@ -34,7 +34,7 @@ const journalArticleCodec = t.strict({
 
 const postedContentCodec = t.strict({
   type: t.literal('posted-content'),
-  DOI: t.string,
+  DOI: canonicalExpressionDoiCodec,
   posted: crossrefDate.codec,
   resource: resourceCodec,
   relation: relationshipsCodec,

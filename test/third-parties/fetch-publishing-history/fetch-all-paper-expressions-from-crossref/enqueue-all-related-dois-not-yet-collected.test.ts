@@ -23,7 +23,7 @@ describe('enqueue-all-related-dois-not-yet-collected', () => {
     const initialRecords = new Map<string, CrossrefWork>([
       ['10.21203/rs.3.rs-1828415/v2', {
         type: 'posted-content',
-        DOI: '10.21203/rs.3.rs-1828415/v2',
+        DOI: EDOI.fromValidatedString('10.21203/rs.3.rs-1828415/v2'),
         posted: {
           'date-parts': [[2023, 12, 7]],
         },
@@ -50,7 +50,7 @@ describe('enqueue-all-related-dois-not-yet-collected', () => {
     const initialRecords = new Map<string, CrossrefWork>([
       ['10.21203/rs.3.rs-1828415/v2', {
         type: 'posted-content',
-        DOI: '10.21203/rs.3.rs-1828415/v2',
+        DOI: EDOI.fromValidatedString('10.21203/rs.3.rs-1828415/v2'),
         posted: {
           'date-parts': [[2023, 12, 7]],
         },
@@ -68,7 +68,7 @@ describe('enqueue-all-related-dois-not-yet-collected', () => {
       }],
       ['10.21203/rs.3.rs-1828415/v1', {
         type: 'posted-content',
-        DOI: '10.21203/rs.3.rs-1828415/v1',
+        DOI: EDOI.fromValidatedString('10.21203/rs.3.rs-1828415/v1'),
         posted: {
           'date-parts': [[2023, 12, 7]],
         },
@@ -100,7 +100,7 @@ describe('enqueue-all-related-dois-not-yet-collected', () => {
     const initialRecords = new Map<string, CrossrefWork>([
       ['10.21203/rs.3.rs-1828415/v2', {
         type: 'posted-content',
-        DOI: '10.21203/rs.3.rs-1828415/v2',
+        DOI: EDOI.fromValidatedString('10.21203/rs.3.rs-1828415/v2'),
         posted: {
           'date-parts': [[2023, 12, 7]],
         },
@@ -118,7 +118,7 @@ describe('enqueue-all-related-dois-not-yet-collected', () => {
       }],
       ['10.21203/rs.3.rs-1828415/v1', {
         type: 'posted-content',
-        DOI: '10.21203/rs.3.rs-1828415/v1',
+        DOI: EDOI.fromValidatedString('10.21203/rs.3.rs-1828415/v1'),
         posted: {
           'date-parts': [[2023, 12, 7]],
         },
