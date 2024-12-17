@@ -12,7 +12,7 @@ import { Logger } from '../../../logger';
 import * as DE from '../../../types/data-error';
 
 const update = (collectedWorks: State['collectedWorks'], newlyFetchedWork: CrossrefWork) => {
-  collectedWorks.set(newlyFetchedWork.DOI.toLowerCase(), newlyFetchedWork);
+  collectedWorks.set(newlyFetchedWork.DOI, newlyFetchedWork);
   return collectedWorks;
 };
 

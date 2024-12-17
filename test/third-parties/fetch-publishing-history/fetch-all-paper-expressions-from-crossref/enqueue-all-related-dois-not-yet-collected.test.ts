@@ -1,7 +1,7 @@
-import { CrossrefWork } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/crossref-work';
 import {
   enqueueAllRelatedDoisNotYetCollected,
 } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/enqueue-all-related-dois-not-yet-collected';
+import { State } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/state';
 import * as EDOI from '../../../../src/types/expression-doi';
 import { arbitraryString } from '../../../helpers';
 
@@ -20,8 +20,8 @@ describe('enqueue-all-related-dois-not-yet-collected', () => {
   });
 
   describe('when there is one record with no relations', () => {
-    const initialRecords = new Map<string, CrossrefWork>([
-      ['10.21203/rs.3.rs-1828415/v2', {
+    const initialRecords: State['collectedWorks'] = new Map([
+      [EDOI.fromValidatedString('10.21203/rs.3.rs-1828415/v2'), {
         type: 'posted-content',
         DOI: EDOI.fromValidatedString('10.21203/rs.3.rs-1828415/v2'),
         posted: {
@@ -47,8 +47,8 @@ describe('enqueue-all-related-dois-not-yet-collected', () => {
   });
 
   describe('when there are two records that are related to each other', () => {
-    const initialRecords = new Map<string, CrossrefWork>([
-      ['10.21203/rs.3.rs-1828415/v2', {
+    const initialRecords: State['collectedWorks'] = new Map([
+      [EDOI.fromValidatedString('10.21203/rs.3.rs-1828415/v2'), {
         type: 'posted-content',
         DOI: EDOI.fromValidatedString('10.21203/rs.3.rs-1828415/v2'),
         posted: {
@@ -66,7 +66,7 @@ describe('enqueue-all-related-dois-not-yet-collected', () => {
           }],
         },
       }],
-      ['10.21203/rs.3.rs-1828415/v1', {
+      [EDOI.fromValidatedString('10.21203/rs.3.rs-1828415/v1'), {
         type: 'posted-content',
         DOI: EDOI.fromValidatedString('10.21203/rs.3.rs-1828415/v1'),
         posted: {
@@ -97,8 +97,8 @@ describe('enqueue-all-related-dois-not-yet-collected', () => {
   });
 
   describe('when the relation uses different case than the DOI', () => {
-    const initialRecords = new Map<string, CrossrefWork>([
-      ['10.21203/rs.3.rs-1828415/v2', {
+    const initialRecords: State['collectedWorks'] = new Map([
+      [EDOI.fromValidatedString('10.21203/rs.3.rs-1828415/v2'), {
         type: 'posted-content',
         DOI: EDOI.fromValidatedString('10.21203/rs.3.rs-1828415/v2'),
         posted: {
@@ -116,7 +116,7 @@ describe('enqueue-all-related-dois-not-yet-collected', () => {
           }],
         },
       }],
-      ['10.21203/rs.3.rs-1828415/v1', {
+      [EDOI.fromValidatedString('10.21203/rs.3.rs-1828415/v1'), {
         type: 'posted-content',
         DOI: EDOI.fromValidatedString('10.21203/rs.3.rs-1828415/v1'),
         posted: {
