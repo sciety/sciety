@@ -6,9 +6,11 @@ import { State } from './state';
 
 type RelationType = 'is-version-of' | 'has-version' | 'is-preprint-of' | 'has-preprint';
 
+const canonicalizeDoi = (relation: { 'id-type': 'doi', id: string }): string => relation.id.toLowerCase();
+
 const extractRelationsOfType = (work: CrossrefWork, relationType: RelationType) => pipe(
   work.relation[relationType] ?? [],
-  RA.map((relation) => relation.id.toLowerCase()),
+  RA.map(canonicalizeDoi),
 );
 
 const extractDoisOfRelatedExpressions = (work: CrossrefWork) => [
