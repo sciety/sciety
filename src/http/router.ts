@@ -5,6 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import send from 'koa-send';
+import metricsClient from 'prom-client';
 import * as api from './api';
 import * as authentication from './authentication';
 import { Config as AuthenticationRoutesConfig } from './authentication/configure-routes';
@@ -43,6 +44,9 @@ import { userPage as userFollowingPage, userPageParams as userFollowingPageParam
 import { userPage as userListsPage, userPageParams as userListsPageParams } from '../read-side/html-pages/user-page/user-lists-page';
 import { docmapIndex, docmap } from '../read-side/non-html-views/docmaps';
 import { evaluationContent } from '../read-side/non-html-views/evaluation-content';
+import { NonHtmlView } from '../read-side/non-html-views/non-html-view';
+import { toNonHtmlViewError } from '../read-side/non-html-views/non-html-view-error';
+import { toNonHtmlViewRepresentation } from '../read-side/non-html-views/non-html-view-representation';
 import { redirectToAvatarImageUrl } from '../read-side/user-avatars';
 import {
   categoryPagePathSpecification,
@@ -57,6 +61,13 @@ import { DependenciesForCommands } from '../write-side';
 type Config = AuthenticationRoutesConfig & EnvironmentVariables;
 
 type Dependencies = DependenciesForCommands & DependenciesForViews;
+
+metricsClient.collectDefaultMetrics();
+
+const metricsHandler = (): NonHtmlView => () => pipe(
+  TE.tryCatch(async () => metricsClient.register.metrics(), () => toNonHtmlViewError('failed to generate metrics')),
+  TE.map((metrics) => toNonHtmlViewRepresentation(metrics, 'text/plain; version=0.0.4')),
+);
 
 export const createRouter = (dependencies: Dependencies, config: Config): Router => {
   const router = new Router();
@@ -130,6 +141,7 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
     { endpoint: evaluationContentPathSpecification, handler: evaluationContent },
     { endpoint: '/docmaps/v1/index', handler: docmapIndex },
     { endpoint: '/docmaps/v1/articles/:doi(.+).docmap.json', handler: docmap },
+    { endpoint: '/metrics', handler: metricsHandler },
   ];
 
   nonHtmlViews.forEach((route) => {

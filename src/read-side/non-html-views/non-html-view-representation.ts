@@ -2,7 +2,7 @@ import { Json } from 'fp-ts/Json';
 import { HtmlFragment } from '../../types/html-fragment';
 
 export type NonHtmlViewRepresentation = {
-  state: Json | HtmlFragment,
+  state: Json | HtmlFragment | string,
   mediaType: string,
 };
 
