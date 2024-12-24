@@ -8,13 +8,15 @@ export type Prelight = {
   guid: string,
   category: string,
   pubDate: Date,
-  preprintDoi: string,
   author: string,
+  preprintDoi?: string,
 };
+
+type PrelightWithPreprintDoi = Required<Prelight>;
 
 const skipWithReason = (item: Prelight, reason: string) => ({ item: item.guid, reason });
 
-const toEvaluation = (prelight: Prelight) => constructPublishedEvaluation({
+const toEvaluation = (prelight: PrelightWithPreprintDoi) => constructPublishedEvaluation({
   publishedOn: prelight.pubDate,
   paperExpressionDoi: prelight.preprintDoi,
   evaluationLocator: `prelights:${prelight.guid.replace('&#038;', '&')}`,
@@ -28,6 +30,10 @@ export const extractPrelights = (items: ReadonlyArray<Prelight>): DiscoveredPubl
     E.filterOrElse(
       (i) => i.category.includes('highlight'),
       (i) => skipWithReason(i, `Category was '${i.category}`),
+    ),
+    E.filterOrElse(
+      (i): i is PrelightWithPreprintDoi => i.preprintDoi !== undefined,
+      (i) => skipWithReason(i, 'no preprintDoi field'),
     ),
     E.filterOrElse(
       (i) => i.preprintDoi !== '',

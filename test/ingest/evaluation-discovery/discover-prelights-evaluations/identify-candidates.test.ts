@@ -104,7 +104,7 @@ describe('identify-candidates', () => {
   });
 
   describe('when highlights are not linked to a preprint', () => {
-    it.failing('decodes three candidates', () => {
+    it('decodes three candidates', () => {
       const inputCausingCodecFailure = `
         <rss version="2.0">
           <channel>
