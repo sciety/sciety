@@ -1,7 +1,7 @@
 import { XMLParser } from 'fast-xml-parser';
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
-import { flow, pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { Prelight } from './extract-prelights';
@@ -28,6 +28,8 @@ const prelightsFeedCodec = t.type({
   }),
 }, 'prelightsFeedCodec');
 
+type PrelightsFeed = t.TypeOf<typeof prelightsFeedCodec>;
+
 type FeedItem = t.TypeOf<typeof itemCodec>;
 
 const toIndividualPrelights = (item: FeedItem): Array<Prelight> => (
@@ -44,11 +46,11 @@ const parser = new XMLParser({
   isArray: (name) => name === 'item' || name === 'preprint',
 });
 
+const getFeedItems = (feed: PrelightsFeed): ReadonlyArray<FeedItem> => feed.rss.channel.item ?? [];
+
 export const identifyCandidates = (responseBody: string): E.Either<string, ReadonlyArray<Prelight>> => pipe(
   parser.parse(responseBody),
   decodeAndReportFailures(prelightsFeedCodec),
-  E.map(flow(
-    (feed) => feed.rss.channel.item ?? [],
-    RA.chain(toIndividualPrelights),
-  )),
+  E.map(getFeedItems),
+  E.map(RA.flatMap(toIndividualPrelights)),
 );
