@@ -62,7 +62,7 @@ type Config = AuthenticationRoutesConfig & EnvironmentVariables;
 
 type Dependencies = DependenciesForCommands & DependenciesForViews;
 
-metricsClient.collectDefaultMetrics();
+// metricsClient.collectDefaultMetrics();
 
 const metricsHandler = (): NonHtmlView => () => pipe(
   TE.tryCatch(async () => metricsClient.register.metrics(), () => toNonHtmlViewError('failed to generate metrics')),
