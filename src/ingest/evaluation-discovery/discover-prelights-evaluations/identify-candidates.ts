@@ -22,7 +22,7 @@ const itemCodec = t.type({
 const prelightsFeedCodec = t.type({
   rss: t.type({
     channel: t.intersection([
-      t.interface({ title: t.string }),
+      t.strict({ title: t.string }),
       t.partial({ item: t.array(itemCodec) }),
     ]),
   }),
