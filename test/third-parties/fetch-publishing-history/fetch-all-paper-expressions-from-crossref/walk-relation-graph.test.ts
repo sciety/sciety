@@ -76,7 +76,9 @@ describe('walk-relation-graph', () => {
         expect(result).toStrictEqual(E.right(crossrefWorks));
       });
 
-      it.todo('does not call queryCrossrefService');
+      it('does not call queryCrossrefService', () => {
+        expect(queryCrossrefService).not.toHaveBeenCalled();
+      });
     });
 
     describe('if there are 20 or fewer collected works', () => {
