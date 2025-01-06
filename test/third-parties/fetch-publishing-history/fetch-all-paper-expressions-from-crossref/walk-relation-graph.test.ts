@@ -123,5 +123,9 @@ describe('walk-relation-graph', () => {
         });
       });
     });
+
+    describe('if the crossref graph is too big', () => {
+      it.todo('returns early');
+    });
   });
 });
