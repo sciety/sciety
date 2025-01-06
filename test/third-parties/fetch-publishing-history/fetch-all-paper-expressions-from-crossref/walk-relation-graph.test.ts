@@ -9,15 +9,17 @@ import { dummyLogger } from '../../../dummy-logger';
 import { arbitraryUri } from '../../../helpers';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 
+const arbitraryCrossrefWork = (): CrossrefWork => ({
+  type: 'posted-content',
+  DOI: arbitraryExpressionDoi(),
+  posted: { 'date-parts': [[2021, 10, 3]] },
+  resource: { primary: { URL: arbitraryUri() } },
+  relation: { },
+});
+
 describe('walk-relation-graph', () => {
   describe('if the queue is empty', () => {
-    const crossrefWork: CrossrefWork = {
-      type: 'posted-content',
-      DOI: arbitraryExpressionDoi(),
-      posted: { 'date-parts': [[2021, 10, 3]] },
-      resource: { primary: { URL: arbitraryUri() } },
-      relation: { },
-    };
+    const crossrefWork = arbitraryCrossrefWork();
     let queryCrossrefService: QueryCrossrefService;
 
     const state: State = {
