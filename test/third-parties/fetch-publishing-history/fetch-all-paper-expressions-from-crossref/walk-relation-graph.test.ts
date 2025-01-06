@@ -81,8 +81,12 @@ describe('walk-relation-graph', () => {
       });
     });
 
-    describe('if there are 20 or fewer collected works', () => {
-      it.todo('tbd');
+    describe('if there are currently 20 or fewer collected works', () => {
+      describe('when there is one currently collected work', () => {
+        describe('if one more CrossrefWork is retrieved by looking up the queue', () => {
+          it.todo('returns two collected works on the right');
+        });
+      });
     });
   });
 });
