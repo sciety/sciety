@@ -1,6 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { CrossrefWork } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/crossref-work';
+import { QueryCrossrefService } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/query-crossref-service';
 import { State } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/state';
 import { walkRelationGraph } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/walk-relation-graph';
 import * as DE from '../../../../src/types/data-error';
@@ -10,7 +11,6 @@ import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 
 describe('walk-relation-graph', () => {
   describe('if the queue is empty', () => {
-    const queryCrossrefService = () => TE.right('');
     const crossrefWork: CrossrefWork = {
       type: 'posted-content',
       DOI: arbitraryExpressionDoi(),
@@ -18,6 +18,7 @@ describe('walk-relation-graph', () => {
       resource: { primary: { URL: arbitraryUri() } },
       relation: { },
     };
+    let queryCrossrefService: QueryCrossrefService;
 
     const state: State = {
       queue: [],
@@ -28,6 +29,7 @@ describe('walk-relation-graph', () => {
     let result: E.Either<DE.DataError, ReadonlyArray<CrossrefWork>>;
 
     beforeEach(async () => {
+      queryCrossrefService = jest.fn(() => TE.right(''));
       result = await walkRelationGraph(
         queryCrossrefService,
         dummyLogger,
@@ -39,7 +41,9 @@ describe('walk-relation-graph', () => {
       expect(result).toStrictEqual(E.right([crossrefWork]));
     });
 
-    it.todo('does not call queryCrossrefService');
+    it('does not call queryCrossrefService', () => {
+      expect(queryCrossrefService).not.toHaveBeenCalled();
+    });
   });
 
   describe('if the queue is not empty', () => {
