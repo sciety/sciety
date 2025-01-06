@@ -20,9 +20,16 @@ const arbitraryCrossrefWork = (): CrossrefWork => ({
 });
 
 describe('walk-relation-graph', () => {
+  let queryCrossrefService: QueryCrossrefService;
+
+  const executeWalkRelationGraph = async (state: State) => walkRelationGraph(
+    queryCrossrefService,
+    dummyLogger,
+    arbitraryExpressionDoi(),
+  )(state)();
+
   describe('if the queue is empty', () => {
     const crossrefWork = arbitraryCrossrefWork();
-    let queryCrossrefService: QueryCrossrefService;
 
     const state: State = {
       queue: [],
@@ -34,11 +41,7 @@ describe('walk-relation-graph', () => {
 
     beforeEach(async () => {
       queryCrossrefService = jest.fn(() => TE.right(''));
-      result = await walkRelationGraph(
-        queryCrossrefService,
-        dummyLogger,
-        arbitraryExpressionDoi(),
-      )(state)();
+      result = await executeWalkRelationGraph(state);
     });
 
     it('returns the current collected works on the right', () => {
@@ -53,7 +56,6 @@ describe('walk-relation-graph', () => {
   describe('if the queue is not empty', () => {
     describe('if there are currently more than 20 collected works', () => {
       const crossrefWorks = Array.from({ length: 21 }, arbitraryCrossrefWork);
-      let queryCrossrefService: QueryCrossrefService;
 
       const state: State = {
         queue: [arbitraryString()],
@@ -67,11 +69,7 @@ describe('walk-relation-graph', () => {
 
       beforeEach(async () => {
         queryCrossrefService = jest.fn(() => TE.right(''));
-        result = await walkRelationGraph(
-          queryCrossrefService,
-          dummyLogger,
-          arbitraryExpressionDoi(),
-        )(state)();
+        result = await executeWalkRelationGraph(state);
       });
 
       it('returns the current collected works on the right', () => {
