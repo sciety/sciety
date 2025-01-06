@@ -54,7 +54,6 @@ const instantiateExternalAdapters = (
   );
   const externalNotifications = instantiateExternalNotifications(logger);
   let externalAdapters: ExternalQueries & ExternalNotifications;
-
   if (config.useStubAdapters) {
     externalAdapters = stubAdapters;
   } else if (config.useStubAvatars) {
