@@ -35,11 +35,7 @@ describe('walk-relation-graph', () => {
       )(state)();
     });
 
-    it('returns on the right', () => {
-      expect(E.isRight(result)).toBe(true);
-    });
-
-    it('returns the current collected works', () => {
+    it('returns the current collected works on the right', () => {
       expect(result).toStrictEqual(E.right([crossrefWork]));
     });
 
@@ -48,9 +44,7 @@ describe('walk-relation-graph', () => {
 
   describe('if the queue is not empty', () => {
     describe('if there are currently more than 20 collected works', () => {
-      it.todo('returns on the right');
-
-      it.todo('returns the current collected works');
+      it.todo('returns the current collected works on the right');
 
       it.todo('does not call queryCrossrefService');
     });
