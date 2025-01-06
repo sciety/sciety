@@ -125,7 +125,38 @@ describe('walk-relation-graph', () => {
     });
 
     describe('if the crossref graph is too big', () => {
-      it.todo('returns early');
+      const state: State = {
+        queue: [arbitraryExpressionDoi()],
+        collectedWorks: new Map(),
+      };
+      let result: E.Either<DE.DataError, ReadonlyArray<CrossrefWork>>;
+
+      beforeEach(async () => {
+        queryCrossrefService = jest.fn((url: string) => {
+          if (url.includes('filter')) {
+            const stubbedResponseForFetchWorksThatPointToIndividualWork = { message: { items: [] } };
+            return TE.right(stubbedResponseForFetchWorksThatPointToIndividualWork);
+          }
+          const relatedWork: CrossrefWork = {
+            ...arbitraryPostedContentCrossrefWork(),
+            relation: {
+              'has-version': [
+                {
+                  'id-type': 'doi',
+                  id: arbitraryExpressionDoi(),
+                },
+              ],
+            },
+          };
+          const stubbedResponseForFetchIndividualWork = { message: crossrefWorkCodec.encode(relatedWork) };
+          return TE.right(stubbedResponseForFetchIndividualWork);
+        });
+        result = await executeWalkRelationGraph(state);
+      });
+
+      it('returns early', () => {
+        expect(result).toStrictEqual(expect.anything());
+      });
     });
   });
 });
