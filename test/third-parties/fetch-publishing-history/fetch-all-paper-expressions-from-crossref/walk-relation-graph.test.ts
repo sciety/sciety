@@ -83,8 +83,36 @@ describe('walk-relation-graph', () => {
 
     describe('if there are currently 20 or fewer collected works', () => {
       describe('when there is one currently collected work', () => {
-        describe('if one more CrossrefWork is retrieved by looking up the queue', () => {
-          it.todo('returns two collected works on the right');
+        const relatedWork = arbitraryCrossrefWork();
+        const previouslyKnownWork: CrossrefWork = {
+          ...arbitraryCrossrefWork(),
+          relation: {
+            'has-version': [
+              {
+                'id-type': 'doi',
+                id: relatedWork.DOI,
+              },
+            ],
+          },
+        };
+
+        describe('if one more related CrossrefWork is retrieved by looking up the queue', () => {
+          const state: State = {
+            queue: [relatedWork.DOI],
+            collectedWorks: new Map([
+              [previouslyKnownWork.DOI, previouslyKnownWork],
+            ]),
+          };
+          let result: E.Either<DE.DataError, ReadonlyArray<CrossrefWork>>;
+
+          beforeEach(async () => {
+            queryCrossrefService = jest.fn(() => TE.right('tbd'));
+            result = await executeWalkRelationGraph(state);
+          });
+
+          it.failing('returns two collected works on the right', () => {
+            expect(result).toBe(E.right([previouslyKnownWork, relatedWork]));
+          });
         });
       });
     });
