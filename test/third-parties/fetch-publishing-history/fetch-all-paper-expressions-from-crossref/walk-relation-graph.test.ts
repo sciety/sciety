@@ -39,7 +39,9 @@ describe('walk-relation-graph', () => {
       expect(E.isRight(result)).toBe(true);
     });
 
-    it.todo('returns the current collected works');
+    it('returns the current collected works', () => {
+      expect(result).toStrictEqual(E.right([crossrefWork]));
+    });
 
     it.todo('does not call queryCrossrefService');
   });
