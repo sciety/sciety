@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { CrossrefWork } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/crossref-work';
+import { CrossrefWork, crossrefWorkCodec, PostedContent } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/crossref-work';
 import { QueryCrossrefService } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/query-crossref-service';
 import { State } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/state';
 import { walkRelationGraph } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/walk-relation-graph';
@@ -11,7 +11,7 @@ import { dummyLogger } from '../../../dummy-logger';
 import { arbitraryString, arbitraryUri } from '../../../helpers';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 
-const arbitraryCrossrefWork = (): CrossrefWork => ({
+const arbitraryPostedContentCrossrefWork = (): PostedContent => ({
   type: 'posted-content',
   DOI: arbitraryExpressionDoi(),
   posted: { 'date-parts': [[2021, 10, 3]] },
@@ -29,7 +29,7 @@ describe('walk-relation-graph', () => {
   )(state)();
 
   describe('if the queue is empty', () => {
-    const crossrefWork = arbitraryCrossrefWork();
+    const crossrefWork = arbitraryPostedContentCrossrefWork();
 
     const state: State = {
       queue: [],
@@ -55,7 +55,7 @@ describe('walk-relation-graph', () => {
 
   describe('if the queue is not empty', () => {
     describe('if there are currently more than 20 collected works', () => {
-      const crossrefWorks = Array.from({ length: 21 }, arbitraryCrossrefWork);
+      const crossrefWorks = Array.from({ length: 21 }, arbitraryPostedContentCrossrefWork);
 
       const state: State = {
         queue: [arbitraryString()],
@@ -83,9 +83,9 @@ describe('walk-relation-graph', () => {
 
     describe('if there are currently 20 or fewer collected works', () => {
       describe('when there is one currently collected work', () => {
-        const relatedWork = arbitraryCrossrefWork();
+        const relatedWork = arbitraryPostedContentCrossrefWork();
         const previouslyKnownWork: CrossrefWork = {
-          ...arbitraryCrossrefWork(),
+          ...arbitraryPostedContentCrossrefWork(),
           relation: {
             'has-version': [
               {
@@ -106,12 +106,19 @@ describe('walk-relation-graph', () => {
           let result: E.Either<DE.DataError, ReadonlyArray<CrossrefWork>>;
 
           beforeEach(async () => {
-            queryCrossrefService = jest.fn(() => TE.right('tbd'));
+            const stubbedResponseForFetchIndividualWork = { message: crossrefWorkCodec.encode(relatedWork) };
+            const stubbedResponseForFetchWorksThatPointToIndividualWork = { message: { items: [] } };
+            queryCrossrefService = jest.fn((url: string) => {
+              if (url.includes('filter')) {
+                return TE.right(stubbedResponseForFetchWorksThatPointToIndividualWork);
+              }
+              return TE.right(stubbedResponseForFetchIndividualWork);
+            });
             result = await executeWalkRelationGraph(state);
           });
 
-          it.failing('returns two collected works on the right', () => {
-            expect(result).toBe(E.right([previouslyKnownWork, relatedWork]));
+          it('returns two collected works on the right', () => {
+            expect(result).toStrictEqual(E.right([previouslyKnownWork, relatedWork]));
           });
         });
       });

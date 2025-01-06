@@ -40,6 +40,8 @@ const postedContentCodec = t.strict({
   relation: relationshipsCodec,
 });
 
+export type PostedContent = t.TypeOf<typeof postedContentCodec>;
+
 type OtherWorkType = 'other';
 
 const isOtherWorkType = (input: unknown): input is OtherWorkType => (
