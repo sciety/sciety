@@ -158,5 +158,40 @@ describe('walk-relation-graph', () => {
         expect(result).toStrictEqual(expect.anything());
       });
     });
+
+    describe.skip('if the queue is never empty', () => {
+      const state: State = {
+        queue: [arbitraryExpressionDoi()],
+        collectedWorks: new Map(),
+      };
+      let result: E.Either<DE.DataError, ReadonlyArray<CrossrefWork>>;
+      const relatedWork: CrossrefWork = {
+        ...arbitraryPostedContentCrossrefWork(),
+        relation: {
+          'has-version': [
+            {
+              'id-type': 'doi',
+              id: arbitraryExpressionDoi(),
+            },
+          ],
+        },
+      };
+
+      beforeEach(async () => {
+        queryCrossrefService = jest.fn((url: string) => {
+          if (url.includes('filter')) {
+            const stubbedResponseForFetchWorksThatPointToIndividualWork = { message: { items: [] } };
+            return TE.right(stubbedResponseForFetchWorksThatPointToIndividualWork);
+          }
+          const stubbedResponseForFetchIndividualWork = { message: crossrefWorkCodec.encode(relatedWork) };
+          return TE.right(stubbedResponseForFetchIndividualWork);
+        });
+        result = await executeWalkRelationGraph(state);
+      });
+
+      it('returns early', () => {
+        expect(result).toStrictEqual(expect.anything());
+      });
+    });
   });
 });
