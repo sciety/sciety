@@ -19,6 +19,17 @@ const arbitraryPostedContentCrossrefWork = (): PostedContent => ({
   relation: { },
 });
 
+const mockQueryCrossrefService = (createWork: () => CrossrefWork) => (url: string) => {
+  if (url.includes('filter')) {
+    const stubbedResponseForFetchWorksThatPointToIndividualWork = { message: { items: [] } };
+    return TE.right(stubbedResponseForFetchWorksThatPointToIndividualWork);
+  }
+  const stubbedResponseForFetchIndividualWork = {
+    message: crossrefWorkCodec.encode(createWork()),
+  };
+  return TE.right(stubbedResponseForFetchIndividualWork);
+};
+
 describe('walk-relation-graph', () => {
   let queryCrossrefService: QueryCrossrefService;
 
@@ -165,7 +176,7 @@ describe('walk-relation-graph', () => {
         collectedWorks: new Map(),
       };
       let result: E.Either<DE.DataError, ReadonlyArray<CrossrefWork>>;
-      const relatedWork: CrossrefWork = {
+      const arbitraryWorkWithArbitraryRelation: CrossrefWork = {
         ...arbitraryPostedContentCrossrefWork(),
         relation: {
           'has-version': [
@@ -178,14 +189,7 @@ describe('walk-relation-graph', () => {
       };
 
       beforeEach(async () => {
-        queryCrossrefService = jest.fn((url: string) => {
-          if (url.includes('filter')) {
-            const stubbedResponseForFetchWorksThatPointToIndividualWork = { message: { items: [] } };
-            return TE.right(stubbedResponseForFetchWorksThatPointToIndividualWork);
-          }
-          const stubbedResponseForFetchIndividualWork = { message: crossrefWorkCodec.encode(relatedWork) };
-          return TE.right(stubbedResponseForFetchIndividualWork);
-        });
+        queryCrossrefService = jest.fn(mockQueryCrossrefService(() => arbitraryWorkWithArbitraryRelation));
         result = await executeWalkRelationGraph(state);
       });
 
