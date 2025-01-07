@@ -6,7 +6,7 @@ import { arbitraryPostedContentCrossrefWork } from './crossref-work.helper';
 import { CrossrefWork, crossrefWorkCodec } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/crossref-work';
 import { QueryCrossrefService } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/query-crossref-service';
 import { State } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/state';
-import { walkRelationGraph } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/walk-relation-graph';
+import { initialState, walkRelationGraph } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/walk-relation-graph';
 import * as DE from '../../../../src/types/data-error';
 import { dummyLogger } from '../../../dummy-logger';
 import { arbitraryString } from '../../../helpers';
@@ -56,7 +56,7 @@ describe('walk-relation-graph', () => {
     describe('if there are currently more than 20 collected works', () => {
       const crossrefWorks = Array.from({ length: 21 }, arbitraryPostedContentCrossrefWork);
       const state: State = {
-        queue: [arbitraryString()],
+        ...initialState(arbitraryString()),
         collectedWorks: pipe(
           crossrefWorks,
           RA.map((work) => [work.DOI, work] as const),
@@ -91,7 +91,7 @@ describe('walk-relation-graph', () => {
 
         describe('if one more related CrossrefWork is retrieved by looking up the queue', () => {
           const state: State = {
-            queue: [relatedWork.DOI],
+            ...initialState(relatedWork.DOI),
             collectedWorks: new Map([
               [previouslyKnownWork.DOI, previouslyKnownWork],
             ]),
@@ -110,10 +110,7 @@ describe('walk-relation-graph', () => {
     });
 
     describe('if the crossref graph is too big', () => {
-      const state: State = {
-        queue: [arbitraryExpressionDoi()],
-        collectedWorks: new Map(),
-      };
+      const state = initialState(arbitraryExpressionDoi());
 
       beforeEach(async () => {
         const createWorkWithArbitraryRelation = (): CrossrefWork => ({
@@ -137,10 +134,7 @@ describe('walk-relation-graph', () => {
     });
 
     describe.skip('if the queue keeps getting populated with a discovered relation that cannot be fetched', () => {
-      const state: State = {
-        queue: [arbitraryExpressionDoi('initialqueueitem')],
-        collectedWorks: new Map(),
-      };
+      const state = initialState(arbitraryExpressionDoi('initialqueueitem'));
       const arbitraryWorkWithArbitraryRelation: CrossrefWork = {
         ...arbitraryPostedContentCrossrefWork(),
         DOI: arbitraryExpressionDoi('discoveredwork'),

@@ -33,6 +33,11 @@ const fetchAllQueuedWorksAndAddToCollector = (
   })),
 );
 
+export const initialState = (doi: string): State => ({
+  queue: [doi],
+  collectedWorks: new Map(),
+});
+
 export const walkRelationGraph = (
   queryCrossrefService: QueryCrossrefService,
   logger: Logger,

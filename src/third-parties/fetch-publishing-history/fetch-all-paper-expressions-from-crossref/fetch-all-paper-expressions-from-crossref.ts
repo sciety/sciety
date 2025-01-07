@@ -4,7 +4,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { QueryCrossrefService } from './query-crossref-service';
 import { toPaperExpression } from './to-paper-expression';
-import { walkRelationGraph } from './walk-relation-graph';
+import { initialState, walkRelationGraph } from './walk-relation-graph';
 import { Logger } from '../../../logger';
 import * as DE from '../../../types/data-error';
 import { PaperExpression } from '../../../types/paper-expression';
@@ -27,10 +27,8 @@ export const fetchAllPaperExpressionsFromCrossref: FetchAllPaperExpressionsFromC
   logger,
   doi,
 ) => pipe(
-  {
-    queue: [doi],
-    collectedWorks: new Map(),
-  },
+  doi,
+  initialState,
   walkRelationGraph(queryCrossrefService, logger, doi),
   TE.map(RA.map(toPaperExpression)),
   TE.map(RA.rights),
