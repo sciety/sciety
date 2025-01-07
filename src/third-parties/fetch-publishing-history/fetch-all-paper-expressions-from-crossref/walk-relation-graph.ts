@@ -10,7 +10,6 @@ import { QueryCrossrefService } from './query-crossref-service';
 import { State } from './state';
 import { Logger } from '../../../logger';
 import * as DE from '../../../types/data-error';
-import { ExpressionDoi } from '../../../types/expression-doi';
 
 const update = (collectedWorks: State['collectedWorks'], newlyFetchedWork: CrossrefWork) => {
   collectedWorks.set(newlyFetchedWork.DOI, newlyFetchedWork);
@@ -33,11 +32,6 @@ const fetchAllQueuedWorksAndAddToCollector = (
     collectedWorks,
   })),
 );
-
-export const initialState = (doi: ExpressionDoi): State => ({
-  queue: [doi],
-  collectedWorks: new Map(),
-});
 
 export const walkRelationGraph = (
   queryCrossrefService: QueryCrossrefService,
