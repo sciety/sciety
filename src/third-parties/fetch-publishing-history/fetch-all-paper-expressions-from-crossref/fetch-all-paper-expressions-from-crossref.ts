@@ -7,6 +7,7 @@ import { toPaperExpression } from './to-paper-expression';
 import { initialState, walkRelationGraph } from './walk-relation-graph';
 import { Logger } from '../../../logger';
 import * as DE from '../../../types/data-error';
+import { ExpressionDoi } from '../../../types/expression-doi';
 import { PaperExpression } from '../../../types/paper-expression';
 
 const logWhenExpressionServerIsUnsupported = (logger: Logger) => (expression: PaperExpression) => {
@@ -19,7 +20,11 @@ const logWhenExpressionServerIsUnsupported = (logger: Logger) => (expression: Pa
   return expression;
 };
 
-type FetchAllPaperExpressionsFromCrossref = (queryCrossrefService: QueryCrossrefService, logger: Logger, doi: string)
+type FetchAllPaperExpressionsFromCrossref = (
+  queryCrossrefService: QueryCrossrefService,
+  logger: Logger,
+  doi: ExpressionDoi
+)
 => TE.TaskEither<DE.DataError, ReadonlyArray<PaperExpression>>;
 
 export const fetchAllPaperExpressionsFromCrossref: FetchAllPaperExpressionsFromCrossref = (

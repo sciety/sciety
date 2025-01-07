@@ -9,7 +9,6 @@ import { State } from '../../../../src/third-parties/fetch-publishing-history/fe
 import { initialState, walkRelationGraph } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/walk-relation-graph';
 import * as DE from '../../../../src/types/data-error';
 import { dummyLogger } from '../../../dummy-logger';
-import { arbitraryString } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 
@@ -56,7 +55,7 @@ describe('walk-relation-graph', () => {
     describe('if there are currently more than 20 collected works', () => {
       const crossrefWorks = Array.from({ length: 21 }, arbitraryPostedContentCrossrefWork);
       const state: State = {
-        ...initialState(arbitraryString()),
+        ...initialState(arbitraryExpressionDoi()),
         collectedWorks: pipe(
           crossrefWorks,
           RA.map((work) => [work.DOI, work] as const),

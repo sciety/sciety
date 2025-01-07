@@ -2,6 +2,6 @@ import { CrossrefWork } from './crossref-work';
 import { ExpressionDoi } from '../../../types/expression-doi';
 
 export type State = {
-  queue: ReadonlyArray<string>,
+  queue: ReadonlyArray<ExpressionDoi>,
   collectedWorks: Map<ExpressionDoi, CrossrefWork>,
 };
