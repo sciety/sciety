@@ -4,7 +4,9 @@ import { pipe } from 'fp-ts/function';
 import { arbitraryPostedContentCrossrefWork } from './crossref-work.helper';
 import { CrossrefWork, crossrefWorkCodec } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/crossref-work';
 import { QueryCrossrefService } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/query-crossref-service';
-import { collectWorksIntoStateAndEmptyQueue, initialState, State } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/state';
+import {
+  collectWorksIntoStateAndEmptyQueue, enqueueInState, initialState, State,
+} from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/state';
 import { walkRelationGraph } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/walk-relation-graph';
 import * as DE from '../../../../src/types/data-error';
 import { dummyLogger } from '../../../dummy-logger';
@@ -82,12 +84,11 @@ describe('walk-relation-graph', () => {
         };
 
         describe('if one more related CrossrefWork is retrieved by looking up the queue', () => {
-          const state: State = {
-            ...initialState(relatedWork.DOI),
-            collectedWorks: new Map([
-              [previouslyKnownWork.DOI, previouslyKnownWork],
-            ]),
-          };
+          const state: State = pipe(
+            [previouslyKnownWork],
+            collectWorksIntoStateAndEmptyQueue(initialState(arbitraryExpressionDoi())),
+            (s) => enqueueInState(s)([relatedWork.DOI]),
+          );
 
           beforeEach(async () => {
             queryCrossrefService = jest.fn(mockQueryCrossrefService(() => relatedWork));
