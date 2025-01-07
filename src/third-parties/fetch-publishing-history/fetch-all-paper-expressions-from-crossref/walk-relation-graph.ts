@@ -1,5 +1,4 @@
 import { sequenceS } from 'fp-ts/Apply';
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { CrossrefWork } from './crossref-work';
@@ -7,14 +6,9 @@ import { enqueueAllRelatedDoisNotYetCollected } from './enqueue-all-related-dois
 import { fetchIndividualWork } from './fetch-individual-work';
 import { fetchWorksThatPointToIndividualWorks } from './fetch-works-that-point-to-individual-works';
 import { QueryCrossrefService } from './query-crossref-service';
-import { State } from './state';
+import { collectWorksIntoStateAndEmptyQueue, State } from './state';
 import { Logger } from '../../../logger';
 import * as DE from '../../../types/data-error';
-
-const update = (collectedWorks: State['collectedWorks'], newlyFetchedWork: CrossrefWork) => {
-  collectedWorks.set(newlyFetchedWork.DOI, newlyFetchedWork);
-  return collectedWorks;
-};
 
 const fetchAllQueuedWorksAndAddToCollector = (
   queryCrossrefService: QueryCrossrefService,
@@ -26,11 +20,7 @@ const fetchAllQueuedWorksAndAddToCollector = (
   },
   sequenceS(TE.ApplyPar),
   TE.map((fetched) => [...fetched.individualWorks, ...fetched.worksThatPointToIndividualWorks]),
-  TE.map(RA.reduce(state.collectedWorks, update)),
-  TE.map((collectedWorks) => ({
-    queue: [],
-    collectedWorks,
-  })),
+  TE.map(collectWorksIntoStateAndEmptyQueue(state)),
 );
 
 export const walkRelationGraph = (
