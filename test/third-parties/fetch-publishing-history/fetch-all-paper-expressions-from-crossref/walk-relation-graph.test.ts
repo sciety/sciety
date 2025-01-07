@@ -1,5 +1,4 @@
 import * as E from 'fp-ts/Either';
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { arbitraryPostedContentCrossrefWork } from './crossref-work.helper';
@@ -52,14 +51,10 @@ describe('walk-relation-graph', () => {
   describe('if the queue is not empty', () => {
     describe('if there are currently more than 20 collected works', () => {
       const crossrefWorks = Array.from({ length: 21 }, arbitraryPostedContentCrossrefWork);
-      const state: State = {
-        ...initialState(arbitraryExpressionDoi()),
-        collectedWorks: pipe(
-          crossrefWorks,
-          RA.map((work) => [work.DOI, work] as const),
-          (entries) => new Map(entries),
-        ),
-      };
+      const state: State = pipe(
+        crossrefWorks,
+        collectWorksIntoStateAndEmptyQueue(initialState(arbitraryExpressionDoi())),
+      );
 
       beforeEach(async () => {
         queryCrossrefService = shouldNotBeCalled;
