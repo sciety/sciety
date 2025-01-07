@@ -8,7 +8,6 @@ import { QueryCrossrefService } from '../../../../src/third-parties/fetch-publis
 import { State } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/state';
 import { walkRelationGraph } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/walk-relation-graph';
 import * as DE from '../../../../src/types/data-error';
-import * as EDOI from '../../../../src/types/expression-doi';
 import { dummyLogger } from '../../../dummy-logger';
 import { arbitraryString } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
@@ -139,17 +138,17 @@ describe('walk-relation-graph', () => {
 
     describe.skip('if the queue keeps getting populated with a discovered relation that cannot be fetched', () => {
       const state: State = {
-        queue: ['10.1101/initialqueueitem'],
+        queue: [arbitraryExpressionDoi('initialqueueitem')],
         collectedWorks: new Map(),
       };
       const arbitraryWorkWithArbitraryRelation: CrossrefWork = {
         ...arbitraryPostedContentCrossrefWork(),
-        DOI: EDOI.fromValidatedString('10.1101/discoveredwork'),
+        DOI: arbitraryExpressionDoi('discoveredwork'),
         relation: {
           'has-version': [
             {
               'id-type': 'doi',
-              id: EDOI.fromValidatedString('10.1101/discoveredrelation'),
+              id: arbitraryExpressionDoi('discoveredrelation'),
             },
           ],
         },
