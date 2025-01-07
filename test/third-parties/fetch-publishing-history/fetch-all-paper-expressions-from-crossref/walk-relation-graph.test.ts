@@ -117,14 +117,7 @@ describe('walk-relation-graph', () => {
           let result: E.Either<DE.DataError, ReadonlyArray<CrossrefWork>>;
 
           beforeEach(async () => {
-            const stubbedResponseForFetchIndividualWork = { message: crossrefWorkCodec.encode(relatedWork) };
-            const stubbedResponseForFetchWorksThatPointToIndividualWork = { message: { items: [] } };
-            queryCrossrefService = jest.fn((url: string) => {
-              if (url.includes('filter')) {
-                return TE.right(stubbedResponseForFetchWorksThatPointToIndividualWork);
-              }
-              return TE.right(stubbedResponseForFetchIndividualWork);
-            });
+            queryCrossrefService = jest.fn(mockQueryCrossrefService(() => relatedWork));
             result = await executeWalkRelationGraph(state);
           });
 
