@@ -2,24 +2,17 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { CrossrefWork, crossrefWorkCodec, PostedContent } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/crossref-work';
+import { arbitraryPostedContentCrossrefWork } from './crossref-work.helper';
+import { CrossrefWork, crossrefWorkCodec } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/crossref-work';
 import { QueryCrossrefService } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/query-crossref-service';
 import { State } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/state';
 import { walkRelationGraph } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/walk-relation-graph';
 import * as DE from '../../../../src/types/data-error';
 import * as EDOI from '../../../../src/types/expression-doi';
 import { dummyLogger } from '../../../dummy-logger';
-import { arbitraryString, arbitraryUri } from '../../../helpers';
+import { arbitraryString } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
-
-const arbitraryPostedContentCrossrefWork = (): PostedContent => ({
-  type: 'posted-content',
-  DOI: arbitraryExpressionDoi(),
-  posted: { 'date-parts': [[2021, 10, 3]] },
-  resource: { primary: { URL: arbitraryUri() } },
-  relation: { },
-});
 
 const mockQueryCrossrefService = (createWork: () => CrossrefWork) => (url: string) => {
   if (url.includes('filter')) {
