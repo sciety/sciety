@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import { arbitraryPostedContentCrossrefWork } from './crossref-work.helper';
 import { CrossrefWork, crossrefWorkCodec } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/crossref-work';
 import { QueryCrossrefService } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/query-crossref-service';
-import { initialState, State } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/state';
+import { collectWorksIntoStateAndEmptyQueue, initialState, State } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/state';
 import { walkRelationGraph } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/walk-relation-graph';
 import * as DE from '../../../../src/types/data-error';
 import { dummyLogger } from '../../../dummy-logger';
@@ -34,12 +34,10 @@ describe('walk-relation-graph', () => {
 
   describe('if the queue is empty', () => {
     const crossrefWork = arbitraryPostedContentCrossrefWork();
-    const state: State = {
-      queue: [],
-      collectedWorks: new Map([
-        [arbitraryExpressionDoi(), crossrefWork],
-      ]),
-    };
+    const state: State = pipe(
+      [crossrefWork],
+      collectWorksIntoStateAndEmptyQueue(initialState(crossrefWork.DOI)),
+    );
 
     beforeEach(async () => {
       queryCrossrefService = shouldNotBeCalled;
