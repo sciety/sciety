@@ -34,23 +34,21 @@ const mockQueryCrossrefService = (createWork: () => CrossrefWork) => (url: strin
 
 describe('walk-relation-graph', () => {
   let queryCrossrefService: QueryCrossrefService;
-
   const executeWalkRelationGraph = async (state: State) => walkRelationGraph(
     queryCrossrefService,
     dummyLogger,
     arbitraryExpressionDoi(),
   )(state)();
+  let result: E.Either<DE.DataError, ReadonlyArray<CrossrefWork>>;
 
   describe('if the queue is empty', () => {
     const crossrefWork = arbitraryPostedContentCrossrefWork();
-
     const state: State = {
       queue: [],
       collectedWorks: new Map([
         [arbitraryExpressionDoi(), crossrefWork],
       ]),
     };
-    let result: E.Either<DE.DataError, ReadonlyArray<CrossrefWork>>;
 
     beforeEach(async () => {
       queryCrossrefService = shouldNotBeCalled;
@@ -65,7 +63,6 @@ describe('walk-relation-graph', () => {
   describe('if the queue is not empty', () => {
     describe('if there are currently more than 20 collected works', () => {
       const crossrefWorks = Array.from({ length: 21 }, arbitraryPostedContentCrossrefWork);
-
       const state: State = {
         queue: [arbitraryString()],
         collectedWorks: pipe(
@@ -74,7 +71,6 @@ describe('walk-relation-graph', () => {
           (entries) => new Map(entries),
         ),
       };
-      let result: E.Either<DE.DataError, ReadonlyArray<CrossrefWork>>;
 
       beforeEach(async () => {
         queryCrossrefService = shouldNotBeCalled;
@@ -108,7 +104,6 @@ describe('walk-relation-graph', () => {
               [previouslyKnownWork.DOI, previouslyKnownWork],
             ]),
           };
-          let result: E.Either<DE.DataError, ReadonlyArray<CrossrefWork>>;
 
           beforeEach(async () => {
             queryCrossrefService = jest.fn(mockQueryCrossrefService(() => relatedWork));
@@ -127,7 +122,6 @@ describe('walk-relation-graph', () => {
         queue: [arbitraryExpressionDoi()],
         collectedWorks: new Map(),
       };
-      let result: E.Either<DE.DataError, ReadonlyArray<CrossrefWork>>;
 
       beforeEach(async () => {
         const createWorkWithArbitraryRelation = (): CrossrefWork => ({
@@ -155,7 +149,6 @@ describe('walk-relation-graph', () => {
         queue: ['10.1101/initialqueueitem'],
         collectedWorks: new Map(),
       };
-      let result: E.Either<DE.DataError, ReadonlyArray<CrossrefWork>>;
       const arbitraryWorkWithArbitraryRelation: CrossrefWork = {
         ...arbitraryPostedContentCrossrefWork(),
         DOI: EDOI.fromValidatedString('10.1101/discoveredwork'),
