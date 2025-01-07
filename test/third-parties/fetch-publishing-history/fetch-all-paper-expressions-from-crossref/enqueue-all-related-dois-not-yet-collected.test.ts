@@ -1,14 +1,20 @@
+import { pipe } from 'fp-ts/function';
 import {
   enqueueAllRelatedDoisNotYetCollected,
 } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/enqueue-all-related-dois-not-yet-collected';
-import { State } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/state';
+import { collectWorksIntoStateAndEmptyQueue, initialState, State } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/state';
 import * as EDOI from '../../../../src/types/expression-doi';
 import { arbitraryString } from '../../../helpers';
+import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 
 describe('enqueue-all-related-dois-not-yet-collected', () => {
   describe('when there no records', () => {
     const initialRecords = new Map();
-    const result = enqueueAllRelatedDoisNotYetCollected({ collectedWorks: initialRecords, queue: [] });
+    const state = pipe(
+      [],
+      collectWorksIntoStateAndEmptyQueue(initialState(arbitraryExpressionDoi())),
+    );
+    const result = enqueueAllRelatedDoisNotYetCollected(state);
 
     it('the collected records are unchanged', () => {
       expect(result.collectedWorks).toStrictEqual(initialRecords);
