@@ -30,6 +30,9 @@ export const walkRelationGraph = (
 ) => (
   state: State,
 ): TE.TaskEither<DE.DataError, ReadonlyArray<CrossrefWork>> => {
+  if (state.recursionCount > 1000) {
+    return TE.left(DE.unavailable);
+  }
   if (state.collectedWorks.size > 20) {
     logger('warn', 'Exiting recursion early due to danger of an infinite loop', {
       collectedWorksSize: state.collectedWorks.size,

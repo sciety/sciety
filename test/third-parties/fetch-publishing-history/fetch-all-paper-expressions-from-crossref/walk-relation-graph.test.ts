@@ -126,7 +126,7 @@ describe('walk-relation-graph', () => {
       });
     });
 
-    describe.skip('if the queue keeps getting populated with a discovered relation that cannot be fetched', () => {
+    describe('if the queue keeps getting populated with a discovered relation that cannot be fetched', () => {
       const state = initialState(arbitraryExpressionDoi('initialqueueitem'));
       const arbitraryWorkWithArbitraryRelation: CrossrefWork = {
         ...arbitraryPostedContentCrossrefWork(),
