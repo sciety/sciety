@@ -1,4 +1,5 @@
 import { pipe } from 'fp-ts/function';
+import { CrossrefWork } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/crossref-work';
 import {
   enqueueAllRelatedDoisNotYetCollected,
 } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/enqueue-all-related-dois-not-yet-collected';
@@ -26,22 +27,27 @@ describe('enqueue-all-related-dois-not-yet-collected', () => {
   });
 
   describe('when there is one record with no relations', () => {
+    const collectedWork: CrossrefWork = {
+      type: 'posted-content',
+      DOI: EDOI.fromValidatedString('10.21203/rs.3.rs-1828415/v2'),
+      posted: {
+        'date-parts': [[2023, 12, 7]],
+      },
+      resource: {
+        primary: {
+          URL: arbitraryString(),
+        },
+      },
+      relation: {},
+    };
     const initialRecords: State['collectedWorks'] = new Map([
-      [EDOI.fromValidatedString('10.21203/rs.3.rs-1828415/v2'), {
-        type: 'posted-content',
-        DOI: EDOI.fromValidatedString('10.21203/rs.3.rs-1828415/v2'),
-        posted: {
-          'date-parts': [[2023, 12, 7]],
-        },
-        resource: {
-          primary: {
-            URL: arbitraryString(),
-          },
-        },
-        relation: {},
-      }],
+      [collectedWork.DOI, collectedWork],
     ]);
-    const result = enqueueAllRelatedDoisNotYetCollected({ collectedWorks: initialRecords, queue: [] });
+    const state = pipe(
+      [collectedWork],
+      collectWorksIntoStateAndEmptyQueue(initialState(arbitraryExpressionDoi())),
+    );
+    const result = enqueueAllRelatedDoisNotYetCollected(state);
 
     it('the collected records are unchanged', () => {
       expect(result.collectedWorks).toStrictEqual(initialRecords);
