@@ -9,6 +9,7 @@ import { walkRelationGraph } from '../../../../src/third-parties/fetch-publishin
 import * as DE from '../../../../src/types/data-error';
 import { dummyLogger } from '../../../dummy-logger';
 import { arbitraryString, arbitraryUri } from '../../../helpers';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 
 const arbitraryPostedContentCrossrefWork = (): PostedContent => ({
@@ -51,16 +52,12 @@ describe('walk-relation-graph', () => {
     let result: E.Either<DE.DataError, ReadonlyArray<CrossrefWork>>;
 
     beforeEach(async () => {
-      queryCrossrefService = jest.fn(() => TE.right(''));
+      queryCrossrefService = shouldNotBeCalled;
       result = await executeWalkRelationGraph(state);
     });
 
     it('returns the current collected works on the right', () => {
       expect(result).toStrictEqual(E.right([crossrefWork]));
-    });
-
-    it('does not call queryCrossrefService', () => {
-      expect(queryCrossrefService).not.toHaveBeenCalled();
     });
   });
 
@@ -79,16 +76,12 @@ describe('walk-relation-graph', () => {
       let result: E.Either<DE.DataError, ReadonlyArray<CrossrefWork>>;
 
       beforeEach(async () => {
-        queryCrossrefService = jest.fn(() => TE.right(''));
+        queryCrossrefService = shouldNotBeCalled;
         result = await executeWalkRelationGraph(state);
       });
 
       it('returns the current collected works on the right', () => {
         expect(result).toStrictEqual(E.right(crossrefWorks));
-      });
-
-      it('does not call queryCrossrefService', () => {
-        expect(queryCrossrefService).not.toHaveBeenCalled();
       });
     });
 
