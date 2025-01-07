@@ -1,7 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { CrossrefWork } from './crossref-work';
-import { State } from './state';
+import { nextState, State } from './state';
 import { eqExpressionDoi, ExpressionDoi } from '../../../types/expression-doi';
 
 type RelationType = 'is-version-of' | 'has-version' | 'is-preprint-of' | 'has-preprint';
@@ -25,8 +25,5 @@ export const enqueueAllRelatedDoisNotYetCollected = (state: State): State => pip
   RA.chain(extractDoisOfRelatedExpressions),
   RA.uniq(eqExpressionDoi),
   RA.filter(hasNotBeenCollected(state)),
-  (dois) => ({
-    queue: dois,
-    collectedWorks: state.collectedWorks,
-  }),
+  nextState(state),
 );
