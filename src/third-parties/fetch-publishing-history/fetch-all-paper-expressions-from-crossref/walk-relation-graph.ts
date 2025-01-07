@@ -31,6 +31,11 @@ export const walkRelationGraph = (
   state: State,
 ): TE.TaskEither<DE.DataError, ReadonlyArray<CrossrefWork>> => {
   if (state.recursionCount > 1000) {
+    logger('error', 'Exiting recursion due to potential infinite loop', {
+      queue: state.queue,
+      collectedWorksSize: state.collectedWorks.size,
+      startingDoi: doi,
+    });
     return TE.left(DE.unavailable);
   }
   if (state.collectedWorks.size > 20) {
