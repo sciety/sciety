@@ -47,8 +47,11 @@ const transformXmlToHtml = (xml: string) => (
     .replace(/<\/title>/g, '</h3>')
 );
 
-const stripEmptySections = (html: string) => (
-  html.replace(/<section>\s*<\/section>/g, '')
+const stripEmptySections = (html: string) => pipe(
+  html,
+  toHtmlFragment,
+  sanitise,
+  (sanitised) => sanitised.replace(/<section>\s*<\/section>/g, ''),
 );
 
 const getAbstract = (
@@ -58,8 +61,6 @@ const getAbstract = (
   extractAbstract,
   O.map(transformXmlToHtml),
   O.map(removeSuperfluousTitles),
-  O.map(toHtmlFragment),
-  O.map(sanitise),
   O.map(stripEmptySections),
   O.map((output) => output.trim()),
   O.map(toHtmlFragment),
