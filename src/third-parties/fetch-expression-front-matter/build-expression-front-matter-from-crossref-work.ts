@@ -17,7 +17,7 @@ import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { decodeAndLogFailures } from '../decode-and-log-failures';
 
-const extractAbstract = (journalOrPostedContent: DoiRecord['crossref']) => {
+const extractAbstract = (journalOrPostedContent: JournalOrPostedContent) => {
   if ('journal' in journalOrPostedContent) {
     return journalOrPostedContent.journal.journal_article.abstract;
   }
@@ -52,9 +52,9 @@ const stripEmptySections = (html: string) => (
 );
 
 const getAbstract = (
-  record: DoiRecord,
+  journalOrPostedContent: JournalOrPostedContent,
 ): O.Option<SanitisedHtmlFragment> => pipe(
-  record.crossref,
+  journalOrPostedContent,
   extractAbstract,
   O.map(transformXmlToHtml),
   O.map(removeSuperfluousTitles),
@@ -96,9 +96,9 @@ const frontMatterCrossrefXmlResponseCodec = t.strict({
   }),
 }, 'frontMatterCrossrefXmlResponseTitleCodec');
 
-type DoiRecord = t.TypeOf<typeof frontMatterCrossrefXmlResponseCodec>['doi_records']['doi_record'];
+type JournalOrPostedContent = t.TypeOf<typeof frontMatterCrossrefXmlResponseCodec>['doi_records']['doi_record']['crossref'];
 
-const extractTitle = (journalOrPostedContent: DoiRecord['crossref']) => {
+const extractTitle = (journalOrPostedContent: JournalOrPostedContent) => {
   if ('journal' in journalOrPostedContent) {
     return journalOrPostedContent.journal.journal_article.titles[0].title;
   }
@@ -106,9 +106,9 @@ const extractTitle = (journalOrPostedContent: DoiRecord['crossref']) => {
 };
 
 const getTitle = (
-  record: DoiRecord,
+  journalOrPostedContent: JournalOrPostedContent,
 ): SanitisedHtmlFragment => pipe(
-  record.crossref,
+  journalOrPostedContent,
   extractTitle,
   (title) => title.trim(),
   toHtmlFragment,
@@ -191,8 +191,8 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
     return E.left(DE.unavailable);
   }
 
-  const title = getTitle(doiRecord.right.doi_records.doi_record);
-  const abstract = getAbstract(doiRecord.right.doi_records.doi_record);
+  const title = getTitle(doiRecord.right.doi_records.doi_record.crossref);
+  const abstract = getAbstract(doiRecord.right.doi_records.doi_record.crossref);
 
   const legacyParser = new DOMParser({
     errorHandler: (_, msg) => {
