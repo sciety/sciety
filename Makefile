@@ -198,6 +198,8 @@ replace-staging-database-with-snapshot-from-prod: download-exploratory-test-from
 	kubectl delete --wait=false pod psql
 	kubectl rollout restart deployment sciety--staging--frontend
 
+replace-demo-database-with-snapshot-from-prod: download-exploratory-test-from-prod
+
 crossref-response:
 	curl -v \
 		-H 'Accept: application/vnd.crossref.unixref+xml' \
