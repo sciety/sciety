@@ -16,10 +16,22 @@ const crossrefMultipleWorksResponseCodec = t.strict({
   }),
 }, 'crossrefMultipleWorksResponseCodec');
 
+type CrossrefMultipleWorksResponse = t.TypeOf<typeof crossrefMultipleWorksResponseCodec>;
+
 const constructUrl = (doi: string) => {
   const workTypes = 'type:posted-content,type:journal-article';
   const relationships = 'relation.type:has-version,relation.type:is-version-of,relation.type:has-preprint,relation.type:is-preprint-of';
   return `https://api.crossref.org/works?filter=relation.object:${doi},${workTypes},${relationships}&rows=1000`;
+};
+
+const detectInsufficientNumberOfPagesBeingRequested = (
+  logger: Logger,
+  response: CrossrefMultipleWorksResponse,
+  doi: string,
+) => {
+  if (response.message['total-results'] > 1000) {
+    logger('error', 'fetchWorksThatPointToIndividualWorks: total number of related works is greater than the single page 1 we are fetching', { doi, url: constructUrl(doi) });
+  }
 };
 
 export const fetchWorksThatPointToIndividualWorks = (
@@ -35,12 +47,7 @@ export const fetchWorksThatPointToIndividualWorks = (
     TE.chainEitherKW((response) => pipe(
       response,
       decodeAndLogFailures(logger, crossrefMultipleWorksResponseCodec, { doi, url: constructUrl(doi) }),
-      E.tap((decodedResponse) => {
-        if (decodedResponse.message['total-results'] > 1000) {
-          logger('error', 'fetchWorksThatPointToIndividualWorks: total number of related works is greater than the single page 1 we are fetching', { doi, url: constructUrl(doi) });
-        }
-        return E.right(undefined);
-      }),
+      E.tap((decodedResponse) => E.right(detectInsufficientNumberOfPagesBeingRequested(logger, decodedResponse, doi))),
       E.mapLeft(() => DE.unavailable),
     )),
   )),
