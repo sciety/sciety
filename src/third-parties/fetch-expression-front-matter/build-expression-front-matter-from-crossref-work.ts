@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, unused-imports/no-unused-imports-ts
+import { DOMParser } from '@xmldom/xmldom';
 import { load } from 'cheerio';
 import { XMLParser } from 'fast-xml-parser';
 import * as E from 'fp-ts/Either';
