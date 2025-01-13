@@ -200,9 +200,10 @@ replace-staging-database-with-snapshot-from-prod: download-exploratory-test-from
 
 FLUX_PROD_CLUSTER_CONTROL_PLANE_ADDRESS := https://0108D0073AFB87B6669E378F0A9CFB76.gr7.us-east-1.eks.amazonaws.com
 verify-flux-prod-cluster:
-	kubectl cluster-info | grep $(FLUX_PROD_CLUSTER_CONTROL_PLANE_ADDRESS)
+	kubectl cluster-info | grep $(FLUX_PROD_CLUSTER_CONTROL_PLANE_ADDRESS) > /dev/null
 
-replace-demo-database-with-snapshot-from-prod: download-exploratory-test-from-prod
+replace-demo-database-with-snapshot-from-prod: verify-flux-prod-cluster download-exploratory-test-from-prod
+	kubectl get pods
 
 crossref-response:
 	curl -v \
