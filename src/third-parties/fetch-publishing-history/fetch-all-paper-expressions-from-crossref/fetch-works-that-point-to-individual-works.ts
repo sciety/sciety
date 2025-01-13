@@ -35,6 +35,12 @@ export const fetchWorksThatPointToIndividualWorks = (
     TE.chainEitherKW((response) => pipe(
       response,
       decodeAndLogFailures(logger, crossrefMultipleWorksResponseCodec, { doi, url: constructUrl(doi) }),
+      E.tap((decodedResponse) => {
+        if (decodedResponse.message['total-results'] > 1000) {
+          logger('error', 'fetchWorksThatPointToIndividualWorks: total number of related works is greater than the single page 1 we are fetching', { doi, url: constructUrl(doi) });
+        }
+        return E.right(undefined);
+      }),
       E.mapLeft(() => DE.unavailable),
     )),
   )),
