@@ -205,9 +205,9 @@ verify-flux-prod-cluster:
 replace-demo-database-with-snapshot-from-prod: verify-flux-prod-cluster download-exploratory-test-from-prod
 	kubectl run psql \
 	--image=postgres:12.3 \
-	--env=PGHOST=$$(kubectl get configmap sciety--demo--public-env-vars -o json | jq -r '.data.PGHOST') \
-	--env=PGDATABASE=$$(kubectl get configmap sciety--demo--public-env-vars -o json | jq -r '.data.PGDATABASE') \
-	--env=PGUSER=$$(kubectl get configmap sciety--demo--public-env-vars -o json | jq -r '.data.PGUSER') \
+	--env=PGHOST=$$(kubectl --namespace sciety get configmap sciety--demo--public-env-vars -o json | jq -r '.data.PGHOST') \
+	--env=PGDATABASE=$$(kubectl --namespace sciety get configmap sciety--demo--public-env-vars -o json | jq -r '.data.PGDATABASE') \
+	--env=PGUSER=$$(kubectl --namespace sciety get configmap sciety--demo--public-env-vars -o json | jq -r '.data.PGUSER') \
 	--env=PGPASSWORD=$$(kubectl get secret sciety--demo--secret-env-vars -o json | jq -r '.data.PGPASSWORD'| base64 -d | sed -e 's/\$$\$$/$$$$$$$$/g') \
 	-- sleep 600
 	kubectl wait --for condition=Ready pod psql
