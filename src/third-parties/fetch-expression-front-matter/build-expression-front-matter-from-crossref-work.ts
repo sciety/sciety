@@ -6,7 +6,6 @@ import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { detectUnrecoverableError } from './detect-unrecoverable-error';
 import { getElement } from './get-element';
 import { Logger } from '../../logger';
 import { ArticleAuthors } from '../../types/article-authors';
@@ -195,12 +194,6 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
   let authors: ArticleAuthors;
   try {
     const parsedXml = legacyParser.parseFromString(crossrefWorkXml, 'text/xml');
-
-    const unrecoverableError = detectUnrecoverableError(parsedXml);
-    if (O.isSome(unrecoverableError)) {
-      logger('error', 'build-expression-front-matter-from-crossref-work: Unrecoverable error', { expressionDoi, crossrefWorkXml, reason: unrecoverableError.value });
-      return E.left(DE.unavailable);
-    }
 
     authors = getAuthors(parsedXml);
     if (O.isNone(authors)) {
