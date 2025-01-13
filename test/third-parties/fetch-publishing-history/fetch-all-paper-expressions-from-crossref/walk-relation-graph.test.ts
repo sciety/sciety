@@ -12,13 +12,13 @@ import * as DE from '../../../../src/types/data-error';
 import { dummyLogger } from '../../../dummy-logger';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 
-const mockQueryCrossrefService = (createWork: () => CrossrefWork) => (url: string) => {
+const mockQueryCrossrefService = (createWork: (url: string) => CrossrefWork) => (url: string) => {
   if (url.includes('filter')) {
     const stubbedResponseForFetchWorksThatPointToIndividualWork = { message: { items: [], 'total-results': 0 } };
     return TE.right(stubbedResponseForFetchWorksThatPointToIndividualWork);
   }
   const stubbedResponseForFetchIndividualWork = {
-    message: crossrefWorkCodec.encode(createWork()),
+    message: crossrefWorkCodec.encode(createWork(url)),
   };
   return TE.right(stubbedResponseForFetchIndividualWork);
 };
@@ -74,7 +74,12 @@ describe('walk-relation-graph', () => {
       );
 
       beforeEach(async () => {
-        queryCrossrefService = jest.fn(mockQueryCrossrefService(() => relatedWork));
+        queryCrossrefService = jest.fn(mockQueryCrossrefService((url) => {
+          if (url.includes(relatedWork.DOI)) {
+            return relatedWork;
+          }
+          throw new Error(`Asking crossref for an individual work of ${relatedWork.DOI}`);
+        }));
         result = await executeWalkRelationGraph(state);
       });
 
