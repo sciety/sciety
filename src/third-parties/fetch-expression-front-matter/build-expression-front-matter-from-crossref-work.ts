@@ -109,14 +109,13 @@ type DoiRecord = t.TypeOf<typeof frontMatterCrossrefXmlResponseTitleCodec>['doi_
 
 const getTitle = (
   record: DoiRecord,
-): O.Option<SanitisedHtmlFragment> => pipe(
+): SanitisedHtmlFragment => pipe(
   record,
-  O.some,
-  O.map((result) => result.crossref),
-  O.map(extractTitle),
-  O.map((title) => title.trim()),
-  O.map(toHtmlFragment),
-  O.map(sanitise),
+  (result) => result.crossref,
+  extractTitle,
+  (title) => title.trim(),
+  toHtmlFragment,
+  sanitise,
 );
 
 const personAuthor = (person: Element) => {
@@ -193,6 +192,8 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
     return E.left(DE.unavailable);
   }
 
+  const title = getTitle(crossrefWork.right.doi_records.doi_record);
+
   const legacyParser = new DOMParser({
     errorHandler: (_, msg) => {
       throw msg;
@@ -200,7 +201,6 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
   });
   let abstract: O.Option<SanitisedHtmlFragment>;
   let authors: ArticleAuthors;
-  let title: O.Option<SanitisedHtmlFragment>;
   try {
     const parsedXml = legacyParser.parseFromString(crossrefWorkXml, 'text/xml');
 
@@ -219,18 +219,13 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
     if (O.isNone(abstract)) {
       logger('warn', 'build-expression-front-matter-from-crossref-work: Unable to find abstract', { expressionDoi, crossrefWorkXml });
     }
-
-    title = getTitle(crossrefWork.right.doi_records.doi_record);
-    if (O.isNone(title)) {
-      return E.left(DE.unavailable);
-    }
   } catch (error: unknown) {
     logger('error', 'build-expression-front-matter-from-crossref-work: Unable to parse document', { expressionDoi, crossrefWorkXml, error });
     return E.left(DE.unavailable);
   }
   return E.right({
     abstract,
-    title: title.value,
+    title,
     authors,
   });
 };
