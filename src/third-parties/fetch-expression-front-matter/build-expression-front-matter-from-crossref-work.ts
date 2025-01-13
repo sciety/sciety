@@ -178,7 +178,8 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
     logger('error', 'crossref/fetch-expression-front-matter: Empty document', { doi: expressionDoi, crossrefWorkXml });
     return E.left(DE.unavailable);
   }
-  const crossrefWork = pipe(
+
+  const doiRecord = pipe(
     crossrefWorkXml,
     parseXmlDocument,
     E.chainW(decodeAndLogFailures(
@@ -187,18 +188,20 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
       { expressionDoi, crossrefWorkXml },
     )),
   );
-  if (E.isLeft(crossrefWork)) {
+
+  if (E.isLeft(doiRecord)) {
     logger('error', 'crossref/fetch-expression-front-matter: Failed to parse XML', { doi: expressionDoi, crossrefWorkXml });
     return E.left(DE.unavailable);
   }
 
-  const title = getTitle(crossrefWork.right.doi_records.doi_record);
+  const title = getTitle(doiRecord.right.doi_records.doi_record);
 
   const legacyParser = new DOMParser({
     errorHandler: (_, msg) => {
       throw msg;
     },
   });
+
   let abstract: O.Option<SanitisedHtmlFragment>;
   let authors: ArticleAuthors;
   try {
@@ -223,6 +226,7 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
     logger('error', 'build-expression-front-matter-from-crossref-work: Unable to parse document', { expressionDoi, crossrefWorkXml, error });
     return E.left(DE.unavailable);
   }
+
   return E.right({
     abstract,
     title,
