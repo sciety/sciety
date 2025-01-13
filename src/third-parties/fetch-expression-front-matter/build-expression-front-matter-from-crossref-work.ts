@@ -110,8 +110,7 @@ const extractTitle = (journalOrPostedContent: DoiRecord['crossref']) => {
 const getTitle = (
   record: DoiRecord,
 ): SanitisedHtmlFragment => pipe(
-  record,
-  (result) => result.crossref,
+  record.crossref,
   extractTitle,
   (title) => title.trim(),
   toHtmlFragment,
