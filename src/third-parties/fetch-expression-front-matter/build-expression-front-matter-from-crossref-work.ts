@@ -185,7 +185,11 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
   }
 
   const title = getTitle(commonFrontmatter.right);
+
   const abstract = getAbstract(commonFrontmatter.right);
+  if (O.isNone(abstract)) {
+    logger('warn', 'build-expression-front-matter-from-crossref-work: Unable to find abstract', { expressionDoi, crossrefWorkXml });
+  }
 
   const legacyParser = new DOMParser({
     errorHandler: (_, msg) => {
