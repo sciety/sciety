@@ -411,5 +411,15 @@ describe('build-expression-front-matter-from-crossref-work', () => {
         });
       });
     });
+
+    describe('given an empty input', () => {
+      const input = '';
+
+      it('returns on the left', () => {
+        const result = buildExpressionFrontMatterFromCrossrefWork(input, dummyLogger, arbitraryExpressionDoi());
+
+        expect(result).toStrictEqual(E.left(expect.anything()));
+      });
+    });
   });
 });
