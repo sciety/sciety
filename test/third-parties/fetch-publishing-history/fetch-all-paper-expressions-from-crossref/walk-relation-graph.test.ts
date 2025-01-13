@@ -43,47 +43,45 @@ describe('walk-relation-graph', () => {
       result = await executeWalkRelationGraph(state);
     });
 
-    it('returns the only collected work on the right', () => {
+    it('returns the only discovered work on the right', () => {
       expect(result).toStrictEqual(E.right([crossrefWork]));
     });
   });
 
-  describe('when related works are identified', () => {
-    const relatedWork: CrossrefWork = {
-      ...arbitraryPostedContentCrossrefWork('related-work'),
+  describe('when one related work is identified', () => {
+    const secondWorkToBeDiscovered: CrossrefWork = {
+      ...arbitraryPostedContentCrossrefWork('second-work-to-be-discovered'),
       relation: {},
     };
     const firstWorkToBeDiscovered: CrossrefWork = {
-      ...arbitraryPostedContentCrossrefWork('work-to-be-discovered'),
+      ...arbitraryPostedContentCrossrefWork('first-work-to-be-discovered'),
       relation: {
         'has-version': [
           {
             'id-type': 'doi',
-            id: relatedWork.DOI,
+            id: secondWorkToBeDiscovered.DOI,
           },
         ],
       },
     };
 
-    describe('if one more related CrossrefWork is retrieved by looking up the queue', () => {
-      const state: State = initialState(firstWorkToBeDiscovered.DOI);
+    const state: State = initialState(firstWorkToBeDiscovered.DOI);
 
-      beforeEach(async () => {
-        queryCrossrefService = jest.fn(mockQueryCrossrefService((url) => {
-          if (url.includes(relatedWork.DOI)) {
-            return relatedWork;
-          }
-          if (url.includes(firstWorkToBeDiscovered.DOI)) {
-            return firstWorkToBeDiscovered;
-          }
-          throw new Error(`Asking crossref for an individual work at ${url}`);
-        }));
-        result = await executeWalkRelationGraph(state);
-      });
+    beforeEach(async () => {
+      queryCrossrefService = jest.fn(mockQueryCrossrefService((url) => {
+        if (url.includes(firstWorkToBeDiscovered.DOI)) {
+          return firstWorkToBeDiscovered;
+        }
+        if (url.includes(secondWorkToBeDiscovered.DOI)) {
+          return secondWorkToBeDiscovered;
+        }
+        throw new Error(`Asking crossref for an individual work at ${url}`);
+      }));
+      result = await executeWalkRelationGraph(state);
+    });
 
-      it('returns all collected works on the right', () => {
-        expect(result).toStrictEqual(E.right([firstWorkToBeDiscovered, relatedWork]));
-      });
+    it('returns all discovered works on the right', () => {
+      expect(result).toStrictEqual(E.right([firstWorkToBeDiscovered, secondWorkToBeDiscovered]));
     });
   });
 
