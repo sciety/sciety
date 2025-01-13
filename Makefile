@@ -211,7 +211,10 @@ replace-demo-database-with-snapshot-from-prod: verify-flux-prod-cluster download
 	--env=PGPASSWORD=$$(kubectl --namespace sciety get secret sciety--demo--secret-env-vars -o json | jq -r '.data.PGPASSWORD'| base64 -d | sed -e 's/\$$\$$/$$$$$$$$/g') \
 	-- sleep 600
 	kubectl --namespace sciety wait --for condition=Ready pod psql
-	kubectl --namespace sciety get pods
+	kubectl --namespace sciety exec psql -- psql -c "DELETE FROM events"
+	kubectl --namespace sciety exec psql -- mkdir /data
+	kubectl --namespace sciety cp ./data/exploratory-test-from-prod.csv psql:/data/exploratory-test-from-prod.csv
+	kubectl --namespace sciety exec psql -- psql -c "\copy events FROM '/data/exploratory-test-from-prod.csv' WITH CSV HEADER"
 	kubectl --namespace sciety delete --wait=false pod psql
 
 crossref-response:
