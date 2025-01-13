@@ -1,11 +1,10 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
 import { arbitraryPostedContentCrossrefWork } from './crossref-work.helper';
 import { CrossrefWork, crossrefWorkCodec } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/crossref-work';
 import { QueryCrossrefService } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/query-crossref-service';
 import {
-  collectWorksIntoStateAndEmptyQueue, enqueueInState, initialState, State,
+  initialState, State,
 } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/state';
 import { walkRelationGraph } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/walk-relation-graph';
 import * as DE from '../../../../src/types/data-error';
@@ -51,11 +50,11 @@ describe('walk-relation-graph', () => {
 
   describe('when related works are identified', () => {
     const relatedWork: CrossrefWork = {
-      ...arbitraryPostedContentCrossrefWork(),
+      ...arbitraryPostedContentCrossrefWork('related-work'),
       relation: {},
     };
     const firstWorkToBeDiscovered: CrossrefWork = {
-      ...arbitraryPostedContentCrossrefWork(),
+      ...arbitraryPostedContentCrossrefWork('work-to-be-discovered'),
       relation: {
         'has-version': [
           {
@@ -67,18 +66,17 @@ describe('walk-relation-graph', () => {
     };
 
     describe('if one more related CrossrefWork is retrieved by looking up the queue', () => {
-      const state: State = pipe(
-        [firstWorkToBeDiscovered],
-        collectWorksIntoStateAndEmptyQueue(initialState(firstWorkToBeDiscovered.DOI)),
-        (s) => enqueueInState(s)([relatedWork.DOI]),
-      );
+      const state: State = initialState(firstWorkToBeDiscovered.DOI);
 
       beforeEach(async () => {
         queryCrossrefService = jest.fn(mockQueryCrossrefService((url) => {
           if (url.includes(relatedWork.DOI)) {
             return relatedWork;
           }
-          throw new Error(`Asking crossref for an individual work of ${relatedWork.DOI}`);
+          if (url.includes(firstWorkToBeDiscovered.DOI)) {
+            return firstWorkToBeDiscovered;
+          }
+          throw new Error(`Asking crossref for an individual work at ${url}`);
         }));
         result = await executeWalkRelationGraph(state);
       });
