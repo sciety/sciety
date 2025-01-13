@@ -203,7 +203,16 @@ verify-flux-prod-cluster:
 	kubectl cluster-info | grep $(FLUX_PROD_CLUSTER_CONTROL_PLANE_ADDRESS) > /dev/null
 
 replace-demo-database-with-snapshot-from-prod: verify-flux-prod-cluster download-exploratory-test-from-prod
+	kubectl run psql \
+	--image=postgres:12.3 \
+	--env=PGHOST=$$(kubectl get configmap sciety--demo--public-env-vars -o json | jq -r '.data.PGHOST') \
+	--env=PGDATABASE=$$(kubectl get configmap sciety--demo--public-env-vars -o json | jq -r '.data.PGDATABASE') \
+	--env=PGUSER=$$(kubectl get configmap sciety--demo--public-env-vars -o json | jq -r '.data.PGUSER') \
+	--env=PGPASSWORD=$$(kubectl get secret sciety--demo--secret-env-vars -o json | jq -r '.data.PGPASSWORD'| base64 -d | sed -e 's/\$$\$$/$$$$$$$$/g') \
+	-- sleep 600
+	kubectl wait --for condition=Ready pod psql
 	kubectl get pods
+	kubectl delete --wait=false pod psql
 
 crossref-response:
 	curl -v \
