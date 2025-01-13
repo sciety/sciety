@@ -17,11 +17,11 @@ import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise, SanitisedHtmlFragment } from '../../types/sanitised-html-fragment';
 import { decodeAndLogFailures } from '../decode-and-log-failures';
 
-const extractAbstract = (journalOrPostedContent: JournalOrPostedContent) => {
+const extractCommonFrontmatter = (journalOrPostedContent: JournalOrPostedContent) => {
   if ('journal' in journalOrPostedContent) {
-    return journalOrPostedContent.journal.journal_article.abstract;
+    return journalOrPostedContent.journal.journal_article;
   }
-  return journalOrPostedContent.posted_content.abstract;
+  return journalOrPostedContent.posted_content;
 };
 
 const removeSuperfluousTitles = (html: string) => {
@@ -55,10 +55,9 @@ const stripEmptySections = (html: string) => pipe(
 );
 
 const getAbstract = (
-  journalOrPostedContent: JournalOrPostedContent,
+  commonFrontmatter: CommonFrontMatter,
 ): O.Option<SanitisedHtmlFragment> => pipe(
-  journalOrPostedContent,
-  extractAbstract,
+  commonFrontmatter.abstract,
   O.map(transformXmlToHtml),
   O.map(removeSuperfluousTitles),
   O.map(stripEmptySections),
@@ -67,23 +66,20 @@ const getAbstract = (
   O.map(sanitise),
 );
 
+const commonFrontmatterCodec = t.strict({
+  titles: t.readonlyArray(t.strict({
+    title: t.string,
+  })),
+  abstract: tt.optionFromNullable(t.string),
+});
+
 const postedContentCodec = t.strict({
-  posted_content: t.strict({
-    titles: t.readonlyArray(t.strict({
-      title: t.string,
-    })),
-    abstract: tt.optionFromNullable(t.string),
-  }),
+  posted_content: commonFrontmatterCodec,
 });
 
 const journalCodec = t.strict({
   journal: t.strict({
-    journal_article: t.strict({
-      titles: t.readonlyArray(t.strict({
-        title: t.string,
-      })),
-      abstract: tt.optionFromNullable(t.string),
-    }),
+    journal_article: commonFrontmatterCodec,
   }),
 });
 
@@ -99,18 +95,12 @@ const frontMatterCrossrefXmlResponseCodec = t.strict({
 
 type JournalOrPostedContent = t.TypeOf<typeof frontMatterCrossrefXmlResponseCodec>['doi_records']['doi_record']['crossref'];
 
-const extractTitle = (journalOrPostedContent: JournalOrPostedContent) => {
-  if ('journal' in journalOrPostedContent) {
-    return journalOrPostedContent.journal.journal_article.titles[0].title;
-  }
-  return journalOrPostedContent.posted_content.titles[0].title;
-};
+type CommonFrontMatter = t.TypeOf<typeof commonFrontmatterCodec>;
 
 const getTitle = (
-  journalOrPostedContent: JournalOrPostedContent,
+  commonFrontmatter: CommonFrontMatter,
 ): SanitisedHtmlFragment => pipe(
-  journalOrPostedContent,
-  extractTitle,
+  commonFrontmatter.titles[0].title,
   (title) => title.trim(),
   toHtmlFragment,
   sanitise,
@@ -177,7 +167,7 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
     return E.left(DE.unavailable);
   }
 
-  const doiRecord = pipe(
+  const commonFrontmatter = pipe(
     crossrefWorkXml,
     parseXmlDocument,
     E.chainW(decodeAndLogFailures(
@@ -185,15 +175,17 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
       frontMatterCrossrefXmlResponseCodec,
       { expressionDoi, crossrefWorkXml },
     )),
+    E.map((decodedWork) => decodedWork.doi_records.doi_record.crossref),
+    E.map(extractCommonFrontmatter),
   );
 
-  if (E.isLeft(doiRecord)) {
+  if (E.isLeft(commonFrontmatter)) {
     logger('error', 'crossref/fetch-expression-front-matter: Failed to parse XML', { doi: expressionDoi, crossrefWorkXml });
     return E.left(DE.unavailable);
   }
 
-  const title = getTitle(doiRecord.right.doi_records.doi_record.crossref);
-  const abstract = getAbstract(doiRecord.right.doi_records.doi_record.crossref);
+  const title = getTitle(commonFrontmatter.right);
+  const abstract = getAbstract(commonFrontmatter.right);
 
   const legacyParser = new DOMParser({
     errorHandler: (_, msg) => {
