@@ -162,11 +162,6 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
   logger: Logger,
   expressionDoi: ExpressionDoi,
 ): E.Either<DE.DataError, ExpressionFrontMatter> => {
-  if (crossrefWorkXml.length === 0) {
-    logger('error', 'crossref/fetch-expression-front-matter: Empty document', { doi: expressionDoi, crossrefWorkXml });
-    return E.left(DE.unavailable);
-  }
-
   const commonFrontmatter = pipe(
     crossrefWorkXml,
     parseXmlDocument,
