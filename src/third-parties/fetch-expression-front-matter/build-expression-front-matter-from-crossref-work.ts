@@ -36,24 +36,28 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
   crossrefWorkXml: string,
   logger: Logger,
   expressionDoi: ExpressionDoi,
-): E.Either<DE.DataError, ExpressionFrontMatter> => pipe(
-  crossrefWorkXml,
-  parseXmlDocument,
-  E.chainW(decodeAndLogFailures(
-    logger,
-    frontMatterCrossrefXmlResponseCodec,
-    { expressionDoi, crossrefWorkXml },
-  )),
-  E.map((decodedWork) => decodedWork.doi_records.doi_record.crossref),
-  E.map(extractCommonFrontmatter),
-  E.map((commonFrontmatter) => ({
-    title: getTitle(commonFrontmatter),
-    abstract: getAbstract(commonFrontmatter),
-    authors: getAuthors(commonFrontmatter),
-  })),
-  E.mapLeft(() => {
-    logger('error', 'crossref/fetch-expression-front-matter: Failed to parse XML', { doi: expressionDoi, crossrefWorkXml });
-    return DE.unavailable;
-  }),
-  E.tap(warnAboutMissingOptionalFrontmatterParts(logger, { expressionDoi, crossrefWorkXml })),
-);
+): E.Either<DE.DataError, ExpressionFrontMatter> => {
+  const contextForLogs = { expressionDoi, crossrefWorkXml };
+
+  return pipe(
+    crossrefWorkXml,
+    parseXmlDocument,
+    E.chainW(decodeAndLogFailures(
+      logger,
+      frontMatterCrossrefXmlResponseCodec,
+      contextForLogs,
+    )),
+    E.map((decodedWork) => decodedWork.doi_records.doi_record.crossref),
+    E.map(extractCommonFrontmatter),
+    E.map((commonFrontmatter) => ({
+      title: getTitle(commonFrontmatter),
+      abstract: getAbstract(commonFrontmatter),
+      authors: getAuthors(commonFrontmatter),
+    })),
+    E.mapLeft(() => {
+      logger('error', 'crossref/fetch-expression-front-matter: Failed to parse XML', contextForLogs);
+      return DE.unavailable;
+    }),
+    E.tap(warnAboutMissingOptionalFrontmatterParts(logger, contextForLogs)),
+  );
+};
