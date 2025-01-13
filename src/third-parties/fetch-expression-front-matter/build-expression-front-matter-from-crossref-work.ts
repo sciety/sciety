@@ -1,12 +1,11 @@
-import { DOMParser } from '@xmldom/xmldom';
 import { load } from 'cheerio';
 import { XMLParser } from 'fast-xml-parser';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { getElement } from './get-element';
 import { Logger } from '../../logger';
 import { ArticleAuthors } from '../../types/article-authors';
 import * as DE from '../../types/data-error';
@@ -65,11 +64,29 @@ const getAbstract = (
   O.map(sanitise),
 );
 
+const personNameCodec = t.strict({
+  given_name: tt.optionFromNullable(t.string),
+  surname: tt.optionFromNullable(t.string),
+  '@_contributor_role': t.string,
+});
+
+const organizationCodec = t.strict({
+  '#text': t.string,
+  '@_contributor_role': t.string,
+});
+
+const orgOrPersonCodec = t.union([organizationCodec, personNameCodec]);
+
 const commonFrontmatterCodec = t.strict({
   titles: t.readonlyArray(t.strict({
     title: t.string,
   })),
   abstract: tt.optionFromNullable(t.string),
+  contributors: tt.optionFromNullable(
+    t.strict({
+      _org_or_person: t.readonlyArray(orgOrPersonCodec),
+    }),
+  ),
 });
 
 const postedContentCodec = t.strict({
@@ -105,50 +122,33 @@ const getTitle = (
   sanitise,
 );
 
-const personAuthor = (person: Element) => {
-  const givenName = person.getElementsByTagName('given_name')[0]?.textContent;
-  const surname = person.getElementsByTagName('surname')[0]?.textContent;
-
-  if (!surname) {
-    return O.none;
-  }
-
-  if (!givenName) {
-    return O.some(surname);
-  }
-
-  return O.some(`${givenName} ${surname}`);
-};
-
-const organisationAuthor = (organisation: Element) => O.fromNullable(organisation.textContent);
-
-const getAuthors = (doc: Document): ArticleAuthors => {
-  const contributorsElement = getElement(doc, 'contributors');
-
-  if (!contributorsElement || typeof contributorsElement?.textContent !== 'string') {
-    return O.none;
-  }
-
-  const authors = Array.from(contributorsElement.childNodes)
-    .filter((node): node is Element => node.nodeType === node.ELEMENT_NODE)
-    .filter((contributor) => contributor.getAttribute('contributor_role') === 'author')
-    .map((contributor) => {
-      switch (contributor.tagName) {
-        case 'person_name':
-          return personAuthor(contributor);
-        case 'organization':
-          return organisationAuthor(contributor);
-      }
-
+const constructAuthorName = (author: t.TypeOf<typeof orgOrPersonCodec>) => {
+  if ('given_name' in author) {
+    if (O.isNone(author.surname)) {
       return O.none;
-    });
-
-  return pipe(authors, O.sequenceArray);
+    }
+    const given = pipe(
+      author.given_name,
+      O.match(() => '', (value) => `${value} `),
+    );
+    return O.some(`${given}${author.surname.value}`);
+  }
+  return O.some(author['#text']);
 };
+
+const getAuthors = (commonFrontmatter: CommonFrontMatter): ArticleAuthors => pipe(
+  commonFrontmatter.contributors,
+  O.map((contributors) => contributors._org_or_person),
+  O.map(RA.filter((person) => person['@_contributor_role'] === 'author')),
+  O.chain(O.traverseArray(constructAuthorName)),
+  O.map(RA.map((name) => name.replace(/<[^>]*>/g, ''))),
+);
 
 const parser = new XMLParser({
-  stopNodes: ['*.title', '*.abstract'],
-  isArray: (name) => name === 'titles',
+  stopNodes: ['*.title', '*.abstract', '*.given_name', '*.surname'],
+  transformTagName: (tagName) => ((['organization', 'person_name']).includes(tagName) ? '_org_or_person' : tagName),
+  ignoreAttributes: (aName) => aName !== 'contributor_role',
+  isArray: (tagNameOfItem) => ['_org_or_person', 'titles'].includes(tagNameOfItem),
 });
 
 const parseXmlDocument = (s: string) => E.tryCatch(
@@ -185,23 +185,9 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
     logger('warn', 'build-expression-front-matter-from-crossref-work: Unable to find abstract', { expressionDoi, crossrefWorkXml });
   }
 
-  const legacyParser = new DOMParser({
-    errorHandler: (_, msg) => {
-      throw msg;
-    },
-  });
-
-  let authors: ArticleAuthors;
-  try {
-    const parsedXml = legacyParser.parseFromString(crossrefWorkXml, 'text/xml');
-
-    authors = getAuthors(parsedXml);
-    if (O.isNone(authors)) {
-      logger('warn', 'build-expression-front-matter-from-crossref-work: Unable to find authors', { expressionDoi, crossrefWorkXml });
-    }
-  } catch (error: unknown) {
-    logger('error', 'build-expression-front-matter-from-crossref-work: Unable to parse document', { expressionDoi, crossrefWorkXml, error });
-    return E.left(DE.unavailable);
+  const authors = getAuthors(commonFrontmatter.right);
+  if (O.isNone(authors)) {
+    logger('warn', 'build-expression-front-matter-from-crossref-work: Unable to find authors', { expressionDoi, crossrefWorkXml });
   }
 
   return E.right({
