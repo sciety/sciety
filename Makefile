@@ -13,7 +13,7 @@ export IMAGE
 export IMAGE_TAG
 export AWS_DEFAULT_REGION
 
-.PHONY: backstop* build clean* dev feature-test find-* get* git-lfs graphs ingest* install lint* prod replay-events-for-elife-subject-area-policy stop test* update* watch* replace-staging-database-with-snapshot-from-prod replace-demo-database-with-snapshot-from-prod exploratory-test-from-*
+.PHONY: backstop* build clean* dev feature-test find-* get* git-lfs graphs ingest* install lint* prod replay-events-for-elife-subject-area-policy stop test* update* watch* replace-staging-database-with-snapshot-from-prod replace-demo-database-with-snapshot-from-prod exploratory-test-from-* verify-flux-prod-cluster
 
 dev: export TARGET = dev
 dev: export SCIETY_TEAM_API_BEARER_TOKEN = secret
@@ -197,6 +197,10 @@ replace-staging-database-with-snapshot-from-prod: download-exploratory-test-from
 	kubectl exec psql -- psql -c "\copy events FROM '/data/exploratory-test-from-prod.csv' WITH CSV HEADER"
 	kubectl delete --wait=false pod psql
 	kubectl rollout restart deployment sciety--staging--frontend
+
+FLUX_PROD_CLUSTER_CONTROL_PLANE_ADDRESS := https://0108D0073AFB87B6669E378F0A9CFB76.gr7.us-east-1.eks.amazonaws.com
+verify-flux-prod-cluster:
+	kubectl cluster-info | grep $(FLUX_PROD_CLUSTER_CONTROL_PLANE_ADDRESS)
 
 replace-demo-database-with-snapshot-from-prod: download-exploratory-test-from-prod
 
