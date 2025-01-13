@@ -15,7 +15,7 @@ import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 
 const mockQueryCrossrefService = (createWork: () => CrossrefWork) => (url: string) => {
   if (url.includes('filter')) {
-    const stubbedResponseForFetchWorksThatPointToIndividualWork = { message: { items: [] } };
+    const stubbedResponseForFetchWorksThatPointToIndividualWork = { message: { items: [], 'total-results': 0 } };
     return TE.right(stubbedResponseForFetchWorksThatPointToIndividualWork);
   }
   const stubbedResponseForFetchIndividualWork = {

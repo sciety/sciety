@@ -12,6 +12,7 @@ import { decodeAndLogFailures } from '../../decode-and-log-failures';
 const crossrefMultipleWorksResponseCodec = t.strict({
   message: t.strict({
     items: t.readonlyArray(crossrefWorkCodec),
+    'total-results': t.number,
   }),
 }, 'crossrefMultipleWorksResponseCodec');
 
