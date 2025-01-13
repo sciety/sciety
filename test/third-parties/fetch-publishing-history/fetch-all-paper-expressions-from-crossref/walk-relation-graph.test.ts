@@ -51,53 +51,34 @@ describe('walk-relation-graph', () => {
   });
 
   describe('if the queue is not empty', () => {
-    describe('if there are currently more than 20 collected works', () => {
-      const crossrefWorks = Array.from({ length: 21 }, arbitraryPostedContentCrossrefWork);
-      const state: State = pipe(
-        crossrefWorks,
-        collectWorksIntoStateAndEmptyQueue(initialState(arbitraryExpressionDoi())),
-      );
+    describe('when related works are identified', () => {
+      const relatedWork = arbitraryPostedContentCrossrefWork();
+      const previouslyKnownWork: CrossrefWork = {
+        ...arbitraryPostedContentCrossrefWork(),
+        relation: {
+          'has-version': [
+            {
+              'id-type': 'doi',
+              id: relatedWork.DOI,
+            },
+          ],
+        },
+      };
 
-      beforeEach(async () => {
-        queryCrossrefService = shouldNotBeCalled;
-        result = await executeWalkRelationGraph(state);
-      });
+      describe('if one more related CrossrefWork is retrieved by looking up the queue', () => {
+        const state: State = pipe(
+          [previouslyKnownWork],
+          collectWorksIntoStateAndEmptyQueue(initialState(arbitraryExpressionDoi())),
+          (s) => enqueueInState(s)([relatedWork.DOI]),
+        );
 
-      it('returns the current collected works on the right', () => {
-        expect(result).toStrictEqual(E.right(crossrefWorks));
-      });
-    });
+        beforeEach(async () => {
+          queryCrossrefService = jest.fn(mockQueryCrossrefService(() => relatedWork));
+          result = await executeWalkRelationGraph(state);
+        });
 
-    describe('if there are currently 20 or fewer collected works', () => {
-      describe('when there is one currently collected work', () => {
-        const relatedWork = arbitraryPostedContentCrossrefWork();
-        const previouslyKnownWork: CrossrefWork = {
-          ...arbitraryPostedContentCrossrefWork(),
-          relation: {
-            'has-version': [
-              {
-                'id-type': 'doi',
-                id: relatedWork.DOI,
-              },
-            ],
-          },
-        };
-
-        describe('if one more related CrossrefWork is retrieved by looking up the queue', () => {
-          const state: State = pipe(
-            [previouslyKnownWork],
-            collectWorksIntoStateAndEmptyQueue(initialState(arbitraryExpressionDoi())),
-            (s) => enqueueInState(s)([relatedWork.DOI]),
-          );
-
-          beforeEach(async () => {
-            queryCrossrefService = jest.fn(mockQueryCrossrefService(() => relatedWork));
-            result = await executeWalkRelationGraph(state);
-          });
-
-          it('returns two collected works on the right', () => {
-            expect(result).toStrictEqual(E.right([previouslyKnownWork, relatedWork]));
-          });
+        it('returns all collected works on the right', () => {
+          expect(result).toStrictEqual(E.right([previouslyKnownWork, relatedWork]));
         });
       });
     });
