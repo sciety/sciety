@@ -50,8 +50,11 @@ describe('walk-relation-graph', () => {
   });
 
   describe('when related works are identified', () => {
-    const relatedWork = arbitraryPostedContentCrossrefWork();
-    const previouslyKnownWork: CrossrefWork = {
+    const relatedWork: CrossrefWork = {
+      ...arbitraryPostedContentCrossrefWork(),
+      relation: {},
+    };
+    const firstWorkToBeDiscovered: CrossrefWork = {
       ...arbitraryPostedContentCrossrefWork(),
       relation: {
         'has-version': [
@@ -65,8 +68,8 @@ describe('walk-relation-graph', () => {
 
     describe('if one more related CrossrefWork is retrieved by looking up the queue', () => {
       const state: State = pipe(
-        [previouslyKnownWork],
-        collectWorksIntoStateAndEmptyQueue(initialState(arbitraryExpressionDoi())),
+        [firstWorkToBeDiscovered],
+        collectWorksIntoStateAndEmptyQueue(initialState(firstWorkToBeDiscovered.DOI)),
         (s) => enqueueInState(s)([relatedWork.DOI]),
       );
 
@@ -76,7 +79,7 @@ describe('walk-relation-graph', () => {
       });
 
       it('returns all collected works on the right', () => {
-        expect(result).toStrictEqual(E.right([previouslyKnownWork, relatedWork]));
+        expect(result).toStrictEqual(E.right([firstWorkToBeDiscovered, relatedWork]));
       });
     });
   });
