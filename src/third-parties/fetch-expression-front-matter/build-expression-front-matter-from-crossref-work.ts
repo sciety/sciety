@@ -88,7 +88,7 @@ const journalCodec = t.strict({
   }),
 });
 
-const frontMatterCrossrefXmlResponseTitleCodec = t.strict({
+const frontMatterCrossrefXmlResponseCodec = t.strict({
   doi_records: t.strict({
     doi_record: t.strict({
       crossref: t.union([
@@ -98,14 +98,14 @@ const frontMatterCrossrefXmlResponseTitleCodec = t.strict({
   }),
 }, 'frontMatterCrossrefXmlResponseTitleCodec');
 
-const extractTitle = (journalOrPostedContent: t.TypeOf<typeof frontMatterCrossrefXmlResponseTitleCodec>['doi_records']['doi_record']['crossref']) => {
+type DoiRecord = t.TypeOf<typeof frontMatterCrossrefXmlResponseCodec>['doi_records']['doi_record'];
+
+const extractTitle = (journalOrPostedContent: DoiRecord['crossref']) => {
   if ('journal' in journalOrPostedContent) {
     return journalOrPostedContent.journal.journal_article.titles[0].title;
   }
   return journalOrPostedContent.posted_content.titles[0].title;
 };
-
-type DoiRecord = t.TypeOf<typeof frontMatterCrossrefXmlResponseTitleCodec>['doi_records']['doi_record'];
 
 const getTitle = (
   record: DoiRecord,
@@ -184,7 +184,7 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
     parseXmlDocument,
     E.chainW(decodeAndLogFailures(
       logger,
-      frontMatterCrossrefXmlResponseTitleCodec,
+      frontMatterCrossrefXmlResponseCodec,
       { expressionDoi, crossrefWorkXml },
     )),
   );
