@@ -23,6 +23,8 @@ const fetchAllQueuedWorksAndAddToCollector = (
   TE.map(collectWorksIntoStateAndEmptyQueue(state)),
 );
 
+const maximumCollectedWorksSizeAllowed = 1000;
+
 export const walkRelationGraph = (
   queryCrossrefService: QueryCrossrefService,
   logger: Logger,
@@ -38,7 +40,7 @@ export const walkRelationGraph = (
     });
     return TE.left(DE.unavailable);
   }
-  if (state.collectedWorks.size > 20) {
+  if (state.collectedWorks.size > maximumCollectedWorksSizeAllowed) {
     logger('warn', 'Exiting recursion early due to danger of an infinite loop', {
       collectedWorksSize: state.collectedWorks.size,
       startingDoi: doi,
@@ -54,7 +56,7 @@ export const walkRelationGraph = (
       startingDoi: doi,
     });
   }
-  if (state.collectedWorks.size > 20) {
+  if (state.collectedWorks.size > maximumCollectedWorksSizeAllowed) {
     return TE.right(Array.from(state.collectedWorks.values()));
   }
 
