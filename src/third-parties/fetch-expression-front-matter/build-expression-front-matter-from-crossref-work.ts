@@ -105,15 +105,14 @@ const extractTitle = (journalOrPostedContent: t.TypeOf<typeof frontMatterCrossre
   return journalOrPostedContent.posted_content.titles[0].title;
 };
 
+type DoiRecord = t.TypeOf<typeof frontMatterCrossrefXmlResponseTitleCodec>['doi_records']['doi_record'];
+
 const getTitle = (
-  logger: Logger,
-  work: unknown,
-  payload: Record<string, unknown>,
+  record: DoiRecord,
 ): O.Option<SanitisedHtmlFragment> => pipe(
-  work,
-  decodeAndLogFailures(logger, frontMatterCrossrefXmlResponseTitleCodec, payload),
-  O.fromEither,
-  O.map((result) => result.doi_records.doi_record.crossref),
+  record,
+  O.some,
+  O.map((result) => result.crossref),
   O.map(extractTitle),
   O.map((title) => title.trim()),
   O.map(toHtmlFragment),
@@ -180,8 +179,16 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
     logger('error', 'crossref/fetch-expression-front-matter: Empty document', { doi: expressionDoi, crossrefWorkXml });
     return E.left(DE.unavailable);
   }
-  const parsedCrossrefWork = parseXmlDocument(crossrefWorkXml);
-  if (E.isLeft(parsedCrossrefWork)) {
+  const crossrefWork = pipe(
+    crossrefWorkXml,
+    parseXmlDocument,
+    E.chainW(decodeAndLogFailures(
+      logger,
+      frontMatterCrossrefXmlResponseTitleCodec,
+      { expressionDoi, crossrefWorkXml },
+    )),
+  );
+  if (E.isLeft(crossrefWork)) {
     logger('error', 'crossref/fetch-expression-front-matter: Failed to parse XML', { doi: expressionDoi, crossrefWorkXml });
     return E.left(DE.unavailable);
   }
@@ -213,8 +220,7 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
       logger('warn', 'build-expression-front-matter-from-crossref-work: Unable to find abstract', { expressionDoi, crossrefWorkXml });
     }
 
-    const payload = { expressionDoi, crossrefWorkXml };
-    title = getTitle(logger, parsedCrossrefWork.right, payload);
+    title = getTitle(crossrefWork.right.doi_records.doi_record);
     if (O.isNone(title)) {
       return E.left(DE.unavailable);
     }
