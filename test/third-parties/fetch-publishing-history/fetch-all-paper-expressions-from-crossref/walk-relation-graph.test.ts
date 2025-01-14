@@ -109,6 +109,10 @@ describe('walk-relation-graph', () => {
     });
   });
 
+  describe('if every work that is discovered has two relations to works not yet collected', () => {
+    it.todo('returns early');
+  });
+
   describe('if the queue keeps getting populated with a discovered relation that cannot be fetched', () => {
     const state = initialState(arbitraryExpressionDoi('initialqueueitem'));
     const arbitraryWorkWithArbitraryRelation: CrossrefWork = {
