@@ -33,8 +33,7 @@ describe('walk-relation-graph', () => {
     queryCrossrefService,
     dummyLogger,
     arbitraryExpressionDoi(),
-    recursionLimit,
-    collectedWorksSizeLimit,
+    { recursionLimit, collectedWorksSizeLimit },
   )(state)();
   let result: E.Either<DE.DataError | 'too-much-recursion', ReadonlyArray<CrossrefWork>>;
 

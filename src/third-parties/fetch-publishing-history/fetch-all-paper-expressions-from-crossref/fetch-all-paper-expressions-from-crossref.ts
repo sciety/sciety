@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import { QueryCrossrefService } from './query-crossref-service';
 import { initialState } from './state';
 import { toPaperExpression } from './to-paper-expression';
-import { walkRelationGraph } from './walk-relation-graph';
+import { Config as WalkRelationGraphConfig, walkRelationGraph } from './walk-relation-graph';
 import { Logger } from '../../../logger';
 import * as DE from '../../../types/data-error';
 import { ExpressionDoi } from '../../../types/expression-doi';
@@ -28,8 +28,10 @@ type FetchAllPaperExpressionsFromCrossref = (
 )
 => TE.TaskEither<DE.DataError, ReadonlyArray<PaperExpression>>;
 
-const recursionLimit = 1000;
-const collectedWorksSizeLimit = 1000;
+const config: WalkRelationGraphConfig = {
+  recursionLimit: 1000,
+  collectedWorksSizeLimit: 1000,
+};
 
 export const fetchAllPaperExpressionsFromCrossref: FetchAllPaperExpressionsFromCrossref = (
   queryCrossrefService,
@@ -38,7 +40,7 @@ export const fetchAllPaperExpressionsFromCrossref: FetchAllPaperExpressionsFromC
 ) => pipe(
   doi,
   initialState,
-  walkRelationGraph(queryCrossrefService, logger, doi, recursionLimit, collectedWorksSizeLimit),
+  walkRelationGraph(queryCrossrefService, logger, doi, config),
   TE.map(RA.map(toPaperExpression)),
   TE.map(RA.rights),
   TE.map(RA.map(logWhenExpressionServerIsUnsupported(logger))),
