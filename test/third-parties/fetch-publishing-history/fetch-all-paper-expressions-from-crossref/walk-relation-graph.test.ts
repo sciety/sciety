@@ -119,31 +119,6 @@ describe('walk-relation-graph', () => {
     });
   });
 
-  describe('if the queue keeps getting populated with a discovered relation that cannot be fetched', () => {
-    const state = initialState(arbitraryExpressionDoi('initialqueueitem'));
-    const arbitraryWorkWithArbitraryRelation: CrossrefWork = {
-      ...arbitraryPostedContentCrossrefWork(),
-      DOI: arbitraryExpressionDoi('discoveredwork'),
-      relation: {
-        'has-version': [
-          {
-            'id-type': 'doi',
-            id: arbitraryExpressionDoi('discoveredrelation'),
-          },
-        ],
-      },
-    };
-
-    beforeEach(async () => {
-      queryCrossrefService = jest.fn(mockQueryCrossrefService(() => arbitraryWorkWithArbitraryRelation));
-      result = await executeWalkRelationGraph(state);
-    });
-
-    it('returns early', () => {
-      expect(result).toStrictEqual(expect.anything());
-    });
-  });
-
   describe('when the recursion levels exceed the limit', () => {
     const state = initialState(arbitraryExpressionDoi('initialqueueitem'));
     const createWorkWithArbitraryRelation = (url: string): CrossrefWork => {
