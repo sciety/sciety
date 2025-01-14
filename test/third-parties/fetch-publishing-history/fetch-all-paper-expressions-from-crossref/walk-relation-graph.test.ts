@@ -6,7 +6,7 @@ import { QueryCrossrefService } from '../../../../src/third-parties/fetch-publis
 import {
   initialState, State,
 } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/state';
-import { walkRelationGraph } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/walk-relation-graph';
+import { Config as WalkRelationGraphConfig, walkRelationGraph } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/walk-relation-graph';
 import * as DE from '../../../../src/types/data-error';
 import * as EDOI from '../../../../src/types/expression-doi';
 import { dummyLogger } from '../../../dummy-logger';
@@ -25,15 +25,18 @@ const mockQueryCrossrefService = (createWork: (url: string) => CrossrefWork) => 
 
 describe('walk-relation-graph', () => {
   let queryCrossrefService: QueryCrossrefService;
+  const defaultConfig = {
+    recursionLimit: 1000,
+    collectedWorksSizeLimit: 1000,
+  };
   const executeWalkRelationGraph = async (
     state: State,
-    recursionLimit = 1000,
-    collectedWorksSizeLimit = 1000,
+    config: WalkRelationGraphConfig,
   ) => walkRelationGraph(
     queryCrossrefService,
     dummyLogger,
     arbitraryExpressionDoi(),
-    { recursionLimit, collectedWorksSizeLimit },
+    config,
   )(state)();
   let result: E.Either<DE.DataError | 'too-much-recursion', ReadonlyArray<CrossrefWork>>;
 
@@ -46,7 +49,7 @@ describe('walk-relation-graph', () => {
 
     beforeEach(async () => {
       queryCrossrefService = mockQueryCrossrefService(() => crossrefWork);
-      result = await executeWalkRelationGraph(state);
+      result = await executeWalkRelationGraph(state, defaultConfig);
     });
 
     it('returns the only discovered work on the right', () => {
@@ -83,7 +86,7 @@ describe('walk-relation-graph', () => {
         }
         throw new Error(`Asking crossref for an individual work at ${url}`);
       }));
-      result = await executeWalkRelationGraph(state);
+      result = await executeWalkRelationGraph(state, defaultConfig);
     });
 
     it('returns all discovered works on the right', () => {
@@ -115,8 +118,12 @@ describe('walk-relation-graph', () => {
     };
 
     beforeEach(async () => {
+      const config = {
+        ...defaultConfig,
+        collectedWorksSizeLimit: 10,
+      };
       queryCrossrefService = jest.fn(mockQueryCrossrefService(createWorkWithArbitraryRelation));
-      result = await executeWalkRelationGraph(state, 1000, 10);
+      result = await executeWalkRelationGraph(state, config);
     });
 
     it('returns early on the right', () => {
@@ -143,9 +150,12 @@ describe('walk-relation-graph', () => {
     };
 
     beforeEach(async () => {
-      const recursionLimit = 5;
+      const config = {
+        ...defaultConfig,
+        recursionLimit: 5,
+      };
       queryCrossrefService = jest.fn(mockQueryCrossrefService(createWorkWithArbitraryRelation));
-      result = await executeWalkRelationGraph(state, recursionLimit);
+      result = await executeWalkRelationGraph(state, config);
     });
 
     it('returns on the left with `too-much-recursion`', () => {
