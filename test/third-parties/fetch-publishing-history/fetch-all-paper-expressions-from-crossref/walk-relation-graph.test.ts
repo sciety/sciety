@@ -143,4 +143,32 @@ describe('walk-relation-graph', () => {
       expect(result).toStrictEqual(expect.anything());
     });
   });
+
+  describe('when the recursion levels exceed the limit', () => {
+    const state = initialState(arbitraryExpressionDoi('initialqueueitem'));
+    const createWorkWithArbitraryRelation = (url: string): CrossrefWork => {
+      const doi = EDOI.fromValidatedString(url.replace('https://api.crossref.org/works/', ''));
+      return {
+        ...arbitraryPostedContentCrossrefWork(),
+        DOI: doi,
+        relation: {
+          'has-version': [
+            {
+              'id-type': 'doi',
+              id: arbitraryExpressionDoi(),
+            },
+          ],
+        },
+      };
+    };
+
+    beforeEach(async () => {
+      queryCrossrefService = jest.fn(mockQueryCrossrefService(createWorkWithArbitraryRelation));
+      result = await executeWalkRelationGraph(state);
+    });
+
+    it('returns early', () => {
+      expect(result).toStrictEqual(expect.anything());
+    });
+  });
 });
