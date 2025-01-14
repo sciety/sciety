@@ -167,7 +167,7 @@ describe('walk-relation-graph', () => {
       result = await executeWalkRelationGraph(state);
     });
 
-    it.skip('returns on the left', () => {
+    it('returns on the left', () => {
       expect(E.isLeft(result)).toBe(true);
     });
   });
