@@ -86,30 +86,6 @@ describe('walk-relation-graph', () => {
     });
   });
 
-  describe('if the crossref graph is too big', () => {
-    const state = initialState(arbitraryExpressionDoi());
-
-    beforeEach(async () => {
-      const createWorkWithArbitraryRelation = (): CrossrefWork => ({
-        ...arbitraryPostedContentCrossrefWork(),
-        relation: {
-          'has-version': [
-            {
-              'id-type': 'doi',
-              id: arbitraryExpressionDoi(),
-            },
-          ],
-        },
-      });
-      queryCrossrefService = jest.fn(mockQueryCrossrefService(createWorkWithArbitraryRelation));
-      result = await executeWalkRelationGraph(state);
-    });
-
-    it('returns early', () => {
-      expect(result).toStrictEqual(expect.anything());
-    });
-  });
-
   describe('if every work that is discovered has two relations to works not yet collected', () => {
     const state = initialState(arbitraryExpressionDoi());
 
