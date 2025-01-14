@@ -29,6 +29,7 @@ type FetchAllPaperExpressionsFromCrossref = (
 => TE.TaskEither<DE.DataError, ReadonlyArray<PaperExpression>>;
 
 const recursionLimit = 1000;
+const collectedWorksSizeLimit = 1000;
 
 export const fetchAllPaperExpressionsFromCrossref: FetchAllPaperExpressionsFromCrossref = (
   queryCrossrefService,
@@ -37,7 +38,7 @@ export const fetchAllPaperExpressionsFromCrossref: FetchAllPaperExpressionsFromC
 ) => pipe(
   doi,
   initialState,
-  walkRelationGraph(queryCrossrefService, logger, doi, recursionLimit),
+  walkRelationGraph(queryCrossrefService, logger, doi, recursionLimit, collectedWorksSizeLimit),
   TE.map(RA.map(toPaperExpression)),
   TE.map(RA.rights),
   TE.map(RA.map(logWhenExpressionServerIsUnsupported(logger))),

@@ -28,7 +28,7 @@ export const walkRelationGraph = (
   logger: Logger,
   doi: string,
   recursionLimit: number,
-  collectedWorksSizeLimit: number = 1000,
+  collectedWorksSizeLimit: number,
 ) => (
   state: State,
 ): TE.TaskEither<DE.DataError | 'too-much-recursion', ReadonlyArray<CrossrefWork>> => {
