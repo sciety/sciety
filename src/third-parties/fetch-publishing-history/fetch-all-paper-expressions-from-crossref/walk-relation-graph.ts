@@ -27,7 +27,7 @@ export const walkRelationGraph = (
   queryCrossrefService: QueryCrossrefService,
   logger: Logger,
   doi: string,
-  recursionLimit: number = 1000,
+  recursionLimit: number,
   collectedWorksSizeLimit: number = 1000,
 ) => (
   state: State,
