@@ -29,10 +29,11 @@ export const walkRelationGraph = (
   queryCrossrefService: QueryCrossrefService,
   logger: Logger,
   doi: string,
+  recursionLimit: number = 1000,
 ) => (
   state: State,
 ): TE.TaskEither<DE.DataError | 'too-much-recursion', ReadonlyArray<CrossrefWork>> => {
-  if (state.recursionCount > 1000) {
+  if (state.recursionCount > recursionLimit) {
     logger('error', 'Exiting recursion due to potential infinite loop', {
       queue: state.queue,
       collectedWorksSize: state.collectedWorks.size,
@@ -64,6 +65,6 @@ export const walkRelationGraph = (
     state,
     fetchAllQueuedWorksAndAddToCollector(queryCrossrefService, logger),
     TE.map(enqueueAllRelatedDoisNotYetCollected),
-    TE.chain(walkRelationGraph(queryCrossrefService, logger, doi)),
+    TE.chain(walkRelationGraph(queryCrossrefService, logger, doi, recursionLimit)),
   );
 };
