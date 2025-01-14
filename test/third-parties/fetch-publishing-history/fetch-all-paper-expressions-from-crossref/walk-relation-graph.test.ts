@@ -8,6 +8,7 @@ import {
 } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/state';
 import { walkRelationGraph } from '../../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/walk-relation-graph';
 import * as DE from '../../../../src/types/data-error';
+import * as EDOI from '../../../../src/types/expression-doi';
 import { dummyLogger } from '../../../dummy-logger';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 
@@ -110,7 +111,36 @@ describe('walk-relation-graph', () => {
   });
 
   describe('if every work that is discovered has two relations to works not yet collected', () => {
-    it.todo('returns early');
+    const state = initialState(arbitraryExpressionDoi());
+
+    const createWorkWithArbitraryRelation = (url: string): CrossrefWork => {
+      const doi = EDOI.fromValidatedString(url.replace('https://api.crossref.org/works/', ''));
+      return {
+        ...arbitraryPostedContentCrossrefWork(),
+        DOI: doi,
+        relation: {
+          'has-version': [
+            {
+              'id-type': 'doi',
+              id: arbitraryExpressionDoi(),
+            },
+            {
+              'id-type': 'doi',
+              id: arbitraryExpressionDoi(),
+            },
+          ],
+        },
+      };
+    };
+
+    beforeEach(async () => {
+      queryCrossrefService = jest.fn(mockQueryCrossrefService(createWorkWithArbitraryRelation));
+      result = await executeWalkRelationGraph(state);
+    });
+
+    it('returns early', () => {
+      expect(result).toStrictEqual(expect.anything());
+    });
   });
 
   describe('if the queue keeps getting populated with a discovered relation that cannot be fetched', () => {
