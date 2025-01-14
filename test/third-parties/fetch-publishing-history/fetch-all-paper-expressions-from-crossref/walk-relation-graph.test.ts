@@ -25,11 +25,16 @@ const mockQueryCrossrefService = (createWork: (url: string) => CrossrefWork) => 
 
 describe('walk-relation-graph', () => {
   let queryCrossrefService: QueryCrossrefService;
-  const executeWalkRelationGraph = async (state: State, recursionLimit = 1000) => walkRelationGraph(
+  const executeWalkRelationGraph = async (
+    state: State,
+    recursionLimit = 1000,
+    collectedWorksSizeLimit = 1000,
+  ) => walkRelationGraph(
     queryCrossrefService,
     dummyLogger,
     arbitraryExpressionDoi(),
     recursionLimit,
+    collectedWorksSizeLimit,
   )(state)();
   let result: E.Either<DE.DataError | 'too-much-recursion', ReadonlyArray<CrossrefWork>>;
 
@@ -112,7 +117,7 @@ describe('walk-relation-graph', () => {
 
     beforeEach(async () => {
       queryCrossrefService = jest.fn(mockQueryCrossrefService(createWorkWithArbitraryRelation));
-      result = await executeWalkRelationGraph(state);
+      result = await executeWalkRelationGraph(state, 1000, 10);
     });
 
     it('returns early on the right', () => {

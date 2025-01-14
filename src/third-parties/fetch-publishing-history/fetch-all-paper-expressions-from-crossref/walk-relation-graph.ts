@@ -23,13 +23,12 @@ const fetchAllQueuedWorksAndAddToCollector = (
   TE.map(collectWorksIntoStateAndEmptyQueue(state)),
 );
 
-const maximumCollectedWorksSizeAllowed = 1000;
-
 export const walkRelationGraph = (
   queryCrossrefService: QueryCrossrefService,
   logger: Logger,
   doi: string,
   recursionLimit: number = 1000,
+  collectedWorksSizeLimit: number = 1000,
 ) => (
   state: State,
 ): TE.TaskEither<DE.DataError | 'too-much-recursion', ReadonlyArray<CrossrefWork>> => {
@@ -41,7 +40,7 @@ export const walkRelationGraph = (
     });
     return TE.left('too-much-recursion' as const);
   }
-  if (state.collectedWorks.size > maximumCollectedWorksSizeAllowed) {
+  if (state.collectedWorks.size > collectedWorksSizeLimit) {
     logger('warn', 'Exiting recursion early due to danger of an infinite loop', {
       collectedWorksSize: state.collectedWorks.size,
       startingDoi: doi,
@@ -57,7 +56,7 @@ export const walkRelationGraph = (
       startingDoi: doi,
     });
   }
-  if (state.collectedWorks.size > maximumCollectedWorksSizeAllowed) {
+  if (state.collectedWorks.size > collectedWorksSizeLimit) {
     return TE.right(Array.from(state.collectedWorks.values()));
   }
 
@@ -65,6 +64,6 @@ export const walkRelationGraph = (
     state,
     fetchAllQueuedWorksAndAddToCollector(queryCrossrefService, logger),
     TE.map(enqueueAllRelatedDoisNotYetCollected),
-    TE.chain(walkRelationGraph(queryCrossrefService, logger, doi, recursionLimit)),
+    TE.chain(walkRelationGraph(queryCrossrefService, logger, doi, recursionLimit, collectedWorksSizeLimit)),
   );
 };
