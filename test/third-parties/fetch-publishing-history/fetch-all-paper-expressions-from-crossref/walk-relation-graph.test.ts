@@ -114,8 +114,8 @@ describe('walk-relation-graph', () => {
       result = await executeWalkRelationGraph(state);
     });
 
-    it('returns early', () => {
-      expect(result).toStrictEqual(expect.anything());
+    it('returns early on the right', () => {
+      expect(E.isRight(result)).toBe(true);
     });
   });
 
