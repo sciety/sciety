@@ -149,8 +149,8 @@ describe('walk-relation-graph', () => {
       result = await executeWalkRelationGraph(state, recursionLimit);
     });
 
-    it('returns on the left', () => {
-      expect(E.isLeft(result)).toBe(true);
+    it('returns on the left with `too-much-recursion`', () => {
+      expect(result).toStrictEqual(E.left('too-much-recursion'));
     });
   });
 });
