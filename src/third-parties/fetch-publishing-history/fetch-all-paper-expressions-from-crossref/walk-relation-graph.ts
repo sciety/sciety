@@ -31,14 +31,14 @@ export const walkRelationGraph = (
   doi: string,
 ) => (
   state: State,
-): TE.TaskEither<DE.DataError, ReadonlyArray<CrossrefWork>> => {
+): TE.TaskEither<DE.DataError | 'too-much-recursion', ReadonlyArray<CrossrefWork>> => {
   if (state.recursionCount > 1000) {
     logger('error', 'Exiting recursion due to potential infinite loop', {
       queue: state.queue,
       collectedWorksSize: state.collectedWorks.size,
       startingDoi: doi,
     });
-    return TE.left(DE.unavailable);
+    return TE.left('too-much-recursion' as const);
   }
   if (state.collectedWorks.size > maximumCollectedWorksSizeAllowed) {
     logger('warn', 'Exiting recursion early due to danger of an infinite loop', {

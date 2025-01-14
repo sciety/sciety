@@ -30,7 +30,7 @@ describe('walk-relation-graph', () => {
     dummyLogger,
     arbitraryExpressionDoi(),
   )(state)();
-  let result: E.Either<DE.DataError, ReadonlyArray<CrossrefWork>>;
+  let result: E.Either<DE.DataError | 'too-much-recursion', ReadonlyArray<CrossrefWork>>;
 
   describe('when no related works are identified', () => {
     const crossrefWork: CrossrefWork = {

@@ -39,4 +39,10 @@ export const fetchAllPaperExpressionsFromCrossref: FetchAllPaperExpressionsFromC
   TE.map(RA.map(toPaperExpression)),
   TE.map(RA.rights),
   TE.map(RA.map(logWhenExpressionServerIsUnsupported(logger))),
+  TE.mapLeft((error) => {
+    if (error === 'too-much-recursion') {
+      return DE.unavailable;
+    }
+    return error;
+  }),
 );
