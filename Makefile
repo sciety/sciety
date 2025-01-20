@@ -205,6 +205,9 @@ verify-flux-prod-cluster:
 switch-to-flux-prod-cluster:
 	kubectl config use-context arn:aws:eks:us-east-1:512686554592:cluster/kubernetes-aws--flux-prod
 
+switch-to-deprecated-cluster:
+	kubectl config use-context arn:aws:eks:us-east-1:540790251273:cluster/libero-eks--franklin
+
 replace-demo-database-with-snapshot-from-prod: verify-flux-prod-cluster download-exploratory-test-from-prod
 	kubectl --namespace sciety run psql \
 	--image=postgres:12.3 \
