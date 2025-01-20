@@ -217,6 +217,7 @@ replace-demo-database-with-snapshot-from-prod: verify-flux-prod-cluster download
 	kubectl --namespace sciety exec psql -- psql -c "\copy events FROM '/data/exploratory-test-from-prod.csv' WITH CSV HEADER"
 	kubectl --namespace sciety delete --wait=false pod psql
 	kubectl --namespace sciety rollout restart deployment sciety--demo--frontend
+	kubectl --namespace sciety wait pod --for=condition=Ready --selector=app.kubernetes.io/component=frontend,app.kubernetes.io/instance=sciety--demo --timeout=120s
 
 crossref-response:
 	curl -v \
