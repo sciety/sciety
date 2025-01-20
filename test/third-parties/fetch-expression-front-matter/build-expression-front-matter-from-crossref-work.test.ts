@@ -69,6 +69,19 @@ describe('build-expression-front-matter-from-crossref-work', () => {
         expect(abstract).toStrictEqual(O.some(expect.stringContaining('Some random nonsense.')));
       });
 
+      it.failing('extracts the first abstract text from the XML response when multiple abstracts are available', async () => {
+        const abstract = extractAbstractFromFrontMatter(`
+          <abstract>
+            Some random nonsense.
+          </abstract>
+          <abstract>
+            Some other random nonsense.
+          </abstract>
+          `);
+
+        expect(abstract).toStrictEqual(O.some(expect.stringContaining('Some random nonsense.')));
+      });
+
       it('removes the <abstract> element', async () => {
         const abstract = extractAbstractFromFrontMatter(`
           <abstract class="something">
