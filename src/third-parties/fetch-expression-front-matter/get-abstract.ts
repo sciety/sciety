@@ -1,5 +1,6 @@
 import { load } from 'cheerio';
 import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
 import { CommonFrontMatter } from './parser-and-codec';
 import { toHtmlFragment } from '../../types/html-fragment';
@@ -39,6 +40,7 @@ export const getAbstract = (
   commonFrontmatter: CommonFrontMatter,
 ): O.Option<SanitisedHtmlFragment> => pipe(
   commonFrontmatter.abstract,
+  O.chain(RA.head),
   O.map(transformXmlToHtml),
   O.map(removeSuperfluousTitles),
   O.map(stripEmptySections),

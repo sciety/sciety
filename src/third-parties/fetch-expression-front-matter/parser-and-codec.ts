@@ -20,7 +20,7 @@ const commonFrontmatterCodec = t.strict({
   titles: t.readonlyArray(t.strict({
     title: t.string,
   })),
-  abstract: tt.optionFromNullable(t.string),
+  abstract: tt.optionFromNullable(t.readonlyArray(t.string)),
   contributors: tt.optionFromNullable(
     t.strict({
       _org_or_person: t.readonlyArray(orgOrPersonCodec),
@@ -56,7 +56,7 @@ const parser = new XMLParser({
   stopNodes: ['*.title', '*.abstract', '*.given_name', '*.surname'],
   transformTagName: (tagName) => ((['organization', 'person_name']).includes(tagName) ? '_org_or_person' : tagName),
   ignoreAttributes: (aName) => aName !== 'contributor_role',
-  isArray: (tagNameOfItem) => ['_org_or_person', 'titles'].includes(tagNameOfItem),
+  isArray: (tagNameOfItem) => ['_org_or_person', 'titles', 'abstract'].includes(tagNameOfItem),
 });
 
 export const parseXmlDocument = (s: string): E.Either<string, unknown> => E.tryCatch(

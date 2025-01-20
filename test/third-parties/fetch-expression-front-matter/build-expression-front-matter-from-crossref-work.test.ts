@@ -69,7 +69,7 @@ describe('build-expression-front-matter-from-crossref-work', () => {
         expect(abstract).toStrictEqual(O.some(expect.stringContaining('Some random nonsense.')));
       });
 
-      it.failing('extracts the first abstract text from the XML response when multiple abstracts are available', async () => {
+      it('extracts the first abstract text from the XML response when multiple abstracts are available', async () => {
         const abstract = extractAbstractFromFrontMatter(`
           <abstract>
             Some random nonsense.
