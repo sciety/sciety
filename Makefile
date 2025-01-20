@@ -216,6 +216,7 @@ replace-demo-database-with-snapshot-from-prod: verify-flux-prod-cluster download
 	kubectl --namespace sciety cp ./data/exploratory-test-from-prod.csv psql:/data/exploratory-test-from-prod.csv
 	kubectl --namespace sciety exec psql -- psql -c "\copy events FROM '/data/exploratory-test-from-prod.csv' WITH CSV HEADER"
 	kubectl --namespace sciety delete --wait=false pod psql
+	kubectl --namespace sciety rollout restart deployment sciety--demo--frontend
 
 crossref-response:
 	curl -v \
