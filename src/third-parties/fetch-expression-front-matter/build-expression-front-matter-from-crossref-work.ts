@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import { pipe } from 'fp-ts/function';
+import { pipe, flow } from 'fp-ts/function';
 import { getAbstract } from './get-abstract';
 import { getAuthors } from './get-authors';
 import { getTitle } from './get-title';
@@ -39,15 +39,20 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
 
   return pipe(
     crossrefWorkXml,
-    parseXmlDocument,
-    E.mapLeft(() => {
-      logger('error', 'crossref/fetch-expression-front-matter: parser failed to transform XML into JSON object', contextForLogs);
-      return DE.unavailable;
-    }),
-    E.chainW(decodeAndLogFailures(
-      logger,
-      frontMatterCrossrefXmlResponseCodec,
-      contextForLogs,
+    flow(
+      parseXmlDocument,
+      E.mapLeft(() => {
+        logger('error', 'crossref/fetch-expression-front-matter: parser failed to transform XML into JSON object', contextForLogs);
+        return DE.unavailable;
+      }),
+    ),
+    E.chain(flow(
+      decodeAndLogFailures(
+        logger,
+        frontMatterCrossrefXmlResponseCodec,
+        contextForLogs,
+      ),
+      E.mapLeft(() => DE.unavailable),
     )),
     E.map((decodedWork) => decodedWork.doi_records.doi_record.crossref),
     E.map(extractCommonFrontmatter),
@@ -56,10 +61,6 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
       abstract: getAbstract(commonFrontmatter),
       authors: getAuthors(commonFrontmatter),
     })),
-    E.mapLeft(() => {
-      logger('error', 'crossref/fetch-expression-front-matter: Failed to parse XML', contextForLogs);
-      return DE.unavailable;
-    }),
     E.tap(warnAboutMissingOptionalFrontmatterParts(logger, contextForLogs)),
   );
 };
