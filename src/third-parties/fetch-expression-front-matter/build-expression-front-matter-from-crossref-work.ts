@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import { pipe, flow } from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { getAbstract } from './get-abstract';
 import { getAuthors } from './get-authors';
 import { getTitle } from './get-title';
@@ -39,18 +39,9 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
 
   return pipe(
     crossrefWorkXml,
-    flow(
-      parseXmlDocument(logger, contextForLogs),
-      E.mapLeft(() => DE.unavailable),
-    ),
-    E.chain(flow(
-      decodeAndLogFailures(
-        logger,
-        frontMatterCrossrefXmlResponseCodec,
-        contextForLogs,
-      ),
-      E.mapLeft(() => DE.unavailable),
-    )),
+    parseXmlDocument(logger, contextForLogs),
+    E.chainW(decodeAndLogFailures(logger, frontMatterCrossrefXmlResponseCodec, contextForLogs)),
+    E.mapLeft(() => DE.unavailable),
     E.map((decodedWork) => decodedWork.doi_records.doi_record.crossref),
     E.map(extractCommonFrontmatter),
     E.map((commonFrontmatter) => ({
