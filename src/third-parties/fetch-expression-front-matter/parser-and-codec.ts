@@ -49,7 +49,7 @@ export const frontMatterCrossrefXmlResponseCodec = t.strict({
       ]),
     }),
   }),
-}, 'frontMatterCrossrefXmlResponseTitleCodec');
+}, 'frontMatterCrossrefXmlResponseCodec');
 
 export type JournalOrPostedContent = t.TypeOf<typeof frontMatterCrossrefXmlResponseCodec>['doi_records']['doi_record']['crossref'];
 
