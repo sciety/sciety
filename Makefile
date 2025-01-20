@@ -202,6 +202,9 @@ FLUX_PROD_CLUSTER_CONTROL_PLANE_ADDRESS := https://0108D0073AFB87B6669E378F0A9CF
 verify-flux-prod-cluster:
 	kubectl cluster-info | grep $(FLUX_PROD_CLUSTER_CONTROL_PLANE_ADDRESS) > /dev/null
 
+switch-to-flux-prod-cluster:
+	kubectl config use-context arn:aws:eks:us-east-1:512686554592:cluster/kubernetes-aws--flux-prod
+
 replace-demo-database-with-snapshot-from-prod: verify-flux-prod-cluster download-exploratory-test-from-prod
 	kubectl --namespace sciety run psql \
 	--image=postgres:12.3 \
