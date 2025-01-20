@@ -2,6 +2,7 @@ import { XMLParser } from 'fast-xml-parser';
 import * as E from 'fp-ts/Either';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
+import { Logger } from '../../logger';
 
 const personNameCodec = t.strict({
   given_name: tt.optionFromNullable(t.string),
@@ -59,7 +60,12 @@ const parser = new XMLParser({
   isArray: (tagNameOfItem) => ['_org_or_person', 'titles', 'abstract'].includes(tagNameOfItem),
 });
 
-export const parseXmlDocument = (s: string): E.Either<string, unknown> => E.tryCatch(
+export const parseXmlDocument = (
+  logger: Logger, contextForLogs: Record<string, unknown>,
+) => (s: string): E.Either<string, unknown> => E.tryCatch(
   () => parser.parse(s) as unknown,
-  () => 'Failed to parse XML',
+  () => {
+    logger('error', 'crossref/fetch-expression-front-matter: parser failed to transform XML into JSON object', contextForLogs);
+    return 'Failed to parse XML';
+  },
 );

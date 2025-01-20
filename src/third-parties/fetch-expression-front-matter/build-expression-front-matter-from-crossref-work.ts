@@ -40,11 +40,8 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
   return pipe(
     crossrefWorkXml,
     flow(
-      parseXmlDocument,
-      E.mapLeft(() => {
-        logger('error', 'crossref/fetch-expression-front-matter: parser failed to transform XML into JSON object', contextForLogs);
-        return DE.unavailable;
-      }),
+      parseXmlDocument(logger, contextForLogs),
+      E.mapLeft(() => DE.unavailable),
     ),
     E.chain(flow(
       decodeAndLogFailures(
