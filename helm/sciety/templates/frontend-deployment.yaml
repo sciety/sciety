@@ -48,8 +48,6 @@ spec:
               value: {{ .Values.googleTagManagerId }}
             - name: SCIETY_API
               value: "https://{{ .Values.hostname }}"
-            - name: SCIETY_TEAM_API_BEARER_TOKEN
-              value: {{ .Values.ingestionAuthBearerToken }}
             - name: AUTH0_CLIENT_ID
               value: {{ .Values.auth0ClientId }}
             - name: AUTH0_CLIENT_SECRET
