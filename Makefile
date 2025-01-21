@@ -61,6 +61,7 @@ backstop-test: export COMPOSE_PROJECT_NAME=sciety-test
 backstop-test: export DISPLAY_LAST_SERVER_STARTUP = false
 backstop-test: export APP_PORT=8081
 backstop-test: node_modules clean-db build
+	@if [ "${GITHUB_ACTIONS}" = "true" ]; then perl -pi -e 's/--user .+? --/--/g' backstop.json; fi
 	${DOCKER_COMPOSE} up -d
 	scripts/wait-for-healthy.sh
 	${DOCKER_COMPOSE} exec -T db psql -c "copy events from '/data/backstop.csv' with CSV" sciety user
