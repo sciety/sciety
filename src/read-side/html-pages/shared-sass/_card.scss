@@ -49,17 +49,17 @@ $_card-border-radius: settings.$border-radius;
 @mixin entire-card-link() {
   @include link;
 
-  &:hover {
-    &::after {
-      box-shadow: 0 0 10px 0 rgb(0 0 0 / 20%);
-    }
-  }
-
   &::after {
     content: '';
     position: absolute;
     inset: 0;
     border-radius: $_card-border-radius;
+  }
+
+  &:hover {
+    &::after {
+      box-shadow: 0 0 10px 0 rgb(0 0 0 / 20%);
+    }
   }
 }
 
