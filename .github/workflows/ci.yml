@@ -113,7 +113,6 @@ jobs:
           APP_SECRET: ${{ secrets.APP_SECRET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          CROSSREF_API_BEARER_TOKEN: ${{ secrets.CROSSREF_API_BEARER_TOKEN }}
           SCIETY_TEAM_API_BEARER_TOKEN: ${{ secrets.SCIETY_TEAM_API_BEARER_TOKEN }}
           PRELIGHTS_FEED_KEY: ${{ secrets.PRELIGHTS_FEED_KEY }}
           PREREVIEW_BEARER_TOKEN: ${{ secrets.PREREVIEW_BEARER_TOKEN}}
@@ -151,7 +150,6 @@ jobs:
           APP_SECRET: ${{ secrets.APP_SECRET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          CROSSREF_API_BEARER_TOKEN: ${{ secrets.CROSSREF_API_BEARER_TOKEN }}
           SCIETY_TEAM_API_BEARER_TOKEN: ${{ secrets.SCIETY_TEAM_API_BEARER_TOKEN }}
           PRELIGHTS_FEED_KEY: ${{ secrets.PRELIGHTS_FEED_KEY }}
           PREREVIEW_BEARER_TOKEN: ${{ secrets.PREREVIEW_BEARER_TOKEN}}
