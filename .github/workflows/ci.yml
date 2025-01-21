@@ -101,7 +101,6 @@ jobs:
             --set auth0Domain='sciety-staging.eu.auth0.com' \
             --set auth0CallbackUrl='https://staging.sciety.org/auth0/callback' \
             --set googleTagManagerId='GTM-NX7CQB4' \
-            --set ingestionAuthBearerToken=${SCIETY_TEAM_API_BEARER_TOKEN} \
             --set prelightsFeedKey=${PRELIGHTS_FEED_KEY} \
             --set prereviewBearerToken=${PREREVIEW_BEARER_TOKEN} \
             --set healthchecksPingKey=${HEALTHCHECKS_PING_KEY} \
@@ -113,7 +112,6 @@ jobs:
           APP_SECRET: ${{ secrets.APP_SECRET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          SCIETY_TEAM_API_BEARER_TOKEN: ${{ secrets.SCIETY_TEAM_API_BEARER_TOKEN }}
           PRELIGHTS_FEED_KEY: ${{ secrets.PRELIGHTS_FEED_KEY }}
           PREREVIEW_BEARER_TOKEN: ${{ secrets.PREREVIEW_BEARER_TOKEN}}
           AUTH0_CLIENT_ID_STAGING: ${{ secrets.AUTH0_CLIENT_ID_STAGING }}
@@ -138,7 +136,6 @@ jobs:
             --set auth0ClientSecret=${AUTH0_CLIENT_SECRET} \
             --set auth0Domain='sciety.eu.auth0.com' \
             --set auth0CallbackUrl='https://sciety.org/auth0/callback' \
-            --set ingestionAuthBearerToken=${SCIETY_TEAM_API_BEARER_TOKEN} \
             --set prelightsFeedKey=${PRELIGHTS_FEED_KEY} \
             --set prereviewBearerToken=${PREREVIEW_BEARER_TOKEN} \
             --set healthchecksPingKey=${HEALTHCHECKS_PING_KEY} \
@@ -150,7 +147,6 @@ jobs:
           APP_SECRET: ${{ secrets.APP_SECRET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          SCIETY_TEAM_API_BEARER_TOKEN: ${{ secrets.SCIETY_TEAM_API_BEARER_TOKEN }}
           PRELIGHTS_FEED_KEY: ${{ secrets.PRELIGHTS_FEED_KEY }}
           PREREVIEW_BEARER_TOKEN: ${{ secrets.PREREVIEW_BEARER_TOKEN}}
           AUTH0_CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}
