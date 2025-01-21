@@ -1,8 +1,8 @@
 @use 'layout';
 
 .page-header {
-  @include layout.page-header-top-space();
-  @include layout.page-header-bottom-space();
+  @include layout.page-header-top-space;
+  @include layout.page-header-bottom-space;
 
   p {
     margin-bottom: 0.5rem;

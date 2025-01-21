@@ -7,7 +7,8 @@
 
 .create-user-account-form-page__container {
   background-color: settings.$colour-background-grey;
-  @include layout.page-container();
+
+  @include layout.page-container;
 }
 
 .create-user-account-form-page__main {
@@ -21,8 +22,8 @@
 }
 
 .create-user-account-form {
-  @include layout.allow-edge-to-edge-content-when-narrow();
-  @include card.basics();
+  @include layout.allow-edge-to-edge-content-when-narrow;
+  @include card.basics;
 }
 
 .create-user-account-form__label {
@@ -42,7 +43,8 @@
 
 .create-user-account-form__submit {
   margin-right: functions.px-to-rem(settings.$default-form-element-separation);
-  @include button.primary();
+
+  @include button.primary;
 }
 
 .create-user-account-form__handle {

@@ -3,9 +3,10 @@
 
 .my-feed-page-numbers {
   margin-bottom: 1rem;
-  @include typography.details();
+
+  @include typography.details;
 }
 
 .my-feed__list_item {
-  @include card.list-item();
+  @include card.list-item;
 }

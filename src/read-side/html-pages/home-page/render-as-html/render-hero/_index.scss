@@ -2,7 +2,6 @@
 @use 'functions';
 @use 'typography';
 @use 'breakpoints';
-
 @use 'hero-ctas';
 
 $_width-at-which-image-is-too-narrow: 1680px;
@@ -10,7 +9,7 @@ $_width-at-which-image-is-too-narrow: 1680px;
 @mixin _vertical-spacing-in-hero() {
   margin-bottom: functions.px-to-rem(20px);
 
-  @include breakpoints.not-narrow() {
+  @include breakpoints.not-narrow {
     margin-bottom: functions.px-to-rem(40px);
   }
 
@@ -19,7 +18,7 @@ $_width-at-which-image-is-too-narrow: 1680px;
 @mixin _decorative-side-image() {
   display: none;
 
-  @include breakpoints.site-header() {
+  @include breakpoints.site-header {
     display: unset;
     opacity: 0.4;
     overflow: hidden;
@@ -29,7 +28,7 @@ $_width-at-which-image-is-too-narrow: 1680px;
 .home-page-hero-wrapper {
   background-color: settings.$colour-brand;
 
-  @include breakpoints.site-header() {
+  @include breakpoints.site-header {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
   }
@@ -37,7 +36,8 @@ $_width-at-which-image-is-too-narrow: 1680px;
 
 .home-page-hero__left_image {
   justify-self: end;
-  @include _decorative-side-image();
+
+  @include _decorative-side-image;
 
   @media screen and (min-width: functions.px-to-em($_width-at-which-image-is-too-narrow)) {
     justify-self: start;
@@ -46,7 +46,8 @@ $_width-at-which-image-is-too-narrow: 1680px;
 
 .home-page-hero__right_image {
   justify-self: start;
-  @include _decorative-side-image();
+
+  @include _decorative-side-image;
 
   @media screen and (min-width: functions.px-to-em($_width-at-which-image-is-too-narrow)) {
     justify-self: end;
@@ -55,12 +56,9 @@ $_width-at-which-image-is-too-narrow: 1680px;
 
 .home-page-hero {
   color: settings.$colour-white;
-  padding-bottom: functions.px-to-rem(48px);
-  padding-right: functions.px-to-rem(settings.$default-gutter);
-  padding-left: functions.px-to-rem(settings.$default-gutter);
-  padding-top: functions.px-to-rem(20px);
+  padding: functions.px-to-rem(20px) functions.px-to-rem(settings.$default-gutter) functions.px-to-rem(48px) functions.px-to-rem(settings.$default-gutter);
 
-  @include breakpoints.site-header() {
+  @include breakpoints.site-header {
     padding-top: functions.px-to-rem(193px);
   }
 }
@@ -69,22 +67,26 @@ $_width-at-which-image-is-too-narrow: 1680px;
   margin-top: functions.px-to-rem(20px);
   margin-bottom: functions.px-to-rem(8px);
   text-align: center;
+
   @include typography.sizing(32px, 38px);
 
-  @include breakpoints.not-narrow() {
+  @include breakpoints.not-narrow {
     margin-bottom: functions.px-to-rem(40px);
     margin-top: 0;
+
     @include typography.sizing(54px, 62px);
   }
 }
 
 .home-page-hero__content_byline {
   text-align: center;
-  @include _vertical-spacing-in-hero();
+
+  @include _vertical-spacing-in-hero;
   @include typography.sizing(20px, 26px);
 
-  @include breakpoints.not-narrow() {
+  @include breakpoints.not-narrow {
     margin-bottom: functions.px-to-rem(76px);
+
     @include typography.sizing(24px, 28px);
   }
 }

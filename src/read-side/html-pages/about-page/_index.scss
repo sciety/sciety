@@ -4,10 +4,7 @@
 @use 'settings';
 
 .about-page-figure {
-  margin-top: 0;
-  margin-left: 0;
-  margin-right: 0;
-  margin-bottom: functions.px-to-rem(32px);
+  margin: 0 0 functions.px-to-rem(32px) 0;
 
   img {
     width: 100%;
@@ -26,12 +23,13 @@
 
   a {
     margin-bottom: functions.px-to-rem(24px);
-    @include button.primary-link();
+
+    @include button.primary-link;
   }
 }
 
 .about-page-blog-links {
-  @include list.basics();
+  @include list.basics;
 
   li {
     padding-top: functions.px-to-rem(32px);
@@ -42,7 +40,6 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-
       font-weight: bold;
       color: settings.$colour-text-primary;
     }

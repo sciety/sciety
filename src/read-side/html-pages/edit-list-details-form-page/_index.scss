@@ -2,6 +2,7 @@
 
 .page-header.page-header--edit-list-details-form-page {
   margin-bottom: 1rem;
+
   @include breakpoints.not-narrow {
     margin-bottom: 1.5rem;
   }

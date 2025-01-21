@@ -3,10 +3,12 @@
 
 .card-authors {
   margin-bottom: functions.px-to-rem(24px);
-  @include list.basics();
+
+  @include list.basics;
 }
 
 .card-authors__author {
   display: inline;
-  @include list.author-separator-terminator();
+
+  @include list.author-separator-terminator;
 }

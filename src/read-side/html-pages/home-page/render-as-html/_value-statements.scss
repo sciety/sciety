@@ -22,32 +22,32 @@ $_value-statements-max-width: functions.px-to-rem(996px);
 }
 
 .home-page-value-statements__title {
-  @include common.section-heading-on-not-narrow();
+  @include common.section-heading-on-not-narrow;
 }
 
 .home-page-value-statement {
   margin-bottom: 4rem;
 
-  @include breakpoints.not-narrow() {
+  @include breakpoints.not-narrow {
     display: flex;
     align-items: center;
   }
 }
 
 .home-page-value-statement.home-page-value-statement--reverse-order {
-  @include breakpoints.not-narrow() {
+  @include breakpoints.not-narrow {
     flex-direction: row-reverse;
   }
 }
 
 .home-page-value-statement__copy {
-  @include breakpoints.not-narrow() {
+  @include breakpoints.not-narrow {
     width: 50ch;
     margin-right: 4rem;
   } 
 
   .home-page-value-statement--reverse-order & {
-    @include breakpoints.not-narrow() {
+    @include breakpoints.not-narrow {
       margin-right: 0;
       margin-left: 4rem;
     }
@@ -55,7 +55,7 @@ $_value-statements-max-width: functions.px-to-rem(996px);
 }
 
 .home-page-value-statement__heading {
-  @include breakpoints.not-narrow() {
+  @include breakpoints.not-narrow {
     font-size: functions.px-to-rem(22px);
   }
 }

@@ -3,16 +3,15 @@
 
 .home-page-hero__ctas {
   display: flex;
-  flex-direction: row;
+  flex-flow: row wrap;
   justify-content: center;
-  flex-wrap: wrap;
   gap: functions.px-to-rem(16px);
 }
 
 .home-page-hero-explore-evaluated-preprints-link {
-  @include button.primary-link();
+  @include button.primary-link;
 }
 
 .home-page-hero-browse-evaluating-groups-link {
-  @include button.secondary-link();
+  @include button.secondary-link;
 }

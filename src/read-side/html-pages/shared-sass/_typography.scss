@@ -1,10 +1,9 @@
 @use 'sass:math';
-
 @use 'functions';
 @use 'settings';
 @use 'breakpoints';
 
-@mixin sizing ($font-size, $line-height-in-px: 24px) {
+@mixin sizing($font-size, $line-height-in-px: 24px) {
   $font-size-in-rem: functions.px-to-rem($font-size);
   $line-height-in-rem: functions.px-to-rem($line-height-in-px);
 
@@ -14,7 +13,7 @@
   }
 }
 
-@mixin subtle-link () {
+@mixin subtle-link() {
   color: inherit;
 
   &:hover,
@@ -23,34 +22,34 @@
   }
 }
 
-@mixin card-title () {
+@mixin card-title() {
   font-family: settings.$font-family;
   font-size: functions.px-to-rem(18px);
   line-height: 1.3;
   font-weight: bold;
 }
 
-@mixin subheading () {
+@mixin subheading() {
   font-family: settings.$font-family;
   font-size: functions.px-to-rem(16px);
   line-height: 1.4;
   font-weight: bold;
 }
 
-@mixin body () {
+@mixin body() {
   font-family: settings.$font-family;
   font-size: functions.px-to-rem(16px);
   line-height: 1.6;
 }
 
-@mixin button () {
+@mixin button() {
   font-family: settings.$font-family;
   font-size: functions.px-to-rem(16px);
   font-weight: bold;
   line-height: 1;
 }
 
-@mixin details () {
+@mixin details() {
   font-family: settings.$font-family;
   font-size: functions.px-to-rem(14px);
   line-height: 1.2;
@@ -62,46 +61,52 @@
   line-height: 1.2;
 }
 
-@mixin heading-1 () {
+@mixin heading-1() {
   font-size: functions.px-to-rem(26px);
-  @include heading-base();
 
-  @include breakpoints.not-narrow() {
+  @include heading-base;
+
+  @include breakpoints.not-narrow {
     font-size: functions.px-to-rem(32px);
   }
 }
 
-@mixin heading-2 () {
+@mixin heading-2() {
   font-size: functions.px-to-rem(20px);
-  @include heading-base();
 
-  @include breakpoints.not-narrow() {
+  @include heading-base;
+
+  @include breakpoints.not-narrow {
     font-size: functions.px-to-rem(26px);
   }
 }
 
-@mixin heading-3 () {
+@mixin heading-3() {
   font-size: functions.px-to-rem(18px);
-  @include heading-base();
+
+  @include heading-base;
 }
 
-@mixin heading-4 () {
+@mixin heading-4() {
   font-size: functions.px-to-rem(15px);
-  @include heading-base();
+
+  @include heading-base;
 }
 
-@mixin heading-5 () {
+@mixin heading-5() {
   font-size: functions.px-to-rem(14px);
-  @include heading-base();
+
+  @include heading-base;
 }
 
-@mixin heading-6 () {
+@mixin heading-6() {
   font-size: functions.px-to-rem(14px);
   font-style: italic;
-  @include heading-base();
+
+  @include heading-base;
 }
 
-@mixin list-separator () {
+@mixin list-separator() {
   > * {
     margin-right: 0.25rem;
   }

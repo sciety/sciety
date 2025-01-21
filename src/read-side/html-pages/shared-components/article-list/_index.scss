@@ -3,7 +3,8 @@
 .article-list {
   margin-top: 0;
   margin-bottom: 1.5rem;
-  @include list.basics();
+
+  @include list.basics;
 
   > li {
     margin-bottom: 0.5rem;

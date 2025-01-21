@@ -5,12 +5,12 @@
 @use 'layout';
 @use 'list';
 @use 'typography';
-
 @use 'local-settings';
 
 .article-actions {
   margin-bottom: local-settings.$component-vertical-spacing;
-  @include layout.column-two();
+
+  @include layout.column-two;
 
   @include breakpoints.two-column-display {
     padding-left: functions.px-to-rem(40px);
@@ -19,12 +19,13 @@
 }
 
 .article-actions-heading {
-  @include typography.heading-3();
+  @include typography.heading-3;
 }
 
 .article-actions-reviewing-groups {
   margin-bottom: functions.px-to-rem(32px);
-  @include list.basics();
+
+  @include list.basics;
 }
 
 .article-actions-reviewing-groups__item {
@@ -33,12 +34,14 @@
 
 .full-article-button {
   margin-bottom: functions.px-to-rem(32px);
-  @include button.primary-link();
+
+  @include button.primary-link;
 }
 
 .see-related-articles-button {
   margin-bottom: functions.px-to-rem(32px);
-  @include button.secondary-link();
+
+  @include button.secondary-link;
 
   @include breakpoints.two-column-display {
     margin-bottom: functions.px-to-rem(80px);
@@ -47,18 +50,20 @@
 
 .logged-out-call-to-action {
   margin-bottom: functions.px-to-rem(24px);
-  @include button.secondary-link();
+
+  @include button.secondary-link;
 }
 
 .saved-to-list {
   display: flex;
   align-items: center;
   margin-bottom: functions.px-to-rem(24px);
-  @include typography.button();
+
+  @include typography.button;
 }
 
 .saved-to-list:any-link {
-  @include typography.subtle-link();
+  @include typography.subtle-link;
 }
 
 .saved-to-list__icon {
@@ -66,7 +71,7 @@
 }
 
 .list-management {
-  @include card.basics();
+  @include card.basics;
 }
 
 .list-management__listed-in {
@@ -75,7 +80,8 @@
 
 .listed-in-list {
   margin-bottom: 0;
-  @include list.basics();
+
+  @include list.basics;
 
   li {
     margin-bottom: functions.px-to-rem(8px);
@@ -83,5 +89,5 @@
 }
 
 .article-actions__save_article {
-  @include button.primary-link();
+  @include button.primary-link;
 }

@@ -1,15 +1,13 @@
 @use 'sass:math';
-
 @use 'functions';
 @use 'breakpoints';
 
 $home-page-breakpoint: functions.px-to-em(964px);
 $home-page-section-max-width: functions.px-to-rem(1400px);
-
 $section-vertical-separation: functions.px-to-rem(96px);
 
 @mixin section-heading-on-not-narrow() {
-  @include breakpoints.not-narrow() {
+  @include breakpoints.not-narrow {
     font-size: functions.px-to-rem(28px);
   }
 }

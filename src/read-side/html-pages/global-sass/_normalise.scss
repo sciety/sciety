@@ -36,7 +36,8 @@ body {
 p {
   margin-top: 0;
   margin-bottom: functions.px-to-rem(24px);
-  @include typography.body();
+
+  @include typography.body;
 
 
   a {
@@ -54,37 +55,43 @@ p + ol {
 h1 {
   margin-top: 0;
   margin-bottom: functions.px-to-rem(16px);
-  @include typography.heading-1();
+
+  @include typography.heading-1;
 }
 
 h2 {
   margin-top: 0;
   margin-bottom: functions.px-to-rem(16px);
-  @include typography.heading-2();
+
+  @include typography.heading-2;
 }
 
 h3 {
   margin-top: 0;
   margin-bottom: functions.px-to-rem(16px);
-  @include typography.heading-3();
+
+  @include typography.heading-3;
 }
 
 h4 {
   margin-top: 0;
   margin-bottom: functions.px-to-rem(16px);
-  @include typography.heading-4();
+
+  @include typography.heading-4;
 }
 
 h5 {
   margin-top: 0;
   margin-bottom: functions.px-to-rem(16px);
-  @include typography.heading-5();
+
+  @include typography.heading-5;
 }
 
 h6 {
   margin-top: 0;
   margin-bottom: functions.px-to-rem(16px);
-  @include typography.heading-6();
+
+  @include typography.heading-6;
 }
 
 blockquote {
@@ -102,15 +109,16 @@ ul {
 }
 
 li {
-  @include typography.body();
+  @include typography.body;
 }
 
 a {
-  @include link.normal-state() {
+  @include link.normal-state {
     color: settings.$colour-accent;
     text-decoration: none;
   }
-  @include link.engaged-state() {
+
+  @include link.engaged-state {
     color: settings.$colour-accent-hover;
   }
 }
@@ -119,7 +127,7 @@ a[href],
 button,
 input,
 textarea {
-  @include _separate-area-when-focused();
+  @include _separate-area-when-focused;
 }
 
 input,
@@ -139,7 +147,8 @@ textarea {
 
 button {
   cursor: pointer;
-  @include typography.button();
+
+  @include typography.button;
 }
 
 fieldset {
@@ -224,7 +233,8 @@ th {
 address {
   font-style: normal;
   margin-bottom: functions.px-to-rem(16px);
-  @include typography.body();
+
+  @include typography.body;
 }
 
 *,

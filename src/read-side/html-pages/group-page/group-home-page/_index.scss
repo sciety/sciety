@@ -10,11 +10,11 @@
 }
 
 .follow-button {
-  @include button.primary();
+  @include button.primary;
 }
 
 .unfollow-button {
-  @include button.secondary();
+  @include button.secondary;
 }
 
 .group-page-actions {
@@ -25,5 +25,5 @@
 }
 
 .group-page-actions__secondary_button {
-  @include button.secondary-link();
+  @include button.secondary-link;
 }

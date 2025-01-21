@@ -2,14 +2,14 @@
 @use 'card';
 
 .supplementary-info {
-  @include layout.allow-edge-to-edge-content-when-narrow();
-  @include layout.column-two();
+  @include layout.allow-edge-to-edge-content-when-narrow;
+  @include layout.column-two;
 }
 
 .supplementary-list {
-  @include card.list();
+  @include card.list;
 }
 
 .supplementary-list__item {
-  @include card.list-item();
+  @include card.list-item;
 }

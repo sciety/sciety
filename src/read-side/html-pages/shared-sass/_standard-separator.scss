@@ -8,6 +8,7 @@ $_width: settings.$border-width;
   border-top: $_width $_style $_colour;
   padding-top: $distance;
 }
+
 @mixin bottom($distance) {
   border-bottom: $_width $_style $_colour;
   padding-bottom: $distance;

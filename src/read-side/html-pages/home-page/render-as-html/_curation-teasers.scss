@@ -42,10 +42,7 @@ $_arbitrary-large-amount-of-px: 9000px;
       content: '';
       border-left: $_arbitrary-large-amount-of-px solid settings.$colour-curation-teasers-background;
       position: absolute;
-      bottom: 0;
-      left: calc(#{$_arbitrary-large-amount-of-px} * -1);
-      top: 0;
-      right: 0;
+      inset: 0 0 0 calc(#{$_arbitrary-large-amount-of-px} * -1);
       z-index: -1;
     }
 
@@ -53,10 +50,7 @@ $_arbitrary-large-amount-of-px: 9000px;
       content: '';
       border-left: $_arbitrary-large-amount-of-px solid settings.$colour-curation-teasers-background;
       position: absolute;
-      bottom: 0;
-      left: 0;
-      top: 0;
-      right: calc(#{$_arbitrary-large-amount-of-px} * -1);
+      inset: 0 calc(#{$_arbitrary-large-amount-of-px} * -1) 0 0;
       z-index: -1;
     }
   }
@@ -64,13 +58,15 @@ $_arbitrary-large-amount-of-px: 9000px;
 
 .curation-teasers__title {
   margin-bottom: functions.px-to-rem(20px);
-  @include layout.page-content-horizontal-margins();
-  @include common.section-heading-on-not-narrow();
+
+  @include layout.page-content-horizontal-margins;
+  @include common.section-heading-on-not-narrow;
 }
 
 .curation-teasers__teasers {
   margin-bottom: 0;
-  @include list.basics();
+
+  @include list.basics;
 
   @media screen and (min-width: common.$home-page-breakpoint) {
     display: flex;
@@ -128,6 +124,7 @@ $_arbitrary-large-amount-of-px: 9000px;
   margin-bottom: functions.px-to-rem(24px);
   padding-left: 0;
   border-width: 0;
+
   @include _clamp-to-max-number-of-lines(10);
 }
 

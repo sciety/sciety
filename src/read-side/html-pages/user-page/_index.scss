@@ -15,7 +15,8 @@
     height: avatar.$size--large;
     flex: 0 0 avatar.$size--large;
     margin-right: functions.px-to-rem(16px);
-    @include avatar.border();
+
+    @include avatar.border;
   }
 
   h1 {
@@ -25,7 +26,7 @@
   .page-header__handle {
     font-size: functions.px-to-rem(16px);
 
-    @include breakpoints.not-narrow() {
+    @include breakpoints.not-narrow {
       font-size: functions.px-to-rem(20px);
     }
   }
@@ -36,7 +37,7 @@
   margin-left: functions.px-to-rem(16px);
   margin-right: functions.px-to-rem(16px);
 
-  @include breakpoints.not-narrow() {
+  @include breakpoints.not-narrow {
     margin-left: 0;
     margin-right: 0;
   }
@@ -45,5 +46,6 @@
 .create-new-list-call-to-action {
   margin-top: functions.px-to-rem(16px);
   margin-bottom: functions.px-to-rem(16px);
-  @include button.primary();
+
+  @include button.primary;
 }

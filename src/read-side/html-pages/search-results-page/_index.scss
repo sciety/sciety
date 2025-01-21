@@ -1,5 +1,4 @@
 @use 'sass:math';
-
 @use 'breakpoints';
 @use 'functions';
 @use 'layout';
@@ -14,7 +13,7 @@ $_common-space-beneath: 0.5rem;
 }
 
 .related-groups {
-  @include layout.column-two();
+  @include layout.column-two;
 
   @include breakpoints.two-column-display {
     grid-row: 3;
@@ -23,7 +22,7 @@ $_common-space-beneath: 0.5rem;
 }
 
 .related-groups__list {
-  @include list.basics()
+  @include list.basics
 }
 
 .related-groups__list_item {
@@ -36,13 +35,15 @@ $_common-space-beneath: 0.5rem;
 
 .search-results__header {
   margin-bottom: $_common-space-beneath;
-  @include typography.details();
+
+  @include typography.details;
 }
 
 .search-results__page_count {
   font-weight: 400;
   margin-bottom: $_common-space-beneath;
-  @include typography.details();
+
+  @include typography.details;
 }
 
 .search-results__header_details {

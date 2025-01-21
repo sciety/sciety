@@ -1,5 +1,4 @@
 @use 'sass:math';
-
 @use 'button';
 @use 'functions';
 @use 'settings';
@@ -25,7 +24,8 @@ $_clear-button-inline-size: 48px;
 .search-form__checkbox_label {
   display: inline-block;
   margin-bottom: functions.px-to-rem(8px);
-  @include typography.body();
+
+  @include typography.body;
 }
 
 .search-form__clear {
@@ -47,5 +47,6 @@ $_clear-button-inline-size: 48px;
 
 .search-form__submit {
   display: block;
-  @include button.primary();
+
+  @include button.primary;
 }

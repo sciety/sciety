@@ -20,15 +20,16 @@ $_avatar-height-coupled-to-buttons: 34px;
   margin-right: 0;
   flex-grow: 1;
   align-self: center;
-  @include schemed-colours.light();
 
-  @include breakpoints.site-header() {
+  @include schemed-colours.light;
+
+  @include breakpoints.site-header {
     margin-right: functions.px-to-rem(settings.$default-gutter);
   }
 }
 
 .utility-bar--dark {
-  @include schemed-colours.dark();
+  @include schemed-colours.dark;
 }
 
 .utility-bar__list {
@@ -36,7 +37,8 @@ $_avatar-height-coupled-to-buttons: 34px;
   justify-content: flex-start;
   margin-bottom: 0;
   margin-left: auto;
-  @include list.basics();
+
+  @include list.basics;
 }
 
 .utility-bar__list_item {
@@ -57,7 +59,7 @@ $_avatar-height-coupled-to-buttons: 34px;
 .utility-bar__list_item--navigation {
   display: none;
 
-  @include breakpoints.site-header() {
+  @include breakpoints.site-header {
     display: flex;
   }
 }
@@ -67,31 +69,35 @@ $_avatar-height-coupled-to-buttons: 34px;
   padding-bottom: $_navigation-text-bottom-spacing;
   border-bottom: settings.$navigation-link-border-width solid transparent;
   display: block;
-  @include typography.button();
 
-  @include link.normal-state() {
+  @include typography.button;
+
+  @include link.normal-state {
     color: var(--colour-text-navigation-link);
   }
-  @include link.engaged-state() {
+
+  @include link.engaged-state {
     color: var(--colour-text-primary);
     border-color: var(--colour-text-primary);
   }
 }
 
 .utility-bar__list_link_primary_button {
-  @include button.primary-link();
+  @include button.primary-link;
 }
 
 .utility-bar__list_link_secondary_button {
   border-radius: settings.$border-radius;
   border: settings.$border-width solid settings.$colour-furniture;
   padding: functions.px-to-rem(8px) functions.px-to-rem(12px - settings.$border-width);
-  @include typography.button();
 
-  @include link.normal-state() {
+  @include typography.button;
+
+  @include link.normal-state {
     color: var(--colour-text-navigation-link);
   }
-  @include link.engaged-state() {
+
+  @include link.engaged-state {
     background-color: settings.$colour-furniture;
     color: settings.$colour-brand;
   }
@@ -112,7 +118,8 @@ $_avatar-height-coupled-to-buttons: 34px;
 
   &::before {
     content: 'Go to profile';
-    @include layout.visually-hidden();
+
+    @include layout.visually-hidden;
   }
 }
 
@@ -122,9 +129,10 @@ $_avatar-height-coupled-to-buttons: 34px;
   height: auto;
   margin-right: functions.px-to-rem(20px);
   display: inline-block;
-  @include avatar.border();
 
-  @include breakpoints.site-header() {
+  @include avatar.border;
+
+  @include breakpoints.site-header {
     width: functions.px-to-rem(avatar.$size--in-site-header);
     margin-right: functions.px-to-rem($_avatar-right-margin);
   }
@@ -135,7 +143,7 @@ $_avatar-height-coupled-to-buttons: 34px;
   padding-bottom: $_navigation-text-bottom-spacing;
   display: none;
 
-  @include breakpoints.site-header() {
+  @include breakpoints.site-header {
     display: unset;
     max-width: functions.px-to-rem($_space-allocated-to-avatar-and-handle - avatar.$size--in-site-header - $_avatar-right-margin);
     overflow: hidden;

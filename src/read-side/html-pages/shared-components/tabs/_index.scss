@@ -1,7 +1,6 @@
 @use 'sass:math';
 @use 'settings';
 @use 'functions';
-
 @use 'breakpoints';
 @use 'typography';
 @use 'list';
@@ -9,20 +8,22 @@
 .tab-list {
   border-bottom: 2px solid transparent;
   margin-bottom: 0;
-  @include list.basics();
+
+  @include list.basics;
 }
 
 .tab {
   padding: 0;
   margin-bottom: functions.px-to-rem(14px);
   text-transform: uppercase;
-  @include typography.button();
+
+  @include typography.button;
 
   & {
     line-height: math.div(20px, 14px);
   }
 
-  @include breakpoints.not-narrow() {
+  @include breakpoints.not-narrow {
     display: inline-block;
     margin-bottom: -2px;
     text-align: center;
@@ -40,7 +41,7 @@
     }
   }
 
-  @include breakpoints.not-narrow() {
+  @include breakpoints.not-narrow {
     &:any-link {
       color: settings.$colour-text-primary;
 
@@ -53,7 +54,7 @@
 }
 
 .tab--active {
-  @include breakpoints.not-narrow() {
+  @include breakpoints.not-narrow {
     border-bottom: 2px solid settings.$colour-accent;
   }
 }

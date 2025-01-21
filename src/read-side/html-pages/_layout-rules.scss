@@ -4,7 +4,7 @@
 @use 'layout';
 
 .visually-hidden {
-  @include layout.visually-hidden();
+  @include layout.visually-hidden;
 }
 
 .sciety-grid-two-columns {
@@ -27,6 +27,7 @@
   width: 100%;
   max-width: functions.px-to-rem(settings.$max-site-width);
   flex-grow: 1;
+
   @include breakpoints.not-narrow {
     margin: 0 auto;
     padding: 0 functions.px-to-rem(settings.$default-gutter);
