@@ -5,6 +5,7 @@
     "at-rule-disallowed-list": ["extend"],
     "order/properties-alphabetical-order": null,
     "scss/selector-no-redundant-nesting-selector": null,
+    "scss/dollar-variable-pattern": null,
     "selector-class-pattern": null,
     "selector-no-qualifying-type": null,
     "selector-max-compound-selectors": null,
