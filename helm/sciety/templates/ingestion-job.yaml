@@ -27,8 +27,6 @@ spec:
             - secretRef:
                 name: {{ .Release.Name }}--secret-env-vars
             env:
-              - name: CROSSREF_API_BEARER_TOKEN
-                value: {{ .Values.crossrefApiBearerToken }}
               - name: SCIETY_TEAM_API_BEARER_TOKEN
                 value: {{ .Values.ingestionAuthBearerToken }}
               - name: INGESTION_TARGET_APP
