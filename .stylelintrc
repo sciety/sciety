@@ -1,6 +1,6 @@
 {
   "extends": "stylelint-config-standard-scss",
-  "plugins": "stylelint-order",
+  "plugins": ["stylelint-order"],
   "rules": {
     "at-rule-disallowed-list": ["extend"],
     "order/properties-alphabetical-order": null,
