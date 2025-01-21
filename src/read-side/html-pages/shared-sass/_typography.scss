@@ -101,7 +101,7 @@
   @include heading-base();
 }
 
-@mixin list-separator() {
+@mixin list-separator () {
   > * {
     margin-right: 0.25rem;
   }
