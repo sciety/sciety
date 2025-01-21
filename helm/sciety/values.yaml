@@ -3,7 +3,6 @@ images:
     repository: ghcr.io/sciety/sciety
 
 allowSiteCrawlers: "false"
-crossrefApiBearerToken:
 experimentEnabled: "false"
 coarNotificationDeliveryEnabled: "false"
 fathomSiteId: 
