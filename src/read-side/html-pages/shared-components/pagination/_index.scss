@@ -9,7 +9,8 @@ $_pagination-controls-horizontal-spacing: functions.px-to-rem(2px);
 
 .pagination-controls__next_link {
   margin-bottom: functions.px-to-rem(16px);
-  @include button.secondary-link();
+
+  @include button.secondary-link;
 }
 
 .pagination-controls__page_count {

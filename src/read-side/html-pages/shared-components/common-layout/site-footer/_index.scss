@@ -1,5 +1,4 @@
 @use 'sass:math';
-
 @use 'breakpoints';
 @use 'button';
 @use 'functions';
@@ -19,10 +18,11 @@ $_outer-vertical-spacing: functions.px-to-rem(32px);
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  @include standard-separator.top($_outer-vertical-spacing);
-  @include layout.page-content-horizontal-margins();
 
-  @include breakpoints.not-narrow() {
+  @include standard-separator.top($_outer-vertical-spacing);
+  @include layout.page-content-horizontal-margins;
+
+  @include breakpoints.not-narrow {
     margin-left: auto;
     margin-right: auto;
   }
@@ -34,11 +34,12 @@ $_outer-vertical-spacing: functions.px-to-rem(32px);
 
 .pre-footer__slogan {
   margin-bottom: functions.px-to-rem(16px);
-  @include typography.heading-2();
+
+  @include typography.heading-2;
 }
 
 .pre-footer__call_to_action {
-  @include button.primary-link();
+  @include button.primary-link;
 }
 
 .main-footer {
@@ -54,11 +55,13 @@ $_outer-vertical-spacing: functions.px-to-rem(32px);
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  @include list.basics();
+
+  @include list.basics;
 }
 
 .main-footer__navigation_item {
   $_item-spacing: 32px;
+
   margin-left: functions.px-to-rem(math.div($_item-spacing, 2));
   margin-right: functions.px-to-rem(math.div($_item-spacing, 2));
   padding-bottom: functions.px-to-rem(16px);
@@ -69,12 +72,14 @@ $_outer-vertical-spacing: functions.px-to-rem(32px);
   font-weight: bold;
   border-bottom: settings.$navigation-link-border-width solid settings.$colour-white;
   padding-bottom: functions.px-to-rem(settings.$navigation-link-border-distance);
+
   @include typography.sizing(18px, 20px);
 
-  @include link.normal-state() {
+  @include link.normal-state {
     color: settings.$colour-white;
   }
-  @include link.engaged-state() {
+
+  @include link.engaged-state {
     color: settings.$colour-accent-hover-on-dark-background;
     border-color: transparent;
   }
@@ -82,15 +87,17 @@ $_outer-vertical-spacing: functions.px-to-rem(32px);
 
 .main-footer__small_print {
   color: settings.$colour-white;
+
   @include typography.sizing(14px, 16px);
 
   a {
-    @include link.normal-state() {
+    @include link.normal-state {
       font-weight: normal;
       text-decoration: underline;
       color: inherit;
     }
-    @include link.engaged-state() {
+
+    @include link.engaged-state {
       color: settings.$colour-accent-hover-on-dark-background;
     }
   }

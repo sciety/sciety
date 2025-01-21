@@ -16,7 +16,8 @@
 
 .home-page-groups__title {
   margin-bottom: functions.px-to-rem(32px);
-  @include common.section-heading-on-not-narrow();
+
+  @include common.section-heading-on-not-narrow;
 }
 
 .home-page-groups-list {
@@ -25,7 +26,8 @@
   flex-wrap: wrap;
   justify-content: space-evenly;
   gap: functions.px-to-rem(56px) functions.px-to-rem(56px);
-  @include list.basics();
+
+  @include list.basics;
 }
 
 .home-page-groups__button_wrapper {
@@ -35,5 +37,6 @@
 
 .home-page-groups__button {
   margin: 0 auto;
-  @include button.secondary-link();
+
+  @include button.secondary-link;
 }

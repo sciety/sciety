@@ -4,7 +4,7 @@
 @use 'layout';
 
 .visually-hidden {
-  @include layout.visually-hidden();
+  @include layout.visually-hidden;
 }
 
 .sciety-grid-two-columns {
@@ -13,6 +13,9 @@
   grid-column-gap: functions.px-to-rem(settings.$default-gutter);
   grid-auto-rows: min-content;
   grid-auto-flow: column;
+  width: 100%;
+  max-width: functions.px-to-rem(settings.$max-site-width);
+  flex-grow: 1;
 
   > * {
     grid-column: 1 / -1;
@@ -21,12 +24,7 @@
       grid-column: 1 / 9;
     }
   }
-}
 
-.sciety-grid-two-columns {
-  width: 100%;
-  max-width: functions.px-to-rem(settings.$max-site-width);
-  flex-grow: 1;
   @include breakpoints.not-narrow {
     margin: 0 auto;
     padding: 0 functions.px-to-rem(settings.$default-gutter);

@@ -7,8 +7,8 @@
 
 $_card-border-radius: settings.$border-radius;
 
-@mixin basics ($is-entire-card-linked: false) {
-  @if ($is-entire-card-linked == true) {
+@mixin basics($is-entire-card-linked: false) {
+  @if $is-entire-card-linked == true {
     position: relative;
   }
 
@@ -29,10 +29,11 @@ $_card-border-radius: settings.$border-radius;
 
 @mixin title() {
   margin-bottom: 0.25rem;
-  @include typography.card-title();
+
+  @include typography.card-title;
 }
 
-@mixin link () {
+@mixin link() {
   color: settings.$colour-text-primary;
 
   &:any-link {
@@ -46,35 +47,34 @@ $_card-border-radius: settings.$border-radius;
 }
 
 @mixin entire-card-link() {
-  @include link();
-
-  &:hover {
-    &::after {
-      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
-    }
-  }
+  @include link;
 
   &::after {
     content: '';
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    inset: 0;
     border-radius: $_card-border-radius;
+  }
+
+  &:hover {
+    &::after {
+      box-shadow: 0 0 10px 0 rgb(0 0 0 / 20%);
+    }
   }
 }
 
 @mixin meta() {
   color: settings.$colour-text-secondary;
-  @include typography.details();
-  @include typography.list-separator();
+
+  @include typography.details;
+  @include typography.list-separator;
 }
 
 @mixin list() {
   margin-top: 0;
   margin-bottom: 1.5rem;
-  @include list.basics();
+
+  @include list.basics;
 
   > li {
     margin-bottom: 0.5rem;
@@ -99,5 +99,6 @@ $_card-border-radius: settings.$border-radius;
   width: avatar.$size--small;
   height: avatar.$size--small;
   flex: 0 0 avatar.$size--small;
-  @include avatar.border();
+
+  @include avatar.border;
 }

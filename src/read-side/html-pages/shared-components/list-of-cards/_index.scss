@@ -2,6 +2,6 @@
 @use 'layout';
 
 .card-list {
-  @include card.list();
-  @include layout.allow-edge-to-edge-content-when-narrow();
+  @include card.list;
+  @include layout.allow-edge-to-edge-content-when-narrow;
 }

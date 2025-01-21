@@ -1,5 +1,4 @@
 @use 'sass:math';
-
 @use 'settings';
 @use 'functions';
 @use 'button';
@@ -20,7 +19,7 @@ $_mobile-menu-perimeter-spacing: functions.px-to-rem(24px);
   background-color: settings.$colour-brand;
   text-align: center;
 
-  @include breakpoints.site-header() {
+  @include breakpoints.site-header {
     display: none;
   }
 }
@@ -32,7 +31,7 @@ $_mobile-menu-perimeter-spacing: functions.px-to-rem(24px);
 }
 
 .mobile-menu__links {
-  @include list.basics();
+  @include list.basics;
 }
 
 .mobile-menu__link {
@@ -40,7 +39,8 @@ $_mobile-menu-perimeter-spacing: functions.px-to-rem(24px);
   align-items: center;
   border-radius: settings.$border-radius;
   margin-bottom: functions.px-to-rem(32px);
-  @include typography.button();
+
+  @include typography.button;
 
   &:any-link {
     color: settings.$colour-white;
@@ -62,23 +62,26 @@ $_mobile-menu-perimeter-spacing: functions.px-to-rem(24px);
   height: auto;
   display: inline-block;
   margin-right: functions.px-to-rem(12px);
-  @include avatar.border();
+
+  @include avatar.border;
 }
 
 .mobile-menu__link_primary_button {
-  @include button.primary-link();
+  @include button.primary-link;
 }
 
 .mobile-menu__link_secondary_button {
   border-radius: settings.$border-radius;
   border: settings.$border-width solid settings.$colour-furniture;
   padding: functions.px-to-rem(8px) functions.px-to-rem(12px - settings.$border-width);
-  @include typography.button();
 
-  @include link.normal-state() {
+  @include typography.button;
+
+  @include link.normal-state {
     color: settings.$colour-white;
   }
-  @include link.engaged-state() {
+
+  @include link.engaged-state {
     background-color: settings.$colour-furniture;
     color: settings.$colour-brand;
   }

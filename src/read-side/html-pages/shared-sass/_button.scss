@@ -8,18 +8,17 @@
   display: inline-block;
   padding: functions.px-to-rem(9px) functions.px-to-rem(12px);
   border-radius: settings.$border-radius;
-
   color: $text;
   background-color: $background;
 
-  @include typography.button();
+  @include typography.button;
 
-  @include link.normal-state() {
+  @include link.normal-state {
     color: $text;
     background-color: $background;
   }
 
-  @include link.engaged-state() {
+  @include link.engaged-state {
     background-color: $background-hover;
     color: $text;
     text-decoration: none;
@@ -30,7 +29,6 @@
   border-width: 0;
   border-radius: settings.$border-radius;
   padding: functions.px-to-rem(9px) functions.px-to-rem(12px);
-
   color: $text;
   background-color: $background;
 

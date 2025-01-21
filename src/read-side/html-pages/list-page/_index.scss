@@ -29,7 +29,8 @@ $_image-max-width: 200px;
 
   h2 {
     margin-bottom: 0;
-    @include typography.heading-3();
+
+    @include typography.heading-3;
   }
 }
 
@@ -38,7 +39,7 @@ $_image-max-width: 200px;
   display: flex;
   flex-direction: column-reverse;
 
-  @include breakpoints.two-column-display() {
+  @include breakpoints.two-column-display {
     flex-direction: row;
     justify-content: space-between;
     grid-column: 1/-1;
@@ -49,14 +50,16 @@ $_image-max-width: 200px;
   display: flex;
   align-items: center;
   margin-bottom: functions.px-to-rem(8px);
-  @include typography.subheading();
+
+  @include typography.subheading;
 }
 
 .page-header--list .page-header__avatar {
   width: avatar.$size--medium;
   height: avatar.$size--medium;
   margin-right: functions.px-to-rem(8px);
-  @include avatar.border();
+
+  @include avatar.border;
 }
 
 .page-header--list .page-header__description {
@@ -65,8 +68,9 @@ $_image-max-width: 200px;
 
 .page-header--list .page-header__meta {
   margin-bottom: functions.px-to-rem(16px);
-  @include typography.details();
-  @include typography.list-separator();
+
+  @include typography.details;
+  @include typography.list-separator;
 }
 
 .page-header--list .page-header__list_image {
@@ -92,7 +96,7 @@ $_image-max-width: 200px;
   background-size: functions.px-to-rem($_edit-details-icon-size);
   background-position: functions.px-to-rem($_edit-details-icon-offset) 0.25rem;
 
-  @include button.primary-link();
+  @include button.primary-link;
 
   & {
     padding-left: functions.px-to-rem($_edit-details-icon-size + $_edit-details-icon-offset);
@@ -100,22 +104,23 @@ $_image-max-width: 200px;
 }
 
 .list-page-actions__related_articles {
-  @include button.secondary-link();
+  @include button.secondary-link;
 }
 
 .list-page-actions__subscribe {
-  @include button.primary-link();
+  @include button.primary-link;
 }
 
 .articles-page-count {
   margin-bottom: functions.px-to-rem(16px);
-  @include typography.details();
+
+  @include typography.details;
 }
 
 .saved-articles-control--remove {
-  @include button.secondary();
+  @include button.secondary;
 }
 
 .saved-articles-control--annotate {
-  @include button.primary-link();
+  @include button.primary-link;
 }

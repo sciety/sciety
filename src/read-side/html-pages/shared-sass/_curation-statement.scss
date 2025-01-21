@@ -1,7 +1,7 @@
 @use 'settings';
 @use 'functions';
 
-@mixin quote (
+@mixin quote(
 $quotation-mark-font-size,
 $open-quotation-left-offset: 0,
 $open-quotation-top-offset: 0,

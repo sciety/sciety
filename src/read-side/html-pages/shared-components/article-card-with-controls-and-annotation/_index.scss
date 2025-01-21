@@ -40,7 +40,7 @@ $_triangle-size: 32px;
     left: functions.px-to-rem(32px);
   }
 
-  @include breakpoints.two-column-display() {
+  @include breakpoints.two-column-display {
     margin-top: 0;
 
     &::before {
@@ -74,5 +74,6 @@ $_triangle-size: 32px;
   width: avatar.$size--small;
   height: avatar.$size--small;
   margin-right: functions.px-to-rem(16px);
-  @include avatar.border();
+
+  @include avatar.border;
 }

@@ -5,7 +5,6 @@
 @use 'list';
 @use 'curation-statement';
 @use 'standard-separator';
-
 @use 'local-settings';
 
 .article-page-wrapper {
@@ -22,7 +21,7 @@
     padding-right: settings.$default-gutter;
   }
 
-  @include breakpoints.not-narrow() {
+  @include breakpoints.not-narrow {
     padding-left: 0;
     padding-right: 0;
   }
@@ -32,8 +31,9 @@
   padding-bottom: local-settings.$component-vertical-spacing;
   background-color: settings.$colour-background-grey;
   margin-top: calc(-1 * #{settings.$border-width});
-  @include layout.allow-edge-to-edge-content-when-narrow();
-  @include _apply-page-gutter-as-padding();
+
+  @include layout.allow-edge-to-edge-content-when-narrow;
+  @include _apply-page-gutter-as-padding;
 }
 
 .page-header.page-header--article {
@@ -51,7 +51,8 @@
 .article-author-list {
   margin-top: 0;
   margin-bottom: 0;
-  @include list.basics();
+
+  @include list.basics;
 
   + * {
     clear: left;
@@ -69,17 +70,20 @@
 .article-author-list > li {
   float: left;
   font-weight: bold;
-  @include list.author-separator-terminator();
+
+  @include list.author-separator-terminator;
 }
 
 .curation-statements {
   margin-top: 3rem;
   margin-bottom: 0;
-  @include list.basics();
+
+  @include list.basics;
 }
 
 .curation-statement {
   margin-bottom: 3rem;
+
   @include standard-separator.top(3rem);
 
   &:last-child {
@@ -99,6 +103,7 @@
 .curation-statement-full-text {
   padding-left: functions.px-to-rem(32px);
   padding-right: functions.px-to-rem(32px);
+
   @include curation-statement.quote(
     $quotation-mark-font-size: 48px,
     $close-quotation-bottom-offset: -32px,

@@ -1,13 +1,13 @@
 @use 'settings';
 
-@mixin light () {
+@mixin light() {
     --colour-site-header-background: #{settings.$colour-white};
     --colour-text-primary: #{settings.$colour-text-primary};
     --colour-text-navigation-link: #{settings.$colour-brand};
     --colour-site-header-border: #{settings.$colour-furniture};
 }
 
-@mixin dark () {
+@mixin dark() {
     --colour-site-header-background: #{settings.$colour-brand};
     --colour-text-primary: #{settings.$colour-white};
     --colour-text-navigation-link: #{settings.$colour-white};

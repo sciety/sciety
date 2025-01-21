@@ -15,6 +15,7 @@ $_card-padding: 16px;
   position: relative;
   background-color: settings.$colour-white;
   padding-top: 2rem;
+
   @include standard-separator.bottom(2.5rem);
 }
 
@@ -29,7 +30,7 @@ $_card-padding: 16px;
   font-weight: bold;
   margin-bottom: 1rem;
 
-  @include breakpoints.not-narrow() {
+  @include breakpoints.not-narrow {
     font-size: functions.px-to-rem(24px);
   }
 }
@@ -50,7 +51,7 @@ $_card-padding: 16px;
 }
 
 .article-card__meta {
-  @include card.meta();
+  @include card.meta;
 }
 
 .article-card__controls {
@@ -64,7 +65,8 @@ $_card-padding: 16px;
 .article-card-teasers {
   margin-bottom: functions.px-to-rem(24px);
   background-color: settings.$colour-background-grey;
-  @include list.basics();
+
+  @include list.basics;
 
   & {
     padding: functions.px-to-rem($_card-padding);
@@ -86,6 +88,7 @@ $_card-padding: 16px;
 .article-card-teasers__teaser_quote {
   padding-left: functions.px-to-rem($_card-padding);
   padding-right: functions.px-to-rem($_card-padding);
+
   @include curation-statement.quote(
     $quotation-mark-font-size: 32px,
     $close-quotation-bottom-offset: -8px,

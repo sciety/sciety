@@ -2,38 +2,32 @@
 
 $base-font-measure: 16px;
 $max-site-width: 1200px;
-
 $border-radius: 6px;
 $border-width: 1px;
 $border-width-wide: 5px;
 $focus-width: 3px;
-
-$colour-brand: rgb(52, 67, 74);
-$colour-value-statement-background: rgb(44,56,61);
-$colour-curation-teasers-background: rgb(245,246,250);
-$colour-accent: rgb(206, 72, 26);
+$colour-brand: rgb(52 67 74);
+$colour-value-statement-background: rgb(44 56 61);
+$colour-curation-teasers-background: rgb(245 246 250);
+$colour-accent: rgb(206 72 26);
 $colour-accent-hover: color.adjust($colour-accent, $lightness: -12%);
-$colour-alert: rgb(159, 0, 0);
-$colour-success: rgb(0, 112, 60);
-$colour-focus: rgb(245, 218, 209);
-$colour-text-primary: rgb(36, 42, 51);
-$colour-text-secondary: rgb(75, 96, 106);
-$colour-background-grey: rgb(239, 242, 243);
-$colour-furniture: rgb(207, 216, 220);
-$colour-white: rgb(255, 255, 255);
-$colour-form-addon-background: rgb(243, 244, 246);
-$colour-accent-hover-on-dark-background: rgb(234, 122, 83);
-
+$colour-alert: rgb(159 0 0);
+$colour-success: rgb(0 112 60);
+$colour-focus: rgb(245 218 209);
+$colour-text-primary: rgb(36 42 51);
+$colour-text-secondary: rgb(75 96 106);
+$colour-background-grey: rgb(239 242 243);
+$colour-furniture: rgb(207 216 220);
+$colour-white: rgb(255 255 255);
+$colour-form-addon-background: rgb(243 244 246);
+$colour-accent-hover-on-dark-background: rgb(234 122 83);
 $default-gutter: 20px;
 $default-form-gutter: 8px;
 $default-form-vertical-spacing: 24px;
 $default-form-element-separation: 16px;
-
-$font-family: Ubuntu, sans-serif;
+$font-family: ubuntu, sans-serif;
 $font-serif: 'Noto Serif', serif;
-
 $site-header-height: 62px;
-
 $click-target-separation: 22px;
 $navigation-link-border-distance: 4px;
 $navigation-link-border-width: 2px;

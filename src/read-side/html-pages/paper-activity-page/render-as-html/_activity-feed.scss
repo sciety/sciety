@@ -7,8 +7,8 @@
 @use 'typography';
 
 .activity-feed__list {
-  @include card.list();
-  @include layout.allow-edge-to-edge-content-when-narrow();
+  @include card.list;
+  @include layout.allow-edge-to-edge-content-when-narrow;
 
   p:last-child {
     margin-bottom: 0;
@@ -16,8 +16,8 @@
 }
 
 .activity-feed__item {
-  @include card.basics();
-  @include card.list-item();
+  @include card.basics;
+  @include card.list-item;
 }
 
 .activity-feed__item__contents {
@@ -32,7 +32,8 @@
 
 .activity-feed__item__avatar {
   margin-right: functions.px-to-rem(8px);
-  @include card.avatar();
+
+  @include card.avatar;
 }
 
 .activity-feed__item__meta {
@@ -80,6 +81,7 @@ p.activity-feed__item__title {
 
   h3 {
     font-weight: bold;
+
     @include typography.sizing($font-size: settings.$base-font-measure, $line-height-in-px: 24px);
   }
 
@@ -118,6 +120,7 @@ p.activity-feed__item__title {
     @include link.normal-state {
       font-weight: bold;
     }
+
     @include link.engaged-state {
       text-decoration: underline;
     }

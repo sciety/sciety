@@ -27,7 +27,6 @@ $_clear-button-inline-size: 48px;
   background-color: settings.$colour-white;
   padding: functions.px-to-rem(16px)
     functions.px-to-rem(settings.$default-gutter);
-
   border: settings.$border-width solid settings.$colour-furniture;
   border-left-width: 0;
   border-right-width: 0;
@@ -42,7 +41,8 @@ $_clear-button-inline-size: 48px;
     margin-right: functions.px-to-rem(
             settings.$default-form-element-separation
     );
-    @include button.primary();
+
+    @include button.primary;
   }
 
   dl {
@@ -50,7 +50,7 @@ $_clear-button-inline-size: 48px;
     margin-bottom: 1.5rem;
     font-size: $_label-font-size;
 
-    @include breakpoints.not-narrow() {
+    @include breakpoints.not-narrow {
       display: grid;
       grid-template-columns: 2fr 8fr;
       column-gap: functions.px-to-rem(settings.$default-gutter);
@@ -98,7 +98,7 @@ $_clear-button-inline-size: 48px;
 }
 
 .standard-form__cancel {
-  @include button.secondary-link();
+  @include button.secondary-link;
 }
 
 .standard-form__full_width_text_input {
@@ -106,10 +106,7 @@ $_clear-button-inline-size: 48px;
   border-radius: settings.$border-radius;
   height: $_text-input-height;
   width: 100%;
-  padding-top: functions.px-to-rem(17px);
-  padding-bottom: functions.px-to-rem(17px);
-  padding-left: functions.px-to-rem(12px);
-  padding-right: functions.px-to-rem($_clear-button-inline-size);
+  padding: functions.px-to-rem(17px) functions.px-to-rem($_clear-button-inline-size) functions.px-to-rem(17px) functions.px-to-rem(12px);
   margin-bottom: functions.px-to-rem(8px);
   color: settings.$colour-text-primary;
 }
