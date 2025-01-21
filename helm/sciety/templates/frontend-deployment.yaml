@@ -38,8 +38,6 @@ spec:
               value: "{{ .Values.appCache }}"
             - name: CACHE_HOST
               value: "{{ .Release.Name }}--cache"
-            - name: CROSSREF_API_BEARER_TOKEN
-              value: {{ .Values.crossrefApiBearerToken }}
             - name: EXPERIMENT_ENABLED
               value: "{{ .Values.experimentEnabled }}"
             - name: COAR_NOTIFICATION_DELIVERY_ENABLED
