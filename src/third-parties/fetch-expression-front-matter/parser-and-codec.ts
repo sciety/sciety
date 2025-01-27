@@ -58,6 +58,7 @@ const parser = new XMLParser({
   transformTagName: (tagName) => ((['organization', 'person_name']).includes(tagName) ? '_org_or_person' : tagName),
   ignoreAttributes: (aName) => aName !== 'contributor_role',
   isArray: (tagNameOfItem) => ['_org_or_person', 'titles', 'abstract'].includes(tagNameOfItem),
+  parseTagValue: false,
 });
 
 export const parseXmlDocument = (

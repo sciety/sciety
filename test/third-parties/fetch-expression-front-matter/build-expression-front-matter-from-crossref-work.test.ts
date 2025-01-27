@@ -402,7 +402,7 @@ describe('build-expression-front-matter-from-crossref-work', () => {
         expect(title).toBe('Airway recommendations for perioperative patients during the COVID-19 pandemic: a scoping review');
       });
 
-      it.failing('provides numeric values as strings', () => {
+      it('provides numeric values as strings', () => {
         const title = extractTitleFromFrontMatter(`
           <titles>
             <title>0</title>
