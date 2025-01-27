@@ -7,7 +7,6 @@ import { buildExpressionFrontMatterFromCrossrefWork } from './build-expression-f
 import { Logger } from '../../logger';
 import * as DE from '../../types/data-error';
 import { ExpressionDoi } from '../../types/expression-doi';
-import { decodeAndLogFailures } from '../decode-and-log-failures';
 import { ExternalQueries } from '../external-queries';
 import { QueryExternalService } from '../query-external-service';
 
@@ -32,8 +31,11 @@ export const fetchExpressionFrontMatter = (
   crossrefWorksTransformEndpoint,
   queryExternalService('warn', crossrefHeaders(crossrefApiBearerToken)),
   TE.chainEitherKW(flow(
-    decodeAndLogFailures(logger, tt.NonEmptyString, { expressionDoi }),
-    E.mapLeft(() => DE.unavailable),
+    tt.NonEmptyString.decode,
+    E.mapLeft(() => {
+      logger('error', 'crossref/fetch-expression-front-matter: Crossref returned an empty string', { expressionDoi });
+      return DE.unavailable;
+    }),
   )),
   TE.chainEitherKW((response) => buildExpressionFrontMatterFromCrossrefWork(
     response,
