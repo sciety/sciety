@@ -30,6 +30,8 @@ const warnAboutMissingOptionalFrontmatterParts = (
   return E.right(undefined);
 };
 
+const isNotEmptyString = (input: string) => input !== '';
+
 export const buildExpressionFrontMatterFromCrossrefWork = (
   crossrefWorkXml: string,
   logger: Logger,
@@ -39,7 +41,8 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
 
   return pipe(
     crossrefWorkXml,
-    parseXmlDocument(logger, contextForLogs),
+    E.fromPredicate(isNotEmptyString, () => DE.unavailable),
+    E.chain(parseXmlDocument(logger, contextForLogs)),
     E.chainW(decodeAndLogFailures(logger, frontMatterCrossrefXmlResponseCodec, contextForLogs)),
     E.mapLeft(() => DE.unavailable),
     E.map((decodedWork) => decodedWork.doi_records.doi_record.crossref),
