@@ -41,7 +41,10 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
 
   return pipe(
     crossrefWorkXml,
-    E.fromPredicate(isNotEmptyString, () => DE.unavailable),
+    E.fromPredicate(isNotEmptyString, () => {
+      logger('error', 'crossref/fetch-expression-front-matter: Crossref returned an empty string', contextForLogs);
+      return DE.unavailable;
+    }),
     E.chain(parseXmlDocument(logger, contextForLogs)),
     E.chainW(decodeAndLogFailures(logger, frontMatterCrossrefXmlResponseCodec, contextForLogs)),
     E.mapLeft(() => DE.unavailable),
