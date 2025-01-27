@@ -1,6 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
+import * as tt from 'io-ts-types';
 import {
   buildExpressionFrontMatterFromCrossrefWork,
 } from '../../../src/third-parties/fetch-expression-front-matter/build-expression-front-matter-from-crossref-work';
@@ -10,7 +11,7 @@ import { dummyLogger } from '../../dummy-logger';
 import { arbitraryString } from '../../helpers';
 import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 
-const postedContentCrossrefResponseWith = (content: string): string => `
+const postedContentCrossrefResponseWith = (content: string): tt.NonEmptyString => `
   <?xml version="1.0" encoding="UTF-8"?>
   <doi_records>
     <doi_record>
@@ -21,9 +22,9 @@ const postedContentCrossrefResponseWith = (content: string): string => `
       </crossref>
     </doi_record>
   </doi_records>
-`;
+` as tt.NonEmptyString;
 
-const journalCrossrefResponseWith = (content: string): string => `
+const journalCrossrefResponseWith = (content: string): tt.NonEmptyString => `
   <?xml version="1.0" encoding="UTF-8"?>
   <doi_records>
     <doi_record>
@@ -36,7 +37,7 @@ const journalCrossrefResponseWith = (content: string): string => `
       </crossref>
     </doi_record>
   </doi_records>
-`;
+` as tt.NonEmptyString;
 
 describe('build-expression-front-matter-from-crossref-work', () => {
   describe.each(
@@ -415,7 +416,7 @@ describe('build-expression-front-matter-from-crossref-work', () => {
 
     describe('detecting unrecoverable errors', () => {
       describe('when the response does not contain a <crossref> tag', () => {
-        const input = '<?xml version="1.0" encoding="UTF-8"?>\n<doi_records>\r\n  <doi_record>\r\n      </doi_record>\r\n</doi_records>';
+        const input = '<?xml version="1.0" encoding="UTF-8"?>\n<doi_records>\r\n  <doi_record>\r\n      </doi_record>\r\n</doi_records>' as tt.NonEmptyString;
 
         it('returns on the left', () => {
           const result = buildExpressionFrontMatterFromCrossrefWork(input, dummyLogger, arbitraryExpressionDoi());
@@ -425,23 +426,13 @@ describe('build-expression-front-matter-from-crossref-work', () => {
       });
 
       describe('when the response contains a <crossref> tag with its only child an <error> tag', () => {
-        const input = '<?xml version="1.0" encoding="UTF-8"?>\n<doi_records>\r\n  <doi_record>\r\n    <crossref>\r\n      <error>doi:10.21203/rs.3.rs-3869684/v1</error>\r\n    </crossref>\r\n  </doi_record>\r\n</doi_records>';
+        const input = '<?xml version="1.0" encoding="UTF-8"?>\n<doi_records>\r\n  <doi_record>\r\n    <crossref>\r\n      <error>doi:10.21203/rs.3.rs-3869684/v1</error>\r\n    </crossref>\r\n  </doi_record>\r\n</doi_records>' as tt.NonEmptyString;
 
         it('returns on the left', () => {
           const result = buildExpressionFrontMatterFromCrossrefWork(input, dummyLogger, arbitraryExpressionDoi());
 
           expect(result).toStrictEqual(E.left(expect.anything()));
         });
-      });
-    });
-
-    describe('given an empty input', () => {
-      const input = '';
-
-      it('returns on the left', () => {
-        const result = buildExpressionFrontMatterFromCrossrefWork(input, dummyLogger, arbitraryExpressionDoi());
-
-        expect(result).toStrictEqual(E.left(expect.anything()));
       });
     });
   });

@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
-import * as t from 'io-ts';
+import * as tt from 'io-ts-types';
 import { buildExpressionFrontMatterFromCrossrefWork } from './build-expression-front-matter-from-crossref-work';
 import { Logger } from '../../logger';
 import * as DE from '../../types/data-error';
@@ -32,7 +32,7 @@ export const fetchExpressionFrontMatter = (
   crossrefWorksTransformEndpoint,
   queryExternalService('warn', crossrefHeaders(crossrefApiBearerToken)),
   TE.chainEitherKW(flow(
-    decodeAndLogFailures(logger, t.string, { expressionDoi }),
+    decodeAndLogFailures(logger, tt.NonEmptyString, { expressionDoi }),
     E.mapLeft(() => DE.unavailable),
   )),
   TE.chainEitherKW((response) => buildExpressionFrontMatterFromCrossrefWork(

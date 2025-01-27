@@ -1,6 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { pipe } from 'fp-ts/function';
+import * as tt from 'io-ts-types';
 import { getAbstract } from './get-abstract';
 import { getAuthors } from './get-authors';
 import { getTitle } from './get-title';
@@ -30,10 +31,8 @@ const warnAboutMissingOptionalFrontmatterParts = (
   return E.right(undefined);
 };
 
-const isNotEmptyString = (input: string) => input !== '';
-
 export const buildExpressionFrontMatterFromCrossrefWork = (
-  crossrefWorkXml: string,
+  crossrefWorkXml: tt.NonEmptyString,
   logger: Logger,
   expressionDoi: ExpressionDoi,
 ): E.Either<DE.DataError, ExpressionFrontMatter> => {
@@ -41,11 +40,7 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
 
   return pipe(
     crossrefWorkXml,
-    E.fromPredicate(isNotEmptyString, () => {
-      logger('error', 'crossref/fetch-expression-front-matter: Crossref returned an empty string', contextForLogs);
-      return DE.unavailable;
-    }),
-    E.chain(parseXmlDocument(logger, contextForLogs)),
+    parseXmlDocument(logger, contextForLogs),
     E.chainW(decodeAndLogFailures(logger, frontMatterCrossrefXmlResponseCodec, contextForLogs)),
     E.mapLeft(() => DE.unavailable),
     E.map((decodedWork) => decodedWork.doi_records.doi_record.crossref),
