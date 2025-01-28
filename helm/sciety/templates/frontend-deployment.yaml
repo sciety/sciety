@@ -32,8 +32,6 @@ spec:
               value: "{{ .Values.allowSiteCrawlers }}"
             - name: APP_ORIGIN
               value: https://{{ .Values.hostname }}
-            - name: APP_SECRET
-              value: "{{ .Values.appSecret }}"
             - name: APP_CACHE
               value: "{{ .Values.appCache }}"
             - name: CACHE_HOST
