@@ -7,6 +7,5 @@ experimentEnabled: "false"
 coarNotificationDeliveryEnabled: "false"
 fathomSiteId: 
 googleTagManagerId:
-appSecret: "not-a-secret-coming-from-helm-chart-defaults"
 healthchecksPingKey:
 certManagerClusterIssuer: "letsencrypt"

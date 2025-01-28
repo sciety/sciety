@@ -94,7 +94,6 @@ jobs:
             --set hostname=staging.sciety.org \
             --set-string experimentEnabled="true" \
             --set-string coarNotificationDeliveryEnabled="true" \
-            --set appSecret=${APP_SECRET} \
             --set appCache=redis \
             --set auth0ClientId=${AUTH0_CLIENT_ID_STAGING} \
             --set auth0ClientSecret=${AUTH0_CLIENT_SECRET_STAGING} \
@@ -109,7 +108,6 @@ jobs:
             --wait \
             helm/sciety
         env:
-          APP_SECRET: ${{ secrets.APP_SECRET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           PRELIGHTS_FEED_KEY: ${{ secrets.PRELIGHTS_FEED_KEY }}
@@ -130,7 +128,6 @@ jobs:
             --set hostname=sciety.org \
             --set fathomSiteId='DBULFPXG' \
             --set googleTagManagerId='GTM-NX7CQB4' \
-            --set appSecret=${APP_SECRET} \
             --set appCache=redis \
             --set auth0ClientId=${AUTH0_CLIENT_ID} \
             --set auth0ClientSecret=${AUTH0_CLIENT_SECRET} \
@@ -144,7 +141,6 @@ jobs:
             --wait \
             helm/sciety
         env:
-          APP_SECRET: ${{ secrets.APP_SECRET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           PRELIGHTS_FEED_KEY: ${{ secrets.PRELIGHTS_FEED_KEY }}
