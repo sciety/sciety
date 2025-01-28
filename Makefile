@@ -116,9 +116,6 @@ ingest-evaluations: build
 		app \
 		npx ts-node src/ingest/update-event-data
 
-trigger-ingestion:
-	scripts/trigger-ingestion.sh
-
 dev-sql: export TARGET = dev
 dev-sql:
 	$(DOCKER_COMPOSE) exec -e PGUSER=user -e PGPASSWORD=secret -e PGDATABASE=sciety db psql
