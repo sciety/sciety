@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "@swc/cli": "^0.6.0",
-    "@swc/core": "^1.10.9",
+    "@swc/core": "^1.10.11",
     "@types/jest": "^29.5.14",
     "@types/koa": "^2.15.0",
     "@types/koa__router": "^12.0.4",
