@@ -4,6 +4,8 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { arbitraryDate, arbitraryString } from '../../helpers';
 
+const disallow = <P extends t.Props>(orig: t.TypeC<P>): t.TypeC<P> => orig;
+
 describe('disallow-unknown-keys', () => {
   describe('given an input object with unspecified keys and a type codec', () => {
     const unspecified = 'unspecified-value';
@@ -71,7 +73,14 @@ describe('disallow-unknown-keys', () => {
     });
 
     describe('wrapping the codec with `disallow`', () => {
-      it.todo('fails to decode');
+      const result = pipe(
+        input,
+        disallow(baseCodec).decode,
+      );
+
+      it.failing('fails to decode', () => {
+        expect(result).toStrictEqual(E.left(expect.anything()));
+      });
     });
   });
 });
