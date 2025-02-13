@@ -1,21 +1,73 @@
+import * as E from 'fp-ts/Either';
+import { pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
+import * as tt from 'io-ts-types';
+import { arbitraryDate, arbitraryString } from '../../helpers';
+
 describe('disallow-unknown-keys', () => {
   describe('given an input object with unspecified keys and a type codec', () => {
-    describe('using the type codec', () => {
-      it.todo('decodes successfully');
+    const unspecified = 'unspecified-value';
+    const input = {
+      foo: arbitraryString(),
+      bar: arbitraryDate().toISOString(),
+      unspecified,
+    };
 
-      it.todo('allows unspecified keys to be accessed at runtime');
+    const baseCodec = t.type({
+      foo: t.string,
+      bar: tt.DateFromISOString,
+    });
+
+    describe('using the type codec', () => {
+      const result = pipe(
+        input,
+        baseCodec.decode,
+      );
+
+      it('decodes successfully', () => {
+        expect(result).toStrictEqual(E.right(expect.anything()));
+      });
+
+      it('allows unspecified keys to be accessed at runtime', () => {
+        expect(result).toStrictEqual(E.right(expect.objectContaining({ unspecified })));
+      });
     });
 
     describe('wrapping the codec with `exact`', () => {
-      it.todo('decodes successfully');
+      const result = pipe(
+        input,
+        t.exact(baseCodec).decode,
+      );
 
-      it.todo('makes unspecified keys inaccessible at runtime');
+      it('decodes successfully', () => {
+        expect(result).toStrictEqual(E.right(expect.anything()));
+      });
+
+      it('makes unspecified keys inaccessible at runtime', () => {
+        expect(result).toStrictEqual(E.right(expect.not.objectContaining({ unspecified })));
+      });
     });
 
     describe('using an equivalent `strict` codec', () => {
-      it.todo('decodes successfully');
+      const exactWrapped = t.exact(baseCodec);
+      type ExactWrapped = typeof exactWrapped;
+      const equivalentCodec: ExactWrapped = t.strict({
+        foo: t.string,
+        bar: tt.DateFromISOString,
+      });
 
-      it.todo('makes unspecified keys inaccessible at runtime');
+      const result = pipe(
+        input,
+        equivalentCodec.decode,
+      );
+
+      it('decodes successfully', () => {
+        expect(result).toStrictEqual(E.right(expect.anything()));
+      });
+
+      it('makes unspecified keys inaccessible at runtime', () => {
+        expect(result).toStrictEqual(E.right(expect.not.objectContaining({ unspecified })));
+      });
     });
 
     describe('wrapping the codec with `disallow`', () => {
