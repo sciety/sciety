@@ -46,7 +46,7 @@ const disallow = <C extends t.HasProps>(originalCodec: C, name: string = codec.n
 };
 
 describe('disallow-unknown-keys', () => {
-  describe('given an input object with unspecified keys and a type codec', () => {
+  describe('given an input object with keys not specified in a `type` codec', () => {
     const unspecified = 'unspecified-value';
     const input = {
       foo: arbitraryString(),
