@@ -2,9 +2,48 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
+import { codec } from '../../../src/third-parties/fetch-publishing-history/fetch-all-paper-expressions-from-crossref/date-stamp';
 import { arbitraryDate, arbitraryString } from '../../helpers';
 
-const disallow = <P extends t.Props>(orig: t.TypeC<P>): t.TypeC<P> => orig;
+function getProps(inputCodec: t.HasProps): t.Props {
+  switch (inputCodec._tag) {
+    case 'RefinementType':
+    case 'ReadonlyType':
+      return getProps(inputCodec.type);
+    case 'InterfaceType':
+    case 'StrictType':
+    case 'PartialType':
+      return inputCodec.props as t.Props;
+    case 'IntersectionType':
+      return inputCodec.types.reduce<t.Props>((props, type) => Object.assign(props, getProps(type)), {});
+  }
+}
+
+const disallow = <C extends t.HasProps>(originalCodec: C, name: string = codec.name): t.ExactC<C> => {
+  const allowedKeys = Object.getOwnPropertyNames(getProps(originalCodec));
+
+  return new t.ExactType(
+    name,
+    originalCodec.is,
+    (input, context) => {
+      const record = t.UnknownRecord.validate(input, context);
+      if (E.isLeft(record)) {
+        return record;
+      }
+      const keysOfInput = Object.getOwnPropertyNames(input);
+      // eslint-disable-next-line no-loops/no-loops, no-plusplus
+      for (let i = 0; i < keysOfInput.length; i++) {
+        const key = keysOfInput[i];
+        if (!allowedKeys.includes(key)) {
+          return t.failure(input, context, `'${key}' is an unexpected key name`);
+        }
+      }
+      return t.exact(originalCodec).validate(input, context);
+    },
+    (a) => t.exact(originalCodec).encode(a) as t.ExactC<C>,
+    originalCodec,
+  );
+};
 
 describe('disallow-unknown-keys', () => {
   describe('given an input object with unspecified keys and a type codec', () => {
@@ -78,7 +117,7 @@ describe('disallow-unknown-keys', () => {
         disallow(baseCodec).decode,
       );
 
-      it.failing('fails to decode', () => {
+      it('fails to decode', () => {
         expect(result).toStrictEqual(E.left(expect.anything()));
       });
     });
