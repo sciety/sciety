@@ -129,6 +129,18 @@ staging-sql:
 	--env=PGPASSWORD=$$(kubectl get secret sciety--staging--secret-env-vars -o json | jq -r '.data.PGPASSWORD'| base64 -d | sed -e 's/\$$\$$/$$$$$$$$/g') \
 	-- psql
 
+staging-events-row-count:
+	kubectl run psql \
+	--image=postgres:12.3 \
+	--env=PGHOST=$$(kubectl get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGHOST') \
+	--env=PGDATABASE=$$(kubectl get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGDATABASE') \
+	--env=PGUSER=$$(kubectl get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGUSER') \
+	--env=PGPASSWORD=$$(kubectl get secret sciety--staging--secret-env-vars -o json | jq -r '.data.PGPASSWORD'| base64 -d | sed -e 's/\$$\$$/$$$$$$$$/g') \
+	-- sleep 600
+	kubectl wait --for condition=Ready pod psql
+	kubectl exec psql -- psql -c "SELECT count(*) FROM events;"
+	kubectl delete --wait=false pod psql
+
 prod-sql:
 	kubectl run psql \
 	--rm -it --image=postgres:12.3 \
