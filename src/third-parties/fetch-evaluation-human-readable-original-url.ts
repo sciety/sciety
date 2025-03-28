@@ -16,6 +16,9 @@ export const fetchEvaluationHumanReadableOriginalUrl = (
   const selectedService = service(evaluationLocator);
   switch (selectedService) {
     case 'doi':
+      if (key(evaluationLocator).startsWith('10.5281/')) {
+        return TE.right(new URL(`https://prereview.org/reviews/${key(evaluationLocator).replace('10.5281/zenodo.', '')}`));
+      }
       return TE.right(new URL(`https://doi.org/${key(evaluationLocator)}`));
     case 'hypothesis':
       return TE.right(new URL(`https://hypothes.is/a/${key(evaluationLocator)}`));
