@@ -15,6 +15,13 @@ export const discoverKotahiDocmapsEvaluations: DiscoverPublishedEvaluations = (
       authors: [],
       evaluationType: 'review',
     },
+    {
+      publishedOn: new Date('2025-04-10T09:39:50.106Z'),
+      paperExpressionDoi: '10.1101/2025.03.27.645397',
+      evaluationLocator: 'hypothesis:zYPccBC-EfCbwOfTQ6xWFQ',
+      authors: [],
+      evaluationType: 'curation-statement',
+    },
   ],
   skipped: [],
 });
