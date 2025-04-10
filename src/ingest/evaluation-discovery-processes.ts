@@ -2,6 +2,7 @@ import { discoverAccessMicrobiologyEvaluations } from './evaluation-discovery/di
 import { discoverEvaluationsFromCrossrefViaBiorxiv } from './evaluation-discovery/discover-evaluations-from-crossref-via-biorxiv';
 import { discoverEvaluationsFromHypothesisGroup } from './evaluation-discovery/discover-evaluations-from-hypothesis-group';
 import { discoverEvaluationsFromHypothesisUser } from './evaluation-discovery/discover-evaluations-from-hypothesis-user';
+import { discoverKotahiDocmapsEvaluations } from './evaluation-discovery/discover-kotahi-docmaps-evaluations';
 import { discoverPciEvaluations } from './evaluation-discovery/discover-pci-evaluations';
 import { discoverPrelightsEvaluations } from './evaluation-discovery/discover-prelights-evaluations';
 import { discoverPrereviewEvaluations } from './evaluation-discovery/discover-prereview-evaluations';
@@ -139,5 +140,10 @@ export const evaluationDiscoveryProcesses = (environment: Configuration): Array<
     groupId: '4d6a8908-22a9-45c8-bd56-3c7140647709',
     name: 'Access Microbiology',
     discoverPublishedEvaluations: discoverAccessMicrobiologyEvaluations,
+  },
+  {
+    groupId: 'b90854bf-795c-42ba-8664-8257b9c68b0c',
+    name: 'Kotahi Test Docmaps',
+    discoverPublishedEvaluations: discoverKotahiDocmapsEvaluations,
   },
 ];
