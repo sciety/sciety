@@ -7,6 +7,14 @@ export const discoverKotahiDocmapsEvaluations: DiscoverPublishedEvaluations = (
 ) => (
   dependencies,
 ) => TE.right({
-  understood: [],
+  understood: [
+    {
+      publishedOn: new Date('2025-04-10T09:39:50.072Z'),
+      paperExpressionDoi: '10.1101/2025.03.27.645397',
+      evaluationLocator: 'hypothesis:zcPWGBC-EfCXaG9pRxlnhA',
+      authors: [],
+      evaluationType: 'review',
+    },
+  ],
   skipped: [],
 });
