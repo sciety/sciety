@@ -15,6 +15,21 @@ const kotahiResponseCodec = t.strict({
           doi: t.string,
         }),
       ),
+      actions: t.readonlyArray(
+        t.strict({
+          outputs: t.readonlyArray(
+            t.strict({
+              type: t.string,
+              content: t.readonlyArray(
+                t.strict({
+                  url: t.string,
+                }),
+              ),
+              published: t.string,
+            }),
+          ),
+        }),
+      ),
     }),
   }),
 }, 'kotahiResponseCodec');
