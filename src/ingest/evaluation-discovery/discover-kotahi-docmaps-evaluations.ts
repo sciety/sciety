@@ -41,18 +41,19 @@ export const discoverKotahiDocmapsEvaluations: DiscoverPublishedEvaluations = (
 ) => pipe(
   dependencies.fetchData<string>(url),
   TE.chainEitherK(decodeAndReportFailures(kotahiResponseCodec)),
-  TE.map((retrievedResponse) => ({
+  TE.map((decodedResponse) => decodedResponse.steps['_:b0']),
+  TE.map((relevantStep) => ({
     understood: [
       {
         publishedOn: new Date('2025-04-10T09:39:50.072Z'),
-        paperExpressionDoi: retrievedResponse.steps['_:b0'].inputs[0].doi,
+        paperExpressionDoi: relevantStep.inputs[0].doi,
         evaluationLocator: 'hypothesis:zcPWGBC-EfCXaG9pRxlnhA',
         authors: [],
         evaluationType: 'review',
       },
       {
         publishedOn: new Date('2025-04-10T09:39:50.106Z'),
-        paperExpressionDoi: retrievedResponse.steps['_:b0'].inputs[0].doi,
+        paperExpressionDoi: relevantStep.inputs[0].doi,
         evaluationLocator: 'hypothesis:zYPccBC-EfCbwOfTQ6xWFQ',
         authors: [],
         evaluationType: 'curation-statement',
