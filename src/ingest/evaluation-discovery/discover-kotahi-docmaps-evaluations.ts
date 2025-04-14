@@ -11,6 +11,8 @@ const contentCodec = t.strict({
   url: t.string,
 });
 
+type Content = t.TypeOf<typeof contentCodec>;
+
 const actionCodec = t.strict({
   outputs: t.readonlyArray(
     t.strict({
@@ -40,6 +42,8 @@ const buildEvaluationLocatorFromHypothesisUrl = (hypothesisUrl: string) => {
   const regex = /https:\/\/hypothes\.is\/a\//;
   return hypothesisUrl.replace(regex, 'hypothesis:');
 };
+
+const buildEvaluationLocatorForHypothesis = (contents: ReadonlyArray<Content>) => contents;
 
 export const discoverKotahiDocmapsEvaluations: DiscoverPublishedEvaluations = (
   ingestDays,
