@@ -30,15 +30,11 @@ const stepCodec = t.strict({
   actions: t.readonlyArray(actionCodec),
 });
 
-type Step = t.TypeOf<typeof stepCodec>;
-
 const kotahiResponseCodec = t.strict({
   steps: t.strict({
     '_:b0': stepCodec,
   }),
 }, 'kotahiResponseCodec');
-
-const constructExpressionDoi = (step: Step) => step.inputs[0].doi;
 
 const buildEvaluationLocatorFromHypothesisUrl = (hypothesisUrl: string) => {
   const regex = /https:\/\/hypothes\.is\/a\//;
@@ -57,14 +53,14 @@ export const discoverKotahiDocmapsEvaluations: DiscoverPublishedEvaluations = (
     understood: [
       {
         publishedOn: new Date(relevantStep.actions[0].outputs[0].published),
-        paperExpressionDoi: constructExpressionDoi(relevantStep),
+        paperExpressionDoi: relevantStep.inputs[0].doi,
         evaluationLocator: buildEvaluationLocatorFromHypothesisUrl(relevantStep.actions[0].outputs[0].content[0].url),
         authors: [],
         evaluationType: 'review',
       },
       {
         publishedOn: new Date(relevantStep.actions[0].outputs[1].published),
-        paperExpressionDoi: constructExpressionDoi(relevantStep),
+        paperExpressionDoi: relevantStep.inputs[0].doi,
         evaluationLocator: buildEvaluationLocatorFromHypothesisUrl(relevantStep.actions[0].outputs[1].content[0].url),
         authors: [],
         evaluationType: 'curation-statement',
