@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import * as O from 'fp-ts/Option';
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
@@ -43,7 +45,16 @@ const buildEvaluationLocatorFromHypothesisUrl = (hypothesisUrl: string) => {
   return hypothesisUrl.replace(regex, 'hypothesis:');
 };
 
-const buildEvaluationLocatorForHypothesis = (contents: ReadonlyArray<Content>) => contents;
+const buildEvaluationLocatorForHypothesis = (contents: ReadonlyArray<Content>) => pipe(
+  contents,
+  RA.filter((content) => content.url.includes('https://hypothes.is')),
+  RA.map((content) => content.url),
+  RA.head,
+  O.fold(
+    () => '',
+    (hypothesisUrl) => buildEvaluationLocatorFromHypothesisUrl(hypothesisUrl),
+  ),
+);
 
 export const discoverKotahiDocmapsEvaluations: DiscoverPublishedEvaluations = (
   ingestDays,
@@ -58,14 +69,14 @@ export const discoverKotahiDocmapsEvaluations: DiscoverPublishedEvaluations = (
       {
         publishedOn: new Date(relevantStep.actions[0].outputs[0].published),
         paperExpressionDoi: relevantStep.inputs[0].doi,
-        evaluationLocator: buildEvaluationLocatorFromHypothesisUrl(relevantStep.actions[0].outputs[0].content[0].url),
+        evaluationLocator: buildEvaluationLocatorForHypothesis(relevantStep.actions[0].outputs[0].content),
         authors: [],
         evaluationType: 'review',
       },
       {
         publishedOn: new Date(relevantStep.actions[0].outputs[1].published),
         paperExpressionDoi: relevantStep.inputs[0].doi,
-        evaluationLocator: buildEvaluationLocatorFromHypothesisUrl(relevantStep.actions[0].outputs[1].content[0].url),
+        evaluationLocator: buildEvaluationLocatorForHypothesis(relevantStep.actions[0].outputs[1].content),
         authors: [],
         evaluationType: 'curation-statement',
       },
