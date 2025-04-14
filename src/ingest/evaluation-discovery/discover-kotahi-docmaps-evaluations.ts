@@ -40,6 +40,8 @@ const kotahiResponseCodec = t.strict({
 
 const constructExpressionDoi = (step: Step) => step.inputs[0].doi;
 
+const buildEvaluationLocator = (url: string) => url;  
+
 export const discoverKotahiDocmapsEvaluations: DiscoverPublishedEvaluations = (
   ingestDays,
 ) => (
@@ -53,14 +55,14 @@ export const discoverKotahiDocmapsEvaluations: DiscoverPublishedEvaluations = (
       {
         publishedOn: new Date(relevantStep.actions[0].outputs[0].published),
         paperExpressionDoi: constructExpressionDoi(relevantStep),
-        evaluationLocator: 'hypothesis:zcPWGBC-EfCXaG9pRxlnhA',
+        evaluationLocator: buildEvaluationLocator('hypothesis:zcPWGBC-EfCXaG9pRxlnhA'),
         authors: [],
         evaluationType: 'review',
       },
       {
         publishedOn: new Date(relevantStep.actions[0].outputs[1].published),
         paperExpressionDoi: constructExpressionDoi(relevantStep),
-        evaluationLocator: 'hypothesis:zYPccBC-EfCbwOfTQ6xWFQ',
+        evaluationLocator: buildEvaluationLocator('hypothesis:zYPccBC-EfCbwOfTQ6xWFQ'),
         authors: [],
         evaluationType: 'curation-statement',
       },
