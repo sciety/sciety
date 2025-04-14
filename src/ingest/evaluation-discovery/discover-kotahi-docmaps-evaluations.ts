@@ -7,27 +7,27 @@ import { DiscoverPublishedEvaluations } from '../discover-published-evaluations'
 
 const url = 'https://kotahi-server-test.fly.dev/api/docmap/group_id/bcdf0f70-1b32-4aa8-9a9e-84265b23a30d/doi/10.1101/2025.03.27.645397';
 
+const actionCodec = t.strict({
+  outputs: t.readonlyArray(
+    t.strict({
+      type: t.string,
+      content: t.readonlyArray(
+        t.strict({
+          url: t.string,
+        }),
+      ),
+      published: t.string,
+    }),
+  ),
+});
+
 const stepCodec = t.strict({
   inputs: t.readonlyArray(
     t.strict({
       doi: t.string,
     }),
   ),
-  actions: t.readonlyArray(
-    t.strict({
-      outputs: t.readonlyArray(
-        t.strict({
-          type: t.string,
-          content: t.readonlyArray(
-            t.strict({
-              url: t.string,
-            }),
-          ),
-          published: t.string,
-        }),
-      ),
-    }),
-  ),
+  actions: t.readonlyArray(actionCodec),
 });
 
 type Step = t.TypeOf<typeof stepCodec>;
