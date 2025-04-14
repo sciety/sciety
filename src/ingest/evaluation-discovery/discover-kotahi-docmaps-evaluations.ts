@@ -58,14 +58,14 @@ export const discoverKotahiDocmapsEvaluations: DiscoverPublishedEvaluations = (
       {
         publishedOn: new Date(relevantStep.actions[0].outputs[0].published),
         paperExpressionDoi: constructExpressionDoi(relevantStep),
-        evaluationLocator: buildEvaluationLocatorFromHypothesisUrl('https://hypothes.is/a/zcPWGBC-EfCXaG9pRxlnhA'),
+        evaluationLocator: buildEvaluationLocatorFromHypothesisUrl(relevantStep.actions[0].outputs[0].content[0].url),
         authors: [],
         evaluationType: 'review',
       },
       {
         publishedOn: new Date(relevantStep.actions[0].outputs[1].published),
         paperExpressionDoi: constructExpressionDoi(relevantStep),
-        evaluationLocator: buildEvaluationLocatorFromHypothesisUrl('https://hypothes.is/a/zYPccBC-EfCbwOfTQ6xWFQ'),
+        evaluationLocator: buildEvaluationLocatorFromHypothesisUrl(relevantStep.actions[0].outputs[1].content[0].url),
         authors: [],
         evaluationType: 'curation-statement',
       },
