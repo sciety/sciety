@@ -36,6 +36,8 @@ const stepCodec = t.strict({
   actions: t.readonlyArray(actionCodec),
 });
 
+type Step = t.TypeOf<typeof stepCodec>;
+
 const kotahiResponseCodec = t.strict({
   steps: t.strict({
     '_:b0': stepCodec,
@@ -74,6 +76,16 @@ const constructPartialEvaluation = (output: Output) => ({
   evaluationType: buildEvaluationType(output.type),
 });
 
+const constructEvaluations = (step: Step) => pipe(
+  step.actions[0].outputs,
+  RA.map(constructPartialEvaluation),
+  RA.map((partialEvaluation) => ({
+    ...partialEvaluation,
+    authors: [],
+    paperExpressionDoi: step.inputs[0].doi,
+  })),
+);
+
 export const discoverKotahiDocmapsEvaluations: DiscoverPublishedEvaluations = (
   ingestDays,
 ) => (
@@ -83,20 +95,7 @@ export const discoverKotahiDocmapsEvaluations: DiscoverPublishedEvaluations = (
   TE.chainEitherK(decodeAndReportFailures(kotahiResponseCodec)),
   TE.map((decodedResponse) => decodedResponse.steps['_:b0']),
   TE.map((relevantStep) => ({
-    understood: [
-      {
-        ...constructPartialEvaluation(relevantStep.actions[0].outputs[0]),
-        paperExpressionDoi: relevantStep.inputs[0].doi,
-        authors: [],
-      },
-      {
-        publishedOn: new Date(relevantStep.actions[0].outputs[1].published),
-        paperExpressionDoi: relevantStep.inputs[0].doi,
-        evaluationLocator: buildEvaluationLocatorForHypothesis(relevantStep.actions[0].outputs[1].content),
-        authors: [],
-        evaluationType: buildEvaluationType(relevantStep.actions[0].outputs[1].type),
-      },
-    ],
+    understood: constructEvaluations(relevantStep),
     skipped: [],
   })),
 );
