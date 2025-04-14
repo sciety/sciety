@@ -56,6 +56,8 @@ const buildEvaluationLocatorForHypothesis = (contents: ReadonlyArray<Content>) =
   ),
 );
 
+const buildEvaluationType = (type: string) => type;
+
 export const discoverKotahiDocmapsEvaluations: DiscoverPublishedEvaluations = (
   ingestDays,
 ) => (
@@ -71,14 +73,14 @@ export const discoverKotahiDocmapsEvaluations: DiscoverPublishedEvaluations = (
         paperExpressionDoi: relevantStep.inputs[0].doi,
         evaluationLocator: buildEvaluationLocatorForHypothesis(relevantStep.actions[0].outputs[0].content),
         authors: [],
-        evaluationType: 'review',
+        evaluationType: buildEvaluationType('review'),
       },
       {
         publishedOn: new Date(relevantStep.actions[0].outputs[1].published),
         paperExpressionDoi: relevantStep.inputs[0].doi,
         evaluationLocator: buildEvaluationLocatorForHypothesis(relevantStep.actions[0].outputs[1].content),
         authors: [],
-        evaluationType: 'curation-statement',
+        evaluationType: buildEvaluationType('curation-statement'),
       },
     ],
     skipped: [],
