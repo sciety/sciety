@@ -15,14 +15,16 @@ const contentCodec = t.strict({
 
 type Content = t.TypeOf<typeof contentCodec>;
 
+const outputCodec = t.strict({
+  type: t.string,
+  content: t.readonlyArray(contentCodec),
+  published: t.string,
+});
+
+type Output = t.TypeOf<typeof outputCodec>;
+
 const actionCodec = t.strict({
-  outputs: t.readonlyArray(
-    t.strict({
-      type: t.string,
-      content: t.readonlyArray(contentCodec),
-      published: t.string,
-    }),
-  ),
+  outputs: t.readonlyArray(outputCodec),
 });
 
 const stepCodec = t.strict({
@@ -66,6 +68,12 @@ const buildEvaluationType = (inputType: string): string => {
   return '';
 };
 
+const constructPartialEvaluation = (output: Output) => ({
+  publishedOn: new Date(output.published),
+  evaluationLocator: buildEvaluationLocatorForHypothesis(output.content),
+  evaluationType: buildEvaluationType(output.type),
+});
+
 export const discoverKotahiDocmapsEvaluations: DiscoverPublishedEvaluations = (
   ingestDays,
 ) => (
@@ -77,11 +85,9 @@ export const discoverKotahiDocmapsEvaluations: DiscoverPublishedEvaluations = (
   TE.map((relevantStep) => ({
     understood: [
       {
-        publishedOn: new Date(relevantStep.actions[0].outputs[0].published),
+        ...constructPartialEvaluation(relevantStep.actions[0].outputs[0]),
         paperExpressionDoi: relevantStep.inputs[0].doi,
-        evaluationLocator: buildEvaluationLocatorForHypothesis(relevantStep.actions[0].outputs[0].content),
         authors: [],
-        evaluationType: buildEvaluationType(relevantStep.actions[0].outputs[0].type),
       },
       {
         publishedOn: new Date(relevantStep.actions[0].outputs[1].published),
