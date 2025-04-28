@@ -120,22 +120,22 @@ dev-sql: export TARGET = dev
 dev-sql:
 	$(DOCKER_COMPOSE) exec -e PGUSER=user -e PGPASSWORD=secret -e PGDATABASE=sciety db psql
 
-staging-sql:
+staging-sql: verify-flux-prod-cluster
 	kubectl run psql \
 	--rm -it --image=postgres:12.3 \
 	--env=PGHOST=$$(kubectl get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGHOST') \
 	--env=PGDATABASE=$$(kubectl get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGDATABASE') \
 	--env=PGUSER=$$(kubectl get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGUSER') \
-	--env=PGPASSWORD=$$(kubectl get secret sciety--staging--secret-env-vars -o json | jq -r '.data.PGPASSWORD'| base64 -d | sed -e 's/\$$\$$/$$$$$$$$/g') \
+	--env=PGPASSWORD=$$(kubectl get secret sciety--staging--secret-env-vars -o json | jq -r '.data.PGPASSWORD'| base64 -d) \
 	-- psql
 
-staging-events-row-count:
+staging-events-row-count: verify-flux-prod-cluster
 	kubectl run psql \
 	--image=postgres:12.3 \
 	--env=PGHOST=$$(kubectl get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGHOST') \
 	--env=PGDATABASE=$$(kubectl get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGDATABASE') \
 	--env=PGUSER=$$(kubectl get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGUSER') \
-	--env=PGPASSWORD=$$(kubectl get secret sciety--staging--secret-env-vars -o json | jq -r '.data.PGPASSWORD'| base64 -d | sed -e 's/\$$\$$/$$$$$$$$/g') \
+	--env=PGPASSWORD=$$(kubectl get secret sciety--staging--secret-env-vars -o json | jq -r '.data.PGPASSWORD'| base64 -d) \
 	-- sleep 600
 	kubectl wait --for condition=Ready pod psql
 	kubectl exec psql -- psql -c "SELECT count(*) FROM events;"
@@ -178,7 +178,7 @@ download-exploratory-test-from-prod:
 	aws s3 cp "s3://sciety-data-extractions/sciety--prod--events-from-cronjob.csv" "./data/exploratory-test-from-prod.csv"
 
 download-exploratory-test-from-staging:
-	aws s3 cp "s3://sciety-data-extractions/sciety--staging--events-from-cronjob.csv" "./data/exploratory-test-from-staging.csv"
+	aws s3 cp "s3://sciety-events-export/sciety--staging--events-from-cronjob.csv" "./data/exploratory-test-from-staging.csv"
 
 exploratory-test-from-prod: node_modules clean-db build
 	@if ! [[ -f 'data/exploratory-test-from-prod.csv' ]]; then \
@@ -203,22 +203,6 @@ exploratory-test-from-staging: node_modules clean-db build
 	${DOCKER_COMPOSE} up -d app
 	scripts/wait-for-healthy.sh
 	${DOCKER_COMPOSE} logs -f app
-
-replace-staging-database-with-snapshot-from-prod: download-exploratory-test-from-prod
-	kubectl run psql \
-	--image=postgres:12.3 \
-	--env=PGHOST=$$(kubectl get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGHOST') \
-	--env=PGDATABASE=$$(kubectl get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGDATABASE') \
-	--env=PGUSER=$$(kubectl get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGUSER') \
-	--env=PGPASSWORD=$$(kubectl get secret sciety--staging--secret-env-vars -o json | jq -r '.data.PGPASSWORD'| base64 -d | sed -e 's/\$$\$$/$$$$$$$$/g') \
-	-- sleep 600
-	kubectl wait --for condition=Ready pod psql
-	kubectl exec psql -- psql -c "DELETE FROM events"
-	kubectl exec psql -- mkdir /data
-	kubectl cp ./data/exploratory-test-from-prod.csv psql:/data/exploratory-test-from-prod.csv
-	kubectl exec psql -- psql -c "\copy events FROM '/data/exploratory-test-from-prod.csv' WITH CSV HEADER"
-	kubectl delete --wait=false pod psql
-	kubectl rollout restart deployment sciety--staging--frontend
 
 FLUX_PROD_CLUSTER_CONTROL_PLANE_ADDRESS := https://0108D0073AFB87B6669E378F0A9CFB76.gr7.us-east-1.eks.amazonaws.com
 verify-flux-prod-cluster:
@@ -247,13 +231,13 @@ replace-demo-database-with-snapshot-from-prod: verify-flux-prod-cluster download
 	kubectl --namespace sciety rollout restart deployment sciety--demo--frontend
 	kubectl --namespace sciety wait pod --for=condition=Ready --selector=app.kubernetes.io/component=frontend,app.kubernetes.io/instance=sciety--demo --timeout=120s
 
-replace-staging-database-on-elife-cluster-with-snapshot-from-prod: verify-flux-prod-cluster download-exploratory-test-from-prod
+replace-staging-database--with-snapshot-from-prod: verify-flux-prod-cluster download-exploratory-test-from-prod
 	kubectl --namespace sciety run psql \
 	--image=postgres:12.3 \
 	--env=PGHOST=$$(kubectl --namespace sciety get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGHOST') \
 	--env=PGDATABASE=$$(kubectl --namespace sciety get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGDATABASE') \
 	--env=PGUSER=$$(kubectl --namespace sciety get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGUSER') \
-	--env=PGPASSWORD=$$(kubectl --namespace sciety get secret sciety--staging--secret-env-vars -o json | jq -r '.data.PGPASSWORD'| base64 -d | sed -e 's/\$$\$$/$$$$$$$$/g') \
+	--env=PGPASSWORD=$$(kubectl --namespace sciety get secret sciety--staging--secret-env-vars -o json | jq -r '.data.PGPASSWORD'| base64 -d) \
 	-- sleep 600
 	kubectl --namespace sciety wait --for condition=Ready pod psql
 	kubectl --namespace sciety exec psql -- psql -c "DELETE FROM events"
