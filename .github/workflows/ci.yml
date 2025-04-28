@@ -186,7 +186,7 @@ jobs:
           git add .
           git config user.email "team@sciety.org"
           git config user.name "Deployment update bot"
-          git commit -m "Update demo deployment to ${IMAGE_TAG}"
+          git commit -m "Update Sciety deployments to ${IMAGE_TAG}"
           git push
 
   automerge:
