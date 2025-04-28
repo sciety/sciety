@@ -12,9 +12,7 @@ env:
   DOCKER_BUILDKIT: 1
 
 jobs:
-
   frontend:
-
     runs-on: ubuntu-22.04
 
     steps:
@@ -24,7 +22,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: "18"
 
       - name: NPM Cache
         uses: actions/cache@v4
@@ -82,37 +80,6 @@ jobs:
         env:
           GHCR_USERNAME: ${{ github.actor }}
           GHCR_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Deploy to staging
-        if: github.ref == 'refs/heads/main'
-        run: |
-          aws --region=us-east-1 eks update-kubeconfig --name libero-eks--franklin
-          helm repo add bitnami https://charts.bitnami.com/bitnami
-          helm dependency build helm/sciety
-          helm upgrade -i sciety--staging \
-            --set images.frontend.tag=${IMAGE_TAG} \
-            --set hostname=staging.sciety.org \
-            --set-string experimentEnabled="true" \
-            --set-string coarNotificationDeliveryEnabled="true" \
-            --set appCache=redis \
-            --set auth0ClientId=${AUTH0_CLIENT_ID_STAGING} \
-            --set auth0ClientSecret=${AUTH0_CLIENT_SECRET_STAGING} \
-            --set auth0Domain='sciety-staging.eu.auth0.com' \
-            --set auth0CallbackUrl='https://staging.sciety.org/auth0/callback' \
-            --set googleTagManagerId='GTM-NX7CQB4' \
-            --set prereviewBearerToken=${PREREVIEW_BEARER_TOKEN} \
-            --set healthchecksPingKey=${HEALTHCHECKS_PING_KEY} \
-            --set eventShipperIAMRoleARN="arn:aws:iam::540790251273:role/ScietyEventsShipper" \
-            --set exportBucketName="sciety-data-extractions" \
-            --wait \
-            helm/sciety
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          PREREVIEW_BEARER_TOKEN: ${{ secrets.PREREVIEW_BEARER_TOKEN}}
-          AUTH0_CLIENT_ID_STAGING: ${{ secrets.AUTH0_CLIENT_ID_STAGING }}
-          AUTH0_CLIENT_SECRET_STAGING: ${{ secrets.AUTH0_CLIENT_SECRET_STAGING }}
-          HEALTHCHECKS_PING_KEY: ${{ secrets.HEALTHCHECKS_PING_KEY }}
 
       - name: Deploy to prod
         if: github.ref == 'refs/heads/main'
@@ -173,9 +140,9 @@ jobs:
         if: github.ref == 'refs/heads/main'
         uses: actions/checkout@v4
         with:
-          repository: 'sciety/deployment'
-          path: 'deployment'
-          ssh-key: '${{ secrets.SCIETY_DEPLOYMENT_REPO_WRITE_ACCESS_SSH_KEY }}'
+          repository: "sciety/deployment"
+          path: "deployment"
+          ssh-key: "${{ secrets.SCIETY_DEPLOYMENT_REPO_WRITE_ACCESS_SSH_KEY }}"
 
       - name: Update deployments on elife cluster to latest version
         if: github.ref == 'refs/heads/main'
