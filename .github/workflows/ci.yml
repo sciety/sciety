@@ -183,6 +183,7 @@ jobs:
           cd deployment
           TAG=${IMAGE_TAG} yq -i '.spec.values.images.frontend.tag = strenv(TAG)' manifests/sciety-demo/helm-release.yaml
           TAG=${IMAGE_TAG} yq -i '.spec.values.images.frontend.tag = strenv(TAG)' manifests/sciety-staging/helm-release.yaml
+          TAG=${IMAGE_TAG} yq -i '.spec.values.images.frontend.tag = strenv(TAG)' manifests/sciety-prod/helm-release.yaml
           git add .
           git config user.email "team@sciety.org"
           git config user.name "Deployment update bot"
