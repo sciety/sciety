@@ -264,6 +264,23 @@ replace-staging-database-on-elife-cluster-with-snapshot-from-prod: verify-flux-p
 	kubectl --namespace sciety rollout restart deployment sciety--staging--frontend
 	kubectl --namespace sciety wait pod --for=condition=Ready --selector=app.kubernetes.io/component=frontend,app.kubernetes.io/instance=sciety--staging --timeout=120s
 
+replace-prod-database-on-elife-cluster-with-snapshot-from-prod: verify-flux-prod-cluster download-exploratory-test-from-prod
+	kubectl --namespace sciety run psql \
+	--image=postgres:12.3 \
+	--env=PGHOST=$$(kubectl --namespace sciety get configmap sciety--prod--public-env-vars -o json | jq -r '.data.PGHOST') \
+	--env=PGDATABASE=$$(kubectl --namespace sciety get configmap sciety--prod--public-env-vars -o json | jq -r '.data.PGDATABASE') \
+	--env=PGUSER=$$(kubectl --namespace sciety get configmap sciety--prod--public-env-vars -o json | jq -r '.data.PGUSER') \
+	--env=PGPASSWORD=$$(kubectl --namespace sciety get secret sciety--prod--secret-env-vars -o json | jq -r '.data.PGPASSWORD'| base64 -d | sed -e 's/\$$\$$/$$$$$$$$/g') \
+	-- sleep 600
+	kubectl --namespace sciety wait --for condition=Ready pod psql
+	kubectl --namespace sciety exec psql -- psql -c "DELETE FROM events"
+	kubectl --namespace sciety exec psql -- mkdir /data
+	kubectl --namespace sciety cp ./data/exploratory-test-from-prod.csv psql:/data/exploratory-test-from-prod.csv
+	kubectl --namespace sciety exec psql -- psql -c "\copy events FROM '/data/exploratory-test-from-prod.csv' WITH CSV HEADER"
+	kubectl --namespace sciety delete --wait=false pod psql
+	kubectl --namespace sciety rollout restart deployment sciety--prod--frontend
+	kubectl --namespace sciety wait pod --for=condition=Ready --selector=app.kubernetes.io/component=frontend,app.kubernetes.io/instance=sciety--prod --timeout=120s
+
 crossref-response:
 	curl -v \
 		-H 'Accept: application/vnd.crossref.unixref+xml' \
