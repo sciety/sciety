@@ -10,6 +10,12 @@ metadata:
     nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
     nginx.ingress.kubernetes.io/configuration-snippet: |
       more_set_input_headers "X-Forwarded-Proto: https";
+    {{- if .Values.redirectProtocol }}
+    nginx.ingress.kubernetes.io/backend-protocol: {{ .Values.redirectProtocol | quote }}
+    {{- end }}
+    {{- if .Values.redirectHost }}
+    nginx.ingress.kubernetes.io/upstream-vhost: {{ .Values.redirectHost | quote }}
+    {{- end }}
 spec:
   rules:
     - host: {{ .Values.hostname }}
