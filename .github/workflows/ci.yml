@@ -137,6 +137,10 @@ jobs:
             --set healthchecksPingKey=${HEALTHCHECKS_PING_KEY} \
             --set eventShipperIAMRoleARN="arn:aws:iam::540790251273:role/ScietyEventsShipper" \
             --set exportBucketName="sciety-data-extractions" \
+            --set redirectUpstreamHost="a4f0cf99ffbb34a38ab5f23522f49323-acdd7707f23bf68c.elb.us-east-1.amazonaws.com" \
+            --set redirectUpstreamPort="443" \
+            --set redirectProtocol="HTTPS" \
+            --set redirectHost="sciety.org" \
             --wait \
             helm/sciety
         env:
