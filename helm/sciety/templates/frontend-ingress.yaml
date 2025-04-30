@@ -33,3 +33,15 @@ spec:
         - {{ .Values.hostname }}
         - www.{{ .Values.hostname }}
       secretName: {{ .Release.Name }}--frontend--letsencrypt-cert
+---
+{{- if .Values.redirectUpstreamHost }}
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: {{ .Release.Name }}--redirect
+spec:
+  externalName: {{ .Values.redirectUpstreamHost | quote }}
+  ports:
+    - port: {{ .Values.redirectUpstreamPort }}
+  type: "ExternalName"
+{{- end }}
