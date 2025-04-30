@@ -25,7 +25,11 @@ spec:
             pathType: Prefix
             backend:
               service:
+                {{- if .Values.redirectUpstreamHost }}
+                name: {{ .Release.Name }}--redirect
+                {{- else }}
                 name: {{ .Release.Name }}--frontend
+                {{- end }}
                 port:
                   name: http
   tls:
@@ -43,5 +47,6 @@ spec:
   externalName: {{ .Values.redirectUpstreamHost | quote }}
   ports:
     - port: {{ .Values.redirectUpstreamPort }}
+      name: http
   type: "ExternalName"
 {{- end }}
