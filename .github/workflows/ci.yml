@@ -81,41 +81,6 @@ jobs:
           GHCR_USERNAME: ${{ github.actor }}
           GHCR_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Deploy to staging
-        if: github.ref == 'refs/heads/main'
-        run: |
-          aws --region=us-east-1 eks update-kubeconfig --name libero-eks--franklin
-          helm repo add bitnami https://charts.bitnami.com/bitnami
-          helm dependency build helm/sciety
-          helm upgrade -i sciety--staging \
-            --set images.frontend.tag=${IMAGE_TAG} \
-            --set hostname=staging.sciety.org \
-            --set-string experimentEnabled="true" \
-            --set-string coarNotificationDeliveryEnabled="true" \
-            --set appCache=redis \
-            --set auth0ClientId=${AUTH0_CLIENT_ID_STAGING} \
-            --set auth0ClientSecret=${AUTH0_CLIENT_SECRET_STAGING} \
-            --set auth0Domain='sciety-staging.eu.auth0.com' \
-            --set auth0CallbackUrl='https://staging.sciety.org/auth0/callback' \
-            --set googleTagManagerId='GTM-NX7CQB4' \
-            --set prereviewBearerToken=${PREREVIEW_BEARER_TOKEN} \
-            --set healthchecksPingKey=${HEALTHCHECKS_PING_KEY} \
-            --set eventShipperIAMRoleARN="arn:aws:iam::540790251273:role/ScietyEventsShipper" \
-            --set exportBucketName="sciety-data-extractions" \
-            --set redirectUpstreamHost="a4f0cf99ffbb34a38ab5f23522f49323-acdd7707f23bf68c.elb.us-east-1.amazonaws.com" \
-            --set redirectUpstreamPort="443" \
-            --set redirectProtocol="HTTPS" \
-            --set redirectHost="staging.sciety.org" \
-            --wait \
-            helm/sciety
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          PREREVIEW_BEARER_TOKEN: ${{ secrets.PREREVIEW_BEARER_TOKEN}}
-          AUTH0_CLIENT_ID_STAGING: ${{ secrets.AUTH0_CLIENT_ID_STAGING }}
-          AUTH0_CLIENT_SECRET_STAGING: ${{ secrets.AUTH0_CLIENT_SECRET_STAGING }}
-          HEALTHCHECKS_PING_KEY: ${{ secrets.HEALTHCHECKS_PING_KEY }}
-
       - name: Deploy to prod
         if: github.ref == 'refs/heads/main'
         run: |
