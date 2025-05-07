@@ -19,6 +19,10 @@ spec:
         spec:
           containers:
           - name: app
+            resources:
+              requests: 
+                cpu: 100m
+                memory: 150Mi
             image: "{{ .Values.images.frontend.repository }}:{{ .Values.images.frontend.tag }}"
             command: ["sh", "-c", "node ./build/ingest/update-event-data && wget --quiet https://hc-ping.com/{{ .Values.healthchecksPingKey }}/{{ .Release.Name | replace "--" "-" }}-ingestion || echo 'Done'"]
             envFrom:
