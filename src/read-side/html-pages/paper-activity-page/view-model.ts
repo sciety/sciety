@@ -45,6 +45,7 @@ export type CassyniSeminarPublishedFeedItem = {
   videoLink: string,
   imageUrl: string,
   title: string,
+  reviewedPaperDoi: ExpressionDoi,
 };
 
 export type FeedItem =

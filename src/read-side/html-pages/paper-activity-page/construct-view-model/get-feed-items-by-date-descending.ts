@@ -33,6 +33,7 @@ const constructCassyniSeminarFeedItems = (
       videoLink: 'https://cassyni.com/events/6ttAf8cL1ruzkWZznh5Xed?t=1516s',
       imageUrl: 'https://api.cassyni.com/api/videos/MH5YFnwYt2VpYChF8Jj9EE/poster?embedded=false',
       title: 'New bioinformatics resources from The International Cannabis Genome Research Consortium',
+      reviewedPaperDoi: EDOI.fromValidatedString('10.46471/gigabyte.137'),
     }];
   }
   return [];
