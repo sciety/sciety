@@ -29,6 +29,10 @@ const constructCassyniSeminarFeedItems = (
     return [{
       type: 'cassyni-seminar-published',
       publishedAt: new Date('2024-10-24'),
+      doiLink: 'https://doi.org/10.52843/cassyni.y1p61f',
+      videoLink: 'https://cassyni.com/events/6ttAf8cL1ruzkWZznh5Xed?t=1516s',
+      imageUrl: 'https://api.cassyni.com/api/videos/MH5YFnwYt2VpYChF8Jj9EE/poster?embedded=false',
+      title: 'New bioinformatics resources from The International Cannabis Genome Research Consortium',
     }];
   }
   return [];

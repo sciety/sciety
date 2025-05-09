@@ -41,6 +41,10 @@ export type ExpressionPublishedFeedItem = {
 export type CassyniSeminarPublishedFeedItem = {
   type: 'cassyni-seminar-published',
   publishedAt: Date,
+  doiLink: string,
+  videoLink: string,
+  imageUrl: string,
+  title: string,
 };
 
 export type FeedItem =
