@@ -20,7 +20,7 @@ const renderCassyniSeminarPublishedFeedItem = (feedItem: CassyniSeminarPublished
     </header>
     <div class="activity-feed__item__body">
       <p>Seminar title: ${feedItem.title}</p>
-      <p>The following video starts at 25min 16sec.</p>
+      ${feedItem.reviewedPaperDoi === '10.46471/gigabyte.137' ? '<p>The following video starts at 25min 16sec.</p>' : ''}
       <a class="activity-feed__item__video_link" href=${feedItem.videoLink}>
         <span class="visually-hidden">Go to the seminar on Cassyni starting at the relevant time stamp.</span>
         <img src=${feedItem.imageUrl} alt="">
