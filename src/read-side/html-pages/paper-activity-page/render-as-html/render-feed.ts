@@ -7,14 +7,6 @@ import { templateDate } from '../../shared-components/date';
 import { renderListItems } from '../../shared-components/list-items';
 import { CassyniSeminarPublishedFeedItem, FeedItem } from '../view-model';
 
-const cassyniSeminarDoiLink = 'https://doi.org/10.52843/cassyni.y1p61f';
-
-const cassyniSeminarVideoLink = 'https://cassyni.com/events/6ttAf8cL1ruzkWZznh5Xed?t=1516s';
-
-const cassyniSeminarImageUrl = 'https://api.cassyni.com/api/videos/MH5YFnwYt2VpYChF8Jj9EE/poster?embedded=false';
-
-const cassyniSeminarTitle = 'New bioinformatics resources from The International Cannabis Genome Research Consortium';
-
 const renderCassyniSeminarPublishedFeedItem = (feedItem: CassyniSeminarPublishedFeedItem) => toHtmlFragment(`
   <div class="activity-feed__item__contents">
     <header class="activity-feed__item__header">
@@ -27,11 +19,11 @@ const renderCassyniSeminarPublishedFeedItem = (feedItem: CassyniSeminarPublished
       </div>
     </header>
     <div class="activity-feed__item__body">
-      <p>Seminar title: ${cassyniSeminarTitle}</p>
+      <p>Seminar title: ${feedItem.title}</p>
       <p>The following video starts at 25min 16sec.</p>
-      <a class="activity-feed__item__video_link" href=${cassyniSeminarVideoLink}>
+      <a class="activity-feed__item__video_link" href=${feedItem.videoLink}>
         <span class="visually-hidden">Go to the seminar on Cassyni starting at the relevant time stamp.</span>
-        <img src=${cassyniSeminarImageUrl} alt="">
+        <img src=${feedItem.imageUrl} alt="">
         <svg class="activity-feed__item__play_icon">
           <style>
             .icon:hover circle {
@@ -44,7 +36,7 @@ const renderCassyniSeminarPublishedFeedItem = (feedItem: CassyniSeminarPublished
           </g>
         </svg>
       </a>
-      <p><a href=${cassyniSeminarDoiLink}>Watch the whole seminar on Cassyni.</a></p>
+      <p><a href=${feedItem.doiLink}>Watch the whole seminar on Cassyni.</a></p>
     </div>
   </div>
 `);
