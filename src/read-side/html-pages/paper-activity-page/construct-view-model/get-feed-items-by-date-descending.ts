@@ -36,6 +36,17 @@ const constructCassyniSeminarFeedItems = (
       reviewedPaperDoi: EDOI.fromValidatedString('10.46471/gigabyte.137'),
     }];
   }
+  if (PH.getAllExpressionDois(history).includes(EDOI.fromValidatedString('10.1101/2023.12.19.572354'))) {
+    return [{
+      type: 'cassyni-seminar-published',
+      publishedAt: new Date('2025-04-08'),
+      doiLink: 'https://doi.org/10.52843/cassyni.06hwvh',
+      videoLink: 'https://cassyni.com/events/RfbzkzjvuLjxHYQb4AJdh7',
+      imageUrl: 'https://api.cassyni.com/api/videos/QQ4UNboVbmQojiWFt4Xv2r/poster?embedded=false&play_button=false',
+      title: 'Network-based anomaly detection algorithm reveals proteins with major roles in human tissues',
+      reviewedPaperDoi: EDOI.fromValidatedString('10.1101/2023.12.19.572354'),
+    }];
+  }
   return [];
 };
 
