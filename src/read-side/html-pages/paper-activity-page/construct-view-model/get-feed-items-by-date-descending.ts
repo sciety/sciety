@@ -47,6 +47,17 @@ const constructCassyniSeminarFeedItems = (
       reviewedPaperDoi: EDOI.fromValidatedString('10.1101/2023.12.19.572354'),
     }];
   }
+  if (PH.getAllExpressionDois(history).includes(EDOI.fromValidatedString('10.1590/scielopreprints.6611'))) {
+    return [{
+      type: 'cassyni-seminar-published',
+      publishedAt: new Date('2025-04-22'),
+      doiLink: 'https://doi.org/10.52843/cassyni.007cq8',
+      videoLink: 'https://cassyni.com/events/iAC1qrycdt6HYcF9sdAUV',
+      imageUrl: 'https://api.cassyni.com/api/videos/XYZijr6z2irhZeXkhXc1Ga/poster?embedded=false&play_button=false',
+      title: 'Author Insight on How to Publish Vectors of Human Disease Data with GBIF and GigaByte',
+      reviewedPaperDoi: EDOI.fromValidatedString('10.1590/scielopreprints.6611'),
+    }];
+  }
   return [];
 };
 
