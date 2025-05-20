@@ -175,6 +175,10 @@ make download-exploratory-test-from-prod
 make exploratory-test-from-prod
 ```
 
+#### Calling APIs locally
+
+To test locally, set content header `Authorization: Bearer secret`.
+
 ### Calling staging and production APIs
 
 #### Adding an article to a group list
