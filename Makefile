@@ -13,7 +13,7 @@ export IMAGE
 export IMAGE_TAG
 export AWS_DEFAULT_REGION
 
-.PHONY: backstop* build clean* dev feature-test find-* get* git-lfs graphs ingest* install lint* prod replay-events-for-elife-subject-area-policy stop test* update* watch* replace-staging-database-with-snapshot-from-prod replace-demo-database-with-snapshot-from-prod exploratory-test-from-* verify-flux-prod-cluster
+.PHONY: backstop* build clean* dev feature-test find-* get* git-lfs graphs ingest* install lint* prod replay-events-for-elife-subject-area-policy stop test* update* watch* replace-staging-database-with-snapshot-from-prod exploratory-test-from-* verify-flux-prod-cluster
 
 dev: export TARGET = dev
 dev: export SCIETY_TEAM_API_BEARER_TOKEN = secret
@@ -213,23 +213,6 @@ switch-to-flux-prod-cluster:
 
 switch-to-deprecated-cluster:
 	kubectl config use-context arn:aws:eks:us-east-1:540790251273:cluster/libero-eks--franklin
-
-replace-demo-database-with-snapshot-from-prod: verify-flux-prod-cluster download-exploratory-test-from-prod
-	kubectl --namespace sciety run psql \
-	--image=postgres:12.3 \
-	--env=PGHOST=$$(kubectl --namespace sciety get configmap sciety--demo--public-env-vars -o json | jq -r '.data.PGHOST') \
-	--env=PGDATABASE=$$(kubectl --namespace sciety get configmap sciety--demo--public-env-vars -o json | jq -r '.data.PGDATABASE') \
-	--env=PGUSER=$$(kubectl --namespace sciety get configmap sciety--demo--public-env-vars -o json | jq -r '.data.PGUSER') \
-	--env=PGPASSWORD=$$(kubectl --namespace sciety get secret sciety--demo--secret-env-vars -o json | jq -r '.data.PGPASSWORD'| base64 -d | sed -e 's/\$$\$$/$$$$$$$$/g') \
-	-- sleep 600
-	kubectl --namespace sciety wait --for condition=Ready pod psql
-	kubectl --namespace sciety exec psql -- psql -c "DELETE FROM events"
-	kubectl --namespace sciety exec psql -- mkdir /data
-	kubectl --namespace sciety cp ./data/exploratory-test-from-prod.csv psql:/data/exploratory-test-from-prod.csv
-	kubectl --namespace sciety exec psql -- psql -c "\copy events FROM '/data/exploratory-test-from-prod.csv' WITH CSV HEADER"
-	kubectl --namespace sciety delete --wait=false pod psql
-	kubectl --namespace sciety rollout restart deployment sciety--demo--frontend
-	kubectl --namespace sciety wait pod --for=condition=Ready --selector=app.kubernetes.io/component=frontend,app.kubernetes.io/instance=sciety--demo --timeout=120s
 
 replace-staging-database--with-snapshot-from-prod: verify-flux-prod-cluster download-exploratory-test-from-prod
 	kubectl --namespace sciety run psql \
