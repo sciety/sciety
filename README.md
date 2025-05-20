@@ -214,14 +214,10 @@ We released this software under the [MIT license][License]. Copyright © 2020 [e
 
 [Architecture sketch]: https://miro.com/app/board/o9J_ksK0wlg=/
 [aws-cli]: https://aws.amazon.com/cli/
-[AWS CloudWatch logs]: https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#logs-insights:queryDetail=~(end~0~start~-900~timeType~'RELATIVE~unit~'seconds~editorString~'fields*20*40timestamp*2c*20*40message*0a*7c*20filter*20*60kubernetes.labels.app_kubernetes_io*2finstance*60*3d*22prc--prod*22*0a*7c*20sort*20*40timestamp*20desc*0a*7c*20limit*2020~isLiveTail~false~queryId~'89133ab9-5bb4-4770-b3e9-96052e8300ef~source~(~'*2faws*2fcontainerinsights*2flibero-eks--franklin*2fapplication));tab=logs
-[CloudWatch dashboard]: https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#dashboards:name=PRCMetrics
-[CloudWatch user journey by IP]: https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#logsV2:logs-insights$3FqueryDetail$3D$257E$2528end$257E0$257Estart$257E-1800$257EtimeType$257E$2527RELATIVE$257Eunit$257E$2527seconds$257EeditorString$257E$2527fields*20*40timestamp*2c*20app_request*0a*7c*20filter*20*60kubernetes.labels.app_kubernetes_io*2finstance*60*20*3d*3d*20*27ingress-nginx*27*20and*20app_remote_addr*20*3d*3d*20*2778.105.99.80*27*20and*20app_request*20not*20like*20*2fstatic*2f*0a*7c*20filter*20app_ingress_name*20*3d*3d*20*27sciety--prod--frontend*27*0a*7c*20sort*20*40timestamp*20asc*0a*7c*20limit*20200$257EisLiveTail$257Efalse$257EqueryId$257E$2527e3086054-9d14-4384-bca5-a9c12b181c87$257Esource$257E$2528$257E$2527*2faws*2fcontainerinsights*2flibero-eks--franklin*2fapplication$2529$2529
 [Docker]: https://www.docker.com/
 [Docker Compose]: https://docs.docker.com/compose/
 [eLife]: https://elifesciences.org/
 [ensemble programming]: https://en.wikipedia.org/w/index.php?title=Ensemble_programming&redirect=no
-[Export from CloudWatch]: https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#logsV2:log-groups/log-group/$252Faws$252Fcontainerinsights$252Flibero-eks--franklin$252Fapplication
 [ESLint]: https://eslint.org/
 [Git LFS]: https://git-lfs.github.com/
 [GNU Make]: https://www.gnu.org/software/make/
