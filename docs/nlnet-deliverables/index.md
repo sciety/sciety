@@ -1,5 +1,7 @@
 # NLNet Deliverables Index
 
+[Platform descriptions](./platform-descriptions.md)
+
 ## Task 1: Bonfire on nixOS deployment and replicability
 
 Initial feasibility research through investigating and documenting methods for deploying Bonfire on nixOS.
