@@ -12,7 +12,7 @@ Initial feasibility research through investigating and documenting methods for d
 - [1d. 1-click deployable Bonfire for Preprints (avoiding vendor lock-in)](./1d.md)
 - [1e. Extended nixOS/Guix and Bonfire federation experiments and documentation](./1e.md)
 
-## Task 2: Customisation of Bonfire for Preprints (€ 6000)
+## Task 2: Customisation of Bonfire for Preprints
 
 Assess existing efforts in the OpenScience.network space, design specific workflows for preprints and contribute back to the Bonfire ecosystem.
 
@@ -21,7 +21,7 @@ Assess existing efforts in the OpenScience.network space, design specific workfl
 - [2c. Update Bonfire documentation](./2c.md)
 - [2d. Final deployment for customised bonfire to production inc DNS setup eg. discussions.sciety.org](./2d.md)
 
-## Task 3: Sciety integration (€ 20700)
+## Task 3: Sciety integration
 
 Enable Bonfire activities to be linked to Sciety accounts/groups and preprints and implement reliable, time triggered connections between platforms.
 
