@@ -3,6 +3,7 @@ import * as crossrefDate from '../../../../src/third-parties/fetch-publishing-hi
 describe('toDate', () => {
   describe('when the date specifies a year, a month and a day', () => {
     const expectedDate = new Date('2020-12-19');
+
     const input: crossrefDate.DateStamp = {
       'date-parts': [[
         expectedDate.getFullYear(),
