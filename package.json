@@ -42,7 +42,7 @@
     "uuid": "^11.0.5"
   },
   "devDependencies": {
-    "@swc/cli": "^0.7.7",
+    "@swc/cli": "^0.7.8",
     "@swc/core": "^1.11.29",
     "@types/jest": "^29.5.14",
     "@types/koa": "^2.15.0",
