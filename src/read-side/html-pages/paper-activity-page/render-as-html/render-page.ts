@@ -19,7 +19,7 @@ export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment
         ${renderRelatedArticlesLink(viewmodel.relatedArticles)}
         <section class="bonfire-management">
           <h2 class="article-actions-heading">Discuss this preprint</h2>
-          <a href="https://discussions.sciety.org/signup" class="full-article-button">Start a discussion</a>
+          <a href="https://discussions.sciety.org/signup">Start a discussion</a>
         </section>
         <div class="list-management">
           ${renderListedIn(viewmodel.listedIn)}
