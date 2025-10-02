@@ -41,6 +41,14 @@
   @include button.secondary-link();
 
   @include breakpoints.two-column-display {
+    margin-bottom: functions.px-to-rem(32px);
+  }
+}
+
+.bonfire-management {
+  margin-bottom: functions.px-to-rem(32px);
+
+  @include breakpoints.two-column-display {
     margin-bottom: functions.px-to-rem(80px);
   }
 }
