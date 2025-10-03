@@ -47,6 +47,8 @@
 
 .bonfire-management {
   margin-bottom: functions.px-to-rem(32px);
+  display: flex;
+  flex-direction: column;
 
   @include breakpoints.two-column-display {
     margin-bottom: functions.px-to-rem(80px);
@@ -54,7 +56,8 @@
 }
 
 .bonfire-management-button {
-  margin-bottom: functions.px-to-rem(32px);
+  align-self: flex-start;
+  margin-bottom: functions.px-to-rem(8px);
   @include button.primary-link();
 }
 
