@@ -53,6 +53,11 @@
   }
 }
 
+.bonfire-management-button {
+  margin-bottom: functions.px-to-rem(32px);
+  @include button.primary-link();
+}
+
 .logged-out-call-to-action {
   margin-bottom: functions.px-to-rem(24px);
   @include button.secondary-link();

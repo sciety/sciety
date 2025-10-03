@@ -4,7 +4,7 @@ export const renderBonfireManagement = (bonfireSocialLinkHref: string): HtmlFrag
   `
     <section class="bonfire-management">
         <h2 class="article-actions-heading">Discuss this preprint</h2>
-            <a href=${bonfireSocialLinkHref} class="full-article-button">Start a discussion</a>
+            <a href=${bonfireSocialLinkHref} class="bonfire-management-button">Start a discussion</a>
     </section>
     `,
 );
