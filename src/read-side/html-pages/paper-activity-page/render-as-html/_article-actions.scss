@@ -41,7 +41,7 @@
   @include button.secondary-link();
 
   @include breakpoints.two-column-display {
-    margin-bottom: functions.px-to-rem(32px);
+    margin-bottom: functions.px-to-rem(80px);
   }
 }
 
