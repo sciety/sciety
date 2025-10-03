@@ -83,4 +83,5 @@ export type ViewModel = {
   relatedArticles: O.Option<ReadonlyArray<ArticleCardViewModel>>,
   curationStatements: ReadonlyArray<CurationStatement>,
   reviewingGroups: ReadonlyArray<GroupLinkWithLogoViewModel>,
+  bonfireSocialLinkHref: string,
 };
