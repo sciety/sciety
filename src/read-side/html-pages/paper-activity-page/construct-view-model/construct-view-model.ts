@@ -89,5 +89,6 @@ export const constructViewModel: ConstructViewModel<Params, ViewModel> = (depend
     ),
     reviewingGroups: constructReviewingGroups(dependencies, partial.publishingHistory),
     bonfireSocialLinkHref: 'https://discussions.sciety.org/signup',
+    expressionDoi: params.latestExpressionDoi,
   })),
 );

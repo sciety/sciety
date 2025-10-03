@@ -84,4 +84,5 @@ export type ViewModel = {
   curationStatements: ReadonlyArray<CurationStatement>,
   reviewingGroups: ReadonlyArray<GroupLinkWithLogoViewModel>,
   bonfireSocialLinkHref: string,
+  expressionDoi: ExpressionDoi,
 };
