@@ -60,6 +60,13 @@
       ]
     },
     {
+      "label": "An article page with a Join the discussion link",
+      "url": "http://sciety-test-app-1/articles/activity/10.7554/elife.95814.3",
+      "selectors": [
+        "main"
+      ]
+    },
+    {
       "label": "Explore page",
       "url": "http://sciety-test-app-1/explore",
       "selectors": [
