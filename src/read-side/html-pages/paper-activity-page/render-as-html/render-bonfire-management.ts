@@ -1,7 +1,9 @@
-import { ExpressionDoi } from '../../../../types/expression-doi';
+import { eqExpressionDoi, ExpressionDoi, fromValidatedString } from '../../../../types/expression-doi';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
 
-const renderJoinTheDiscussionButton = (expressionDoi: ExpressionDoi): HtmlFragment => (expressionDoi === '10.7554/elife.95814.3' ? toHtmlFragment('') : toHtmlFragment(''));
+const isAppropriateDoi = (expressionDoi: ExpressionDoi): boolean => eqExpressionDoi.equals(fromValidatedString('10.7554/elife.95814.3'), expressionDoi);
+
+const renderJoinTheDiscussionButton = (expressionDoi: ExpressionDoi) => (isAppropriateDoi(expressionDoi) ? toHtmlFragment('') : toHtmlFragment(''));
 
 export const renderBonfireManagement = (
   bonfireSocialLinkHref: string,
