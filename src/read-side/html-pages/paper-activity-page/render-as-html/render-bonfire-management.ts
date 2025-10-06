@@ -12,7 +12,7 @@ const renderJoinTheDiscussionButton = (expressionDoi: ExpressionDoi) => pipe(
   O.fromPredicate(isAppropriateDoi(fromValidatedString('10.7554/elife.95814.3'))),
   O.match(
     () => '',
-    () => '',
+    () => '<a href="https://discussions.sciety.org/post/01K6MQC5NZFYEHXYQ23VCK047B" class="bonfire-management-button">Join the discussion</a>',
   ),
   toHtmlFragment,
 );
