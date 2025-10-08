@@ -89,6 +89,7 @@ export const constructViewModel: ConstructViewModel<Params, ViewModel> = (depend
     ),
     reviewingGroups: constructReviewingGroups(dependencies, partial.publishingHistory),
     bonfireSocialLinkHref: 'https://discussions.sciety.org/signup',
+    jointTheDiscussionLinkHref: 'https://discussions.sciety.org/post/01K6MQC5NZFYEHXYQ23VCK047B',
     expressionDoi: params.latestExpressionDoi,
   })),
 );
