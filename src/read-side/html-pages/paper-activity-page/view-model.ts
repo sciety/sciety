@@ -1,6 +1,7 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import { BonfireManagement } from './construct-view-model/construct-bonfire-management';
 import { ArticleAuthors } from '../../../types/article-authors';
 import { ArticleServer } from '../../../types/article-server';
 import * as EL from '../../../types/evaluation-locator';
@@ -66,13 +67,6 @@ export type SaveArticleCta = {
 type ContainingList = ListSummary;
 
 export type LoggedInUserListManagement = E.Either<SaveArticleCta, ContainingList>;
-
-type BonfireManagement = {
-  startDiscussionLinkHref: string,
-  joinDiscussionLinkHref: string,
-  optionalJoinDiscussionLinkHref: O.Option<string>,
-  expressionDoi: ExpressionDoi,
-};
 
 export type ViewModel = {
   title: string,

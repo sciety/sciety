@@ -3,6 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { constructBonfireManagement } from './construct-bonfire-management';
 import { constructContainingList } from './construct-containing-list';
 import { constructRelatedArticles } from './construct-related-articles';
 import { constructUserListManagement } from './construct-user-list-management';
@@ -38,13 +39,6 @@ type Params = {
   latestExpressionDoi: CanonicalExpressionDoi,
   user: O.Option<{ id: UserId }>,
 };
-
-const constructBonfireManagement = (latestExpressionDoi: CanonicalExpressionDoi) => ({
-  startDiscussionLinkHref: 'https://discussions.sciety.org/signup',
-  joinDiscussionLinkHref: 'https://discussions.sciety.org/post/01K6MQC5NZFYEHXYQ23VCK047B',
-  optionalJoinDiscussionLinkHref: O.some('https://discussions.sciety.org/post/01K6MQC5NZFYEHXYQ23VCK047B'),
-  expressionDoi: latestExpressionDoi,
-});
 
 export const constructViewModel: ConstructViewModel<Params, ViewModel> = (dependencies) => (params) => pipe(
   params.latestExpressionDoi,
