@@ -42,6 +42,7 @@ type Params = {
 const constructBonfireManagement = (latestExpressionDoi: CanonicalExpressionDoi) => ({
   startDiscussionLinkHref: 'https://discussions.sciety.org/signup',
   joinDiscussionLinkHref: 'https://discussions.sciety.org/post/01K6MQC5NZFYEHXYQ23VCK047B',
+  optionalJoinDiscussionLinkHref: O.some('https://discussions.sciety.org/post/01K6MQC5NZFYEHXYQ23VCK047B'),
   expressionDoi: latestExpressionDoi,
 });
 

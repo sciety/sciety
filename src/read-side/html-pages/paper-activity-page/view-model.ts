@@ -70,6 +70,7 @@ export type LoggedInUserListManagement = E.Either<SaveArticleCta, ContainingList
 type BonfireManagement = {
   startDiscussionLinkHref: string,
   joinDiscussionLinkHref: string,
+  optionalJoinDiscussionLinkHref: O.Option<string>,
   expressionDoi: ExpressionDoi,
 };
 
