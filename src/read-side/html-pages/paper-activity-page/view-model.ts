@@ -67,6 +67,11 @@ type ContainingList = ListSummary;
 
 export type LoggedInUserListManagement = E.Either<SaveArticleCta, ContainingList>;
 
+type BonfireManagement = {
+  bonfireSocialLinkHref: string,
+  jointTheDiscussionLinkHref: string,
+};
+
 export type ViewModel = {
   title: string,
   titleLanguageCode: O.Option<LanguageCode>,
@@ -83,7 +88,6 @@ export type ViewModel = {
   relatedArticles: O.Option<ReadonlyArray<ArticleCardViewModel>>,
   curationStatements: ReadonlyArray<CurationStatement>,
   reviewingGroups: ReadonlyArray<GroupLinkWithLogoViewModel>,
-  bonfireSocialLinkHref: string,
-  jointTheDiscussionLinkHref: string,
+  bonfireManagement: BonfireManagement,
   expressionDoi: ExpressionDoi,
 };
