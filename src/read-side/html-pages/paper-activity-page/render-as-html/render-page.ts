@@ -20,7 +20,7 @@ export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment
         ${renderRelatedArticlesLink(viewmodel.relatedArticles)}
         ${renderBonfireManagement(
     viewmodel.bonfireManagement.startDiscussionLinkHref,
-    viewmodel.expressionDoi,
+    viewmodel.bonfireManagement.expressionDoi,
     viewmodel.bonfireManagement.joinDiscussionLinkHref,
   )}
         <div class="list-management">

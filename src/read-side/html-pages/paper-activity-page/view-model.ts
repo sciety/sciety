@@ -70,6 +70,7 @@ export type LoggedInUserListManagement = E.Either<SaveArticleCta, ContainingList
 type BonfireManagement = {
   startDiscussionLinkHref: string,
   joinDiscussionLinkHref: string,
+  expressionDoi: ExpressionDoi,
 };
 
 export type ViewModel = {
@@ -89,5 +90,4 @@ export type ViewModel = {
   curationStatements: ReadonlyArray<CurationStatement>,
   reviewingGroups: ReadonlyArray<GroupLinkWithLogoViewModel>,
   bonfireManagement: BonfireManagement,
-  expressionDoi: ExpressionDoi,
 };

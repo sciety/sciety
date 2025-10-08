@@ -91,7 +91,7 @@ export const constructViewModel: ConstructViewModel<Params, ViewModel> = (depend
     bonfireManagement: {
       startDiscussionLinkHref: 'https://discussions.sciety.org/signup',
       joinDiscussionLinkHref: 'https://discussions.sciety.org/post/01K6MQC5NZFYEHXYQ23VCK047B',
+      expressionDoi: params.latestExpressionDoi,
     },
-    expressionDoi: params.latestExpressionDoi,
   })),
 );
