@@ -18,7 +18,11 @@ export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment
         ${renderReviewingGroups(viewmodel.reviewingGroups)}
         <a href="${viewmodel.expressionFullTextHref}" class="full-article-button">Read the full article</a>
         ${renderRelatedArticlesLink(viewmodel.relatedArticles)}
-        ${renderBonfireManagement(viewmodel.bonfireManagement.startDiscussionLinkHref, viewmodel.expressionDoi, 'https://discussions.sciety.org/post/01K6MQC5NZFYEHXYQ23VCK047B')}
+        ${renderBonfireManagement(
+    viewmodel.bonfireManagement.startDiscussionLinkHref,
+    viewmodel.expressionDoi,
+    viewmodel.bonfireManagement.joinDiscussionLinkHref,
+  )}
         <div class="list-management">
           ${renderListedIn(viewmodel.listedIn)}
           ${renderUserListManagement(viewmodel)}
