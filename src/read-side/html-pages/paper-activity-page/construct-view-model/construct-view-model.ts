@@ -39,6 +39,12 @@ type Params = {
   user: O.Option<{ id: UserId }>,
 };
 
+const constructBonfireManagement = (latestExpressionDoi: CanonicalExpressionDoi) => ({
+  startDiscussionLinkHref: 'https://discussions.sciety.org/signup',
+  joinDiscussionLinkHref: 'https://discussions.sciety.org/post/01K6MQC5NZFYEHXYQ23VCK047B',
+  expressionDoi: latestExpressionDoi,
+});
+
 export const constructViewModel: ConstructViewModel<Params, ViewModel> = (dependencies) => (params) => pipe(
   params.latestExpressionDoi,
   dependencies.fetchPublishingHistory,
@@ -88,10 +94,6 @@ export const constructViewModel: ConstructViewModel<Params, ViewModel> = (depend
       })),
     ),
     reviewingGroups: constructReviewingGroups(dependencies, partial.publishingHistory),
-    bonfireManagement: {
-      startDiscussionLinkHref: 'https://discussions.sciety.org/signup',
-      joinDiscussionLinkHref: 'https://discussions.sciety.org/post/01K6MQC5NZFYEHXYQ23VCK047B',
-      expressionDoi: params.latestExpressionDoi,
-    },
+    bonfireManagement: constructBonfireManagement(params.latestExpressionDoi),
   })),
 );
