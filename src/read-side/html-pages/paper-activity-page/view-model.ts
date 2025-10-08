@@ -68,8 +68,8 @@ type ContainingList = ListSummary;
 export type LoggedInUserListManagement = E.Either<SaveArticleCta, ContainingList>;
 
 type BonfireManagement = {
-  bonfireSocialLinkHref: string,
-  jointTheDiscussionLinkHref: string,
+  startDiscussionLinkHref: string,
+  joinDiscussionLinkHref: string,
 };
 
 export type ViewModel = {
