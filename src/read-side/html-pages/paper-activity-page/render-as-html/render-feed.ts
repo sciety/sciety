@@ -21,9 +21,9 @@ const renderCassyniSeminarPublishedFeedItem = (feedItem: CassyniSeminarPublished
     <div class="activity-feed__item__body">
       <p>Seminar title: ${feedItem.title}</p>
       ${feedItem.reviewedPaperDoi === '10.46471/gigabyte.137' ? '<p>The following video starts at 25min 16sec.</p>' : ''}
-      <a class="activity-feed__item__video_link" href=${feedItem.videoLink}>
+      <a class="activity-feed__item__video_link" href="${feedItem.videoLink}">
         <span class="visually-hidden">Go to the seminar on Cassyni starting at the relevant time stamp.</span>
-        <img src=${feedItem.imageUrl} alt="">
+        <img src="${feedItem.imageUrl}" alt="">
         <svg class="activity-feed__item__play_icon">
           <style>
             .icon:hover circle {
@@ -36,7 +36,7 @@ const renderCassyniSeminarPublishedFeedItem = (feedItem: CassyniSeminarPublished
           </g>
         </svg>
       </a>
-      <p><a href=${feedItem.doiLink}>Watch the whole seminar on Cassyni.</a></p>
+      <p><a href="${feedItem.doiLink}">Watch the whole seminar on Cassyni.</a></p>
     </div>
   </div>
 `);
