@@ -89,6 +89,6 @@ export const constructViewModel: ConstructViewModel<Params, ViewModel> = (depend
       })),
     ),
     reviewingGroups: constructReviewingGroups(dependencies, partial.publishingHistory),
-    bonfireManagement: constructBonfireManagement(params.latestExpressionDoi),
+    bonfireManagement: constructBonfireManagement(dependencies, params.latestExpressionDoi),
   })),
 );
