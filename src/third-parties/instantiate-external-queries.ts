@@ -63,6 +63,7 @@ export const instantiateExternalQueries = (
     fetchRecommendedPapers: createFetchRecommendedPapers(queryExternalService, logger),
     fetchSearchCategories: fetchSearchCategories(queryExternalService, logger),
     fetchByCategory: fetchByCategory(queryExternalService, logger),
+    fetchBonfireDiscussionId: () => '01K6MQC5NZFYEHXYQ23VCK047B',
     fetchStaticFile: fetchStaticFile(logger),
     fetchUserAvatarUrl: fetchUserAvatarUrl(queryExternalService, logger),
     searchForPaperExpressions: searchEuropePmc(queryExternalService, logger),
