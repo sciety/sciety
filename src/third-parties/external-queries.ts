@@ -3,7 +3,7 @@ import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
 import * as DE from '../types/data-error';
 import { EvaluationLocator } from '../types/evaluation-locator';
-import { ExpressionDoi } from '../types/expression-doi';
+import { CanonicalExpressionDoi, ExpressionDoi } from '../types/expression-doi';
 import { ExpressionFrontMatter } from '../types/expression-front-matter';
 import { PublishingHistory } from '../types/publishing-history';
 import { QueryParameters } from '../types/query-parameters';
@@ -16,7 +16,7 @@ type PageOfExpressions = { expressionDois: ReadonlyArray<ExpressionDoi>, totalIt
 type FetchByCategory = (queryParameters: QueryParameters)
 => TE.TaskEither<DE.DataError, PageOfExpressions>;
 
-type FetchBonfireDiscussionId = () => string;
+type FetchBonfireDiscussionId = (expressionDoi: CanonicalExpressionDoi) => string;
 
 type FetchExpressionFrontMatter = (expressionDoi: ExpressionDoi)
 => TE.TaskEither<DE.DataError, ExpressionFrontMatter>;
