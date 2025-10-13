@@ -16,7 +16,7 @@ type PageOfExpressions = { expressionDois: ReadonlyArray<ExpressionDoi>, totalIt
 type FetchByCategory = (queryParameters: QueryParameters)
 => TE.TaskEither<DE.DataError, PageOfExpressions>;
 
-type FetchBonfireDiscussionId = (expressionDoi: CanonicalExpressionDoi) => string;
+type FetchBonfireDiscussionId = (expressionDoi: CanonicalExpressionDoi) => TE.TaskEither<DE.DataError, string>;
 
 type FetchExpressionFrontMatter = (expressionDoi: ExpressionDoi)
 => TE.TaskEither<DE.DataError, ExpressionFrontMatter>;

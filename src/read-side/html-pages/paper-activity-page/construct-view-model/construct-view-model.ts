@@ -63,7 +63,7 @@ export const constructViewModel: ConstructViewModel<Params, ViewModel> = (depend
         TE.rightTask,
       ),
       publishingHistory: TE.right(publishingHistory),
-      bonfireManagementDiscussionId: TE.right('01K6MQC5NZFYEHXYQ23VCK047B'),
+      bonfireManagementDiscussionId: dependencies.fetchBonfireDiscussionId(params.latestExpressionDoi),
     },
     sequenceS(TE.ApplyPar),
   )),

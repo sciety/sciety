@@ -18,7 +18,7 @@ import { arbitraryExpressionDoi } from '../types/expression-doi.helper';
 
 export const createHappyPathExternalQueries = (): ExternalQueries => ({
   fetchByCategory: () => TE.right({ expressionDois: [arbitraryExpressionDoi()], totalItems: 1 }),
-  fetchBonfireDiscussionId: () => '1234',
+  fetchBonfireDiscussionId: () => TE.right('1234'),
   fetchExpressionFrontMatter: (paperExpressionLocator) => TE.right({
     doi: new ArticleId(paperExpressionLocator),
     authors: O.none,
