@@ -63,6 +63,7 @@ export const constructViewModel: ConstructViewModel<Params, ViewModel> = (depend
         TE.rightTask,
       ),
       publishingHistory: TE.right(publishingHistory),
+      bonfireManagementDiscussionId: TE.right('01K6MQC5NZFYEHXYQ23VCK047B'),
     },
     sequenceS(TE.ApplyPar),
   )),
@@ -89,6 +90,10 @@ export const constructViewModel: ConstructViewModel<Params, ViewModel> = (depend
       })),
     ),
     reviewingGroups: constructReviewingGroups(dependencies, partial.publishingHistory),
-    bonfireManagement: constructBonfireManagement(dependencies, params.latestExpressionDoi),
+    bonfireManagement: constructBonfireManagement(
+      dependencies,
+      params.latestExpressionDoi,
+      partial.bonfireManagementDiscussionId,
+    ),
   })),
 );

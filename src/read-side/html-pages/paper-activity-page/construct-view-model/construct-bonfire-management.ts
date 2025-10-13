@@ -12,11 +12,10 @@ const isAppropriateDoi = (
   expressionDoi: ExpressionDoi,
 ) => (doiToBeChecked: ExpressionDoi): boolean => eqExpressionDoi.equals(doiToBeChecked, expressionDoi);
 
-const constructJoinDiscussionLinkHref = (dependencies: Dependencies, expressionDoi: CanonicalExpressionDoi) => pipe(
+const constructJoinDiscussionLinkHref = (bonfireDiscussionId: string, expressionDoi: CanonicalExpressionDoi) => pipe(
   expressionDoi,
   O.fromPredicate(isAppropriateDoi(fromValidatedString('10.7554/elife.95814.3'))),
-  O.map(dependencies.fetchBonfireDiscussionId),
-  O.map((postId) => `https://discussions.sciety.org/post/${postId}`),
+  O.map(() => `https://discussions.sciety.org/post/${bonfireDiscussionId}`),
 );
 
 export type BonfireManagement = {
@@ -28,8 +27,9 @@ export type BonfireManagement = {
 export const constructBonfireManagement = (
   dependencies: Dependencies,
   latestExpressionDoi: CanonicalExpressionDoi,
+  bonfireDiscussionId: string,
 ): BonfireManagement => ({
   startDiscussionLinkHref: 'https://discussions.sciety.org/signup',
-  optionalJoinDiscussionLinkHref: constructJoinDiscussionLinkHref(dependencies, latestExpressionDoi),
+  optionalJoinDiscussionLinkHref: constructJoinDiscussionLinkHref(bonfireDiscussionId, latestExpressionDoi),
   expressionDoi: latestExpressionDoi,
 });
