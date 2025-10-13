@@ -63,7 +63,10 @@ export const constructViewModel: ConstructViewModel<Params, ViewModel> = (depend
         TE.rightTask,
       ),
       publishingHistory: TE.right(publishingHistory),
-      bonfireManagementDiscussionId: dependencies.fetchBonfireDiscussionId(params.latestExpressionDoi),
+      bonfireManagement: pipe(
+        constructBonfireManagement(dependencies, params.latestExpressionDoi),
+        TE.rightTask,
+      ),
     },
     sequenceS(TE.ApplyPar),
   )),
@@ -90,10 +93,6 @@ export const constructViewModel: ConstructViewModel<Params, ViewModel> = (depend
       })),
     ),
     reviewingGroups: constructReviewingGroups(dependencies, partial.publishingHistory),
-    bonfireManagement: constructBonfireManagement(
-      dependencies,
-      params.latestExpressionDoi,
-      partial.bonfireManagementDiscussionId,
-    ),
+    bonfireManagement: partial.bonfireManagement,
   })),
 );

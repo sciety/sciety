@@ -1,4 +1,6 @@
 import * as O from 'fp-ts/Option';
+import * as T from 'fp-ts/Task';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
 import {
@@ -27,9 +29,16 @@ export type BonfireManagement = {
 export const constructBonfireManagement = (
   dependencies: Dependencies,
   latestExpressionDoi: CanonicalExpressionDoi,
-  bonfireDiscussionId: string,
-): BonfireManagement => ({
-  startDiscussionLinkHref: 'https://discussions.sciety.org/signup',
-  optionalJoinDiscussionLinkHref: constructJoinDiscussionLinkHref(bonfireDiscussionId, latestExpressionDoi),
-  expressionDoi: latestExpressionDoi,
-});
+): T.Task<BonfireManagement> => pipe(
+  latestExpressionDoi,
+  dependencies.fetchBonfireDiscussionId,
+  TE.match(
+    () => O.none,
+    (bonfireDiscussionId) => constructJoinDiscussionLinkHref(bonfireDiscussionId, latestExpressionDoi),
+  ),
+  T.map((optionalJoinDiscussionLinkHref) => ({
+    startDiscussionLinkHref: 'https://discussions.sciety.org/signup',
+    optionalJoinDiscussionLinkHref,
+    expressionDoi: latestExpressionDoi,
+  })),
+);
