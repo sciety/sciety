@@ -12,6 +12,6 @@ export const fetchBonfireDiscussionId = (logger: Logger): ExternalQueries['fetch
     query: '{ post(filter: {id: "01K6MQC5NZFYEHXYQ23VCK047B"}) { postContent { htmlBody } activity { replied { threadId } } }}',
   },
   JSON.stringify,
-  postDataBonfire('https://discussions.sciety.org/api/graphql'),
+  postDataBonfire(logger, 'https://discussions.sciety.org/api/graphql'),
   TE.map(() => '01K6MQC5NZFYEHXYQ23VCK047B'),
 );
