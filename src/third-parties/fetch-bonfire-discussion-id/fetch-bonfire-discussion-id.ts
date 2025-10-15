@@ -7,7 +7,7 @@ import { postDataBonfire } from './post-data-bonfire';
 import { Logger } from '../../logger';
 import * as DE from '../../types/data-error';
 import {
-  CanonicalExpressionDoi, eqExpressionDoi, ExpressionDoi, fromValidatedString,
+  CanonicalExpressionDoi, fromValidatedString, isAppropriateDoi,
 } from '../../types/expression-doi';
 import { decodeAndLogFailures } from '../decode-and-log-failures';
 import { ExternalQueries } from '../external-queries';
@@ -19,10 +19,6 @@ const bonfireDiscussionIdResponseCodec = t.type({
     }),
   }),
 });
-
-const isAppropriateDoi = (
-  expressionDoi: ExpressionDoi,
-) => (doiToBeChecked: ExpressionDoi): boolean => eqExpressionDoi.equals(doiToBeChecked, expressionDoi);
 
 export const fetchBonfireDiscussionId = (logger: Logger): ExternalQueries['fetchBonfireDiscussionId'] => (expressionDoi: CanonicalExpressionDoi) => pipe(
   expressionDoi,

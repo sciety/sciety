@@ -60,3 +60,7 @@ export type CanonicalExpressionDoi = t.TypeOf<typeof canonicalExpressionDoiCodec
 export const alphanumerical: Ord.Ord<ExpressionDoi> = S.Ord;
 
 export const eqExpressionDoi: Eq.Eq<ExpressionDoi> = S.Eq;
+
+export const isAppropriateDoi = (
+  expressionDoi: ExpressionDoi,
+) => (doiToBeChecked: ExpressionDoi): boolean => eqExpressionDoi.equals(doiToBeChecked, expressionDoi);
