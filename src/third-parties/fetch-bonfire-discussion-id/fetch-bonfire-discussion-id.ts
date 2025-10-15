@@ -1,5 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
+import * as B from 'fp-ts/boolean';
 import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { postDataBonfire } from './post-data-bonfire';
@@ -23,9 +24,12 @@ const isAppropriateDoi = (
   expressionDoi: ExpressionDoi,
 ) => (doiToBeChecked: ExpressionDoi): boolean => eqExpressionDoi.equals(doiToBeChecked, expressionDoi);
 
-export const fetchBonfireDiscussionId = (logger: Logger): ExternalQueries['fetchBonfireDiscussionId'] => (expressionDoi: CanonicalExpressionDoi) => {
-  if (isAppropriateDoi(expressionDoi)(fromValidatedString('10.7554/elife.95814.3'))) {
-    return pipe(
+export const fetchBonfireDiscussionId = (logger: Logger): ExternalQueries['fetchBonfireDiscussionId'] => (expressionDoi: CanonicalExpressionDoi) => pipe(
+  expressionDoi,
+  isAppropriateDoi(fromValidatedString('10.7554/elife.95814.3')),
+  B.fold(
+    () => TE.left(DE.unavailable),
+    () => pipe(
       {
         query: '{ post(filter: {id: "01K6MQC5NZFYEHXYQ23VCK047B"}) { id postContent { htmlBody } } }',
       },
@@ -36,8 +40,6 @@ export const fetchBonfireDiscussionId = (logger: Logger): ExternalQueries['fetch
         E.mapLeft(() => DE.unavailable),
       )),
       TE.map((decodedResponse) => decodedResponse.data.post.id),
-    );
-  }
-
-  return TE.left(DE.unavailable);
-};
+    ),
+  ),
+);
