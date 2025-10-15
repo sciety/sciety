@@ -28,5 +28,5 @@ export const fetchBonfireDiscussionId = (logger: Logger): ExternalQueries['fetch
     decodeAndLogFailures(logger, bonfireDiscussionIdResponseCodec),
     E.mapLeft(() => DE.unavailable),
   )),
-  TE.map(() => '01K6MQC5NZFYEHXYQ23VCK047B'),
+  TE.map((decodedResponse) => decodedResponse.data.post.id),
 );
