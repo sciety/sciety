@@ -24,7 +24,6 @@ export const fetchBonfireDiscussionId = (logger: Logger): ExternalQueries['fetch
   },
   JSON.stringify,
   postDataBonfire(logger, 'https://discussions.sciety.org/api/graphql'),
-  TE.map((response) => response.data as string),
   TE.chainEitherKW(flow(
     decodeAndLogFailures(logger, bonfireDiscussionIdResponseCodec),
     E.mapLeft(() => DE.unavailable),

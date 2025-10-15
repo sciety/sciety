@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe, identity } from 'fp-ts/function';
 import { Logger } from '../../logger';
@@ -10,9 +10,9 @@ export const postDataBonfire = (
   url: string,
 ) => (
   data: string,
-): TE.TaskEither<DE.DataError, AxiosResponse> => pipe(
+): TE.TaskEither<DE.DataError, unknown> => pipe(
   TE.tryCatch(
-    async () => axios.post(url, data, {
+    async () => axios.post<string>(url, data, {
       headers: constructHeadersWithUserAgent({
         'Content-Type': 'application/json',
       }),
@@ -21,4 +21,5 @@ export const postDataBonfire = (
   ),
   TE.mapLeft((error) => logger('error', 'POST request to Bonfire failed', { error })),
   TE.mapLeft(() => DE.notFound),
+  TE.map((response) => response.data),
 );
