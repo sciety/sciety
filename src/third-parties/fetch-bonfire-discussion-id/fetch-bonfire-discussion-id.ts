@@ -17,15 +17,14 @@ const bonfireDiscussionIdResponseCodec = t.type({
   }),
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const fetchBonfireDiscussionId = (logger: Logger): ExternalQueries['fetchBonfireDiscussionId'] => (expressionDoi: CanonicalExpressionDoi) => pipe(
   {
-    query: '{ post(filter: {id: "01K6MQC5NZFYEHXYQ23VCK047B"}) { id postContent { htmlBody } } }',
+    query: '{ post(filter: {id: "01K6MQC5NZFYEHXYQ23VCK047A"}) { id postContent { htmlBody } } }',
   },
   JSON.stringify,
   postDataBonfire(logger, 'https://discussions.sciety.org/api/graphql'),
   TE.chainEitherKW(flow(
-    decodeAndLogFailures(logger, bonfireDiscussionIdResponseCodec),
+    decodeAndLogFailures(logger, bonfireDiscussionIdResponseCodec, { expressionDoi }),
     E.mapLeft(() => DE.unavailable),
   )),
   TE.map((decodedResponse) => decodedResponse.data.post.id),
