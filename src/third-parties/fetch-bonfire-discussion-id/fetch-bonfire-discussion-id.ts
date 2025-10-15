@@ -19,7 +19,7 @@ const bonfireDiscussionIdResponseCodec = t.type({
 
 export const fetchBonfireDiscussionId = (logger: Logger): ExternalQueries['fetchBonfireDiscussionId'] => (expressionDoi: CanonicalExpressionDoi) => pipe(
   {
-    query: '{ post(filter: {id: "01K6MQC5NZFYEHXYQ23VCK047A"}) { id postContent { htmlBody } } }',
+    query: '{ post(filter: {id: "01K6MQC5NZFYEHXYQ23VCK047B"}) { id postContent { htmlBody } } }',
   },
   JSON.stringify,
   postDataBonfire(logger, 'https://discussions.sciety.org/api/graphql'),
