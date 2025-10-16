@@ -6,9 +6,7 @@ import * as t from 'io-ts';
 import { postDataBonfire } from './post-data-bonfire';
 import { Logger } from '../../logger';
 import * as DE from '../../types/data-error';
-import {
-  CanonicalExpressionDoi, ExpressionDoi, fromValidatedString,
-} from '../../types/expression-doi';
+import { ExpressionDoi, fromValidatedString } from '../../types/expression-doi';
 import { decodeAndLogFailures } from '../decode-and-log-failures';
 import { ExternalQueries } from '../external-queries';
 
@@ -24,7 +22,7 @@ const bonfireDiscussionIdResponseCodec = t.type({
   }),
 });
 
-export const fetchBonfireDiscussionId = (logger: Logger): ExternalQueries['fetchBonfireDiscussionId'] => (expressionDoi: CanonicalExpressionDoi) => pipe(
+export const fetchBonfireDiscussionId = (logger: Logger): ExternalQueries['fetchBonfireDiscussionId'] => (expressionDoi: ExpressionDoi) => pipe(
   bonfireDiscussionIds.get(expressionDoi),
   O.fromNullable,
   O.match(
