@@ -31,6 +31,9 @@ prod: export DISPLAY_LAST_SERVER_STARTUP = false
 prod: .env build
 	${DOCKER_COMPOSE} up --abort-on-container-exit --exit-code-from app
 
+stub: export USE_STUB_ADAPTERS=true
+stub: dev
+
 .env:
 	test -f .env
 
