@@ -5,4 +5,8 @@ import {
   CanonicalExpressionDoi, fromValidatedString, isAppropriateDoi,
 } from '../../types/expression-doi';
 
-export const fetchBonfireDiscussionId: ExternalQueries['fetchBonfireDiscussionId'] = (expressionDoi: CanonicalExpressionDoi) => (isAppropriateDoi(expressionDoi)(fromValidatedString('10.7554/elife.95814.3')) ? TE.right('1234') : TE.left(DE.unavailable));
+export const fetchBonfireDiscussionId: ExternalQueries['fetchBonfireDiscussionId'] = (expressionDoi: CanonicalExpressionDoi) => (
+  isAppropriateDoi(expressionDoi)(fromValidatedString('10.7554/elife.95814.3'))
+    ? TE.right('1234')
+    : TE.left(DE.unavailable)
+);
