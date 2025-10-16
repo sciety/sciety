@@ -27,7 +27,6 @@ const bonfireDiscussionIdResponseCodec = t.type({
 export const fetchBonfireDiscussionId = (logger: Logger): ExternalQueries['fetchBonfireDiscussionId'] => (expressionDoi: CanonicalExpressionDoi) => pipe(
   bonfireDiscussionIds.get(expressionDoi),
   O.fromNullable,
-  (foo) => foo,
   O.match(
     () => TE.left(DE.unavailable),
     (bonfireDiscussionId) => pipe(
