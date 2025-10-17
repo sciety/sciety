@@ -57,7 +57,7 @@
     "@types/pg": "^8.15.5",
     "@types/sanitize-html": "^2.16.0",
     "@types/uuid": "^10.0.0",
-    "@typescript-eslint/eslint-plugin": "^7.17.0",
+    "@typescript-eslint/eslint-plugin": "^8.46.1",
     "@typescript-eslint/parser": "^7.18.0",
     "backstopjs": "^6.3.25",
     "browserslist": "^4.26.2",
