@@ -1,5 +1,5 @@
 import * as D from 'fp-ts/Date';
-import * as EQ from 'fp-ts/Eq';
+import * as Eq from 'fp-ts/Eq';
 import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
@@ -15,9 +15,9 @@ export const byUpdatedAt: Ord.Ord<List> = pipe(
   Ord.contramap((list) => list.updatedAt),
 );
 
-export const eqList: EQ.Eq<List> = pipe(
+export const eqList: Eq.Eq<List> = pipe(
   S.Eq,
-  EQ.contramap((list) => list.id),
+  Eq.contramap((list) => list.id),
 );
 
 export type ListEntry = {
