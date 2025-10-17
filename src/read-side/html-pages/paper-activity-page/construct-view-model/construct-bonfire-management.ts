@@ -13,7 +13,7 @@ export type BonfireManagement = {
   expressionDoi: CanonicalExpressionDoi,
 };
 
-const constructStartDiscussionLinkHref = (process.env.EXPERIMENT_ENABLED === 'true') ? 'https://discussions.sciety.org/signup' : 'https://discussions.sciety.org/signup';
+const constructStartDiscussionLinkHref = (expressionDoi: CanonicalExpressionDoi) => ((process.env.EXPERIMENT_ENABLED === 'true') ? `https://discussions.sciety.org/signup?doi=${expressionDoi}` : 'https://discussions.sciety.org/signup');
 
 export const constructBonfireManagement = (
   dependencies: Dependencies,
@@ -26,7 +26,7 @@ export const constructBonfireManagement = (
     (bonfireDiscussionId) => O.some(`https://discussions.sciety.org/post/${bonfireDiscussionId}`),
   ),
   T.map((optionalJoinDiscussionLinkHref) => ({
-    startDiscussionLinkHref: constructStartDiscussionLinkHref,
+    startDiscussionLinkHref: constructStartDiscussionLinkHref(latestExpressionDoi),
     optionalJoinDiscussionLinkHref,
     expressionDoi: latestExpressionDoi,
   })),
