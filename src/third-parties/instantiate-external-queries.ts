@@ -5,6 +5,9 @@ import { crossrefResponseBodyCachePredicate } from './crossref';
 import { searchEuropePmc } from './europe-pmc';
 import { ExternalQueries } from './external-queries';
 import { fetchBonfireDiscussionId } from './fetch-bonfire-discussion-id';
+import {
+  createBonfireDiscussionAndRetrieveDiscussionId,
+} from './fetch-bonfire-discussion-id/create-bonfire-discussion-and-retrieve-discussion-id';
 import { fetchByCategory } from './fetch-by-category';
 import { createFetchEvaluationDigest } from './fetch-evaluation-digest';
 import { fetchEvaluationHumanReadableOriginalUrl } from './fetch-evaluation-human-readable-original-url';
@@ -65,6 +68,7 @@ export const instantiateExternalQueries = (
     fetchSearchCategories: fetchSearchCategories(queryExternalService, logger),
     fetchByCategory: fetchByCategory(queryExternalService, logger),
     fetchBonfireDiscussionId: fetchBonfireDiscussionId(logger),
+    createBonfireDiscussionAndRetrieveDiscussionId: createBonfireDiscussionAndRetrieveDiscussionId(logger),
     fetchStaticFile: fetchStaticFile(logger),
     fetchUserAvatarUrl: fetchUserAvatarUrl(queryExternalService, logger),
     searchForPaperExpressions: searchEuropePmc(queryExternalService, logger),
