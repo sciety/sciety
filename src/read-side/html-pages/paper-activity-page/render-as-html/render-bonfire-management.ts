@@ -16,7 +16,7 @@ const renderJoinTheDiscussionButton = (discussionLinkHref: ViewModel['bonfireMan
 
 const renderStartTheDiscussionButton = (startDiscussionLinkHref: string, expressionDoi: ExpressionDoi) => {
   if (process.env.EXPERIMENT_ENABLED === 'true') {
-    return `<form method="post" action="#">
+    return `<form method="post" action="/forms/create-bonfire-discussion">
     <input type="hidden" name="${inputFieldNames.expressionDoi}" value="${expressionDoi}">
     <button aria-label="Start a discussion about this paper on the Sciety Bonfire at discussions.sciety.org" class="bonfire-management-button">
     Start a discussion
