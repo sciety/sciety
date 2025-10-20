@@ -6,11 +6,13 @@ import { Dependencies } from './dependencies';
 import {
   CanonicalExpressionDoi,
 } from '../../../../types/expression-doi';
+import { UserId } from '../../../../types/user-id';
 
 export type BonfireManagement = {
   startDiscussionLinkHref: string,
   optionalJoinDiscussionLinkHref: O.Option<string>,
   expressionDoi: CanonicalExpressionDoi,
+  userId: O.Option<{ id: UserId }>,
 };
 
 const constructStartDiscussionLinkHref = (expressionDoi: CanonicalExpressionDoi) => ((process.env.EXPERIMENT_ENABLED === 'true') ? `https://discussions.sciety.org/signup?doi=${expressionDoi}` : 'https://discussions.sciety.org/signup');
@@ -18,6 +20,7 @@ const constructStartDiscussionLinkHref = (expressionDoi: CanonicalExpressionDoi)
 export const constructBonfireManagement = (
   dependencies: Dependencies,
   latestExpressionDoi: CanonicalExpressionDoi,
+  userId: O.Option<{ id: UserId }>,
 ): T.Task<BonfireManagement> => pipe(
   latestExpressionDoi,
   dependencies.fetchBonfireDiscussionId,
@@ -29,5 +32,6 @@ export const constructBonfireManagement = (
     startDiscussionLinkHref: constructStartDiscussionLinkHref(latestExpressionDoi),
     optionalJoinDiscussionLinkHref,
     expressionDoi: latestExpressionDoi,
+    userId,
   })),
 );
