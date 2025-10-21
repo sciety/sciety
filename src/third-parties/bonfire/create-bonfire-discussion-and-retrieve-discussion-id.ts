@@ -9,7 +9,7 @@ import { ExternalQueries } from '../external-queries';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const createBonfireDiscussionAndRetrieveDiscussionId = (logger: Logger): ExternalQueries['createBonfireDiscussionAndRetrieveDiscussionId'] => (expressionDoi: ExpressionDoi) => pipe(
   {
-    query: '{}',
+    query: `mutation AddMediaByUri { addMediaByUri(input: { uri: "https://doi.org/${expressionDoi}" } toBoundary: "public") { id url label } }`,
   },
   JSON.stringify,
   postDataBonfire(logger, 'https://discussions.sciety.org/api/graphql'),
