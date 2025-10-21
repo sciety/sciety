@@ -1,13 +1,10 @@
 import * as O from 'fp-ts/Option';
 import { createClient } from 'redis';
+import { fetchBonfireDiscussionId, createBonfireDiscussionAndRetrieveDiscussionId } from './bonfire';
 import { CachingFetcherOptions, createCachingFetcher } from './cache';
 import { crossrefResponseBodyCachePredicate } from './crossref';
 import { searchEuropePmc } from './europe-pmc';
 import { ExternalQueries } from './external-queries';
-import { fetchBonfireDiscussionId } from './fetch-bonfire-discussion-id';
-import {
-  createBonfireDiscussionAndRetrieveDiscussionId,
-} from './fetch-bonfire-discussion-id/create-bonfire-discussion-and-retrieve-discussion-id';
 import { fetchByCategory } from './fetch-by-category';
 import { createFetchEvaluationDigest } from './fetch-evaluation-digest';
 import { fetchEvaluationHumanReadableOriginalUrl } from './fetch-evaluation-human-readable-original-url';
