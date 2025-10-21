@@ -8,6 +8,7 @@ import { constructHeadersWithUserAgent } from '../construct-headers-with-user-ag
 export const postDataBonfire = (
   logger: Logger,
   url: string,
+  authorisationHeaders?: Record<string, string>,
 ) => (
   data: string,
 ): TE.TaskEither<DE.DataError, unknown> => pipe(
@@ -15,6 +16,7 @@ export const postDataBonfire = (
     async () => axios.post<string>(url, data, {
       headers: constructHeadersWithUserAgent({
         'Content-Type': 'application/json',
+        ...authorisationHeaders,
       }),
     }),
     identity,
