@@ -3,9 +3,10 @@ import * as t from 'io-ts';
 import { Middleware } from 'koa';
 import { Logger } from '../../logger';
 import { inputFieldNames } from '../../standards';
+import { ExternalQueries } from '../../third-parties/external-queries';
 import { ExpressionDoi, expressionDoiCodec } from '../../types/expression-doi';
 
-type Dependencies = {
+type Dependencies = ExternalQueries & {
   logger: Logger,
 };
 
@@ -15,10 +16,11 @@ const requestCodec = t.type({
   }),
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const submitStartBonfireDiscussion = (expressionDoi: ExpressionDoi) => undefined;
+const submitStartBonfireDiscussion = async (dependencies: Dependencies, expressionDoi: ExpressionDoi) => {
+  await dependencies.createBonfireDiscussionAndRetrieveDiscussionId(expressionDoi)();
+  return undefined;
+};
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const startBonfireDiscussionHandler = (dependencies: Dependencies): Middleware => async (context) => {
   const formRequest = requestCodec.decode(context.request);
   if (E.isLeft(formRequest)) {
@@ -26,5 +28,5 @@ export const startBonfireDiscussionHandler = (dependencies: Dependencies): Middl
     return;
   }
 
-  submitStartBonfireDiscussion(formRequest.right.body[inputFieldNames.expressionDoi]);
+  await submitStartBonfireDiscussion(dependencies, formRequest.right.body[inputFieldNames.expressionDoi]);
 };
