@@ -1,4 +1,6 @@
 import * as E from 'fp-ts/Either';
+import * as TE from 'fp-ts/TaskEither';
+import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { Middleware } from 'koa';
 import { Logger } from '../../logger';
@@ -16,10 +18,11 @@ const requestCodec = t.type({
   }),
 });
 
-const submitStartBonfireDiscussion = async (dependencies: Dependencies, expressionDoi: ExpressionDoi) => {
-  await dependencies.createBonfireDiscussionAndRetrieveDiscussionId(expressionDoi)();
-  return undefined;
-};
+const submitStartBonfireDiscussion = (dependencies: Dependencies) => (expressionDoi: ExpressionDoi) => pipe(
+  expressionDoi,
+  dependencies.createBonfireDiscussionAndRetrieveDiscussionId,
+  TE.map(() => undefined),
+);
 
 export const startBonfireDiscussionHandler = (dependencies: Dependencies): Middleware => async (context) => {
   const formRequest = requestCodec.decode(context.request);
@@ -28,5 +31,9 @@ export const startBonfireDiscussionHandler = (dependencies: Dependencies): Middl
     return;
   }
 
-  await submitStartBonfireDiscussion(dependencies, formRequest.right.body[inputFieldNames.expressionDoi]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const result = await pipe(
+    formRequest.right.body[inputFieldNames.expressionDoi],
+    submitStartBonfireDiscussion(dependencies),
+  )();
 };
