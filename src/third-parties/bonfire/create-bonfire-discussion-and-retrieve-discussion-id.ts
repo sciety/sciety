@@ -8,11 +8,14 @@ import { ExpressionDoi } from '../../types/expression-doi';
 import { ExternalQueries } from '../external-queries';
 
 export const createBonfireDiscussionAndRetrieveDiscussionId = (logger: Logger): ExternalQueries['createBonfireDiscussionAndRetrieveDiscussionId'] => (expressionDoi: ExpressionDoi) => pipe(
-  {
-    query: `mutation AddMediaByUri { addMediaByUri(input: { uri: "https://doi.org/${expressionDoi}" } toBoundary: "public") { id url label } }`,
-  },
-  JSON.stringify,
-  postDataBonfire(logger, 'https://discussions.sciety.org/api/graphql', generateAuthenticationHeaders()),
-  TE.mapLeft(() => DE.notFound),
-  TE.map(() => ''),
+  generateAuthenticationHeaders(),
+  TE.chainW((headers) => pipe(
+    {
+      query: `mutation AddMediaByUri { addMediaByUri(input: { uri: "https://doi.org/${expressionDoi}" } toBoundary: "public") { id url label } }`,
+    },
+    JSON.stringify,
+    postDataBonfire(logger, 'https://discussions.sciety.org/api/graphql', headers),
+    TE.mapLeft(() => DE.notFound),
+    TE.map(() => ''),
+  )),
 );
