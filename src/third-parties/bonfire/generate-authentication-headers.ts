@@ -6,7 +6,7 @@ import * as DE from '../../types/data-error';
 
 const getUserToken = (logger: Logger) => pipe(
   {
-    query: '',
+    query: `mutation { login (emailOrUsername: "${process.env.BONFIRE_SCIETY_ACCOUNT_EMAIL}" password: "${process.env.BONFIRE_SCIETY_ACCOUNT_PASSWORD}") { token } }`,
   },
   JSON.stringify,
   postDataBonfire(logger, 'https://discussions.sciety.org/api/graphql'),
