@@ -8,7 +8,7 @@ import { ExpressionDoi } from '../../types/expression-doi';
 import { ExternalQueries } from '../external-queries';
 
 export const createBonfireDiscussionAndRetrieveDiscussionId = (logger: Logger): ExternalQueries['createBonfireDiscussionAndRetrieveDiscussionId'] => (expressionDoi: ExpressionDoi) => pipe(
-  generateAuthenticationHeaders(),
+  generateAuthenticationHeaders(logger),
   TE.chainW((headers) => pipe(
     {
       query: `mutation AddMediaByUri { addMediaByUri(input: { uri: "https://doi.org/${expressionDoi}" } toBoundary: "public") { id url label } }`,
