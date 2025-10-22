@@ -32,4 +32,8 @@ export const startBonfireDiscussionHandler = (dependencies: Dependencies): Middl
   if (E.isLeft(result)) {
     context.redirect('/action-failed');
   }
+
+  if (E.isRight(result)) {
+    context.redirect(`https://discussions.sciety.org/discussion/${result.right}`);
+  }
 };
