@@ -58,6 +58,7 @@
 .bonfire-management-button {
   align-self: flex-start;
   margin-bottom: functions.px-to-rem(8px);
+  border-width: 0;
   @include button.primary-link();
 }
 
