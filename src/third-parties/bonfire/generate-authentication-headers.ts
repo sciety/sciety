@@ -1,4 +1,3 @@
-export const generateAuthenticationHeaders = (): Record<string, string> => {
-  const token = '';
-  return { Authorization: `Bearer ${token}` };
-};
+const getUserToken = () => '';
+
+export const generateAuthenticationHeaders = (): Record<string, string> => ({ Authorization: `Bearer ${getUserToken()}` });
