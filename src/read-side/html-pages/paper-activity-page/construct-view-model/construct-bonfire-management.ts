@@ -6,7 +6,6 @@ import { Dependencies } from './dependencies';
 import {
   CanonicalExpressionDoi,
 } from '../../../../types/expression-doi';
-import { UserId } from '../../../../types/user-id';
 
 export type BonfireManagement = {
   startDiscussionLinkHref: string,
@@ -20,7 +19,7 @@ const constructStartDiscussionLinkHref = (expressionDoi: CanonicalExpressionDoi)
 export const constructBonfireManagement = (
   dependencies: Dependencies,
   latestExpressionDoi: CanonicalExpressionDoi,
-  userId: O.Option<{ id: UserId }>,
+  userIsLoggedIn: boolean,
 ): T.Task<BonfireManagement> => pipe(
   latestExpressionDoi,
   dependencies.fetchBonfireDiscussionId,
@@ -32,6 +31,6 @@ export const constructBonfireManagement = (
     startDiscussionLinkHref: constructStartDiscussionLinkHref(latestExpressionDoi),
     optionalJoinDiscussionLinkHref,
     expressionDoi: latestExpressionDoi,
-    userIsLoggedIn: O.isSome(userId),
+    userIsLoggedIn,
   })),
 );

@@ -64,7 +64,7 @@ export const constructViewModel: ConstructViewModel<Params, ViewModel> = (depend
       ),
       publishingHistory: TE.right(publishingHistory),
       bonfireManagement: pipe(
-        constructBonfireManagement(dependencies, params.latestExpressionDoi, params.user),
+        constructBonfireManagement(dependencies, params.latestExpressionDoi, O.isSome(params.user)),
         TE.rightTask,
       ),
     },
