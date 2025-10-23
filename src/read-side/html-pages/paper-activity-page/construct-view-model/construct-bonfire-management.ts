@@ -13,6 +13,7 @@ export type BonfireManagement = {
   optionalJoinDiscussionLinkHref: O.Option<string>,
   expressionDoi: CanonicalExpressionDoi,
   userId: O.Option<{ id: UserId }>,
+  userIsLoggedIn: boolean,
 };
 
 const constructStartDiscussionLinkHref = (expressionDoi: CanonicalExpressionDoi) => ((process.env.EXPERIMENT_ENABLED === 'true') ? `https://discussions.sciety.org/signup?doi=${expressionDoi}` : 'https://discussions.sciety.org/signup');
@@ -33,5 +34,6 @@ export const constructBonfireManagement = (
     optionalJoinDiscussionLinkHref,
     expressionDoi: latestExpressionDoi,
     userId,
+    userIsLoggedIn: O.isSome(userId),
   })),
 );
