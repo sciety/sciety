@@ -12,7 +12,6 @@ export type BonfireManagement = {
   startDiscussionLinkHref: string,
   optionalJoinDiscussionLinkHref: O.Option<string>,
   expressionDoi: CanonicalExpressionDoi,
-  userId: O.Option<{ id: UserId }>,
   userIsLoggedIn: boolean,
 };
 
@@ -33,7 +32,6 @@ export const constructBonfireManagement = (
     startDiscussionLinkHref: constructStartDiscussionLinkHref(latestExpressionDoi),
     optionalJoinDiscussionLinkHref,
     expressionDoi: latestExpressionDoi,
-    userId,
     userIsLoggedIn: O.isSome(userId),
   })),
 );
