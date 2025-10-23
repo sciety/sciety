@@ -14,8 +14,6 @@ export type BonfireManagement = {
   userIsLoggedIn: boolean,
 };
 
-const constructStartDiscussionLinkHref = (expressionDoi: CanonicalExpressionDoi) => ((process.env.EXPERIMENT_ENABLED === 'true') ? `https://discussions.sciety.org/signup?doi=${expressionDoi}` : 'https://discussions.sciety.org/signup');
-
 export const constructBonfireManagement = (
   dependencies: Dependencies,
   latestExpressionDoi: CanonicalExpressionDoi,
@@ -28,7 +26,7 @@ export const constructBonfireManagement = (
     (bonfireDiscussionId) => O.some(`https://discussions.sciety.org/post/${bonfireDiscussionId}`),
   ),
   T.map((optionalJoinDiscussionLinkHref) => ({
-    startDiscussionLinkHref: constructStartDiscussionLinkHref(latestExpressionDoi),
+    startDiscussionLinkHref: 'https://discussions.sciety.org/signup',
     optionalJoinDiscussionLinkHref,
     expressionDoi: latestExpressionDoi,
     userIsLoggedIn,
