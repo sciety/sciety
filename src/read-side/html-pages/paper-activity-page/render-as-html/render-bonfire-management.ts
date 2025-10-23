@@ -17,9 +17,9 @@ const renderJoinTheDiscussionButton = (discussionLinkHref: ViewModel['bonfireMan
 const renderStartTheDiscussionButton = (
   startDiscussionLinkHref: string,
   expressionDoi: ExpressionDoi,
-  loggedInUserId: ViewModel['bonfireManagement']['userId'],
+  userIsLoggedIn: boolean,
 ) => {
-  if (process.env.EXPERIMENT_ENABLED === 'true' && O.isSome(loggedInUserId)) {
+  if (process.env.EXPERIMENT_ENABLED === 'true' && userIsLoggedIn) {
     return `<form method="post" action="/forms/start-bonfire-discussion">
     <input type="hidden" name="${inputFieldNames.expressionDoi}" value="${expressionDoi}">
     <button aria-label="Start a discussion about this paper on the Sciety Bonfire at discussions.sciety.org" class="bonfire-management-button">
@@ -37,7 +37,7 @@ export const renderBonfireManagement = (
   `
     <section class="bonfire-management">
         <h2 class="article-actions-heading">Discuss this preprint</h2>
-            ${renderStartTheDiscussionButton(bonfireManagement.startDiscussionLinkHref, bonfireManagement.expressionDoi, bonfireManagement.userId)}
+            ${renderStartTheDiscussionButton(bonfireManagement.startDiscussionLinkHref, bonfireManagement.expressionDoi, O.isSome(bonfireManagement.userId))}
             ${renderJoinTheDiscussionButton(bonfireManagement.optionalJoinDiscussionLinkHref)}
             <a href="https://blog.sciety.org/sciety-secures-funding-from-nlnet-foundation-to-help-build-discourse-around-preprints/">What are Sciety discussions?</a>
     </section>
