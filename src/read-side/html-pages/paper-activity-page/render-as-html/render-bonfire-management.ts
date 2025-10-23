@@ -33,11 +33,12 @@ const renderStartTheDiscussionButton = (
 
 export const renderBonfireManagement = (
   bonfireManagement: ViewModel['bonfireManagement'],
+  userIsLoggedIn: boolean,
 ): HtmlFragment => toHtmlFragment(
   `
     <section class="bonfire-management">
         <h2 class="article-actions-heading">Discuss this preprint</h2>
-            ${renderStartTheDiscussionButton(bonfireManagement.startDiscussionLinkHref, bonfireManagement.expressionDoi, O.isSome(bonfireManagement.userId))}
+            ${renderStartTheDiscussionButton(bonfireManagement.startDiscussionLinkHref, bonfireManagement.expressionDoi, userIsLoggedIn)}
             ${renderJoinTheDiscussionButton(bonfireManagement.optionalJoinDiscussionLinkHref)}
             <a href="https://blog.sciety.org/sciety-secures-funding-from-nlnet-foundation-to-help-build-discourse-around-preprints/">What are Sciety discussions?</a>
     </section>
