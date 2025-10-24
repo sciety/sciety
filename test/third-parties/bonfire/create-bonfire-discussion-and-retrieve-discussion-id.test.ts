@@ -20,18 +20,18 @@ describe('create-bonfire-discussion-and-retrieve-discussion-id', () => {
   });
 
   describe('when an id with a correct type is returned', () => {
-    it('includes the id in the query response', async () => {
-      (jest.mocked(postDataBonfire)).mockReturnValueOnce(() => TE.right({
-        data: {
-          addMediaByUri: {
-            id: '1234',
-          },
+    (jest.mocked(postDataBonfire)).mockReturnValueOnce(() => TE.right({
+      data: {
+        addMediaByUri: {
+          id: '1234',
         },
-      }));
+      },
+    }));
 
-      await expect(
-        createBonfireDiscussionAndRetrieveDiscussionId(dummyLogger)(arbitraryExpressionDoi())(),
-      ).resolves.toStrictEqual(E.right('1234'));
+    it('includes the id in the query response', async () => {
+      const result = await createBonfireDiscussionAndRetrieveDiscussionId(dummyLogger)(arbitraryExpressionDoi())();
+
+      expect(result).toStrictEqual(E.right('1234'));
     });
   });
 
