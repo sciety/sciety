@@ -19,7 +19,7 @@ const renderStartTheDiscussionButton = (
   expressionDoi: ExpressionDoi,
   userIsLoggedIn: boolean,
 ) => {
-  if (process.env.EXPERIMENT_ENABLED === 'true' && userIsLoggedIn) {
+  if (userIsLoggedIn) {
     return `<form method="post" action="/forms/start-bonfire-discussion">
     <input type="hidden" name="${inputFieldNames.expressionDoi}" value="${expressionDoi}">
     <button aria-label="Start a discussion about this paper on the Sciety Bonfire at discussions.sciety.org" class="bonfire-management-button">
