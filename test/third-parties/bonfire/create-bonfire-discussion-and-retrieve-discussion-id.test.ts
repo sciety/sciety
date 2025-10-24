@@ -20,15 +20,15 @@ describe('create-bonfire-discussion-and-retrieve-discussion-id', () => {
   });
 
   describe('when an id with a correct type is returned', () => {
-    (jest.mocked(postDataBonfire)).mockReturnValueOnce(() => TE.right({
-      data: {
-        addMediaByUri: {
-          id: '1234',
-        },
-      },
-    }));
-
     it('includes the id in the query response', async () => {
+      (jest.mocked(postDataBonfire)).mockReturnValueOnce(() => TE.right({
+        data: {
+          addMediaByUri: {
+            id: '1234',
+          },
+        },
+      }));
+
       const result = await createBonfireDiscussionAndRetrieveDiscussionId(dummyLogger)(arbitraryExpressionDoi())();
 
       expect(result).toStrictEqual(E.right('1234'));
@@ -38,10 +38,9 @@ describe('create-bonfire-discussion-and-retrieve-discussion-id', () => {
   describe('when an id is not returned', () => {
     it('returns an error', async () => {
       (jest.mocked(postDataBonfire)).mockReturnValueOnce(() => TE.left(DE.notFound));
+      const result = await createBonfireDiscussionAndRetrieveDiscussionId(dummyLogger)(arbitraryExpressionDoi())();
 
-      await expect(
-        createBonfireDiscussionAndRetrieveDiscussionId(dummyLogger)(arbitraryExpressionDoi())(),
-      ).resolves.toStrictEqual(E.left('not-found'));
+      expect(result).toStrictEqual(E.left('not-found'));
     });
 
     it('returns an error, if the response does not match codec', async () => {
@@ -53,9 +52,9 @@ describe('create-bonfire-discussion-and-retrieve-discussion-id', () => {
         },
       }));
 
-      await expect(
-        createBonfireDiscussionAndRetrieveDiscussionId(dummyLogger)(arbitraryExpressionDoi())(),
-      ).resolves.toStrictEqual(E.left('unavailable'));
+      const result = await createBonfireDiscussionAndRetrieveDiscussionId(dummyLogger)(arbitraryExpressionDoi())();
+
+      expect(result).toStrictEqual(E.left('unavailable'));
     });
   });
 });
