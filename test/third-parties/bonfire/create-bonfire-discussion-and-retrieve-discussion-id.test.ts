@@ -12,7 +12,7 @@ jest.mock('../../../src/third-parties/bonfire/post-data-bonfire');
 
 describe('create-bonfire-discussion-and-retrieve-discussion-id', () => {
   beforeEach(() => {
-    (jest.mocked(generateAuthenticationHeaders)).mockReturnValue(TE.right({}));
+    (jest.mocked(generateAuthenticationHeaders)).mockReturnValueOnce(TE.right({}));
   });
 
   afterEach(() => {
@@ -21,7 +21,7 @@ describe('create-bonfire-discussion-and-retrieve-discussion-id', () => {
 
   describe('when an id with a correct type is returned', () => {
     it('includes the id in the query response', async () => {
-      (jest.mocked(postDataBonfire)).mockReturnValue(() => TE.right({
+      (jest.mocked(postDataBonfire)).mockReturnValueOnce(() => TE.right({
         data: {
           addMediaByUri: {
             id: '1234',
@@ -37,7 +37,7 @@ describe('create-bonfire-discussion-and-retrieve-discussion-id', () => {
 
   describe('when an id is not returned', () => {
     it('returns an error', async () => {
-      (jest.mocked(postDataBonfire)).mockReturnValue(() => TE.left(DE.notFound));
+      (jest.mocked(postDataBonfire)).mockReturnValueOnce(() => TE.left(DE.notFound));
 
       await expect(
         createBonfireDiscussionAndRetrieveDiscussionId(dummyLogger)(arbitraryExpressionDoi())(),
@@ -45,7 +45,7 @@ describe('create-bonfire-discussion-and-retrieve-discussion-id', () => {
     });
 
     it('returns an error, if the response does not match codec', async () => {
-      (jest.mocked(postDataBonfire)).mockReturnValue(() => TE.right({
+      (jest.mocked(postDataBonfire)).mockReturnValueOnce(() => TE.right({
         data: {
           addMediaByUri: {
             id: null,
