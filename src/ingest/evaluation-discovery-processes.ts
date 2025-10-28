@@ -1,5 +1,6 @@
 import { discoverAccessMicrobiologyEvaluations } from './evaluation-discovery/discover-access-microbiology-evaluations';
 import { discoverEvaluationsFromCrossrefViaBiorxiv } from './evaluation-discovery/discover-evaluations-from-crossref-via-biorxiv';
+import { discoverEvaluationsFromDocmapsViaCoarNotifications } from './evaluation-discovery/discover-evaluations-from-docmaps-via-coar-notifications';
 import { discoverEvaluationsFromHypothesisGroup } from './evaluation-discovery/discover-evaluations-from-hypothesis-group';
 import { discoverEvaluationsFromHypothesisUser } from './evaluation-discovery/discover-evaluations-from-hypothesis-user';
 import { discoverKotahiDocmapsEvaluations } from './evaluation-discovery/discover-kotahi-docmaps-evaluations';
@@ -66,7 +67,7 @@ export const evaluationDiscoveryProcesses = (environment: Configuration): Array<
     {
       groupId: 'af792cd3-1600-465c-89e5-250c48f793aa',
       name: 'PCI Neuroscience',
-      discoverPublishedEvaluations: process.env.EXPERIMENT_ENABLED === 'true' ? discoverPciEvaluations('https://neuro.peercommunityin.org/rss/rss4elife') : discoverPciEvaluations('https://neuro.peercommunityin.org/rss/rss4elife'),
+      discoverPublishedEvaluations: process.env.EXPERIMENT_ENABLED === 'true' ? discoverEvaluationsFromDocmapsViaCoarNotifications() : discoverPciEvaluations('https://neuro.peercommunityin.org/rss/rss4elife'),
     },
     {
       groupId: '53ed5364-a016-11ea-bb37-0242ac130002',
