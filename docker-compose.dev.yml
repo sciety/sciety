@@ -16,3 +16,4 @@ services:
       - './static:/app/static'
       - './test:/app/test'
       - './feature-test:/app/feature-test'
+      - './node_modules:/app/node_modules'
