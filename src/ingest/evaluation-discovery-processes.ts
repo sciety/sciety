@@ -66,7 +66,7 @@ export const evaluationDiscoveryProcesses = (environment: Configuration): Array<
     {
       groupId: 'af792cd3-1600-465c-89e5-250c48f793aa',
       name: 'PCI Neuroscience',
-      discoverPublishedEvaluations: discoverPciEvaluations('https://neuro.peercommunityin.org/rss/rss4elife'),
+      discoverPublishedEvaluations: process.env.EXPERIMENT_ENABLED === 'true' ? discoverPciEvaluations('https://neuro.peercommunityin.org/rss/rss4elife') : discoverPciEvaluations('https://neuro.peercommunityin.org/rss/rss4elife'),
     },
     {
       groupId: '53ed5364-a016-11ea-bb37-0242ac130002',
