@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as TE from 'fp-ts/TaskEither';
-import { DiscoverPublishedEvaluations } from '../discover-published-evaluations';
+import { DiscoverPublishedEvaluations } from '../../discover-published-evaluations';
 
-export const discoverEvaluationsFromDocmapsViaCoarNotifications = (
+export const discoverPciEvaluations = (
 
 ): DiscoverPublishedEvaluations => (
   ingestDays,
