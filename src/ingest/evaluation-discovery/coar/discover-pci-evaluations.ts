@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import {
+  transformCoarNotificationUriToAnnouncementActionUri,
+} from './transform-coar-notification-uri-to-announcement-action-uri';
 import { DiscoverPublishedEvaluations } from '../../discover-published-evaluations';
-
-const transformCoarNotificationUriToAnnouncementActionUri = (uri: string) => TE.right('');
 
 export const discoverPciEvaluations: DiscoverPublishedEvaluations = () => (
   dependencies,
