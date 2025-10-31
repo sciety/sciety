@@ -7,7 +7,6 @@ export const transformCoarNotificationUriToAnnouncementActionUri = (
   dependencies: Dependencies,
 ) => (uri: string): TE.TaskEither<string, string> => pipe(
   uri,
-  dependencies.fetchData,
+  dependencies.fetchData<string>,
   TE.mapLeft(() => 'unavailable'),
-  TE.map(() => ''),
 );
