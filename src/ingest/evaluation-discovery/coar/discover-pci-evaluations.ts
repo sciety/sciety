@@ -1,12 +1,10 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { transformAnnouncementActionUriToSignpostingDocmapUri } from './transform-announcement-action-uri-to-signposting-docmap-uri';
 import {
   transformCoarNotificationUriToAnnouncementActionUri,
 } from './transform-coar-notification-uri-to-announcement-action-uri';
 import { DiscoverPublishedEvaluations } from '../../discover-published-evaluations';
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const transformAnnouncementActionUriToSignpostingDocmapUri = (announcementActionUri: string): TE.TaskEither<string, string> => TE.right('');
 
 export const discoverPciEvaluations: DiscoverPublishedEvaluations = () => (
   dependencies,
