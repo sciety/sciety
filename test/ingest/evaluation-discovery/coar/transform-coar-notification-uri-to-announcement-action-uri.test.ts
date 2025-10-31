@@ -30,13 +30,13 @@ describe('transform-coar-notification-uri-to-announcement-action-uri', () => {
       result = await pipe(
         arbitraryUri(),
         transformCoarNotificationUriToAnnouncementActionUri(
-          { fetchData: () => TE.left('unavailable') },
+          { fetchData: <D>() => TE.right('not a fully stubbed response' as unknown as D) },
         ),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
 
-    it.skip('returns an announcement action uri', () => {
+    it.failing('returns an announcement action uri', () => {
       expect(result).toStrictEqual(announcementActionUri);
     });
   });
