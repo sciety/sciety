@@ -4,8 +4,8 @@ import * as t from 'io-ts';
 import { Dependencies } from '../../discover-published-evaluations';
 import { decodeAndReportFailures } from '../decode-and-report-failures';
 
-const coarNotificationCodec = t.type({
-  object: t.type({
+const coarNotificationCodec = t.strict({
+  object: t.strict({
     id: t.string,
   }),
 });
