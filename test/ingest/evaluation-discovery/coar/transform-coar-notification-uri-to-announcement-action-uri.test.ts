@@ -15,7 +15,7 @@ describe('transform-coar-notification-uri-to-announcement-action-uri', () => {
       )();
     });
 
-    it.skip('returns on the left', () => {
+    it('returns on the left', () => {
       expect(E.isLeft(result)).toBe(true);
     });
   });
