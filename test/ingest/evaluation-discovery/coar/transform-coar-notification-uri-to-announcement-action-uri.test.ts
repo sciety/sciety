@@ -6,14 +6,14 @@ import { arbitraryUri } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 
 describe('transform-coar-notification-uri-to-announcement-action-uri', () => {
-  describe('when the coar notification uri returns a 4xx or 5xx status code', () => {
+  describe('when the coar notification uri request fails', () => {
     const coarNotificationUri = arbitraryUri();
     let result: E.Either<string, string>;
 
     beforeEach(async () => {
       result = await pipe(
         coarNotificationUri,
-        transformCoarNotificationUriToAnnouncementActionUri({ fetchData: () => TE.left('unavailable') }),
+        transformCoarNotificationUriToAnnouncementActionUri({ fetchData: () => TE.left('fetch data fails for any reason') }),
       )();
     });
 
