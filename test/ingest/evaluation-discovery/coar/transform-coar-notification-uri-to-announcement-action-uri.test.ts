@@ -48,7 +48,7 @@ describe('transform-coar-notification-uri-to-announcement-action-uri', () => {
       )();
     });
 
-    it.failing('returns an announcement action uri', () => {
+    it('returns an announcement action uri', () => {
       expect(result).toStrictEqual(announcementActionUri);
     });
   });
