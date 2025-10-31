@@ -24,13 +24,25 @@ describe('transform-coar-notification-uri-to-announcement-action-uri', () => {
 
   describe('when the coar notification uri returns an announcement', () => {
     const announcementActionUri = arbitraryUri();
+    const stubbedSuccessfulResponse = `{
+      "object": {
+        "id": "${announcementActionUri}",
+        "object": null,
+        "type": [
+          "Document",
+          "sorg:Review"
+        ],
+        "ietf:cite-as": null,
+        "url": null
+      }
+    }`;
     let result: string;
 
     beforeEach(async () => {
       result = await pipe(
         arbitraryUri(),
         transformCoarNotificationUriToAnnouncementActionUri(
-          { fetchData: <D>() => TE.right('not a fully stubbed response' as unknown as D) },
+          { fetchData: <D>() => TE.right(stubbedSuccessfulResponse as unknown as D) },
         ),
         TE.getOrElse(shouldNotBeCalled),
       )();
