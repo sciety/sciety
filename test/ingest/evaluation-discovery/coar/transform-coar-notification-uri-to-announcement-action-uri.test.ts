@@ -13,7 +13,7 @@ describe('transform-coar-notification-uri-to-announcement-action-uri', () => {
     beforeEach(async () => {
       result = await pipe(
         coarNotificationUri,
-        transformCoarNotificationUriToAnnouncementActionUri,
+        transformCoarNotificationUriToAnnouncementActionUri({ fetchData: () => TE.left('unavailable') }),
       )();
     });
 
@@ -29,7 +29,9 @@ describe('transform-coar-notification-uri-to-announcement-action-uri', () => {
     beforeEach(async () => {
       result = await pipe(
         arbitraryUri(),
-        transformCoarNotificationUriToAnnouncementActionUri,
+        transformCoarNotificationUriToAnnouncementActionUri(
+          { fetchData: () => TE.left('unavailable') },
+        ),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
