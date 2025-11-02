@@ -9,5 +9,5 @@ import { QueryExternalService } from '../query-external-service';
 
 export const fetchUserAvatarUrl = (queryExternalService: QueryExternalService, logger: Logger): ExternalQueries['fetchUserAvatarUrl'] => (userId: UserId) => pipe(
   getAuth0ManagementApiToken(logger),
-  TE.chain(getAuth0UserPicture(queryExternalService, logger, userId)),
+  TE.flatMap(getAuth0UserPicture(queryExternalService, logger, userId)),
 );

@@ -10,7 +10,7 @@ export const EventIdFromString = new t.Type(
   EventId.isEventId,
   (u, c) => pipe(
     tt.UUID.validate(u, c),
-    E.chain(flow(
+    E.flatMap(flow(
       EventId.fromString,
       O.match(
         () => t.failure(u, c),

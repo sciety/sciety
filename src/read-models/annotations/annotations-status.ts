@@ -4,7 +4,7 @@ import { ReadModel } from './handle-event';
 
 export const annotationsStatus = (readModel: ReadModel) => (): { total: number } => pipe(
   Object.values(readModel),
-  RA.chain((listState) => Object.values(listState)),
+  RA.flatMap((listState) => Object.values(listState)),
   (annotations) => ({
     total: annotations.length,
   }),

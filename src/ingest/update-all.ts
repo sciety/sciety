@@ -138,7 +138,7 @@ const recordDiscoveredEvaluations = (
     }),
     reportSkippedItems(environment.ingestDebug, process),
   ),
-  TE.chainW(sendRecordEvaluationCommands(process, environment)),
+  TE.flatMap(sendRecordEvaluationCommands(process, environment)),
   TE.bimap(
     report('warn', 'Ingestion failed'),
     report('info', 'Ingestion successful'),

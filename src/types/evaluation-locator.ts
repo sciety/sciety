@@ -48,7 +48,7 @@ export const evaluationLocatorCodec = new t.Type(
   isEvaluationLocator,
   (input, context) => pipe(
     t.string.validate(input, context),
-    E.chain(flow(
+    E.flatMap(flow(
       deserialize,
       O.match(
         () => t.failure(input, context),

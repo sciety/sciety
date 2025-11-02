@@ -22,7 +22,7 @@ const hasNotBeenCollected = (state: State) => (doi: ExpressionDoi) => !state.col
 
 export const enqueueAllRelatedDoisNotYetCollected = (state: State): State => pipe(
   Array.from(state.collectedWorks.values()),
-  RA.chain(extractDoisOfRelatedExpressions),
+  RA.flatMap(extractDoisOfRelatedExpressions),
   RA.uniq(eqExpressionDoi),
   RA.filter(hasNotBeenCollected(state)),
   enqueueInState(state),

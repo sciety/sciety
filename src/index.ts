@@ -76,7 +76,7 @@ void pipe(
       };
     },
   ),
-  T.chain(({ dependenciesForSagas, config }) => scheduleSagas(
+  T.flatMap(({ dependenciesForSagas, config }) => scheduleSagas(
     dependenciesForSagas,
     config,
     new URL(config.APP_ORIGIN),

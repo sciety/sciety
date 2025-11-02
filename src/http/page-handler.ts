@@ -25,7 +25,7 @@ const getLoggedInScietyUser = (
 ): O.Option<UserDetails> => pipe(
   context,
   getAuthenticatedUserIdFromContext,
-  O.chain((id) => dependencies.lookupUser(id)),
+  O.flatMap((id) => dependencies.lookupUser(id)),
 );
 
 const constructAndSendHtmlResponse = (
@@ -75,7 +75,7 @@ export const pageHandler = (
     },
     (partialParams) => pipe(
       getAuthenticatedUserIdFromContext(context),
-      O.chain((id) => dependencies.lookupUser(id)),
+      O.flatMap((id) => dependencies.lookupUser(id)),
       O.matchW(
         () => ({
           ...partialParams,

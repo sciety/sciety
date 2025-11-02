@@ -31,7 +31,7 @@ const handleCommand = (dependencies: Dependencies) => (command: EditListDetailsC
 export const editListDetailsHandler = (dependencies: Dependencies): Middleware => async (context) => {
   const loggedInUser = pipe(
     ensureUserIsLoggedIn(dependencies, context, 'You must be logged in to edit a list.'),
-    O.chain((id) => dependencies.lookupUser(id)),
+    O.flatMap((id) => dependencies.lookupUser(id)),
   );
   if (O.isNone(loggedInUser)) {
     return;
@@ -44,7 +44,7 @@ export const editListDetailsHandler = (dependencies: Dependencies): Middleware =
   await pipe(
     checkUserOwnsList(dependencies, command.right.listId, loggedInUser.value.id),
     TE.fromEither,
-    TE.chainW(() => pipe(
+    TE.flatMap(() => pipe(
       command.right,
       handleCommand(dependencies),
       TE.map(() => loggedInUser.value),

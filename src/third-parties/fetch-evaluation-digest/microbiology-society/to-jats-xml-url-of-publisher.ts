@@ -7,7 +7,7 @@ const deriveExpressionDoiSuffix = (key: string) => {
   return pipe(
     acmiEvaluationDoiRegex.exec(key),
     O.fromNullable,
-    O.chain(RA.lookup(1)),
+    O.flatMap(RA.lookup(1)),
   );
 };
 

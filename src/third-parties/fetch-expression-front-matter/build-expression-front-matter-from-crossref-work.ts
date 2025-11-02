@@ -41,7 +41,7 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
   return pipe(
     crossrefWorkXml,
     parseXmlDocument(logger, contextForLogs),
-    E.chainW(decodeAndLogFailures(logger, frontMatterCrossrefXmlResponseCodec, contextForLogs)),
+    E.flatMap(decodeAndLogFailures(logger, frontMatterCrossrefXmlResponseCodec, contextForLogs)),
     E.mapLeft(() => DE.unavailable),
     E.map((decodedWork) => decodedWork.doi_records.doi_record.crossref),
     E.map(extractCommonFrontmatter),

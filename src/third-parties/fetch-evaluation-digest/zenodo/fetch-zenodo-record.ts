@@ -17,7 +17,7 @@ const isDoiFromZenodo = (doi: string) => doi.startsWith('10.5281/');
 const parseZenodoId = (zenodoDoi: string) => pipe(
   zenodoDoi.match(/10\.5281\/zenodo\.([0-9]+)/),
   O.fromNullable,
-  O.chain(RA.lookup(1)),
+  O.flatMap(RA.lookup(1)),
 );
 
 const zenodoRecordCodec = t.type({
@@ -37,7 +37,7 @@ export const fetchZenodoRecord = (
   ),
   E.chainOptionK(() => DE.unavailable)(parseZenodoId),
   TE.fromEither,
-  TE.chain((zenodoId) => pipe(
+  TE.flatMap((zenodoId) => pipe(
     `https://zenodo.org/api/records/${zenodoId}`,
     queryExternalService(),
   )),

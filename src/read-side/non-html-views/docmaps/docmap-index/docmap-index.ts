@@ -17,7 +17,7 @@ export const docmapIndex: DocmapIndex = (dependencies) => (query) => pipe(
   query,
   decodeParams,
   TE.fromEither,
-  TE.chain(constructViewModel(dependencies)),
+  TE.flatMap(constructViewModel(dependencies)),
   TE.mapLeft((internalErrorResponse) => toNonHtmlViewError(
     internalErrorResponse.body.error,
     internalErrorResponse.status,

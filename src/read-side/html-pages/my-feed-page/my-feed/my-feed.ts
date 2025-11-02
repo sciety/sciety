@@ -85,7 +85,7 @@ export const myFeed: YourFeed = (dependencies) => (userId, pageSize, pageNumber)
     getFollowedGroups(dependencies),
     E.mapLeft(constant(followSomething)),
   )),
-  TE.chain(flow(
+  TE.flatMap(flow(
     getEvaluatedArticles(dependencies),
     TE.mapLeft(constant(noEvaluationsYet)),
   )),
@@ -93,7 +93,7 @@ export const myFeed: YourFeed = (dependencies) => (userId, pageSize, pageNumber)
     paginate(pageSize, pageNumber),
     E.mapLeft(() => '<p>No such page.</p>'),
   )),
-  TE.chain((pageOfItems) => pipe(
+  TE.flatMap((pageOfItems) => pipe(
     pageOfItems.items,
     constructArticleViewModels(dependencies),
     TE.bimap(

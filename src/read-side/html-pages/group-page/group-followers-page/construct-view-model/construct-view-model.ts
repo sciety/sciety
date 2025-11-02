@@ -15,7 +15,7 @@ const pageSize = 10;
 export const constructViewModel: ConstructViewModel<Params, ViewModel> = (dependencies) => (params) => pipe(
   dependencies.getGroupBySlug(params.slug),
   E.fromOption(() => DE.notFound),
-  E.chain((group) => pipe(
+  E.flatMap((group) => pipe(
     group.id,
     findFollowers(dependencies),
     paginate(pageSize, params.page),

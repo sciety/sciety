@@ -12,7 +12,7 @@ export const categoryPage = (dependencies: DependenciesForViews): ConstructPage 
   input,
   decodePageParams(dependencies.logger, paramsCodec),
   TE.fromEither,
-  TE.chain(constructViewModel(dependencies)),
+  TE.flatMap(constructViewModel(dependencies)),
   TE.mapLeft(constructErrorPageViewModel),
   TE.map(renderAsHtml),
 );

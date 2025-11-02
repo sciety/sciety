@@ -41,7 +41,7 @@ export const identifyAllPossibleIndexEntries: IdentifyAllPossibleIndexEntries = 
   dependencies,
 ) => pipe(
   supportedGroups,
-  RA.chain(dependencies.getEvaluationsByGroup),
+  RA.flatMap(dependencies.getEvaluationsByGroup),
   E.traverseArray((evaluation) => pipe(
     dependencies.getGroup(evaluation.groupId),
     E.fromOption(() => {

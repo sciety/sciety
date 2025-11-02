@@ -9,7 +9,7 @@ export const withDefaultIfEmpty = <C extends t.Any>(
 ): C => tt.withValidate(codec, (input, context) => pipe(
     tt.NonEmptyString.validate(input, context),
     E.orElse(() => t.success(String(ifEmpty))),
-    E.chain((nonEmptyString) => codec.validate(nonEmptyString, context)),
+    E.flatMap((nonEmptyString) => codec.validate(nonEmptyString, context)),
   ));
 
 export const environmentVariablesCodec = t.type({

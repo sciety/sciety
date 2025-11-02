@@ -20,7 +20,7 @@ export const userIdCodec = new t.Type(
   isUserId,
   (u, c) => pipe(
     t.string.validate(u, c),
-    E.chain((value) => {
+    E.flatMap((value) => {
       if (isEmptyString(value)) {
         return t.failure(u, c);
       }

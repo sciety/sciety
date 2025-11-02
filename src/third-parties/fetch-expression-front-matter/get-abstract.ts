@@ -40,7 +40,7 @@ export const getAbstract = (
   commonFrontmatter: CommonFrontMatter,
 ): O.Option<SanitisedHtmlFragment> => pipe(
   commonFrontmatter.abstract,
-  O.chain(RA.head),
+  O.flatMap(RA.head),
   O.map(transformXmlToHtml),
   O.map(removeSuperfluousTitles),
   O.map(stripEmptySections),

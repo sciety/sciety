@@ -84,7 +84,7 @@ export const createInfrastructure = (
     return adapters;
   }),
   TE.chainFirst(createEventsTable),
-  TE.chainW(({ pool, logger }) => pipe(
+  TE.flatMap(({ pool, logger }) => pipe(
     getEventsFromDatabase(pool, logger),
     TE.map(RA.toArray),
     TE.map(sortEvents),
@@ -96,7 +96,7 @@ export const createInfrastructure = (
       }
     )),
   )),
-  TE.chain((partialAdapters) => TE.tryCatch(
+  TE.flatMap((partialAdapters) => TE.tryCatch(
     async () => {
       const getAllEvents = T.of(partialAdapters.events);
 

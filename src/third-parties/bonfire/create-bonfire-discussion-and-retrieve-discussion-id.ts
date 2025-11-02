@@ -20,7 +20,7 @@ const bonfireDiscussionIdCodec = t.type({
 
 export const createBonfireDiscussionAndRetrieveDiscussionId = (logger: Logger): ExternalQueries['createBonfireDiscussionAndRetrieveDiscussionId'] => (expressionDoi: ExpressionDoi) => pipe(
   generateAuthenticationHeaders(logger),
-  TE.chain((headers) => pipe(
+  TE.flatMap((headers) => pipe(
     {
       query: `mutation AddMediaByUri { addMediaByUri(input: { uri: "https://doi.org/${expressionDoi}" } toBoundary: "public") { id url label } }`,
     },

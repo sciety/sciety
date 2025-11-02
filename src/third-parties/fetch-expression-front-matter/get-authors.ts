@@ -23,6 +23,6 @@ export const getAuthors = (commonFrontmatter: CommonFrontMatter): ArticleAuthors
   commonFrontmatter.contributors,
   O.map((contributors) => contributors._org_or_person),
   O.map(RA.filter((person) => person['@_contributor_role'] === 'author')),
-  O.chain(O.traverseArray(constructAuthorName)),
+  O.flatMap(O.traverseArray(constructAuthorName)),
   O.map(RA.map((name) => name.replace(/<[^>]*>/g, ''))),
 );

@@ -10,5 +10,5 @@ export const fetchEvaluationDigestFromAppropriateService = (fetchers: Record<str
   fetchers,
   R.lookup(EL.service(id)),
   TE.fromOption(() => DE.notFound),
-  TE.chain((fetcher) => fetcher(EL.key(id))),
+  TE.flatMap((fetcher) => fetcher(EL.key(id))),
 );

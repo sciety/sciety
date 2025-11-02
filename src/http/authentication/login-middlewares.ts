@@ -71,7 +71,7 @@ export const completeAuthenticationJourney = (
 ): Middleware => async (context, next) => {
   pipe(
     getAuthenticatedUserIdFromContext(context),
-    O.chain((id) => dependencies.lookupUser(id)),
+    O.flatMap((id) => dependencies.lookupUser(id)),
     O.match(
       () => context.redirect('/create-account-form'),
       () => redirectToAuthenticationDestination(context),

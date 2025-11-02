@@ -34,8 +34,8 @@ export const annotate: ResourceAction<AnnotateArticleInListCommand> = (command) 
     doesListExist(command.listId),
     () => toErrorMessage('not-found'),
   ),
-  E.chain(getListWriteModel(command.listId)),
-  E.chain(findRelevantArticle(command.expressionDoi)),
+  E.flatMap(getListWriteModel(command.listId)),
+  E.flatMap(findRelevantArticle(command.expressionDoi)),
   E.filterOrElseW(
     isAnnotationValid(command),
     () => toErrorMessage('Annotation too long'),

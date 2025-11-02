@@ -17,11 +17,11 @@ export const executeCommand = <C extends GenericCommand>(
     input,
     validateInputShape(codec),
     TE.fromEither,
-    TE.chain((command) => pipe(
+    TE.flatMap((command) => pipe(
       dependencies.getAllEvents,
       TE.rightTask,
       TE.chainEitherKW(resourceAction(command)),
-      TE.chainW(dependencies.commitEvents),
+      TE.flatMap(dependencies.commitEvents),
     )),
     TE.mapLeft((errorMessage) => {
       dependencies.logger(

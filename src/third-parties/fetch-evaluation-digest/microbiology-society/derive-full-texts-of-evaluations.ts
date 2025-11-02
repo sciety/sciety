@@ -62,8 +62,8 @@ export const deriveFullTextsOfEvaluations = (
 ): E.Either<DE.DataError, FullTextsOfEvaluations> => pipe(
   input,
   decodeAndLogFailures(logger, accessMicrobiologyXmlResponseCodec, { codec: 'accessMicrobiologyXmlResponseCodec' }),
-  E.chainW(parseXmlDocument),
-  E.chainW(decodeAndLogFailures(logger, acmiJatsCodec)),
+  E.flatMap(parseXmlDocument),
+  E.flatMap(decodeAndLogFailures(logger, acmiJatsCodec)),
   E.map((acmiJats) => acmiJats.article['sub-article']),
   E.map(RA.filter(isSubArticleWithBody)),
   E.map(RA.map(toMapEntry)),

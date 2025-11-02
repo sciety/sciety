@@ -20,13 +20,13 @@ const fetchPaginatedData = (
   fetchData<unknown>(`${baseUrl}${offset}`),
   TE.chainEitherK(decodeAndReportFailures(hypothesisResponseCodec)),
   TE.map((response) => response.rows),
-  TE.chain(RA.match(
+  TE.flatMap(RA.match(
     () => TE.right([]),
     (items) => pipe(
       T.of(''),
       T.delay(50 * pageNumber),
       TE.rightTask,
-      TE.chain(() => fetchPaginatedData(fetchData, baseUrl, latestDateOf(items), pageNumber + 1)),
+      TE.flatMap(() => fetchPaginatedData(fetchData, baseUrl, latestDateOf(items), pageNumber + 1)),
       TE.map((next) => [...items, ...next]),
     ),
   )),

@@ -25,7 +25,7 @@ export const docmap = (
     StatusCodes.BAD_REQUEST,
   )),
   TE.fromEither,
-  TE.chain((decodedParams) => pipe(
+  TE.flatMap((decodedParams) => pipe(
     decodedParams.doi,
     generateDocmaps(dependencies),
   )),

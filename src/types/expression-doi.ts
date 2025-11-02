@@ -26,7 +26,7 @@ export const expressionDoiCodec = new t.Type<ExpressionDoi, string, unknown>(
   (u, c) => pipe(
     t.string.validate(u, c),
     E.map((value) => value.replace(/^doi:/, '')),
-    E.chain(flow(
+    E.flatMap(flow(
       O.fromPredicate((value) => doiRegex.test(value)),
       O.match(
         () => t.failure(u, c),
@@ -43,7 +43,7 @@ export const canonicalExpressionDoiCodec = new t.Type<ExpressionDoi, string, unk
   (u, c) => pipe(
     t.string.validate(u, c),
     E.map((value) => value.replace(/^doi:/, '')),
-    E.chain(flow(
+    E.flatMap(flow(
       O.fromPredicate((value) => doiRegex.test(value)),
       O.map((value) => value.toLowerCase()),
       O.match(

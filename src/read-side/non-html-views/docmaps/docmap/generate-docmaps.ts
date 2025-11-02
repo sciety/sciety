@@ -31,7 +31,7 @@ const getDocmapViewModels = (dependencies: DependenciesForViews) => (expressionD
   expressionDoi,
   getEvaluatingGroupIds(dependencies),
   TE.rightTask,
-  TE.chain(TE.traverseArray((groupId) => constructDocmapViewModel(dependencies)({
+  TE.flatMap(TE.traverseArray((groupId) => constructDocmapViewModel(dependencies)({
     expressionDoi,
     groupId,
   }))),
@@ -51,7 +51,7 @@ export const generateDocmaps = (
   candidateDoi,
   validateDoi,
   TE.fromEither,
-  TE.chainW(getDocmapViewModels(dependencies)),
+  TE.flatMap(getDocmapViewModels(dependencies)),
   TE.map(RA.map(renderDocmap)),
   TE.chainEitherKW(errorOnEmpty),
 );

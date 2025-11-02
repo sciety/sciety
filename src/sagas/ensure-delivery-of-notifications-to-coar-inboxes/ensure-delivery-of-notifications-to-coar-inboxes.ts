@@ -27,7 +27,7 @@ export const ensureDeliveryOfNotificationsToCoarInboxes = (
       constructCoarNotificationModel(scietyUiOrigin),
       dependencies.sendCoarNotification,
     )),
-    TE.chainW((pendingNotification) => pipe(
+    TE.flatMap((pendingNotification) => pipe(
       {
         evaluationLocator: pendingNotification.evaluationLocator,
         targetId: pendingNotification.target.id,

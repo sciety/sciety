@@ -20,7 +20,7 @@ export const sendDefaultErrorHtmlResponse = (
   const provideLoggedInUserDetails = pipe(
     context,
     getAuthenticatedUserIdFromContext,
-    O.chain((id) => dependencies.lookupUser(id)),
+    O.flatMap((id) => dependencies.lookupUser(id)),
   );
   context.response.body = toDefaultErrorHtmlDocument(
     errorMessage,

@@ -19,7 +19,7 @@ export const page = (
     dependencies.logger('warn', 'group-management-page params codec failed', { errors: formatValidationErrors(errors) });
     return DE.notFound;
   }),
-  E.chainW(constructViewModel(dependencies, userId)),
+  E.flatMap(constructViewModel(dependencies, userId)),
   E.bimap(constructErrorPageViewModel, renderAsHtml),
   TE.fromEither,
 );

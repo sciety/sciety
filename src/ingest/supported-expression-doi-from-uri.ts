@@ -43,7 +43,7 @@ const deriveDoiForSpecificServer = (serverData: PaperServerConfiguration, uri: s
   uri,
   (input) => serverData.regexToCaptureEndOfDoi.exec(input),
   E.fromNullable('regex failed'),
-  E.chain(
+  E.flatMap(
     flow(
       RA.lookup(1),
       E.fromOption(() => 'no first capture group in regex match'),

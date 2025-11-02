@@ -43,7 +43,7 @@ type Params = {
 export const constructViewModel: ConstructViewModel<Params, ViewModel> = (dependencies) => (params) => pipe(
   params.latestExpressionDoi,
   dependencies.fetchPublishingHistory,
-  TE.chain((publishingHistory) => pipe(
+  TE.flatMap((publishingHistory) => pipe(
     {
       frontMatter: pipe(
         publishingHistory,

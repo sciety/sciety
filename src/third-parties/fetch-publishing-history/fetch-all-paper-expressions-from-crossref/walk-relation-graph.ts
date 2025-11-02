@@ -68,6 +68,6 @@ export const walkRelationGraph = (
     state,
     fetchAllQueuedWorksAndAddToCollector(queryCrossrefService, logger),
     TE.map(enqueueAllRelatedDoisNotYetCollected),
-    TE.chain(walkRelationGraph(queryCrossrefService, logger, doi, config)),
+    TE.flatMap(walkRelationGraph(queryCrossrefService, logger, doi, config)),
   );
 };

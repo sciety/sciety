@@ -57,10 +57,10 @@ export const validateAndExecuteCommand: ValidateAndExecuteCommand = (context, de
     avatarUrl: defaultSignUpAvatarUrl,
   })),
   T.of,
-  TE.chainW((command) => pipe(
+  TE.flatMap((command) => pipe(
     dependencies.getAllEvents,
     T.map(create(command)),
-    TE.chainW(dependencies.commitEvents),
+    TE.flatMap(dependencies.commitEvents),
     TE.mapLeft((error) => {
       dependencies.logger('error', 'createUserAccountCommandHandler failed', { error, command });
       return 'command-failed';

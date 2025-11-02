@@ -19,7 +19,7 @@ export const maintainSnapshotsForEvaluatedExpressions = (
     dependencies.getExpressionsWithNoAssociatedSnapshot(),
     RA.head,
     TE.fromOption(() => 'no evaluated expressions missing from snapshots'),
-    TE.chainW((expressionDoi) => pipe(
+    TE.flatMap((expressionDoi) => pipe(
       expressionDoi,
       dependencies.fetchPublishingHistory,
       TE.mapLeft((error) => {
@@ -28,7 +28,7 @@ export const maintainSnapshotsForEvaluatedExpressions = (
       }),
     )),
     TE.map(PH.getAllExpressionDois),
-    TE.chainW((expressions) => executeResourceAction(dependencies, paperSnapshot.record)({
+    TE.flatMap((expressions) => executeResourceAction(dependencies, paperSnapshot.record)({
       expressionDois: new Set(expressions),
     })),
   )();

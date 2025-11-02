@@ -28,7 +28,7 @@ export const constructViewModel: ConstructViewModel = (dependencies, userId) => 
   params.slug,
   dependencies.getGroupBySlug,
   E.fromOption(() => DE.notFound),
-  E.chainW((group) => checkUserIsAdminOfGroup(dependencies, userId, group)),
+  E.flatMap((group) => checkUserIsAdminOfGroup(dependencies, userId, group)),
   E.map((group) => ({
     pageHeading: `Group management details for ${group.name}`,
     groupHomePageHref: constructGroupPagePath.home.href(group),

@@ -14,7 +14,7 @@ type Concat = <A>(a: ReturnType<ResourceAction<A>>)
 
 export const concat: Concat = (action) => (previousState) => pipe(
   previousState,
-  E.chain((previousEvents) => pipe(
+  E.flatMap((previousEvents) => pipe(
     previousEvents,
     action,
     E.map((outputEvents) => [...previousEvents, ...outputEvents]),
@@ -27,7 +27,7 @@ type Last = <A>(a: ReturnType<ResourceAction<A>>)
 
 export const last: Last = (action) => (previousState) => pipe(
   previousState,
-  E.chain((previousEvents) => pipe(
+  E.flatMap((previousEvents) => pipe(
     previousEvents,
     action,
   )),

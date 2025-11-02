@@ -40,7 +40,7 @@ export const articleIdCodec = new t.Type(
   (u): u is ArticleId => u instanceof ArticleId,
   (u, c) => pipe(
     t.string.validate(u, c),
-    E.chain(flow(
+    E.flatMap(flow(
       fromString,
       O.match(
         () => t.failure(u, c),

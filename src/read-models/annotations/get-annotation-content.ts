@@ -12,5 +12,5 @@ type GetAnnotationContent = (listId: ListId, expressionDoi: ExpressionDoi) => O.
 export const getAnnotationContent = (readModel: ReadModel): GetAnnotationContent => (listId, expressionDoi) => pipe(
   readModel,
   R.lookup(listId),
-  O.chain(R.lookup(expressionDoi)),
+  O.flatMap(R.lookup(expressionDoi)),
 );

@@ -22,7 +22,7 @@ const getLoggedInScietyUser = (
 ): O.Option<UserDetails> => pipe(
   context,
   getAuthenticatedUserIdFromContext,
-  O.chain((id) => dependencies.lookupUser(id)),
+  O.flatMap((id) => dependencies.lookupUser(id)),
 );
 
 export const createUserAccount = (dependencies: Dependencies): Middleware => async (context) => {

@@ -72,12 +72,12 @@ export const paperActivityPage: PaperActivityPage = (dependencies) => (params) =
     isRequestedExpressionDoiInCanonicalForm,
     ({ canonicalForm }) => redirectTo(canonicalForm),
   ),
-  TE.chainW(extendWithLatestExpressionDoi(dependencies)),
+  TE.flatMap(extendWithLatestExpressionDoi(dependencies)),
   TE.filterOrElseW(
     isRequestedExpressionDoiTheLatest,
     ({ latestExpressionDoi }) => redirectTo(latestExpressionDoi),
   ),
-  TE.chainW(flow(
+  TE.flatMap(flow(
     constructViewModel(dependencies),
     TE.mapLeft(constructErrorPageViewModel),
   )),

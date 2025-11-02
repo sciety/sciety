@@ -19,9 +19,9 @@ const converter = new Remarkable({ html: true }).use(linkify);
 export const insertSelectedText = (response: HypothesisAnnotation): string => pipe(
   response.target,
   RA.head,
-  O.chain((couldContainSelector) => O.fromNullable(couldContainSelector.selector)),
+  O.flatMap((couldContainSelector) => O.fromNullable(couldContainSelector.selector)),
   O.map(RA.filter((selector): selector is { type: 'TextQuoteSelector', exact: string } => selector.type === 'TextQuoteSelector')),
-  O.chain(RA.head),
+  O.flatMap(RA.head),
   O.match(
     () => response.text,
     (textQuoteSelector) => `> ${textQuoteSelector.exact}

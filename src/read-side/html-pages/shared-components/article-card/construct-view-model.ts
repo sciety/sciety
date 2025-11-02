@@ -39,7 +39,7 @@ export const constructViewModel = (
 ) => (inputExpressionDoi: ExpressionDoi): TE.TaskEither<ErrorViewModel, ViewModel> => pipe(
   inputExpressionDoi,
   dependencies.fetchPublishingHistory,
-  TE.chain((publishingHistory) => pipe(
+  TE.flatMap((publishingHistory) => pipe(
     publishingHistory,
     constructFrontMatter(dependencies),
     TE.map((expressionFrontMatter) => ({

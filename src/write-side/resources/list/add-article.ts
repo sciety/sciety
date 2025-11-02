@@ -56,7 +56,7 @@ export const addArticle: ResourceAction<AddArticleToListCommand> = (command) => 
     doesListExist(command.listId),
     () => toErrorMessage(`List with list id ${command.listId} not found`),
   ),
-  E.chain(getListWriteModel(command.listId)),
+  E.flatMap(getListWriteModel(command.listId)),
   E.filterOrElseW(
     isAnnotationValidIfPresent(command),
     () => toErrorMessage('Annotation too long'),

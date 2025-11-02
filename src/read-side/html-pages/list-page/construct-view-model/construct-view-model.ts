@@ -35,7 +35,7 @@ const constructContentViewModel: ConstructContentViewModel = (
   entries,
   toExpressionDoisByMostRecentlyAdded,
   TE.right,
-  TE.chainW(
+  TE.flatMap(
     RA.match<TE.TaskEither<DE.DataError | 'no-articles-can-be-fetched', ViewModel['content']>, ExpressionDoi>(
       () => TE.right('no-articles' as const),
       constructContentWithPaginationViewModel(dependencies, params.page, editCapability, listId),
@@ -75,7 +75,7 @@ export const constructViewModel: ConstructViewModel<Params, ViewModel> = (depend
     ...partial,
     subscribeHref: partial.editCapability ? O.none : O.some(`/lists/${partial.listId}/subscribe`),
   })),
-  O.chain((partial) => pipe(
+  O.flatMap((partial) => pipe(
     getOwnerInformation(dependencies)(partial.ownerId),
     O.map((ownerInformation) => ({
       ...ownerInformation,
@@ -83,7 +83,7 @@ export const constructViewModel: ConstructViewModel<Params, ViewModel> = (depend
     })),
   )),
   TE.fromOption(() => DE.notFound),
-  TE.chain((partialPageViewModel) => pipe(
+  TE.flatMap((partialPageViewModel) => pipe(
     constructContentViewModel(
       dependencies,
       params,

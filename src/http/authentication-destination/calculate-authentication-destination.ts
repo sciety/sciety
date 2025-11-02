@@ -17,7 +17,7 @@ export const calculateAuthenticationDestination = (
   referer,
   O.fromNullable,
   O.filter((candidateUrl) => candidateUrl !== ''),
-  O.chain(toValidUrl),
+  O.flatMap(toValidUrl),
   O.filter(isHostedBy(applicationHostname)),
   O.map(urlToString),
   O.getOrElse(() => {

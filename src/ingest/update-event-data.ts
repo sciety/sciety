@@ -33,7 +33,7 @@ void (async (): Promise<unknown> => pipe(
   process.env,
   generateConfigurationFromEnvironment,
   TE.fromEither,
-  TE.chain((environment) => updateAll(environment, selectGroupsToIngest(environment))),
+  TE.flatMap((environment) => updateAll(environment, selectGroupsToIngest(environment))),
   TE.match(
     () => 1,
     () => 0,

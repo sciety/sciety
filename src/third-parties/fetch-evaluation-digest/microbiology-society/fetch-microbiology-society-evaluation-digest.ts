@@ -18,7 +18,7 @@ const fetchEvaluationDigestFromPublisherJatsXmlEndpoint = (
     logger('error', 'Failed to derive JATS XML URL from ACMI evaluation DOI', { acmiEvaluationDoi: key });
     return left;
   }),
-  TE.chain(queryExternalService()),
+  TE.flatMap(queryExternalService()),
   TE.chainEitherK(deriveFullTextsOfEvaluations(logger)),
   TE.chainEitherKW(lookupFullText(key)),
 );

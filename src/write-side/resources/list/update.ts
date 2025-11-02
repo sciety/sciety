@@ -64,7 +64,7 @@ export const update: ResourceAction<EditListDetailsCommand> = (command) => (even
   ),
   E.map(filterToRelevantEventTypes),
   E.map(RA.filter(isAnEventOfThisList(command.listId))),
-  E.chain(RA.reduce(E.left(toErrorMessage('list-details-not-found')), handleEvent)),
+  E.flatMap(RA.reduce(E.left(toErrorMessage('list-details-not-found')), handleEvent)),
   E.map((listDetails) => [
     ...handleEditingOfName(listDetails, command),
     ...handleEditingOfDescription(listDetails, command),

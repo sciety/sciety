@@ -12,6 +12,6 @@ export const subscribeToListPage = (dependencies: DependenciesForViews): Constru
   input,
   decodePageParams(dependencies.logger, paramsCodec),
   TE.fromEither,
-  TE.chain(constructViewModel(dependencies)),
+  TE.flatMap(constructViewModel(dependencies)),
   TE.bimap(constructErrorPageViewModel, renderAsHtml),
 );

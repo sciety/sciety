@@ -5,7 +5,7 @@ import { $ } from 'taiko';
 export const isLoggedIn = async (): Promise<boolean> => {
   const links = await pipe(
     async () => $('.utility-bar a').elements(),
-    T.chain(T.traverseArray((element) => async () => element.text())),
+    T.flatMap(T.traverseArray((element) => async () => element.text())),
   )();
   return links.includes('Log Out');
 };

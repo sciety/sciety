@@ -16,7 +16,7 @@ export const executeResourceAction = <C extends GenericCommand>(
     return pipe(
       dependencies.getAllEvents,
       T.map(resourceAction(command)),
-      TE.chainW(dependencies.commitEvents),
+      TE.flatMap(dependencies.commitEvents),
       TE.tap(() => TE.right(dependencies.logger('debug', 'Resource action completed', {
         durationInMs: new Date().getTime() - startTime.getTime(),
       }))),

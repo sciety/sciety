@@ -14,6 +14,6 @@ export const saveArticleFormPage = (
   input,
   decodePageParams(dependencies.logger, paramsCodec),
   TE.fromEither,
-  TE.chainW(constructViewModel(dependencies, userId)),
+  TE.flatMap(constructViewModel(dependencies, userId)),
   TE.bimap(constructErrorPageViewModel, renderAsHtml),
 );

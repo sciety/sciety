@@ -19,7 +19,7 @@ export const generate = (): GroupId => fromValidatedString(v4());
 export const fromNullable = (value?: string | null): O.Option<GroupId> => pipe(
   value,
   O.fromNullable,
-  O.chain(fromString),
+  O.flatMap(fromString),
 );
 
 export const eq: Eq.Eq<GroupId> = S.Eq;

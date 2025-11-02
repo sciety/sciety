@@ -40,6 +40,6 @@ export const constructRelatedArticles = (
   dependencies.fetchRecommendedPapers,
   failIfNoResultsReturned(dependencies, history),
   TE.map(RA.takeLeft(3)),
-  TE.chainW(buildRelatedArticleCards(dependencies, history)),
+  TE.flatMap(buildRelatedArticleCards(dependencies, history)),
   TO.fromTaskEither,
 );

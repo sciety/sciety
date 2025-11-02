@@ -31,5 +31,5 @@ export const recordRemoval: ResourceAction<RecordEvaluationRemovalCommand> = (co
   RA.filter((event) => event.evaluationLocator === command.evaluationLocator),
   RA.last,
   E.fromOption(() => evaluationResourceError.doesNotExist),
-  E.chainW(decideResult(command)),
+  E.flatMap(decideResult(command)),
 );

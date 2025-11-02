@@ -25,7 +25,7 @@ export const constructContentWithPaginationViewModel = (
   expressionDoi,
   paginate(20, pageNumber),
   TE.fromEither,
-  TE.chainW((pageOfExpressionDois) => pipe(
+  TE.flatMap((pageOfExpressionDois) => pipe(
     pageOfExpressionDois,
     toPageOfCards(dependencies, editCapability, listId),
     TE.map((articles) => ({

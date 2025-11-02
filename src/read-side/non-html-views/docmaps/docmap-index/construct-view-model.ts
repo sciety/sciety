@@ -16,9 +16,9 @@ type ConstructDocmapIndexViewModel = (dependencies: DependenciesForViews)
 
 export const constructViewModel: ConstructDocmapIndexViewModel = (dependencies) => (params) => pipe(
   identifyAllPossibleIndexEntries(supportedGroups, dependencies),
-  E.chain(filterByParams(params)),
+  E.flatMap(filterByParams(params)),
   TE.fromEither,
-  TE.chainW(flow(
+  TE.flatMap(flow(
     TE.traverseArray(constructDocmapViewModel(dependencies)),
     TE.mapLeft(() => ER.internalServerError),
   )),

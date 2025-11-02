@@ -13,7 +13,7 @@ export const constructViewModel: ConstructViewModel<Params, ViewModel> = (depend
   dependencies.getGroupBySlug(params.slug),
   O.map(constructHeader(dependencies, params.user)),
   TE.fromOption(() => DE.notFound),
-  TE.chain((header) => pipe(
+  TE.flatMap((header) => pipe(
     constructFeed(dependencies, header.group, 10, params.page),
     TE.map((feed) => ({
       header,

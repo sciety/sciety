@@ -53,7 +53,7 @@ const fetchPaginatedData = (
 ): TE.TaskEither<string, ReadonlyArray<BiorxivItem>> => pipe(
   dependencies.fetchData<BiorxivResponse>(`${baseUrl}/${offset}`),
   TE.map((response) => response.collection),
-  TE.chain(RA.match(
+  TE.flatMap(RA.match(
     () => TE.right([]),
     (items) => pipe(
       fetchPaginatedData(dependencies, baseUrl, offset + items.length),
@@ -74,7 +74,7 @@ const identifyCandidates = (
   const baseUrl = `https://api.biorxiv.org/publisher/${doiPrefix}/${startDate}/${today}`;
   return pipe(
     fetchPaginatedData(dependencies, baseUrl, 0),
-    TE.chain(TE.traverseSeqArray(getReviews(dependencies.fetchData, crossrefApiBearerToken, reviewDoiPrefix))),
+    TE.flatMap(TE.traverseSeqArray(getReviews(dependencies.fetchData, crossrefApiBearerToken, reviewDoiPrefix))),
     TE.map(RA.flatten),
   );
 };

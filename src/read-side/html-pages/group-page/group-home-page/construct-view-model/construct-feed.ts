@@ -20,7 +20,7 @@ import { ViewModel } from '../view-model';
 const getEvaluatedExpressionDois = (dependencies: Dependencies) => (groupId: GroupId) => pipe(
   groupId,
   dependencies.getEvaluatedArticlesListIdForGroup,
-  O.chain((listId) => dependencies.lookupList(listId)),
+  O.flatMap((listId) => dependencies.lookupList(listId)),
   O.map((list) => list.entries),
   O.map(toExpressionDoisByMostRecentlyAdded),
   E.fromOption(() => DE.notFound),
@@ -55,7 +55,7 @@ const toPageOfFeedContent = (
     RA.isNonEmpty,
     () => ({ tag: 'no-activity-yet' as const }),
   ),
-  E.chain(flow(
+  E.flatMap(flow(
     paginate(pageSize, page),
     E.mapLeft(() => ({ tag: 'no-activity-yet' as const })),
   )),

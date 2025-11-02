@@ -20,7 +20,7 @@ export const constructViewModel: ConstructViewModel<Params, ViewModel> = (depend
     header: constructHeaderViewModel(group),
   })),
   TE.fromEither,
-  TE.chain((partial) => pipe(
+  TE.flatMap((partial) => pipe(
     dependencies.fetchStaticFile(`groups/${partial.group.descriptionPath}`),
     TE.map((markdown) => ({
       header: partial.header,

@@ -27,7 +27,7 @@ export const redirectToAvatarImageUrl = (dependencies: Dependencies): Middleware
       () => DE.notFound,
     ),
     TE.fromEither,
-    TE.chainW((userDetails) => dependencies.fetchUserAvatarUrl(userDetails.id)),
+    TE.flatMap((userDetails) => dependencies.fetchUserAvatarUrl(userDetails.id)),
     TE.getOrElseW(() => T.of('/static/images/profile-dark.svg')),
     T.map(toRedirectTarget),
   )();

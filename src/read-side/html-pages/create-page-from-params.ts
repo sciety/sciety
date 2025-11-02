@@ -25,5 +25,5 @@ export const createPageFromParams = <P>(
     decodePageParams(logger, codec),
     E.mapLeft(toNotFound),
     TE.fromEither,
-    TE.chain(constructPageFromDecodedParams),
+    TE.flatMap(constructPageFromDecodedParams),
   );

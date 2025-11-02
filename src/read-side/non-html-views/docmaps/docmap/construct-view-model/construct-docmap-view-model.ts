@@ -30,7 +30,7 @@ export const constructDocmapViewModel: ConstructDocmapViewModel = (dependencies)
       dependencies.getEvaluationsOfExpression(docmapIdentifier.expressionDoi),
       TE.right,
       TE.map(RA.filter((ev) => ev.groupId === docmapIdentifier.groupId)),
-      TE.chainW(TE.traverseArray(constructAction(dependencies))),
+      TE.flatMap(TE.traverseArray(constructAction(dependencies))),
       TE.chainEitherKW(flow(
         RNEA.fromReadonlyArray,
         E.fromOption(() => DE.notFound),

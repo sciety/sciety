@@ -37,7 +37,7 @@ export const constructGroupCard = (
   groupId: GroupId,
 ): E.Either<DE.DataError, GroupCardViewModel> => pipe(
   dependencies.getGroup(groupId),
-  O.chain((group) => pipe(
+  O.flatMap((group) => pipe(
     group.id,
     dependencies.getActivityForGroup,
     O.map((activity) => ({

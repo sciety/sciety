@@ -41,7 +41,7 @@ export const fromExpressions = (
   candidateExpressions,
   RNEA.fromReadonlyArray,
   E.fromOption(() => 'empty-publishing-history' as const),
-  E.chainW((expressions) => pipe(
+  E.flatMap((expressions) => pipe(
     expressions,
     RNEA.filter((expression) => expression.expressionType === 'preprint'),
     O.map((preprintExpressions) => ({
