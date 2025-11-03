@@ -17,5 +17,5 @@ export const transformCoarNotificationUriToAnnouncementActionUri = (
   dependencies.fetchData<string>,
   TE.map(JSON.parse),
   TE.chainEitherK(decodeAndReportFailures(coarNotificationCodec)),
-  TE.map((decodecResponse) => decodecResponse.object.id),
+  TE.map((decodedResponse) => decodedResponse.object.id),
 );
