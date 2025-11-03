@@ -5,6 +5,7 @@ import {
   transformAnnouncementActionUriToSignpostingDocmapUri,
 } from '../../../../src/ingest/evaluation-discovery/coar/transform-announcement-action-uri-to-signposting-docmap-uri';
 import { arbitraryUri } from '../../../helpers';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
 
 describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
   describe('when the announcement action uri request fails', () => {
@@ -25,7 +26,20 @@ describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
 
   describe('given the announcement action uri request succeeds', () => {
     describe('when it returns a link header with a Signposting DocMap URI', () => {
-      it.todo('returns that Signposting DocMap URI');
+      const announcementActionUri = 'https://neuro.peercommunityin.org/articles/rec?id=217#review-549';
+      let result: string;
+
+      beforeEach(async () => {
+        result = await pipe(
+          announcementActionUri,
+          transformAnnouncementActionUriToSignpostingDocmapUri({ fetchData: () => TE.left('fetch data fails for any reason') }),
+          TE.getOrElse(shouldNotBeCalled),
+        )();
+      });
+
+      it('returns that Signposting DocMap URI', () => {
+        expect(result).toBe('https://neuro.peercommunityin.org/metadata/docmaps?article_id=217');
+      });
     });
 
     describe('when it does not return a link header', () => {
