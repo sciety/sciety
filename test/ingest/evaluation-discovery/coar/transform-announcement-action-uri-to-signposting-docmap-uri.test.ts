@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import {
   transformAnnouncementActionUriToSignpostingDocmapUri,
@@ -17,7 +18,7 @@ describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
     beforeEach(async () => {
       result = await pipe(
         announcementActionUri,
-        transformAnnouncementActionUriToSignpostingDocmapUri,
+        transformAnnouncementActionUriToSignpostingDocmapUri({ fetchData: () => TE.left('fetch data fails for any reason') }),
       )();
     });
 

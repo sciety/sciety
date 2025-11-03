@@ -11,7 +11,7 @@ export const discoverPciEvaluations: DiscoverPublishedEvaluations = () => (
 ) => pipe(
   'https://inbox-sciety-prod.elifesciences.org/inbox/urn:uuid:bf3513ee-1fef-4f30-a61b-20721b505f11',
   transformCoarNotificationUriToAnnouncementActionUri(dependencies),
-  TE.chain(transformAnnouncementActionUriToSignpostingDocmapUri),
+  TE.chain(transformAnnouncementActionUriToSignpostingDocmapUri(dependencies)),
   TE.map(() => ({
     understood: [],
     skipped: [],
