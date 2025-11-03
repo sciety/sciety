@@ -42,7 +42,7 @@ describe('transform-coar-notification-uri-to-announcement-action-uri', () => {
       result = await pipe(
         arbitraryUri(),
         transformCoarNotificationUriToAnnouncementActionUri(
-          { fetchData: <D>() => TE.right(stubbedSuccessfulResponse as unknown as D) },
+          { fetchData: <D>() => TE.right(stubbedSuccessfulResponse as D) },
         ),
         TE.getOrElse(shouldNotBeCalled),
       )();
@@ -72,7 +72,7 @@ describe('transform-coar-notification-uri-to-announcement-action-uri', () => {
       result = await pipe(
         coarNotificationUri,
         transformCoarNotificationUriToAnnouncementActionUri(
-          { fetchData: <D>() => TE.right(stubbedIncorrectData as unknown as D) },
+          { fetchData: <D>() => TE.right(stubbedIncorrectData as D) },
         ),
       )();
     });
