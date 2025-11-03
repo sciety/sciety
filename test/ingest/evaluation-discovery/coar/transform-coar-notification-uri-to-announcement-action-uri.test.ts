@@ -24,18 +24,18 @@ describe('transform-coar-notification-uri-to-announcement-action-uri', () => {
 
   describe('when the coar notification uri returns an announcement', () => {
     const announcementActionUri = arbitraryUri();
-    const stubbedSuccessfulResponse = `{
-      "object": {
-        "id": "${announcementActionUri}",
-        "object": null,
-        "type": [
-          "Document",
-          "sorg:Review"
+    const stubbedSuccessfulResponse = {
+      object: {
+        id: announcementActionUri,
+        object: null,
+        type: [
+          'Document',
+          'sorg:Review',
         ],
-        "ietf:cite-as": null,
-        "url": null
-      }
-    }`;
+        'ietf:cite-as': null,
+        url: null,
+      },
+    };
     let result: string;
 
     beforeEach(async () => {
