@@ -29,6 +29,8 @@ describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
   });
 
   describe('given the announcement action uri request succeeds', () => {
+    let result: E.Either<string, string>;
+
     describe('when it returns a link header with a Signposting DocMap URI', () => {
       it.todo('returns that Signposting DocMap URI');
     });
@@ -37,7 +39,6 @@ describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
       const head = {
         'header 1': arbitraryString(),
       };
-      let result: E.Either<string, string>;
 
       beforeEach(async () => {
         result = await pipe(
@@ -55,7 +56,23 @@ describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
     });
 
     describe('when it returns a link header without a Signposting DocMap URI', () => {
-      it.todo('returns on the left');
+      const head = {
+        link: arbitraryString(),
+      };
+
+      beforeEach(async () => {
+        result = await pipe(
+          announcementActionUri,
+          transformAnnouncementActionUriToSignpostingDocmapUri({
+            fetchData: () => TE.right(shouldNotBeCalled()),
+            fetchHead: () => TE.right(head),
+          }),
+        )();
+      });
+
+      it.failing('returns on the left', () => {
+        expect(E.isLeft(result)).toBe(true);
+      });
     });
   });
 });
