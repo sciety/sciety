@@ -9,5 +9,6 @@ export const transformAnnouncementActionUriToSignpostingDocmapUri = (
   announcementActionUri: string,
 ): TE.TaskEither<string, string> => pipe(
   announcementActionUri,
-  dependencies.fetchData<string>,
+  dependencies.fetchHead,
+  TE.map(() => ''),
 );

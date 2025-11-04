@@ -5,6 +5,7 @@ import {
   transformAnnouncementActionUriToSignpostingDocmapUri,
 } from '../../../../src/ingest/evaluation-discovery/coar/transform-announcement-action-uri-to-signposting-docmap-uri';
 import { arbitraryUri } from '../../../helpers';
+import { shouldNotBeCalled } from '../../../should-not-be-called';
 
 describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
   describe('when the announcement action uri request fails', () => {
@@ -14,7 +15,10 @@ describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
     beforeEach(async () => {
       result = await pipe(
         announcementActionUri,
-        transformAnnouncementActionUriToSignpostingDocmapUri({ fetchData: () => TE.left('fetch data fails for any reason') }),
+        transformAnnouncementActionUriToSignpostingDocmapUri({
+          fetchData: () => TE.right(shouldNotBeCalled()),
+          fetchHead: () => TE.left('fetch head fails for any reason'),
+        }),
       )();
     });
 

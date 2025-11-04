@@ -9,7 +9,10 @@ import { shouldNotBeCalled } from '../../../should-not-be-called';
 const stubbedFetchData = (stubbedResponse: unknown) => <D>() => TE.right(stubbedResponse as unknown as D);
 
 const invokeDeterminePagesToSelect = async (fetchDataImplementation: Dependencies['fetchData']) => pipe(
-  { fetchData: fetchDataImplementation },
+  {
+    fetchData: fetchDataImplementation,
+    fetchHead: () => TE.right({}),
+  },
   determinePagesToSelect(1000),
 )();
 

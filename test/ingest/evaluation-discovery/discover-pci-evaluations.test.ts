@@ -14,6 +14,7 @@ const ingestDays = 10;
 const discover = async (xml: string) => pipe(
   {
     fetchData: <D>() => TE.right(xml as unknown as D),
+    fetchHead: () => TE.right({}),
     fetchGoogleSheet: shouldNotBeCalled,
   },
   discoverPciEvaluations(arbitraryUri())(ingestDays),
@@ -45,6 +46,7 @@ describe('discover-pci-evaluations', () => {
       unhappyResult = await pipe(
         {
           fetchData: <D>() => TE.right(notValidXml as unknown as D),
+          fetchHead: () => TE.right({}),
           fetchGoogleSheet: shouldNotBeCalled,
         },
         discoverPciEvaluations(arbitraryUri())(ingestDays),

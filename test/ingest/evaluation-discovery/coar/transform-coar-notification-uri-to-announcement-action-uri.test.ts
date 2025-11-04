@@ -13,7 +13,10 @@ describe('transform-coar-notification-uri-to-announcement-action-uri', () => {
     beforeEach(async () => {
       result = await pipe(
         coarNotificationUri,
-        transformCoarNotificationUriToAnnouncementActionUri({ fetchData: () => TE.left('fetch data fails for any reason') }),
+        transformCoarNotificationUriToAnnouncementActionUri({
+          fetchData: () => TE.left('fetch data fails for any reason'),
+          fetchHead: () => TE.right(shouldNotBeCalled()),
+        }),
       )();
     });
 
@@ -42,7 +45,10 @@ describe('transform-coar-notification-uri-to-announcement-action-uri', () => {
       result = await pipe(
         arbitraryUri(),
         transformCoarNotificationUriToAnnouncementActionUri(
-          { fetchData: <D>() => TE.right(stubbedSuccessfulResponse as D) },
+          {
+            fetchData: <D>() => TE.right(stubbedSuccessfulResponse as D),
+            fetchHead: () => TE.right(shouldNotBeCalled()),
+          },
         ),
         TE.getOrElse(shouldNotBeCalled),
       )();
@@ -72,7 +78,10 @@ describe('transform-coar-notification-uri-to-announcement-action-uri', () => {
       result = await pipe(
         coarNotificationUri,
         transformCoarNotificationUriToAnnouncementActionUri(
-          { fetchData: <D>() => TE.right(stubbedIncorrectData as D) },
+          {
+            fetchData: <D>() => TE.right(stubbedIncorrectData as D),
+            fetchHead: () => TE.right(shouldNotBeCalled()),
+          },
         ),
       )();
     });

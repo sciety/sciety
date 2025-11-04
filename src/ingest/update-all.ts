@@ -9,6 +9,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { DiscoverPublishedEvaluations } from './discover-published-evaluations';
 import { fetchData } from './fetch-data';
+import { fetchHead } from './fetch-head';
 import { Configuration } from './generate-configuration-from-environment';
 import { report } from './report';
 import { DiscoveredPublishedEvaluations } from './types/discovered-published-evaluations';
@@ -128,7 +129,10 @@ const recordDiscoveredEvaluations = (
 ) => (
   process: EvaluationDiscoveryProcess,
 ): TE.TaskEither<unknown, void> => pipe(
-  { fetchData: fetchData(environment) },
+  {
+    fetchData: fetchData(environment),
+    fetchHead: fetchHead(environment),
+  },
   process.discoverPublishedEvaluations(environment.ingestDays),
   TE.bimap(
     (error) => ({
