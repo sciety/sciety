@@ -30,5 +30,6 @@ export const transformAnnouncementActionUriToSignpostingDocmapUri = (
   TE.map(RA.filter((link) => link.match(/<http[^>]+>/) !== null)),
   TE.map(RA.filter((link) => link.match(/(^|\s)rel="describedby"/) !== null)),
   TE.map(RA.filter((link) => link.match(/(^|\s)profile="https:\/\/w3id\.org\/docmaps\/context\.jsonld"/) !== null)),
+  TE.flatMap((links) => (links.length > 0 ? TE.right(links) : TE.left(''))),
   TE.map(() => ''),
 );

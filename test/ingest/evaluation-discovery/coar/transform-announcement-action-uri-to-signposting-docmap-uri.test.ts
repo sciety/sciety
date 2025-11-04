@@ -70,7 +70,7 @@ describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
         )();
       });
 
-      it.failing('returns on the left', () => {
+      it('returns on the left', () => {
         expect(E.isLeft(result)).toBe(true);
       });
     });
