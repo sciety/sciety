@@ -4,12 +4,13 @@ import { pipe } from 'fp-ts/function';
 import {
   transformAnnouncementActionUriToSignpostingDocmapUri,
 } from '../../../../src/ingest/evaluation-discovery/coar/transform-announcement-action-uri-to-signposting-docmap-uri';
-import { arbitraryUri } from '../../../helpers';
+import { arbitraryString, arbitraryUri } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 
 describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
+  const announcementActionUri = arbitraryUri();
+
   describe('when the announcement action uri request fails', () => {
-    const announcementActionUri = arbitraryUri();
     let result: E.Either<string, string>;
 
     beforeEach(async () => {
@@ -33,7 +34,24 @@ describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
     });
 
     describe('when it does not return a link header', () => {
-      it.todo('returns on the left');
+      const head = {
+        'header 1': arbitraryString(),
+      };
+      let result: E.Either<string, string>;
+
+      beforeEach(async () => {
+        result = await pipe(
+          announcementActionUri,
+          transformAnnouncementActionUriToSignpostingDocmapUri({
+            fetchData: () => TE.right(shouldNotBeCalled()),
+            fetchHead: () => TE.right(head),
+          }),
+        )();
+      });
+
+      it.failing('returns on the left', () => {
+        expect(E.isLeft(result)).toBe(true);
+      });
     });
 
     describe('when it returns a link header without a Signposting DocMap URI', () => {
