@@ -35,6 +35,10 @@ describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
       it.todo('returns that Signposting DocMap URI');
     });
 
+    describe('when it returns a link header with multiple Signposting DocMap URIs', () => {
+      it.todo('returns the first Signposting DocMap URI');
+    });
+
     describe('when it does not return a link header', () => {
       const head = {
         'header 1': arbitraryString(),
