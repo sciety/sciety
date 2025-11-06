@@ -49,7 +49,7 @@ describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
         )();
       });
 
-      it.failing('returns that Signposting DocMap URI', () => {
+      it('returns that Signposting DocMap URI', () => {
         expect(resultUri).toStrictEqual(signpostingDocmapUri);
       });
     });
