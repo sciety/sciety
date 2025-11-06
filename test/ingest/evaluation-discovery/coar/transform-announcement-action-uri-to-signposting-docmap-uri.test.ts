@@ -32,7 +32,26 @@ describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
     let result: E.Either<string, string>;
 
     describe('when it returns a link header with a Signposting DocMap URI', () => {
-      it.todo('returns that Signposting DocMap URI');
+      let resultUri: string;
+      const signpostingDocmapUri = 'https://neuro.peercommunityin.org/metadata/docmaps?article_id=217';
+      const head = {
+        link: `<${signpostingDocmapUri}>; rel="describedby" type="application/ld+json" profile="https://w3id.org/docmaps/context.jsonld", <https://neuro.peercommunityin.org/metadata/crossref?article_id=217>; rel="describedby" type="application/xml" profile="http://www.crossref.org/schema/4.3.7"`,
+      };
+
+      beforeEach(async () => {
+        resultUri = await pipe(
+          announcementActionUri,
+          transformAnnouncementActionUriToSignpostingDocmapUri({
+            fetchData: () => TE.right(shouldNotBeCalled()),
+            fetchHead: () => TE.right(head),
+          }),
+          TE.getOrElse(shouldNotBeCalled),
+        )();
+      });
+
+      it.failing('returns that Signposting DocMap URI', () => {
+        expect(resultUri).toStrictEqual(signpostingDocmapUri);
+      });
     });
 
     describe('when it returns a link header with multiple Signposting DocMap URIs', () => {
