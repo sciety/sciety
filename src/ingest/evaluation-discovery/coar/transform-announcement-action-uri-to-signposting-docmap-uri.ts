@@ -4,6 +4,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
+import escapeRegExp from 'lodash.escaperegexp';
 import { Dependencies } from '../../discover-published-evaluations';
 import { decodeAndReportFailures } from '../decode-and-report-failures';
 
@@ -17,12 +18,10 @@ const testLinkWithRegexp = (
   link: string,
 ) => regexp.test(link);
 
-const escapeForRegexp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-
 const linkHasAttribute = (
   attribute: 'rel' | 'profile',
   value: string,
-) => testLinkWithRegexp(new RegExp(`(^|\\s)${attribute}="${escapeForRegexp(value)}"`));
+) => testLinkWithRegexp(new RegExp(`(^|\\s)${attribute}="${escapeRegExp(value)}"`));
 
 const linkHasUri = testLinkWithRegexp(/<http[^>]+>/);
 
