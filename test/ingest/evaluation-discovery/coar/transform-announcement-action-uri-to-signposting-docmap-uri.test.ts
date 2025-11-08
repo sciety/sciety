@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import {
@@ -51,6 +52,49 @@ describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
 
       it('returns that Signposting DocMap URI', () => {
         expect(resultUri).toStrictEqual(signpostingDocmapUri);
+      });
+    });
+
+    describe('when extracting signposting DocMap uri from various link headers', () => {
+      it.each([
+        {
+          description: 'successfully extracts signposting DocMap uri',
+          link: '<https://neuro.peercommunityin.org/metadata/docmaps?article_id=217>; rel="describedby" type="application/ld+json" profile="https://w3id.org/docmaps/context.jsonld", <https://neuro.peercommunityin.org/metadata/crossref?article_id=217>; rel="describedby" type="application/xml" profile="http://www.crossref.org/schema/4.3.7"',
+          expected: 'https://neuro.peercommunityin.org/metadata/docmaps?article_id=217',
+        },
+        {
+          description: 'successfully extracts first signposting DocMap uri',
+          link: '<https://neuro.peercommunityin.org/metadata/docmaps?article_id=217&first>; rel="describedby" type="application/ld+json" profile="https://w3id.org/docmaps/context.jsonld", <https://neuro.peercommunityin.org/metadata/docmaps?article_id=217&second>; rel="describedby" type="application/ld+json" profile="https://w3id.org/docmaps/context.jsonld"',
+          expected: 'https://neuro.peercommunityin.org/metadata/docmaps?article_id=217&first',
+        },
+        {
+          description: 'returns no signposting DocMap uri when no uri detected',
+          link: '<nouri>; rel="describedby" type="application/ld+json" profile="https://w3id.org/docmaps/context.jsonld"',
+          expected: '',
+        },
+        {
+          description: 'returns no signposting DocMap URI when rel does not match describedby',
+          link: '<https://neuro.peercommunityin.org/metadata/docmaps?article_id=217>; rel="unknown" type="application/ld+json" profile="https://w3id.org/docmaps/context.jsonld"',
+          expected: '',
+        },
+        {
+          description: 'returns no signposting DocMap URI when profile does not match https://w3id.org/docmaps/context.jsonld',
+          link: '<https://neuro.peercommunityin.org/metadata/docmaps?article_id=217>; rel="describedby" type="application/ld+json" profile="unknown", <https://neuro.peercommunityin.org/metadata/crossref?article_id=217>; rel="describedby" type="application/xml" profile="http://www.crossref.org/schema/4.3.7"',
+          expected: '',
+        },
+      ])('$description', async ({ link, expected }) => {
+        const head = { link };
+
+        const resultUri = await pipe(
+          announcementActionUri,
+          transformAnnouncementActionUriToSignpostingDocmapUri({
+            fetchData: () => TE.right(shouldNotBeCalled()),
+            fetchHead: () => TE.right(head),
+          }),
+          TE.getOrElse(() => (expected.length > 0 ? shouldNotBeCalled() : T.of(expected))),
+        )();
+
+        expect(resultUri).toStrictEqual(expected);
       });
     });
 
