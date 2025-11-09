@@ -67,6 +67,11 @@ describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
           expected: E.right('https://neuro.peercommunityin.org/metadata/docmaps?article_id=217&first'),
         },
         {
+          description: 'returns no signposting DocMap uri if the uri an empty string',
+          link: '<>; rel="describedby" type="application/ld+json" profile="https://w3id.org/docmaps/context.jsonld", <https://neuro.peercommunityin.org/metadata/crossref?article_id=217>; rel="describedby" type="application/xml" profile="http://www.crossref.org/schema/4.3.7"',
+          expected: E.left('No DocMap uri found'),
+        },
+        {
           description: 'returns no signposting DocMap uri if link malformed',
           link: 'link malformed',
           expected: E.left('No DocMap uri found'),

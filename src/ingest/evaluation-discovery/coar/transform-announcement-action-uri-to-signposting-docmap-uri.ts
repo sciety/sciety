@@ -5,15 +5,16 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import LinkHeader from 'http-link-header';
 import * as t from 'io-ts';
+import * as tt from 'io-ts-types';
 import { Dependencies } from '../../discover-published-evaluations';
 import { decodeAndReportFailures } from '../decode-and-report-failures';
 
 const headCodec = t.strict({
-  link: t.string,
+  link: tt.NonEmptyString,
 });
 
 const signpostingDocmapLinkCodec = t.strict({
-  uri: t.string,
+  uri: tt.NonEmptyString,
   rel: t.literal('describedby'),
   profile: t.literal('https://w3id.org/docmaps/context.jsonld'),
 });
@@ -22,7 +23,7 @@ const signpostingDocmapUriFromLink = (linkHeader: string) => pipe(
   O.tryCatch(() => LinkHeader.parse(linkHeader)),
   O.map(({ refs }) => refs),
   O.getOrElse((): ReadonlyArray<LinkHeader.Reference> => RA.empty),
-  RA.map(signpostingDocmapLinkCodec.decode),
+  RA.map(decodeAndReportFailures(signpostingDocmapLinkCodec)),
   RA.filterMap(O.getRight),
   RA.head,
   O.map((ref) => ref.uri),
