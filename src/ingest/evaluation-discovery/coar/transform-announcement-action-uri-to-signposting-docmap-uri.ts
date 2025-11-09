@@ -3,8 +3,8 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import LinkHeader from 'http-link-header';
 import * as t from 'io-ts';
-import escapeRegExp from 'lodash.escaperegexp';
 import { Dependencies } from '../../discover-published-evaluations';
 import { decodeAndReportFailures } from '../decode-and-report-failures';
 
@@ -12,34 +12,27 @@ const headCodec = t.strict({
   link: t.string,
 });
 
-const testLinkWithRegexp = (
-  regexp: RegExp,
-) => (
-  link: string,
-) => regexp.test(link);
+const signpostingDocmapLinkCodec = t.strict({
+  uri: t.string,
+  rel: t.literal('describedby'),
+  profile: t.literal('https://w3id.org/docmaps/context.jsonld'),
+});
 
-const linkHasAttribute = (
-  attribute: 'rel' | 'profile',
-  value: string,
-) => testLinkWithRegexp(new RegExp(`(^|\\s)${attribute}="${escapeRegExp(value)}"`));
-
-const linkHasUri = testLinkWithRegexp(/<http[^>]+>/);
-
-const linkHasDocmapUriRegex = (link: string) => pipe(
-  O.some(link),
-  O.filter(linkHasUri),
-  O.filter(linkHasAttribute('rel', 'describedby')),
-  O.filter(linkHasAttribute('profile', 'https://w3id.org/docmaps/context.jsonld')),
-  O.map(
-    (linkWithDocmapUri) => linkWithDocmapUri.replace(/^.*<(http[^>]+)>.*$/, '$1'),
-  ),
+const signpostingDocmapUriFromLink = (linkHeader: string) => pipe(
+  O.tryCatch(() => LinkHeader.parse(linkHeader)),
+  O.map(({ refs }) => refs),
+  O.getOrElse((): ReadonlyArray<LinkHeader.Reference> => RA.empty),
+  RA.map(signpostingDocmapLinkCodec.decode),
+  RA.filterMap(O.getRight),
+  RA.head,
+  O.map((ref) => ref.uri),
 );
 
 const docmapUri = (
   headerLink: string,
 ) => pipe(
-  headerLink.split(/,\s*/),
-  RA.findFirstMap(linkHasDocmapUriRegex),
+  headerLink,
+  signpostingDocmapUriFromLink,
   E.fromOption(() => 'No DocMap uri found'),
 );
 
