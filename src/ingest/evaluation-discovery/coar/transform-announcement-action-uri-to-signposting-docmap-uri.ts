@@ -25,7 +25,7 @@ const linkHasAttribute = (
 
 const linkHasUri = testLinkWithRegexp(/<http[^>]+>/);
 
-const linkHasDocmapUri = (link: string) => pipe(
+const linkHasDocmapUriRegex = (link: string) => pipe(
   O.some(link),
   O.filter(linkHasUri),
   O.filter(linkHasAttribute('rel', 'describedby')),
@@ -39,7 +39,7 @@ const docmapUri = (
   headerLink: string,
 ) => pipe(
   headerLink.split(/,\s*/),
-  RA.findFirstMap(linkHasDocmapUri),
+  RA.findFirstMap(linkHasDocmapUriRegex),
   E.fromOption(() => 'No DocMap uri found'),
 );
 
