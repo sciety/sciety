@@ -23,6 +23,7 @@ const headCodec = t.strict({
 
 const docmapUriCodec = t.strict({
   uri: t.string,
+  rel: t.literal('describedby'),
   profile: t.literal('https://w3id.org/docmaps/context.jsonld'),
 });
 
