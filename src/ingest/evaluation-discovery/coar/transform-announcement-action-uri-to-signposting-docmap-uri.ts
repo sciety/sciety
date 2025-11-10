@@ -28,6 +28,7 @@ const extractSignpostingDocmapUris = (head: Head) => pipe(
   E.map(({ refs }) => refs),
   E.map(RA.map(decodeAndReportFailures(docmapUriCodec))),
   E.map(RA.filterMap(O.fromEither)),
+  // E.map(RA.filter(docmapUriCodec.is)),
 );
 
 export const transformAnnouncementActionUriToSignpostingDocmapUri = (
