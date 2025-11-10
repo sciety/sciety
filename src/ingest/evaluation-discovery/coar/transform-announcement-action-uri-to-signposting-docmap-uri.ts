@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
@@ -29,6 +30,7 @@ type Head = t.TypeOf<typeof headCodec>;
 const extractSignpostingDocmapUris = (head: Head) => pipe(
   O.tryCatch(() => LinkHeader.parse(head.link)),
   O.map(decodeAndReportFailures(linkHeaderCodec)),
+  O.map(E.getOrElseW(() => O.none)),
   () => head.link.split(/,\s*/),
   RA.filter((link) => link.match(/<http[^>]+>/) !== null),
   RA.filter((link) => link.match(/(^|\s)rel="describedby"/) !== null),
