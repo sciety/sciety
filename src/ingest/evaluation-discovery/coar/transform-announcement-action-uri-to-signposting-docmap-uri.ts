@@ -1,6 +1,8 @@
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import LinkHeader from 'http-link-header';
 import * as t from 'io-ts';
 import { Dependencies } from '../../discover-published-evaluations';
 import { decodeAndReportFailures } from '../decode-and-report-failures';
@@ -21,7 +23,8 @@ const headCodec = t.strict({
 type Head = t.TypeOf<typeof headCodec>;
 
 const extractSignpostingDocmapUris = (head: Head) => pipe(
-  head.link.split(/,\s*/),
+  O.tryCatch(() => LinkHeader.parse(head.link)),
+  () => head.link.split(/,\s*/),
   RA.filter((link) => link.match(/<http[^>]+>/) !== null),
   RA.filter((link) => link.match(/(^|\s)rel="describedby"/) !== null),
   RA.filter((link) => link.match(/(^|\s)profile="https:\/\/w3id\.org\/docmaps\/context\.jsonld"/) !== null),
