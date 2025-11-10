@@ -18,6 +18,16 @@ const headCodec = t.strict({
   link: t.string,
 });
 
+type Head = t.TypeOf<typeof headCodec>;
+
+const extractSignpostingDocmapUris = (head: Head) => pipe(
+  head.link.split(/,\s*/),
+  RA.filter((link) => link.match(/<http[^>]+>/) !== null),
+  RA.filter((link) => link.match(/(^|\s)rel="describedby"/) !== null),
+  RA.filter((link) => link.match(/(^|\s)profile="https:\/\/w3id\.org\/docmaps\/context\.jsonld"/) !== null),
+  RA.map((link) => link.replace(/^.*<(http[^>]+)>.*$/, '$1')),
+);
+
 export const transformAnnouncementActionUriToSignpostingDocmapUri = (
   dependencies: Dependencies,
 ) => (
@@ -26,10 +36,6 @@ export const transformAnnouncementActionUriToSignpostingDocmapUri = (
   announcementActionUri,
   dependencies.fetchHead,
   TE.chainEitherK(decodeAndReportFailures(headCodec)),
-  TE.map((head) => head.link.split(/,\s*/)),
-  TE.map(RA.filter((link) => link.match(/<http[^>]+>/) !== null)),
-  TE.map(RA.filter((link) => link.match(/(^|\s)rel="describedby"/) !== null)),
-  TE.map(RA.filter((link) => link.match(/(^|\s)profile="https:\/\/w3id\.org\/docmaps\/context\.jsonld"/) !== null)),
-  TE.map(RA.map((link) => link.replace(/^.*<(http[^>]+)>.*$/, '$1'))),
+  TE.map(extractSignpostingDocmapUris),
   TE.flatMap((links) => (links.length > 0 ? TE.right(links[0]) : TE.left(''))),
 );
