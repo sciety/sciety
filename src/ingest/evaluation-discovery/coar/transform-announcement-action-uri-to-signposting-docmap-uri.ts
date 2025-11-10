@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -6,15 +7,6 @@ import LinkHeader from 'http-link-header';
 import * as t from 'io-ts';
 import { Dependencies } from '../../discover-published-evaluations';
 import { decodeAndReportFailures } from '../decode-and-report-failures';
-
-// <https://neuro.peercommunityin.org/metadata/docmaps?article_id=217>; rel="describedby" type="application/ld+json" profile="https://w3id.org/docmaps/context.jsonld", <https://neuro.peercommunityin.org/metadata/crossref?article_id=217>; rel="describedby" type="application/xml" profile="http://www.crossref.org/schema/4.3.7"
-
-// <https://neuro.peercommunityin.org/metadata/docmaps?article_id=217>; rel="describedby" type="application/ld+json" profile="https://w3id.org/docmaps/context.jsonld"
-// <https://neuro.peercommunityin.org/metadata/crossref?article_id=217>; rel="describedby" type="application/xml" profile="http://www.crossref.org/schema/4.3.7"
-
-// <https://neuro.peercommunityin.org/metadata/docmaps?article_id=217>; rel="describedby" type="application/ld+json" profile="https://w3id.org/docmaps/context.jsonld"
-
-// https://neuro.peercommunityin.org/metadata/docmaps?article_id=217
 
 const headCodec = t.strict({
   link: t.string,
@@ -26,23 +18,16 @@ const docmapUriCodec = t.strict({
   profile: t.literal('https://w3id.org/docmaps/context.jsonld'),
 });
 
-type DocmapUri = t.TypeOf<typeof docmapUriCodec>;
-
 type Head = t.TypeOf<typeof headCodec>;
-
-const isDocmapUri = (value: unknown): value is DocmapUri => typeof value !== 'string';
 
 const extractSignpostingDocmapUris = (head: Head) => pipe(
   E.tryCatch(
-    () => pipe(
-      LinkHeader.parse(head.link),
-      (linkHeader) => linkHeader.refs,
-      RA.map(decodeAndReportFailures(docmapUriCodec)),
-      RA.map(E.getOrElseW(() => 'failed to decode')),
-      RA.filter(isDocmapUri),
-    ),
-    () => 'failed to parse',
+    () => LinkHeader.parse(head.link),
+    () => 'Failed to parse Link header',
   ),
+  E.map(({ refs }) => refs),
+  E.map(RA.map(decodeAndReportFailures(docmapUriCodec))),
+  E.map(RA.filterMap(O.fromEither)),
 );
 
 export const transformAnnouncementActionUriToSignpostingDocmapUri = (
@@ -52,7 +37,9 @@ export const transformAnnouncementActionUriToSignpostingDocmapUri = (
 ): TE.TaskEither<string, string> => pipe(
   announcementActionUri,
   dependencies.fetchHead,
-  TE.chainEitherK(decodeAndReportFailures(headCodec)),
-  TE.chainEitherK(extractSignpostingDocmapUris),
-  TE.flatMap((links) => (links.length > 0 ? TE.right(links[0].uri) : TE.left(''))),
+  TE.flatMapEither(decodeAndReportFailures(headCodec)),
+  TE.flatMapEither(extractSignpostingDocmapUris),
+  TE.map(RA.head),
+  TE.map(O.map(({ uri }) => uri)),
+  TE.flatMapEither(E.fromOption(() => 'No DocMap URI found')),
 );
