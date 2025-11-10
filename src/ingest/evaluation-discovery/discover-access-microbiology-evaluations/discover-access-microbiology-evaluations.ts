@@ -75,9 +75,7 @@ export const discoverAccessMicrobiologyEvaluations: DiscoverPublishedEvaluations
   dependencies,
   determinePagesToSelect(pageSize),
   TE.map(RA.map(buildQueryUrl(pageSize))),
-  (foo) => foo,
   TE.chain(RA.traverse(TE.ApplicativePar)(getEvaluationsFromCrossref(dependencies))),
-  (foo) => foo,
   TE.map(RA.flatten),
   TE.map((evaluations) => ({
     understood: evaluations,
