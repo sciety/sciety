@@ -20,10 +20,15 @@ const headCodec = t.strict({
   link: t.string,
 });
 
+const linkHeaderCodec = t.strict({
+  refs: t.array(t.unknown),
+});
+
 type Head = t.TypeOf<typeof headCodec>;
 
 const extractSignpostingDocmapUris = (head: Head) => pipe(
   O.tryCatch(() => LinkHeader.parse(head.link)),
+  O.map(decodeAndReportFailures(linkHeaderCodec)),
   () => head.link.split(/,\s*/),
   RA.filter((link) => link.match(/<http[^>]+>/) !== null),
   RA.filter((link) => link.match(/(^|\s)rel="describedby"/) !== null),
