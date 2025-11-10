@@ -21,8 +21,13 @@ const headCodec = t.strict({
   link: t.string,
 });
 
+const docmapUriCodec = t.strict({
+  uri: t.string,
+  profile: t.literal('https://w3id.org/docmaps/context.jsonld'),
+});
+
 const linkHeaderCodec = t.strict({
-  refs: t.array(t.unknown),
+  refs: t.array(docmapUriCodec),
 });
 
 type Head = t.TypeOf<typeof headCodec>;
