@@ -1,4 +1,4 @@
-import * as O from 'fp-ts/Option';
+import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
@@ -26,17 +26,23 @@ const docmapUriCodec = t.strict({
   profile: t.literal('https://w3id.org/docmaps/context.jsonld'),
 });
 
+type DocmapUri = t.TypeOf<typeof docmapUriCodec>;
+
 type Head = t.TypeOf<typeof headCodec>;
 
+const isDocmapUri = (value: unknown): value is DocmapUri => typeof value !== 'string';
+
 const extractSignpostingDocmapUris = (head: Head) => pipe(
-  O.tryCatch(() => LinkHeader.parse(head.link)),
-  O.map((linkRefs) => linkRefs.refs),
-  O.map(RA.map(decodeAndReportFailures(docmapUriCodec))),
-  () => head.link.split(/,\s*/),
-  RA.filter((link) => link.match(/<http[^>]+>/) !== null),
-  RA.filter((link) => link.match(/(^|\s)rel="describedby"/) !== null),
-  RA.filter((link) => link.match(/(^|\s)profile="https:\/\/w3id\.org\/docmaps\/context\.jsonld"/) !== null),
-  RA.map((link) => link.replace(/^.*<(http[^>]+)>.*$/, '$1')),
+  E.tryCatch(
+    () => pipe(
+      LinkHeader.parse(head.link),
+      (linkHeader) => linkHeader.refs,
+      RA.map(decodeAndReportFailures(docmapUriCodec)),
+      RA.map(E.getOrElseW(() => 'failed to decode')),
+      RA.filter(isDocmapUri),
+    ),
+    () => 'failed to parse',
+  ),
 );
 
 export const transformAnnouncementActionUriToSignpostingDocmapUri = (
@@ -47,6 +53,6 @@ export const transformAnnouncementActionUriToSignpostingDocmapUri = (
   announcementActionUri,
   dependencies.fetchHead,
   TE.chainEitherK(decodeAndReportFailures(headCodec)),
-  TE.map(extractSignpostingDocmapUris),
-  TE.flatMap((links) => (links.length > 0 ? TE.right(links[0]) : TE.left(''))),
+  TE.chainEitherK(extractSignpostingDocmapUris),
+  TE.flatMap((links) => (links.length > 0 ? TE.right(links[0].uri) : TE.left(''))),
 );
