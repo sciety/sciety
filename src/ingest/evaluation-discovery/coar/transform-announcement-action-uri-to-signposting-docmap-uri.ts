@@ -7,15 +7,6 @@ import * as t from 'io-ts';
 import { Dependencies } from '../../discover-published-evaluations';
 import { decodeAndReportFailures } from '../decode-and-report-failures';
 
-// <https://neuro.peercommunityin.org/metadata/docmaps?article_id=217>; rel="describedby" type="application/ld+json" profile="https://w3id.org/docmaps/context.jsonld", <https://neuro.peercommunityin.org/metadata/crossref?article_id=217>; rel="describedby" type="application/xml" profile="http://www.crossref.org/schema/4.3.7"
-
-// <https://neuro.peercommunityin.org/metadata/docmaps?article_id=217>; rel="describedby" type="application/ld+json" profile="https://w3id.org/docmaps/context.jsonld"
-// <https://neuro.peercommunityin.org/metadata/crossref?article_id=217>; rel="describedby" type="application/xml" profile="http://www.crossref.org/schema/4.3.7"
-
-// <https://neuro.peercommunityin.org/metadata/docmaps?article_id=217>; rel="describedby" type="application/ld+json" profile="https://w3id.org/docmaps/context.jsonld"
-
-// https://neuro.peercommunityin.org/metadata/docmaps?article_id=217
-
 const headCodec = t.strict({
   link: t.string,
 });
