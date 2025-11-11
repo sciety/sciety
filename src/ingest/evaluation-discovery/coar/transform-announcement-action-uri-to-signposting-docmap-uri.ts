@@ -39,5 +39,7 @@ export const transformAnnouncementActionUriToSignpostingDocmapUri = (
   dependencies.fetchHead,
   TE.chainEitherK(decodeAndReportFailures(headCodec)),
   TE.chainEitherK(extractSignpostingDocmapUris),
-  TE.flatMap((links) => (links.length > 0 ? TE.right(links[0].uri) : TE.left('No DocMap URI found.'))),
+  TE.map(RA.head),
+  TE.flatMapEither(E.fromOption(() => 'No DocMap URI found.')),
+  TE.map((link) => link.uri),
 );
