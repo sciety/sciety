@@ -9,7 +9,7 @@ import { shouldNotBeCalled } from '../../should-not-be-called';
 
 const runDiscovery = (stubbedResponse: unknown) => pipe(
   ({
-    fetchData: <D>() => TE.right(stubbedResponse as unknown as D),
+    fetchData: <D>() => TE.right(stubbedResponse as D),
     fetchHead: () => TE.right({}),
   }),
   discoverPrereviewEvaluations(arbitraryString())(arbitraryIngestDays()),

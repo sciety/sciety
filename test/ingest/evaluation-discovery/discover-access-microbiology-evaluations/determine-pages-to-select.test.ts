@@ -6,7 +6,7 @@ import { SelectedPage, determinePagesToSelect } from '../../../../src/ingest/eva
 import { arbitraryString } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 
-const stubbedFetchData = (stubbedResponse: unknown) => <D>() => TE.right(stubbedResponse as unknown as D);
+const stubbedFetchData = (stubbedResponse: unknown) => <D>() => TE.right(stubbedResponse as D);
 
 const invokeDeterminePagesToSelect = async (fetchDataImplementation: Dependencies['fetchData']) => pipe(
   {

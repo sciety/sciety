@@ -12,7 +12,7 @@ import { arbitraryExpressionDoi } from '../../types/expression-doi.helper';
 
 const ingest = (crossrefResponseItems: ReadonlyArray<unknown>) => pipe(
   {
-    fetchData: <D>() => TE.right({ message: { items: crossrefResponseItems } } as unknown as D),
+    fetchData: <D>() => TE.right({ message: { items: crossrefResponseItems } } as D),
     fetchHead: () => TE.right({}),
     fetchGoogleSheet: shouldNotBeCalled,
   },

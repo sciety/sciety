@@ -6,7 +6,7 @@ import { arbitraryDate, arbitraryUri, arbitraryWord } from '../../../helpers';
 import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
 
 const ingest = (items: ReadonlyArray<unknown>) => {
-  const fetchData = <D>() => TE.right({ message: { items } } as unknown as D);
+  const fetchData = <D>() => TE.right({ message: { items } } as D);
   return CR.fetchReviewsIndexedSince(fetchData)(arbitraryWord(), arbitraryDate());
 };
 
