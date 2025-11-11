@@ -26,20 +26,14 @@ const docmapUriCodec = t.strict({
   profile: t.literal('https://w3id.org/docmaps/context.jsonld'),
 });
 
-type DocmapUri = t.TypeOf<typeof docmapUriCodec>;
-
 type Head = t.TypeOf<typeof headCodec>;
-
-const isDocmapUri = (value: unknown): value is DocmapUri => typeof value !== 'string';
 
 const extractSignpostingDocmapUris = (head: Head) => pipe(
   E.tryCatch(
     () => pipe(
       LinkHeader.parse(head.link),
       (linkHeader) => linkHeader.refs,
-      RA.map(decodeAndReportFailures(docmapUriCodec)),
-      RA.map(E.getOrElseW(() => 'failed to decode')),
-      RA.filter(isDocmapUri),
+      RA.filter(docmapUriCodec.is),
     ),
     () => 'failed to parse',
   ),
@@ -54,5 +48,5 @@ export const transformAnnouncementActionUriToSignpostingDocmapUri = (
   dependencies.fetchHead,
   TE.chainEitherK(decodeAndReportFailures(headCodec)),
   TE.chainEitherK(extractSignpostingDocmapUris),
-  TE.flatMap((links) => (links.length > 0 ? TE.right(links[0].uri) : TE.left(''))),
+  TE.flatMap((links) => (links.length > 0 ? TE.right(links[0].uri) : TE.left('No DocMap URI found.'))),
 );
