@@ -11,7 +11,7 @@ export const queries = {
   papersEvaluatedByGroupStatus,
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/explicit-module-boundary-types
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const constructPapersEvaluatedByGroup = (logger: Logger) => ({
   queries,
   initialState,

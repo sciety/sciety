@@ -1,4 +1,3 @@
-/* eslint-disable padded-blocks */
 import { URL } from 'url';
 import Router from '@koa/router';
 import * as E from 'fp-ts/Either';

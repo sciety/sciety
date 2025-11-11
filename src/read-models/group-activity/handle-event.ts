@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { DomainEvent, EventOfType, isEventOfType } from '../../domain-events';
 import { EvaluationLocator } from '../../types/evaluation-locator';
 import { GroupId } from '../../types/group-id';

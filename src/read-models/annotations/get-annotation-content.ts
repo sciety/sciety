@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as O from 'fp-ts/Option';
 import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';

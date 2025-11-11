@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { DomainEvent, isEventOfType } from '../../domain-events';
 import { toExpressionDoi } from '../../types/article-id';
 import { ExpressionDoi } from '../../types/expression-doi';

@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import {
   click, currentURL, goto, openBrowser,
 } from 'taiko';

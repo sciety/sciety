@@ -1,4 +1,5 @@
 module.exports = {
+  reportUnusedDisableDirectives: true,
   env: {
     es2020: true,
     node: true,
