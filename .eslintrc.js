@@ -108,6 +108,15 @@ module.exports = {
     'prefer-destructuring': 'off',
     'unused-imports/no-unused-imports-ts': 'error',
     'import/no-extraneous-dependencies': ['error', { devDependencies: ['feature-test/**/*.ts', 'test/**/*.ts'] }],
+    'import/no-restricted-paths': ['error', {
+      zones: [
+        {
+          target: './src/ingest',
+          from: './src',
+          except: ['./ingest'],
+        },
+      ],
+    }],
   },
   overrides: [
     {
