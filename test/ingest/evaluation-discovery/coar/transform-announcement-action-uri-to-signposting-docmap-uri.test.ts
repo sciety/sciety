@@ -102,6 +102,7 @@ describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
       const head = {
         link: '<https://neuro.peercommunityin.org/metadata/crossref?article_id=217>; rel="describedby" type="application/xml" profile="http://www.crossref.org/schema/4.3.7"',
       };
+      let errorMessage: string;
 
       beforeEach(async () => {
         result = await pipe(
@@ -111,11 +112,16 @@ describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
             fetchHead: () => TE.right(head),
           }),
         )();
+
+        errorMessage = pipe(
+          result,
+          E.getOrElse((e) => e),
+        );
       });
 
       it('returns on the left', () => {
         expect(E.isLeft(result)).toBe(true);
-        expect(E.getOrElse((e) => e)(result)).toBe('No DocMap URI found.');
+        expect(errorMessage).toBe('No DocMap URI found.');
       });
     });
   });
