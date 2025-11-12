@@ -7,7 +7,7 @@ import {
 import { arbitraryString, arbitraryUri } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 
-const runExternalQuery = (head: { link: string }) => (uri: string) => pipe(
+const runExternalQuery = (head: Record<string, string>) => (uri: string) => pipe(
   uri,
   transformAnnouncementActionUriToSignpostingDocmapUri(
     {
@@ -93,9 +93,7 @@ describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
       beforeEach(async () => {
         result = await pipe(
           announcementActionUri,
-          transformAnnouncementActionUriToSignpostingDocmapUri({
-            fetchHead: () => TE.right(head),
-          }),
+          runExternalQuery(head),
         )();
       });
 
