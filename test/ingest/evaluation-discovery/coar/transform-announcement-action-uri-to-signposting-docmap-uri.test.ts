@@ -124,5 +124,9 @@ describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
         expect(errorMessage).toBe('No DocMap URI found.');
       });
     });
+
+    describe('when it returns a malformed link header', () => {
+      it.todo('returns on the left');
+    });
   });
 });
