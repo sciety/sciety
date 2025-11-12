@@ -151,5 +151,32 @@ describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
         expect(errorMessage).toBe('Failed to parse.');
       });
     });
+
+    describe('when it returns a link header with an empty Signposting DocMap URI', () => {
+      const head = {
+        link: '<>; rel="describedby" type="application/ld+json" profile="https://w3id.org/docmaps/context.jsonld"',
+      };
+      let errorMessage: string;
+
+      beforeEach(async () => {
+        result = await pipe(
+          announcementActionUri,
+          transformAnnouncementActionUriToSignpostingDocmapUri({
+            fetchData: () => TE.right(shouldNotBeCalled()),
+            fetchHead: () => TE.right(head),
+          }),
+        )();
+
+        errorMessage = pipe(
+          result,
+          E.getOrElse((e) => e),
+        );
+      });
+
+      it.failing('returns on the left', () => {
+        expect(E.isLeft(result)).toBe(true);
+        expect(errorMessage).toBe('Failed to parse.');
+      });
+    });
   });
 });
