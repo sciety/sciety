@@ -22,7 +22,7 @@ describe('retrieve-action-doi-from-docmap', () => {
       )();
     });
 
-    it.failing('returns on the left', () => {
+    it('returns on the left', () => {
       expect(E.isLeft(result)).toBe(true);
     });
   });
