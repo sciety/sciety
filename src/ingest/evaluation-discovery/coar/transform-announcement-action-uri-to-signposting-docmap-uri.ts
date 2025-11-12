@@ -31,7 +31,7 @@ const extractSignpostingDocmapUri = (head: Head) => pipe(
 );
 
 export const transformAnnouncementActionUriToSignpostingDocmapUri = (
-  dependencies: Dependencies,
+  dependencies: { fetchHead: Dependencies['fetchHead'] },
 ) => (
   announcementActionUri: string,
 ): TE.TaskEither<string, string> => pipe(

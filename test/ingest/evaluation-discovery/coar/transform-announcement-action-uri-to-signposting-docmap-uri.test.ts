@@ -11,7 +11,6 @@ const runExternalQuery = (head: { link: string }) => (uri: string) => pipe(
   uri,
   transformAnnouncementActionUriToSignpostingDocmapUri(
     {
-      fetchData: () => TE.right(shouldNotBeCalled()),
       fetchHead: () => TE.right(head),
     },
   ),
@@ -27,7 +26,6 @@ describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
       result = await pipe(
         announcementActionUri,
         transformAnnouncementActionUriToSignpostingDocmapUri({
-          fetchData: () => TE.right(shouldNotBeCalled()),
           fetchHead: () => TE.left('fetch head fails for any reason'),
         }),
       )();
@@ -91,7 +89,6 @@ describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
         result = await pipe(
           announcementActionUri,
           transformAnnouncementActionUriToSignpostingDocmapUri({
-            fetchData: () => TE.right(shouldNotBeCalled()),
             fetchHead: () => TE.right(head),
           }),
         )();
