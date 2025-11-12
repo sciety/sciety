@@ -1,4 +1,4 @@
-export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): string => `[
+export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): JSON => JSON.parse(`[
   {
     "type": "docmap",
     "id": "https://neuro.peercommunityin.org/metadata/recommendation?article_id=217",
@@ -98,7 +98,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): s
             "outputs": [
               {
                 "published": "2025-09-09T15:54:13",
-                "doi": ${actionDoi},
+                "doi": "${actionDoi}",
                 "type": "editorial-decision"
               }
             ],
@@ -1069,4 +1069,4 @@ export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): s
     },
     "@context": "https://w3id.org/docmaps/context.jsonld"
   }
-]`;
+]`) as JSON;

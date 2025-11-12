@@ -8,5 +8,5 @@ export const retrieveActionDoiFromDocmap = (
   docmapUri: string,
 ): TE.TaskEither<string, unknown> => pipe(
   docmapUri,
-  dependencies.fetchData,
+  dependencies.fetchData<JSON>,
 );
