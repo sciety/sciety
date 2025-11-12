@@ -16,6 +16,11 @@ const runExternalQuery = (head: { link: string }) => (uri: string) => pipe(
   ),
 );
 
+const retrieveQueryResultErrorMessage = (result: E.Either<string, string>): string => pipe(
+  result,
+  E.getOrElse((e) => e),
+);
+
 describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
   const announcementActionUri = arbitraryUri();
 
@@ -103,23 +108,17 @@ describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
       const head = {
         link: '<https://neuro.peercommunityin.org/metadata/crossref?article_id=217>; rel="describedby" type="application/xml" profile="http://www.crossref.org/schema/4.3.7"',
       };
-      let errorMessage: string;
 
       beforeEach(async () => {
         result = await pipe(
           announcementActionUri,
           runExternalQuery(head),
         )();
-
-        errorMessage = pipe(
-          result,
-          E.getOrElse((e) => e),
-        );
       });
 
       it('returns on the left', () => {
         expect(E.isLeft(result)).toBe(true);
-        expect(errorMessage).toBe('No DocMap URI found.');
+        expect(retrieveQueryResultErrorMessage(result)).toBe('No DocMap URI found.');
       });
     });
 
@@ -127,23 +126,17 @@ describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
       const head = {
         link: arbitraryString(),
       };
-      let errorMessage: string;
 
       beforeEach(async () => {
         result = await pipe(
           announcementActionUri,
           runExternalQuery(head),
         )();
-
-        errorMessage = pipe(
-          result,
-          E.getOrElse((e) => e),
-        );
       });
 
       it('returns on the left', () => {
         expect(E.isLeft(result)).toBe(true);
-        expect(errorMessage).toBe('Failed to parse.');
+        expect(retrieveQueryResultErrorMessage(result)).toBe('Failed to parse.');
       });
     });
 
@@ -151,23 +144,17 @@ describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
       const head = {
         link: '<>; rel="describedby" type="application/ld+json" profile="https://w3id.org/docmaps/context.jsonld"',
       };
-      let errorMessage: string;
 
       beforeEach(async () => {
         result = await pipe(
           announcementActionUri,
           runExternalQuery(head),
         )();
-
-        errorMessage = pipe(
-          result,
-          E.getOrElse((e) => e),
-        );
       });
 
       it('returns on the left', () => {
         expect(E.isLeft(result)).toBe(true);
-        expect(errorMessage).toBe('No DocMap URI found.');
+        expect(retrieveQueryResultErrorMessage(result)).toBe('No DocMap URI found.');
       });
     });
   });
