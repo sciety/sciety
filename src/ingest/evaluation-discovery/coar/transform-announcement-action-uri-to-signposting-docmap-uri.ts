@@ -21,13 +21,11 @@ type Head = t.TypeOf<typeof headCodec>;
 
 const extractSignpostingDocmapUris = (head: Head) => pipe(
   E.tryCatch(
-    () => pipe(
-      LinkHeader.parse(head.link),
-      (linkHeader) => linkHeader.refs,
-      RA.filter(docmapUriCodec.is),
-    ),
+    () => LinkHeader.parse(head.link),
     () => 'failed to parse',
   ),
+  E.map((linkHeader) => linkHeader.refs),
+  E.map(RA.filter(docmapUriCodec.is)),
 );
 
 export const transformAnnouncementActionUriToSignpostingDocmapUri = (
