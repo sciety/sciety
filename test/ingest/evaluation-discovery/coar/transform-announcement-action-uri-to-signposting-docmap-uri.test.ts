@@ -111,10 +111,7 @@ describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
       beforeEach(async () => {
         result = await pipe(
           announcementActionUri,
-          transformAnnouncementActionUriToSignpostingDocmapUri({
-            fetchData: () => TE.right(shouldNotBeCalled()),
-            fetchHead: () => TE.right(head),
-          }),
+          runExternalQuery(head),
         )();
 
         errorMessage = pipe(
@@ -138,10 +135,7 @@ describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
       beforeEach(async () => {
         result = await pipe(
           announcementActionUri,
-          transformAnnouncementActionUriToSignpostingDocmapUri({
-            fetchData: () => TE.right(shouldNotBeCalled()),
-            fetchHead: () => TE.right(head),
-          }),
+          runExternalQuery(head),
         )();
 
         errorMessage = pipe(
@@ -165,10 +159,7 @@ describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
       beforeEach(async () => {
         result = await pipe(
           announcementActionUri,
-          transformAnnouncementActionUriToSignpostingDocmapUri({
-            fetchData: () => TE.right(shouldNotBeCalled()),
-            fetchHead: () => TE.right(head),
-          }),
+          runExternalQuery(head),
         )();
 
         errorMessage = pipe(
