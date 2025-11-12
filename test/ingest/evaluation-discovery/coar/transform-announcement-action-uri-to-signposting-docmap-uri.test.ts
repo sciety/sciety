@@ -7,6 +7,16 @@ import {
 import { arbitraryString, arbitraryUri } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 
+const runExternalQuery = (head: { link: string }) => (uri: string) => pipe(
+  uri,
+  transformAnnouncementActionUriToSignpostingDocmapUri(
+    {
+      fetchData: () => TE.right(shouldNotBeCalled()),
+      fetchHead: () => TE.right(head),
+    },
+  ),
+);
+
 describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
   const announcementActionUri = arbitraryUri();
 
@@ -41,10 +51,7 @@ describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
       beforeEach(async () => {
         resultUri = await pipe(
           announcementActionUri,
-          transformAnnouncementActionUriToSignpostingDocmapUri({
-            fetchData: () => TE.right(shouldNotBeCalled()),
-            fetchHead: () => TE.right(head),
-          }),
+          runExternalQuery(head),
           TE.getOrElse(shouldNotBeCalled),
         )();
       });
@@ -65,10 +72,7 @@ describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
       beforeEach(async () => {
         resultUri = await pipe(
           announcementActionUri,
-          transformAnnouncementActionUriToSignpostingDocmapUri({
-            fetchData: () => TE.right(shouldNotBeCalled()),
-            fetchHead: () => TE.right(head),
-          }),
+          runExternalQuery(head),
           TE.getOrElse(shouldNotBeCalled),
         )();
       });
