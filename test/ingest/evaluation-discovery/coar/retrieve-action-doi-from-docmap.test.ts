@@ -1,6 +1,7 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { constructDocmapArrayWithActionDoiUnderTest } from './docmap-array-fixture';
 import {
   retrieveActionDoiFromDocmap,
 } from '../../../../src/ingest/evaluation-discovery/coar/retrieve-action-doi-from-docmap';
@@ -36,7 +37,7 @@ describe('retrieve-action-doi-from-docmap', () => {
       result = await pipe(
         docmapUri,
         retrieveActionDoiFromDocmap({
-          fetchData: <D>() => TE.right('unknown' as unknown as D),
+          fetchData: <D>() => TE.right(constructDocmapArrayWithActionDoiUnderTest(actionDoi) as unknown as D),
           fetchHead: () => TE.right(shouldNotBeCalled()),
         }),
         TE.getOrElse(shouldNotBeCalled),

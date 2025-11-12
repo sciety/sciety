@@ -1,4 +1,4 @@
-[
+export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): string => `[
   {
     "type": "docmap",
     "id": "https://neuro.peercommunityin.org/metadata/recommendation?article_id=217",
@@ -98,7 +98,7 @@
             "outputs": [
               {
                 "published": "2025-09-09T15:54:13",
-                "doi": "10.24072/pci.neuro.100217",
+                "doi": ${actionDoi},
                 "type": "editorial-decision"
               }
             ],
@@ -1069,4 +1069,4 @@
     },
     "@context": "https://w3id.org/docmaps/context.jsonld"
   }
-]
+]`;
