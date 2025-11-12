@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import {
   retrieveActionDoiFromDocmap,
 } from '../../../../src/ingest/evaluation-discovery/coar/retrieve-action-doi-from-docmap';
-import { arbitraryUri } from '../../../helpers';
+import { arbitraryString, arbitraryUri } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 
 describe('retrieve-action-doi-from-docmap', () => {
@@ -28,7 +28,24 @@ describe('retrieve-action-doi-from-docmap', () => {
   });
 
   describe('when the request to the docmap uri returns a docmap with an action doi', () => {
-    it.todo('returns an action doi');
+    const docmapUri = arbitraryUri();
+    const actionDoi = arbitraryString();
+    let result: unknown;
+
+    beforeEach(async () => {
+      result = await pipe(
+        docmapUri,
+        retrieveActionDoiFromDocmap({
+          fetchData: <D>() => TE.right('unknown' as unknown as D),
+          fetchHead: () => TE.right(shouldNotBeCalled()),
+        }),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
+
+    it.skip('returns an action doi', () => {
+      expect(result).toStrictEqual(actionDoi);
+    });
   });
 
   describe('when the request to the docmap uri returns a docmap without an action doi', () => {
