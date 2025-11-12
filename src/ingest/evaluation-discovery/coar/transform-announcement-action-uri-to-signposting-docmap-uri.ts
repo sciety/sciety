@@ -19,13 +19,14 @@ const docmapUriCodec = t.strict({
 
 type Head = t.TypeOf<typeof headCodec>;
 
-const extractSignpostingDocmapUris = (head: Head) => pipe(
+const extractSignpostingDocmapUri = (head: Head) => pipe(
   E.tryCatch(
     () => LinkHeader.parse(head.link),
     () => 'failed to parse',
   ),
   E.map((linkHeader) => linkHeader.refs),
-  E.map(RA.filter(docmapUriCodec.is)),
+  E.map(RA.findFirst(docmapUriCodec.is)),
+  E.chain(E.fromOption(() => 'No DocMap URI found.')),
 );
 
 export const transformAnnouncementActionUriToSignpostingDocmapUri = (
@@ -36,8 +37,6 @@ export const transformAnnouncementActionUriToSignpostingDocmapUri = (
   announcementActionUri,
   dependencies.fetchHead,
   TE.chainEitherK(decodeAndReportFailures(headCodec)),
-  TE.chainEitherK(extractSignpostingDocmapUris),
-  TE.map(RA.head),
-  TE.flatMapEither(E.fromOption(() => 'No DocMap URI found.')),
+  TE.chainEitherK(extractSignpostingDocmapUri),
   TE.map((link) => link.uri),
 );
