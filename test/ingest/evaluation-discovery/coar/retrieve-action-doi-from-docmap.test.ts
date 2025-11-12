@@ -10,7 +10,7 @@ import { shouldNotBeCalled } from '../../../should-not-be-called';
 describe('retrieve-action-doi-from-docmap', () => {
   describe('when the request to the docmap uri fails', () => {
     const docmapUri = arbitraryUri();
-    let result: E.Either<string, string>;
+    let result: E.Either<string, unknown>;
 
     beforeEach(async () => {
       result = await pipe(
