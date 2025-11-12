@@ -22,7 +22,7 @@ type Head = t.TypeOf<typeof headCodec>;
 const extractSignpostingDocmapUri = (head: Head) => pipe(
   E.tryCatch(
     () => LinkHeader.parse(head.link),
-    () => 'failed to parse',
+    () => 'Failed to parse.',
   ),
   E.map((linkHeader) => linkHeader.refs),
   E.map(RA.findFirst(docmapUriCodec.is)),

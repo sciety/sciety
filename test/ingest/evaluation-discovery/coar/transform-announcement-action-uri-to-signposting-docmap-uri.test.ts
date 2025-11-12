@@ -126,7 +126,30 @@ describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
     });
 
     describe('when it returns a malformed link header', () => {
-      it.todo('returns on the left');
+      const head = {
+        link: arbitraryString(),
+      };
+      let errorMessage: string;
+
+      beforeEach(async () => {
+        result = await pipe(
+          announcementActionUri,
+          transformAnnouncementActionUriToSignpostingDocmapUri({
+            fetchData: () => TE.right(shouldNotBeCalled()),
+            fetchHead: () => TE.right(head),
+          }),
+        )();
+
+        errorMessage = pipe(
+          result,
+          E.getOrElse((e) => e),
+        );
+      });
+
+      it('returns on the left', () => {
+        expect(E.isLeft(result)).toBe(true);
+        expect(errorMessage).toBe('Failed to parse.');
+      });
     });
   });
 });
