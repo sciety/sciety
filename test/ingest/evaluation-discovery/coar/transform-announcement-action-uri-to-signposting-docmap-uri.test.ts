@@ -100,7 +100,7 @@ describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
 
     describe('when it returns a link header without a Signposting DocMap URI', () => {
       const head = {
-        link: arbitraryString(),
+        link: '<https://neuro.peercommunityin.org/metadata/crossref?article_id=217>; rel="describedby" type="application/xml" profile="http://www.crossref.org/schema/4.3.7"',
       };
 
       beforeEach(async () => {
@@ -115,6 +115,7 @@ describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
 
       it('returns on the left', () => {
         expect(E.isLeft(result)).toBe(true);
+        expect(E.getOrElse((e) => e)(result)).toBe('No DocMap URI found.');
       });
     });
   });
