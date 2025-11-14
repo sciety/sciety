@@ -6,6 +6,17 @@ import * as tt from 'io-ts-types';
 import { Dependencies } from '../../discover-published-evaluations';
 import { decodeAndReportFailures } from '../decode-and-report-failures';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const stepCodec = t.strict({
+  actions: t.readonlyArray(t.strict({
+    outputs: t.readonlyArray(t.strict({
+      published: t.string,
+      doi: t.string,
+      type: t.string,
+    })),
+  })),
+});
+
 const stepsCodec = t.strict({
   steps: t.record(t.string, t.unknown),
 });
@@ -22,4 +33,5 @@ export const retrieveActionDoiFromDocmap = (
   TE.flatMapEither(decodeAndReportFailures(docmapResponseCodec)),
   TE.map(RA.findFirst((stepsCodec.is))),
   TE.flatMap(TE.fromOption(() => 'No docmap found.')),
+  TE.map((decodedSteps) => decodedSteps.steps),
 );
