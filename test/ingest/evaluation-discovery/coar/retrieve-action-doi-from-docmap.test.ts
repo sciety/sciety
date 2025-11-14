@@ -44,7 +44,7 @@ describe('retrieve-action-doi-from-docmap', () => {
       )();
     });
 
-    it.skip('returns an action doi', () => {
+    it.failing('returns an action doi', () => {
       expect(result).toStrictEqual(actionDoi);
     });
   });

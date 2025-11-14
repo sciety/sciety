@@ -5,6 +5,12 @@ import * as tt from 'io-ts-types';
 import { Dependencies } from '../../discover-published-evaluations';
 import { decodeAndReportFailures } from '../decode-and-report-failures';
 
+const stepsCodec = t.strict({
+  steps: t.record(t.string, t.unknown),
+});
+
+const docmapResponseCodec = tt.readonlyNonEmptyArray(stepsCodec);
+
 export const retrieveActionDoiFromDocmap = (
   dependencies: Dependencies,
 ) => (
@@ -12,5 +18,5 @@ export const retrieveActionDoiFromDocmap = (
 ): TE.TaskEither<string, unknown> => pipe(
   docmapUri,
   dependencies.fetchData<JSON>,
-  TE.flatMapEither(decodeAndReportFailures(tt.readonlyNonEmptyArray(t.unknown))),
+  TE.flatMapEither(decodeAndReportFailures(docmapResponseCodec)),
 );
