@@ -1,3 +1,4 @@
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
@@ -19,4 +20,6 @@ export const retrieveActionDoiFromDocmap = (
   docmapUri,
   dependencies.fetchData<JSON>,
   TE.flatMapEither(decodeAndReportFailures(docmapResponseCodec)),
+  TE.map(RA.findFirst((stepsCodec.is))),
+  TE.flatMap(TE.fromOption(() => 'No docmap found.')),
 );
