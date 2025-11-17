@@ -6,6 +6,7 @@ import {
   transformCoarNotificationUriToAnnouncementActionUri,
 } from './transform-coar-notification-uri-to-announcement-action-uri';
 import { DiscoverPublishedEvaluations } from '../../discover-published-evaluations';
+import { constructPublishedEvaluation } from '../../types/published-evaluation';
 
 export const discoverPciEvaluations: DiscoverPublishedEvaluations = () => (
   dependencies,
@@ -14,6 +15,11 @@ export const discoverPciEvaluations: DiscoverPublishedEvaluations = () => (
   transformCoarNotificationUriToAnnouncementActionUri(dependencies),
   TE.chain(transformAnnouncementActionUriToSignpostingDocmapUri(dependencies)),
   TE.chain(retrieveActionDoiFromDocmap(dependencies)),
+  TE.map((actionDoi) => constructPublishedEvaluation({
+    publishedOn: new Date('2025-09-09T00:00:00.000Z'),
+    paperExpressionDoi: '10.24072/pcjournal.636',
+    evaluationLocator: `doi:${actionDoi}`,
+  })),
   TE.map(() => ({
     understood: [],
     skipped: [],
