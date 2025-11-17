@@ -55,6 +55,10 @@ describe('retrieve-action-doi-from-docmap', () => {
     it('returns an action doi', () => {
       expect(result).toStrictEqual(actionDoi);
     });
+
+    it.todo('returns a date of an action');
+
+    it.todo('returns an action input doi');
   });
 
   describe('when the request to the docmap uri does not return an array', () => {
