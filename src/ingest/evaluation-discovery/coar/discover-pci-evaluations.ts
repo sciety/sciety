@@ -16,7 +16,7 @@ export const discoverPciEvaluations: DiscoverPublishedEvaluations = () => (
   TE.chain(transformAnnouncementActionUriToSignpostingDocmapUri(dependencies)),
   TE.chain(retrieveActionDoiFromDocmap(dependencies)),
   TE.map((decodedResponse) => constructPublishedEvaluation({
-    publishedOn: new Date('2025-09-09T00:00:00.000Z'),
+    publishedOn: new Date(decodedResponse.actionDate),
     paperExpressionDoi: '10.24072/pcjournal.636',
     evaluationLocator: `doi:${decodedResponse.actionDoi}`,
   })),
