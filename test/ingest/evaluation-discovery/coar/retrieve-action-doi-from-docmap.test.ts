@@ -41,8 +41,9 @@ describe('retrieve-action-doi-from-docmap', () => {
     const docmapUri = arbitraryUri();
     const actionDoi = arbitraryString();
     const actionDate = arbitraryDate().toISOString();
-    const inputUnderTest = { actionDoi, actionDate };
-    let result: { actionDoi: string, actionDate: string };
+    const actionInputDoi = arbitraryString();
+    const inputUnderTest = { actionDoi, actionDate, actionInputDoi };
+    let result: { actionDoi: string, actionDate: string, actionInputDoi: string };
 
     beforeEach(async () => {
       result = await pipe(
@@ -63,7 +64,9 @@ describe('retrieve-action-doi-from-docmap', () => {
       expect(result.actionDate).toStrictEqual(actionDate);
     });
 
-    it.todo('returns an action input doi');
+    it('returns an action input doi', () => {
+      expect(result.actionInputDoi).toStrictEqual(actionInputDoi);
+    });
   });
 
   describe('when the request to the docmap uri does not return an array', () => {

@@ -17,6 +17,9 @@ const stepWithActionDoiCodec = t.strict({
         t.literal('reply'),
       ]),
     })),
+    inputs: t.readonlyArray(t.strict({
+      doi: t.string,
+    })),
   })),
 });
 
@@ -28,7 +31,7 @@ export const retrieveActionDoiFromDocmap = (
   dependencies: Dependencies,
 ) => (
   docmapUri: string,
-): TE.TaskEither<string, { actionDoi: string, actionDate: string }> => pipe(
+): TE.TaskEither<string, { actionDoi: string, actionDate: string, actionInputDoi: string }> => pipe(
   docmapUri,
   dependencies.fetchData<JSON>,
   TE.flatMapEither(decodeAndReportFailures(docmapResponseCodec)),
@@ -39,5 +42,6 @@ export const retrieveActionDoiFromDocmap = (
   TE.map((step) => ({
     actionDoi: step.actions[0].outputs[0].doi,
     actionDate: step.actions[0].outputs[0].published,
+    actionInputDoi: step.actions[0].inputs[0].doi,
   })),
 );

@@ -1,4 +1,4 @@
-export const constructDocmapArrayWithActionDoiUnderTest = ({ actionDoi, actionDate }: { actionDoi: string, actionDate: string }): JSON => JSON.parse(`[
+export const constructDocmapArrayWithActionDoiUnderTest = ({ actionDoi, actionDate, actionInputDoi }: { actionDoi: string, actionDate: string, actionInputDoi: string }): JSON => JSON.parse(`[
   {
     "type": "docmap",
     "id": "https://neuro.peercommunityin.org/metadata/recommendation?article_id=217",
@@ -105,7 +105,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = ({ actionDoi, actionDa
             "inputs": [
               {
                 "published": "2024-07-30T11:52:23",
-                "doi": "https://doi.org/10.1101/2024.07.25.605060",
+                "doi": "${actionInputDoi}",
                 "type": "preprint"
               }
             ]
@@ -130,7 +130,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = ({ actionDoi, actionDa
             "inputs": [
               {
                 "published": "2024-07-30T11:52:23",
-                "doi": "https://doi.org/10.1101/2024.07.25.605060",
+                "doi": "${actionInputDoi}",
                 "type": "preprint"
               }
             ]
@@ -155,7 +155,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = ({ actionDoi, actionDa
             "inputs": [
               {
                 "published": "2024-07-30T11:52:23",
-                "doi": "https://doi.org/10.1101/2024.07.25.605060",
+                "doi": "${actionInputDoi}",
                 "type": "preprint"
               }
             ]
@@ -180,7 +180,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = ({ actionDoi, actionDa
             "inputs": [
               {
                 "published": "2024-07-30T11:52:23",
-                "doi": "https://doi.org/10.1101/2024.07.25.605060",
+                "doi": "${actionInputDoi}",
                 "type": "preprint"
               }
             ]
@@ -205,7 +205,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = ({ actionDoi, actionDa
             "inputs": [
               {
                 "published": "2024-07-30T11:52:23",
-                "doi": "https://doi.org/10.1101/2024.07.25.605060",
+                "doi": "${actionInputDoi}",
                 "type": "preprint"
               }
             ]
@@ -243,7 +243,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = ({ actionDoi, actionDa
             "inputs": [
               {
                 "published": "2025-01-07T15:36:54",
-                "doi": "https://doi.org/10.1101/2024.07.25.605060 ",
+                "doi": "${actionInputDoi} ",
                 "type": "preprint"
               }
             ]
@@ -268,7 +268,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = ({ actionDoi, actionDa
             "inputs": [
               {
                 "published": "2025-01-07T15:36:54",
-                "doi": "https://doi.org/10.1101/2024.07.25.605060 ",
+                "doi": "${actionInputDoi} ",
                 "type": "preprint"
               }
             ]
@@ -306,7 +306,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = ({ actionDoi, actionDa
             "inputs": [
               {
                 "published": "2025-03-06T10:00:34",
-                "doi": "https://doi.org/10.1101/2024.07.25.605060   ",
+                "doi": "${actionInputDoi}   ",
                 "type": "preprint"
               }
             ]
@@ -344,7 +344,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = ({ actionDoi, actionDa
             "inputs": [
               {
                 "published": "2025-06-17T11:42:21",
-                "doi": "https://doi.org/10.1101/2024.07.25.605060",
+                "doi": "${actionInputDoi}",
                 "type": "preprint"
               }
             ]
@@ -369,7 +369,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = ({ actionDoi, actionDa
             "inputs": [
               {
                 "published": "2025-06-17T11:42:21",
-                "doi": "https://doi.org/10.1101/2024.07.25.605060",
+                "doi": "${actionInputDoi}",
                 "type": "preprint"
               }
             ]
@@ -407,7 +407,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = ({ actionDoi, actionDa
             "inputs": [
               {
                 "published": "2025-08-28T09:30:49",
-                "doi": "https://doi.org/10.1101/2024.07.25.605060",
+                "doi": "${actionInputDoi}",
                 "type": "preprint"
               }
             ]
