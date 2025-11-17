@@ -123,7 +123,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): J
             "outputs": [
               {
                 "published": "2025-09-09T15:54:13",
-                "doi": "10.24072/pci.neuro.100217",
+                "doi": "${actionDoi}",
                 "type": "review"
               }
             ],
@@ -148,7 +148,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): J
             "outputs": [
               {
                 "published": "2025-09-09T15:54:13",
-                "doi": "10.24072/pci.neuro.100217",
+                "doi": "${actionDoi}",
                 "type": "review"
               }
             ],
@@ -173,7 +173,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): J
             "outputs": [
               {
                 "published": "2025-09-09T15:54:13",
-                "doi": "10.24072/pci.neuro.100217",
+                "doi": "${actionDoi}",
                 "type": "review"
               }
             ],
@@ -198,7 +198,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): J
             "outputs": [
               {
                 "published": "2025-09-09T15:54:13",
-                "doi": "10.24072/pci.neuro.100217",
+                "doi": "${actionDoi}",
                 "type": "review"
               }
             ],
@@ -236,7 +236,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): J
             "outputs": [
               {
                 "published": "2025-09-09T15:54:13",
-                "doi": "10.24072/pci.neuro.100217",
+                "doi": "${actionDoi}",
                 "type": "editorial-decision"
               }
             ],
@@ -261,7 +261,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): J
             "outputs": [
               {
                 "published": "2025-09-09T15:54:13",
-                "doi": "10.24072/pci.neuro.100217",
+                "doi": "${actionDoi}",
                 "type": "review"
               }
             ],
@@ -299,7 +299,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): J
             "outputs": [
               {
                 "published": "2025-09-09T15:54:13",
-                "doi": "10.24072/pci.neuro.100217",
+                "doi": "${actionDoi}",
                 "type": "editorial-decision"
               }
             ],
@@ -337,7 +337,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): J
             "outputs": [
               {
                 "published": "2025-09-09T15:54:13",
-                "doi": "10.24072/pci.neuro.100217",
+                "doi": "${actionDoi}",
                 "type": "editorial-decision"
               }
             ],
@@ -362,7 +362,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): J
             "outputs": [
               {
                 "published": "2025-09-09T15:54:13",
-                "doi": "10.24072/pci.neuro.100217",
+                "doi": "${actionDoi}",
                 "type": "review"
               }
             ],
@@ -400,7 +400,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): J
             "outputs": [
               {
                 "published": "2025-09-09T15:54:13",
-                "doi": "10.24072/pci.neuro.100217",
+                "doi": "${actionDoi}",
                 "type": "editorial-decision"
               }
             ],
@@ -548,7 +548,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): J
             "outputs": [
               {
                 "published": "2025-09-09T15:54:13",
-                "doi": "10.24072/pci.neuro.100217",
+                "doi": "${actionDoi}",
                 "type": "reply"
               }
             ],
@@ -689,7 +689,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): J
             "outputs": [
               {
                 "published": "2025-09-09T15:54:13",
-                "doi": "10.24072/pci.neuro.100217",
+                "doi": "${actionDoi}",
                 "type": "reply"
               }
             ],
@@ -830,7 +830,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): J
             "outputs": [
               {
                 "published": "2025-09-09T15:54:13",
-                "doi": "10.24072/pci.neuro.100217",
+                "doi": "${actionDoi}",
                 "type": "reply"
               }
             ],
@@ -971,7 +971,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): J
             "outputs": [
               {
                 "published": "2025-09-09T15:54:13",
-                "doi": "10.24072/pci.neuro.100217",
+                "doi": "${actionDoi}",
                 "type": "reply"
               }
             ],
