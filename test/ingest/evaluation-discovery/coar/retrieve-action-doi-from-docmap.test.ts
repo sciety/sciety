@@ -11,6 +11,11 @@ import {
 import { arbitraryString, arbitraryUri } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 
+const retrieveQueryResultErrorMessage = (result: E.Either<string, string>): string => pipe(
+  result,
+  E.getOrElse((e) => e),
+);
+
 describe('retrieve-action-doi-from-docmap', () => {
   describe('when the request to the docmap uri fails', () => {
     const docmapUri = arbitraryUri();
@@ -106,6 +111,7 @@ describe('retrieve-action-doi-from-docmap', () => {
 
     it('returns on the left', () => {
       expect(E.isLeft(result)).toBe(true);
+      expect(retrieveQueryResultErrorMessage(result)).toBe('No Action DOI found.');
     });
   });
 });
