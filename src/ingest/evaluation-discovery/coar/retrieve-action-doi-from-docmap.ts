@@ -20,11 +20,9 @@ const stepWithActionDoiCodec = t.strict({
   })),
 });
 
-const stepsCodec = t.strict({
+const docmapResponseCodec = tt.readonlyNonEmptyArray(t.strict({
   steps: t.record(t.string, t.unknown),
-});
-
-const docmapResponseCodec = tt.readonlyNonEmptyArray(stepsCodec);
+}));
 
 export const retrieveActionDoiFromDocmap = (
   dependencies: Dependencies,
@@ -34,9 +32,7 @@ export const retrieveActionDoiFromDocmap = (
   docmapUri,
   dependencies.fetchData<JSON>,
   TE.flatMapEither(decodeAndReportFailures(docmapResponseCodec)),
-  TE.map(RA.findFirst((stepsCodec.is))),
-  TE.flatMap(TE.fromOption(() => 'No docmap found.')),
-  TE.map((decodedSteps) => decodedSteps.steps),
+  TE.map((decodedResponse) => decodedResponse[0].steps),
   TE.map((steps) => Object.values(steps)),
   TE.map(RA.findFirst(stepWithActionDoiCodec.is)),
   TE.flatMap(TE.fromOption(() => 'No Action DOI found.')),
