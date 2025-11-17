@@ -1070,3 +1070,92 @@ export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): J
     "@context": "https://w3id.org/docmaps/context.jsonld"
   }
 ]`) as JSON;
+
+export const constructDocmapArrayWithoutActionDoiUnderTest = (): JSON => JSON.parse(`[
+  {
+    "type": "docmap",
+    "id": "https://neuro.peercommunityin.org/metadata/recommendation?article_id=217",
+    "publisher": {
+      "name": "Peer Community in Neuroscience",
+      "url": "https://neuro.peercommunityin.org/about/"
+    },
+    "created": "2025-09-09T15:54:13",
+    "updated": "2025-09-09T15:54:13",
+    "first-step": "_:b0",
+    "steps": {
+      "_:b0": {
+        "inputs": [],
+        "actions": [
+          {
+            "participants": [
+              {
+                "actor": {
+                  "type": "person",
+                  "name": "Theo Desachy"
+                },
+                "role": "author"
+              },
+              {
+                "actor": {
+                  "type": "person",
+                  "name": "Marc Thevenet"
+                },
+                "role": "author"
+              },
+              {
+                "actor": {
+                  "type": "person",
+                  "name": "Samuel Garcia"
+                },
+                "role": "author"
+              },
+              {
+                "actor": {
+                  "type": "person",
+                  "name": "Anistasha Lightning"
+                },
+                "role": "author"
+              },
+              {
+                "actor": {
+                  "type": "person",
+                  "name": "Anne Didier"
+                },
+                "role": "author"
+              },
+              {
+                "actor": {
+                  "type": "person",
+                  "name": "Nathalie Mandairon"
+                },
+                "role": "author"
+              },
+              {
+                "actor": {
+                  "type": "person",
+                  "name": "Nicola Kuczewski"
+                },
+                "role": "author"
+              }
+            ],
+            "outputs": [
+              {
+                "published": "2024-07-30T11:52:23",
+                "doi": "https://doi.org/10.1101/2024.07.25.605060",
+                "type": "preprint"
+              }
+            ],
+            "inputs": []
+          }
+        ],
+        "assertions": [
+          {
+            "status": "catalogued",
+            "item": "https://doi.org/10.1101/2024.07.25.605060"
+          }
+        ]
+      }
+    },
+    "@context": "https://w3id.org/docmaps/context.jsonld"
+  }
+]`) as JSON;
