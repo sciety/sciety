@@ -11,7 +11,11 @@ const stepWithActionDoiCodec = t.strict({
     outputs: t.readonlyArray(t.strict({
       published: t.string,
       doi: t.string,
-      type: t.string,
+      type: t.union([
+        t.literal('editorial-decision'),
+        t.literal('review'),
+        t.literal('reply'),
+      ]),
     })),
   })),
 });
