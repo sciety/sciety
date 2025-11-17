@@ -28,7 +28,7 @@ export const retrieveActionDoiFromDocmap = (
   dependencies: Dependencies,
 ) => (
   docmapUri: string,
-): TE.TaskEither<string, { actionDoi: string }> => pipe(
+): TE.TaskEither<string, { actionDoi: string, actionDate: string }> => pipe(
   docmapUri,
   dependencies.fetchData<JSON>,
   TE.flatMapEither(decodeAndReportFailures(docmapResponseCodec)),
@@ -36,5 +36,8 @@ export const retrieveActionDoiFromDocmap = (
   TE.map((steps) => Object.values(steps)),
   TE.map(RA.findFirst(stepWithActionDoiCodec.is)),
   TE.flatMap(TE.fromOption(() => 'No Action DOI found.')),
-  TE.map((step) => ({ actionDoi: step.actions[0].outputs[0].doi })),
+  TE.map((step) => ({
+    actionDoi: step.actions[0].outputs[0].doi,
+    actionDate: step.actions[0].outputs[0].published,
+  })),
 );

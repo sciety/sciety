@@ -1,4 +1,4 @@
-export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): JSON => JSON.parse(`[
+export const constructDocmapArrayWithActionDoiUnderTest = ({ actionDoi, actionDate }: { actionDoi: string, actionDate: string }): JSON => JSON.parse(`[
   {
     "type": "docmap",
     "id": "https://neuro.peercommunityin.org/metadata/recommendation?article_id=217",
@@ -97,7 +97,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): J
             ],
             "outputs": [
               {
-                "published": "2025-09-09T15:54:13",
+                "published": "${actionDate}",
                 "doi": "${actionDoi}",
                 "type": "editorial-decision"
               }
@@ -122,7 +122,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): J
             ],
             "outputs": [
               {
-                "published": "2025-09-09T15:54:13",
+                "published": "${actionDate}",
                 "doi": "${actionDoi}",
                 "type": "review"
               }
@@ -147,7 +147,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): J
             ],
             "outputs": [
               {
-                "published": "2025-09-09T15:54:13",
+                "published": "${actionDate}",
                 "doi": "${actionDoi}",
                 "type": "review"
               }
@@ -172,7 +172,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): J
             ],
             "outputs": [
               {
-                "published": "2025-09-09T15:54:13",
+                "published": "${actionDate}",
                 "doi": "${actionDoi}",
                 "type": "review"
               }
@@ -197,7 +197,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): J
             ],
             "outputs": [
               {
-                "published": "2025-09-09T15:54:13",
+                "published": "${actionDate}",
                 "doi": "${actionDoi}",
                 "type": "review"
               }
@@ -235,7 +235,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): J
             ],
             "outputs": [
               {
-                "published": "2025-09-09T15:54:13",
+                "published": "${actionDate}",
                 "doi": "${actionDoi}",
                 "type": "editorial-decision"
               }
@@ -260,7 +260,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): J
             ],
             "outputs": [
               {
-                "published": "2025-09-09T15:54:13",
+                "published": "${actionDate}",
                 "doi": "${actionDoi}",
                 "type": "review"
               }
@@ -298,7 +298,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): J
             ],
             "outputs": [
               {
-                "published": "2025-09-09T15:54:13",
+                "published": "${actionDate}",
                 "doi": "${actionDoi}",
                 "type": "editorial-decision"
               }
@@ -336,7 +336,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): J
             ],
             "outputs": [
               {
-                "published": "2025-09-09T15:54:13",
+                "published": "${actionDate}",
                 "doi": "${actionDoi}",
                 "type": "editorial-decision"
               }
@@ -361,7 +361,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): J
             ],
             "outputs": [
               {
-                "published": "2025-09-09T15:54:13",
+                "published": "${actionDate}",
                 "doi": "${actionDoi}",
                 "type": "review"
               }
@@ -399,7 +399,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): J
             ],
             "outputs": [
               {
-                "published": "2025-09-09T15:54:13",
+                "published": "${actionDate}",
                 "doi": "${actionDoi}",
                 "type": "editorial-decision"
               }
@@ -547,7 +547,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): J
             ],
             "outputs": [
               {
-                "published": "2025-09-09T15:54:13",
+                "published": "${actionDate}",
                 "doi": "${actionDoi}",
                 "type": "reply"
               }
@@ -688,7 +688,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): J
             ],
             "outputs": [
               {
-                "published": "2025-09-09T15:54:13",
+                "published": "${actionDate}",
                 "doi": "${actionDoi}",
                 "type": "reply"
               }
@@ -829,7 +829,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): J
             ],
             "outputs": [
               {
-                "published": "2025-09-09T15:54:13",
+                "published": "${actionDate}",
                 "doi": "${actionDoi}",
                 "type": "reply"
               }
@@ -970,7 +970,7 @@ export const constructDocmapArrayWithActionDoiUnderTest = (actionDoi: string): J
             ],
             "outputs": [
               {
-                "published": "2025-09-09T15:54:13",
+                "published": "${actionDate}",
                 "doi": "${actionDoi}",
                 "type": "reply"
               }

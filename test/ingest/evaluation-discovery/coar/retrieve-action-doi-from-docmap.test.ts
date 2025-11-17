@@ -8,7 +8,7 @@ import {
 import {
   retrieveActionDoiFromDocmap,
 } from '../../../../src/ingest/evaluation-discovery/coar/retrieve-action-doi-from-docmap';
-import { arbitraryString, arbitraryUri } from '../../../helpers';
+import { arbitraryDate, arbitraryString, arbitraryUri } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 
 const retrieveQueryResultErrorMessage = (result: E.Either<string, { actionDoi: string }>): string => pipe(
@@ -40,13 +40,15 @@ describe('retrieve-action-doi-from-docmap', () => {
   describe('when the request to the docmap uri returns a docmap with an action doi', () => {
     const docmapUri = arbitraryUri();
     const actionDoi = arbitraryString();
-    let result: { actionDoi: string };
+    const actionDate = arbitraryDate().toISOString();
+    const inputUnderTest = { actionDoi, actionDate };
+    let result: { actionDoi: string, actionDate: string };
 
     beforeEach(async () => {
       result = await pipe(
         docmapUri,
         retrieveActionDoiFromDocmap({
-          fetchData: <D>() => TE.right(constructDocmapArrayWithActionDoiUnderTest(actionDoi) as unknown as D),
+          fetchData: <D>() => TE.right(constructDocmapArrayWithActionDoiUnderTest(inputUnderTest) as unknown as D),
           fetchHead: () => TE.right(shouldNotBeCalled()),
         }),
         TE.getOrElse(shouldNotBeCalled),
@@ -57,7 +59,9 @@ describe('retrieve-action-doi-from-docmap', () => {
       expect(result.actionDoi).toStrictEqual(actionDoi);
     });
 
-    it.todo('returns a date of an action');
+    it('returns a date of an action', () => {
+      expect(result.actionDate).toStrictEqual(actionDate);
+    });
 
     it.todo('returns an action input doi');
   });
