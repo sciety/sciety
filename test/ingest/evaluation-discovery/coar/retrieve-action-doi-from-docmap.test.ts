@@ -54,7 +54,7 @@ describe('retrieve-action-doi-from-docmap', () => {
 
   describe('when the request to the docmap uri does not return an array', () => {
     const docmapUri = arbitraryUri();
-    let result: E.Either<string, unknown>;
+    let result: E.Either<string, string>;
 
     beforeEach(async () => {
       result = await pipe(
@@ -73,7 +73,7 @@ describe('retrieve-action-doi-from-docmap', () => {
 
   describe('when the request to the docmap uri returns an empty array', () => {
     const docmapUri = arbitraryUri();
-    let result: E.Either<string, unknown>;
+    let result: E.Either<string, string>;
 
     beforeEach(async () => {
       result = await pipe(
@@ -92,7 +92,7 @@ describe('retrieve-action-doi-from-docmap', () => {
 
   describe('when the request to the docmap uri returns a docmap without an action doi', () => {
     const docmapUri = arbitraryUri();
-    let result: E.Either<string, unknown>;
+    let result: E.Either<string, string>;
 
     beforeEach(async () => {
       result = await pipe(

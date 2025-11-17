@@ -30,7 +30,7 @@ export const retrieveActionDoiFromDocmap = (
   dependencies: Dependencies,
 ) => (
   docmapUri: string,
-): TE.TaskEither<string, unknown> => pipe(
+): TE.TaskEither<string, string> => pipe(
   docmapUri,
   dependencies.fetchData<JSON>,
   TE.flatMapEither(decodeAndReportFailures(docmapResponseCodec)),
