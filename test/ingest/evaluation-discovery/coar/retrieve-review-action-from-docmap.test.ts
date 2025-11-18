@@ -40,8 +40,8 @@ describe('retrieve-review-action-from-docmap', () => {
   describe('when the request to the docmap uri returns a docmap with a review action', () => {
     const docmapUri = arbitraryUri();
     const inputUnderTest = {
-      actionDoi: arbitraryString(),
-      actionDate: arbitraryDate().toISOString(),
+      actionOutputDoi: arbitraryString(),
+      actionOutputDate: arbitraryDate().toISOString(),
       actionInputDoi: arbitraryString(),
     };
     let result: ReviewActionFromDocmap;

@@ -1,4 +1,4 @@
-export const constructDocmapArrayWithReviewAction = ({ actionDoi, actionDate, actionInputDoi }: { actionDoi: string, actionDate: string, actionInputDoi: string }): JSON => JSON.parse(`[
+export const constructDocmapArrayWithReviewAction = ({ actionOutputDoi, actionOutputDate, actionInputDoi }: { actionOutputDoi: string, actionOutputDate: string, actionInputDoi: string }): JSON => JSON.parse(`[
   {
     "type": "docmap",
     "id": "https://neuro.peercommunityin.org/metadata/recommendation?article_id=217",
@@ -97,8 +97,8 @@ export const constructDocmapArrayWithReviewAction = ({ actionDoi, actionDate, ac
             ],
             "outputs": [
               {
-                "published": "${actionDate}",
-                "doi": "${actionDoi}",
+                "published": "${actionOutputDate}",
+                "doi": "${actionOutputDoi}",
                 "type": "editorial-decision"
               }
             ],
@@ -122,8 +122,8 @@ export const constructDocmapArrayWithReviewAction = ({ actionDoi, actionDate, ac
             ],
             "outputs": [
               {
-                "published": "${actionDate}",
-                "doi": "${actionDoi}",
+                "published": "${actionOutputDate}",
+                "doi": "${actionOutputDoi}",
                 "type": "review"
               }
             ],
@@ -147,8 +147,8 @@ export const constructDocmapArrayWithReviewAction = ({ actionDoi, actionDate, ac
             ],
             "outputs": [
               {
-                "published": "${actionDate}",
-                "doi": "${actionDoi}",
+                "published": "${actionOutputDate}",
+                "doi": "${actionOutputDoi}",
                 "type": "review"
               }
             ],
@@ -172,8 +172,8 @@ export const constructDocmapArrayWithReviewAction = ({ actionDoi, actionDate, ac
             ],
             "outputs": [
               {
-                "published": "${actionDate}",
-                "doi": "${actionDoi}",
+                "published": "${actionOutputDate}",
+                "doi": "${actionOutputDoi}",
                 "type": "review"
               }
             ],
@@ -197,8 +197,8 @@ export const constructDocmapArrayWithReviewAction = ({ actionDoi, actionDate, ac
             ],
             "outputs": [
               {
-                "published": "${actionDate}",
-                "doi": "${actionDoi}",
+                "published": "${actionOutputDate}",
+                "doi": "${actionOutputDoi}",
                 "type": "review"
               }
             ],
@@ -235,8 +235,8 @@ export const constructDocmapArrayWithReviewAction = ({ actionDoi, actionDate, ac
             ],
             "outputs": [
               {
-                "published": "${actionDate}",
-                "doi": "${actionDoi}",
+                "published": "${actionOutputDate}",
+                "doi": "${actionOutputDoi}",
                 "type": "editorial-decision"
               }
             ],
@@ -260,8 +260,8 @@ export const constructDocmapArrayWithReviewAction = ({ actionDoi, actionDate, ac
             ],
             "outputs": [
               {
-                "published": "${actionDate}",
-                "doi": "${actionDoi}",
+                "published": "${actionOutputDate}",
+                "doi": "${actionOutputDoi}",
                 "type": "review"
               }
             ],
@@ -298,8 +298,8 @@ export const constructDocmapArrayWithReviewAction = ({ actionDoi, actionDate, ac
             ],
             "outputs": [
               {
-                "published": "${actionDate}",
-                "doi": "${actionDoi}",
+                "published": "${actionOutputDate}",
+                "doi": "${actionOutputDoi}",
                 "type": "editorial-decision"
               }
             ],
@@ -336,8 +336,8 @@ export const constructDocmapArrayWithReviewAction = ({ actionDoi, actionDate, ac
             ],
             "outputs": [
               {
-                "published": "${actionDate}",
-                "doi": "${actionDoi}",
+                "published": "${actionOutputDate}",
+                "doi": "${actionOutputDoi}",
                 "type": "editorial-decision"
               }
             ],
@@ -361,8 +361,8 @@ export const constructDocmapArrayWithReviewAction = ({ actionDoi, actionDate, ac
             ],
             "outputs": [
               {
-                "published": "${actionDate}",
-                "doi": "${actionDoi}",
+                "published": "${actionOutputDate}",
+                "doi": "${actionOutputDoi}",
                 "type": "review"
               }
             ],
@@ -399,8 +399,8 @@ export const constructDocmapArrayWithReviewAction = ({ actionDoi, actionDate, ac
             ],
             "outputs": [
               {
-                "published": "${actionDate}",
-                "doi": "${actionDoi}",
+                "published": "${actionOutputDate}",
+                "doi": "${actionOutputDoi}",
                 "type": "editorial-decision"
               }
             ],
@@ -547,8 +547,8 @@ export const constructDocmapArrayWithReviewAction = ({ actionDoi, actionDate, ac
             ],
             "outputs": [
               {
-                "published": "${actionDate}",
-                "doi": "${actionDoi}",
+                "published": "${actionOutputDate}",
+                "doi": "${actionOutputDoi}",
                 "type": "reply"
               }
             ],
@@ -688,8 +688,8 @@ export const constructDocmapArrayWithReviewAction = ({ actionDoi, actionDate, ac
             ],
             "outputs": [
               {
-                "published": "${actionDate}",
-                "doi": "${actionDoi}",
+                "published": "${actionOutputDate}",
+                "doi": "${actionOutputDoi}",
                 "type": "reply"
               }
             ],
@@ -829,8 +829,8 @@ export const constructDocmapArrayWithReviewAction = ({ actionDoi, actionDate, ac
             ],
             "outputs": [
               {
-                "published": "${actionDate}",
-                "doi": "${actionDoi}",
+                "published": "${actionOutputDate}",
+                "doi": "${actionOutputDoi}",
                 "type": "reply"
               }
             ],
@@ -970,8 +970,8 @@ export const constructDocmapArrayWithReviewAction = ({ actionDoi, actionDate, ac
             ],
             "outputs": [
               {
-                "published": "${actionDate}",
-                "doi": "${actionDoi}",
+                "published": "${actionOutputDate}",
+                "doi": "${actionOutputDoi}",
                 "type": "reply"
               }
             ],
