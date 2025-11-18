@@ -2,8 +2,8 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import {
-  constructDocmapArrayWithActionDoiUnderTest,
-  constructDocmapArrayWithoutActionDoiUnderTest,
+  constructDocmapArrayWithoutReviewAction,
+  constructDocmapArrayWithReviewAction,
 } from './docmap-array-fixture';
 import {
   retrieveReviewActionFromDocmap, ReviewActionFromDocmap,
@@ -37,19 +37,20 @@ describe('retrieve-review-action-from-docmap', () => {
     });
   });
 
-  describe('when the request to the docmap uri returns a docmap with an action doi', () => {
+  describe('when the request to the docmap uri returns a docmap with a review action', () => {
     const docmapUri = arbitraryUri();
-    const actionDoi = arbitraryString();
-    const actionDate = arbitraryDate().toISOString();
-    const actionInputDoi = arbitraryString();
-    const inputUnderTest = { actionDoi, actionDate, actionInputDoi };
+    const inputUnderTest = {
+      actionDoi: arbitraryString(),
+      actionDate: arbitraryDate().toISOString(),
+      actionInputDoi: arbitraryString(),
+    };
     let result: ReviewActionFromDocmap;
 
     beforeEach(async () => {
       result = await pipe(
         docmapUri,
         retrieveReviewActionFromDocmap({
-          fetchData: <D>() => TE.right(constructDocmapArrayWithActionDoiUnderTest(inputUnderTest) as unknown as D),
+          fetchData: <D>() => TE.right(constructDocmapArrayWithReviewAction(inputUnderTest) as unknown as D),
           fetchHead: () => TE.right(shouldNotBeCalled()),
         }),
         TE.getOrElse(shouldNotBeCalled),
@@ -57,15 +58,15 @@ describe('retrieve-review-action-from-docmap', () => {
     });
 
     it('returns an action doi', () => {
-      expect(result.actionDoi).toStrictEqual(actionDoi);
+      expect(result.actionDoi).toStrictEqual(inputUnderTest.actionDoi);
     });
 
     it('returns a date of an action', () => {
-      expect(result.actionDate).toStrictEqual(actionDate);
+      expect(result.actionDate).toStrictEqual(inputUnderTest.actionDate);
     });
 
     it('returns an action input doi', () => {
-      expect(result.actionInputDoi).toStrictEqual(actionInputDoi);
+      expect(result.actionInputDoi).toStrictEqual(inputUnderTest.actionInputDoi);
     });
   });
 
@@ -115,7 +116,7 @@ describe('retrieve-review-action-from-docmap', () => {
       result = await pipe(
         docmapUri,
         retrieveReviewActionFromDocmap({
-          fetchData: <D>() => TE.right(constructDocmapArrayWithoutActionDoiUnderTest() as unknown as D),
+          fetchData: <D>() => TE.right(constructDocmapArrayWithoutReviewAction() as unknown as D),
           fetchHead: () => TE.right(shouldNotBeCalled()),
         }),
       )();
