@@ -1,1161 +1,1167 @@
-export const constructDocmapArrayWithReviewAction = ({ actionOutputDoi, actionOutputDate, actionInputDoi }: { actionOutputDoi: string, actionOutputDate: string, actionInputDoi: string }): JSON => JSON.parse(`[
+export const constructDocmapArrayWithReviewAction = (
   {
-    "type": "docmap",
-    "id": "https://neuro.peercommunityin.org/metadata/recommendation?article_id=217",
-    "publisher": {
-      "name": "Peer Community in Neuroscience",
-      "url": "https://neuro.peercommunityin.org/about/"
+    actionOutputDoi,
+    actionOutputDate,
+    actionInputDoi,
+  }: { actionOutputDoi: string, actionOutputDate: string, actionInputDoi: string },
+): JSON => ([
+  {
+    type: 'docmap',
+    id: 'https://neuro.peercommunityin.org/metadata/recommendation?article_id=217',
+    publisher: {
+      name: 'Peer Community in Neuroscience',
+      url: 'https://neuro.peercommunityin.org/about/',
     },
-    "created": "2025-09-09T15:54:13",
-    "updated": "2025-09-09T15:54:13",
-    "first-step": "_:b0",
-    "steps": {
-      "_:b0": {
-        "inputs": [],
-        "actions": [
+    created: '2025-09-09T15:54:13',
+    updated: '2025-09-09T15:54:13',
+    'first-step': '_:b0',
+    steps: {
+      '_:b0': {
+        inputs: [],
+        actions: [
           {
-            "participants": [
+            participants: [
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Theo Desachy"
+                actor: {
+                  type: 'person',
+                  name: 'Theo Desachy',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Marc Thevenet"
+                actor: {
+                  type: 'person',
+                  name: 'Marc Thevenet',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Samuel Garcia"
+                actor: {
+                  type: 'person',
+                  name: 'Samuel Garcia',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Anistasha Lightning"
+                actor: {
+                  type: 'person',
+                  name: 'Anistasha Lightning',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Anne Didier"
+                actor: {
+                  type: 'person',
+                  name: 'Anne Didier',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Nathalie Mandairon"
+                actor: {
+                  type: 'person',
+                  name: 'Nathalie Mandairon',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Nicola Kuczewski"
+                actor: {
+                  type: 'person',
+                  name: 'Nicola Kuczewski',
                 },
-                "role": "author"
-              }
+                role: 'author',
+              },
             ],
-            "outputs": [
+            outputs: [
               {
-                "published": "2024-07-30T11:52:23",
-                "doi": "https://doi.org/10.1101/2024.07.25.605060",
-                "type": "preprint"
-              }
+                published: '2024-07-30T11:52:23',
+                doi: 'https://doi.org/10.1101/2024.07.25.605060',
+                type: 'preprint',
+              },
             ],
-            "inputs": []
-          }
+            inputs: [],
+          },
         ],
-        "assertions": [
+        assertions: [
           {
-            "status": "catalogued",
-            "item": "https://doi.org/10.1101/2024.07.25.605060"
-          }
+            status: 'catalogued',
+            item: 'https://doi.org/10.1101/2024.07.25.605060',
+          },
         ],
-        "next-step": "_:b1"
+        'next-step': '_:b1',
       },
-      "_:b1": {
-        "actions": [
+      '_:b1': {
+        actions: [
           {
-            "participants": [
+            participants: [
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Amanda Almacellas Barbanoj"
+                actor: {
+                  type: 'person',
+                  name: 'Amanda Almacellas Barbanoj',
                 },
-                "role": "author"
-              }
+                role: 'author',
+              },
             ],
-            "outputs": [
+            outputs: [
               {
-                "published": "${actionOutputDate}",
-                "doi": "${actionOutputDoi}",
-                "type": "editorial-decision"
-              }
+                published: actionOutputDate,
+                doi: actionOutputDoi,
+                type: 'editorial-decision',
+              },
             ],
-            "inputs": [
+            inputs: [
               {
-                "published": "2024-07-30T11:52:23",
-                "doi": "${actionInputDoi}",
-                "type": "preprint"
-              }
-            ]
+                published: '2024-07-30T11:52:23',
+                doi: actionInputDoi,
+                type: 'preprint',
+              },
+            ],
           },
           {
-            "participants": [
+            participants: [
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Georgie Mills"
+                actor: {
+                  type: 'person',
+                  name: 'Georgie Mills',
                 },
-                "role": "author"
-              }
+                role: 'author',
+              },
             ],
-            "outputs": [
+            outputs: [
               {
-                "published": "${actionOutputDate}",
-                "doi": "${actionOutputDoi}",
-                "type": "review"
-              }
+                published: actionOutputDate,
+                doi: actionOutputDoi,
+                type: 'review',
+              },
             ],
-            "inputs": [
+            inputs: [
               {
-                "published": "2024-07-30T11:52:23",
-                "doi": "${actionInputDoi}",
-                "type": "preprint"
-              }
-            ]
+                published: '2024-07-30T11:52:23',
+                doi: actionInputDoi,
+                type: 'preprint',
+              },
+            ],
           },
           {
-            "participants": [
+            participants: [
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Anonymous reviewer"
+                actor: {
+                  type: 'person',
+                  name: 'Anonymous reviewer',
                 },
-                "role": "author"
-              }
+                role: 'author',
+              },
             ],
-            "outputs": [
+            outputs: [
               {
-                "published": "${actionOutputDate}",
-                "doi": "${actionOutputDoi}",
-                "type": "review"
-              }
+                published: actionOutputDate,
+                doi: actionOutputDoi,
+                type: 'review',
+              },
             ],
-            "inputs": [
+            inputs: [
               {
-                "published": "2024-07-30T11:52:23",
-                "doi": "${actionInputDoi}",
-                "type": "preprint"
-              }
-            ]
+                published: '2024-07-30T11:52:23',
+                doi: actionInputDoi,
+                type: 'preprint',
+              },
+            ],
           },
           {
-            "participants": [
+            participants: [
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Daniel Lakens"
+                actor: {
+                  type: 'person',
+                  name: 'Daniel Lakens',
                 },
-                "role": "author"
-              }
+                role: 'author',
+              },
             ],
-            "outputs": [
+            outputs: [
               {
-                "published": "${actionOutputDate}",
-                "doi": "${actionOutputDoi}",
-                "type": "review"
-              }
+                published: actionOutputDate,
+                doi: actionOutputDoi,
+                type: 'review',
+              },
             ],
-            "inputs": [
+            inputs: [
               {
-                "published": "2024-07-30T11:52:23",
-                "doi": "${actionInputDoi}",
-                "type": "preprint"
-              }
-            ]
+                published: '2024-07-30T11:52:23',
+                doi: actionInputDoi,
+                type: 'preprint',
+              },
+            ],
           },
           {
-            "participants": [
+            participants: [
               {
-                "actor": {
-                  "type": "person",
-                  "name": "James McCutcheon"
+                actor: {
+                  type: 'person',
+                  name: 'James McCutcheon',
                 },
-                "role": "author"
-              }
+                role: 'author',
+              },
             ],
-            "outputs": [
+            outputs: [
               {
-                "published": "${actionOutputDate}",
-                "doi": "${actionOutputDoi}",
-                "type": "review"
-              }
+                published: actionOutputDate,
+                doi: actionOutputDoi,
+                type: 'review',
+              },
             ],
-            "inputs": [
+            inputs: [
               {
-                "published": "2024-07-30T11:52:23",
-                "doi": "${actionInputDoi}",
-                "type": "preprint"
-              }
-            ]
-          }
+                published: '2024-07-30T11:52:23',
+                doi: actionInputDoi,
+                type: 'preprint',
+              },
+            ],
+          },
         ],
-        "assertions": [
+        assertions: [
           {
-            "status": "reviewed",
-            "item": "https://doi.org/10.1101/2024.07.25.605060"
-          }
+            status: 'reviewed',
+            item: 'https://doi.org/10.1101/2024.07.25.605060',
+          },
         ],
-        "inputs": [],
-        "previous-step": "_:b0",
-        "next-step": "_:b2"
+        inputs: [],
+        'previous-step': '_:b0',
+        'next-step': '_:b2',
       },
-      "_:b3": {
-        "actions": [
+      '_:b3': {
+        actions: [
           {
-            "participants": [
+            participants: [
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Amanda Almacellas Barbanoj"
+                actor: {
+                  type: 'person',
+                  name: 'Amanda Almacellas Barbanoj',
                 },
-                "role": "author"
-              }
+                role: 'author',
+              },
             ],
-            "outputs": [
+            outputs: [
               {
-                "published": "${actionOutputDate}",
-                "doi": "${actionOutputDoi}",
-                "type": "editorial-decision"
-              }
+                published: actionOutputDate,
+                doi: actionOutputDoi,
+                type: 'editorial-decision',
+              },
             ],
-            "inputs": [
+            inputs: [
               {
-                "published": "2025-01-07T15:36:54",
-                "doi": "${actionInputDoi} ",
-                "type": "preprint"
-              }
-            ]
+                published: '2025-01-07T15:36:54',
+                doi: `${actionInputDoi} `,
+                type: 'preprint',
+              },
+            ],
           },
           {
-            "participants": [
+            participants: [
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Daniel Lakens"
+                actor: {
+                  type: 'person',
+                  name: 'Daniel Lakens',
                 },
-                "role": "author"
-              }
+                role: 'author',
+              },
             ],
-            "outputs": [
+            outputs: [
               {
-                "published": "${actionOutputDate}",
-                "doi": "${actionOutputDoi}",
-                "type": "review"
-              }
+                published: actionOutputDate,
+                doi: actionOutputDoi,
+                type: 'review',
+              },
             ],
-            "inputs": [
+            inputs: [
               {
-                "published": "2025-01-07T15:36:54",
-                "doi": "${actionInputDoi} ",
-                "type": "preprint"
-              }
-            ]
-          }
+                published: '2025-01-07T15:36:54',
+                doi: `${actionInputDoi} `,
+                type: 'preprint',
+              },
+            ],
+          },
         ],
-        "assertions": [
+        assertions: [
           {
-            "status": "reviewed",
-            "item": "https://doi.org/10.1101/2024.07.25.605060 "
-          }
+            status: 'reviewed',
+            item: 'https://doi.org/10.1101/2024.07.25.605060 ',
+          },
         ],
-        "inputs": [],
-        "previous-step": "_:b2",
-        "next-step": "_:b4"
+        inputs: [],
+        'previous-step': '_:b2',
+        'next-step': '_:b4',
       },
-      "_:b5": {
-        "actions": [
+      '_:b5': {
+        actions: [
           {
-            "participants": [
+            participants: [
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Amanda Almacellas Barbanoj"
+                actor: {
+                  type: 'person',
+                  name: 'Amanda Almacellas Barbanoj',
                 },
-                "role": "author"
-              }
+                role: 'author',
+              },
             ],
-            "outputs": [
+            outputs: [
               {
-                "published": "${actionOutputDate}",
-                "doi": "${actionOutputDoi}",
-                "type": "editorial-decision"
-              }
+                published: actionOutputDate,
+                doi: actionOutputDoi,
+                type: 'editorial-decision',
+              },
             ],
-            "inputs": [
+            inputs: [
               {
-                "published": "2025-03-06T10:00:34",
-                "doi": "${actionInputDoi}   ",
-                "type": "preprint"
-              }
-            ]
-          }
+                published: '2025-03-06T10:00:34',
+                doi: `${actionInputDoi}   `,
+                type: 'preprint',
+              },
+            ],
+          },
         ],
-        "assertions": [
+        assertions: [
           {
-            "status": "reviewed",
-            "item": "https://doi.org/10.1101/2024.07.25.605060   "
-          }
+            status: 'reviewed',
+            item: 'https://doi.org/10.1101/2024.07.25.605060   ',
+          },
         ],
-        "inputs": [],
-        "previous-step": "_:b4",
-        "next-step": "_:b6"
+        inputs: [],
+        'previous-step': '_:b4',
+        'next-step': '_:b6',
       },
-      "_:b7": {
-        "actions": [
+      '_:b7': {
+        actions: [
           {
-            "participants": [
+            participants: [
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Amanda Almacellas Barbanoj"
+                actor: {
+                  type: 'person',
+                  name: 'Amanda Almacellas Barbanoj',
                 },
-                "role": "author"
-              }
+                role: 'author',
+              },
             ],
-            "outputs": [
+            outputs: [
               {
-                "published": "${actionOutputDate}",
-                "doi": "${actionOutputDoi}",
-                "type": "editorial-decision"
-              }
+                published: actionOutputDate,
+                doi: actionOutputDoi,
+                type: 'editorial-decision',
+              },
             ],
-            "inputs": [
+            inputs: [
               {
-                "published": "2025-06-17T11:42:21",
-                "doi": "${actionInputDoi}",
-                "type": "preprint"
-              }
-            ]
+                published: '2025-06-17T11:42:21',
+                doi: actionInputDoi,
+                type: 'preprint',
+              },
+            ],
           },
           {
-            "participants": [
+            participants: [
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Daniel Lakens"
+                actor: {
+                  type: 'person',
+                  name: 'Daniel Lakens',
                 },
-                "role": "author"
-              }
+                role: 'author',
+              },
             ],
-            "outputs": [
+            outputs: [
               {
-                "published": "${actionOutputDate}",
-                "doi": "${actionOutputDoi}",
-                "type": "review"
-              }
+                published: actionOutputDate,
+                doi: actionOutputDoi,
+                type: 'review',
+              },
             ],
-            "inputs": [
+            inputs: [
               {
-                "published": "2025-06-17T11:42:21",
-                "doi": "${actionInputDoi}",
-                "type": "preprint"
-              }
-            ]
-          }
+                published: '2025-06-17T11:42:21',
+                doi: actionInputDoi,
+                type: 'preprint',
+              },
+            ],
+          },
         ],
-        "assertions": [
+        assertions: [
           {
-            "status": "reviewed",
-            "item": "https://doi.org/10.1101/2024.07.25.605060"
-          }
+            status: 'reviewed',
+            item: 'https://doi.org/10.1101/2024.07.25.605060',
+          },
         ],
-        "inputs": [],
-        "previous-step": "_:b6",
-        "next-step": "_:b8"
+        inputs: [],
+        'previous-step': '_:b6',
+        'next-step': '_:b8',
       },
-      "_:b9": {
-        "actions": [
+      '_:b9': {
+        actions: [
           {
-            "participants": [
+            participants: [
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Amanda Almacellas Barbanoj"
+                actor: {
+                  type: 'person',
+                  name: 'Amanda Almacellas Barbanoj',
                 },
-                "role": "author"
-              }
+                role: 'author',
+              },
             ],
-            "outputs": [
+            outputs: [
               {
-                "published": "${actionOutputDate}",
-                "doi": "${actionOutputDoi}",
-                "type": "editorial-decision"
-              }
+                published: actionOutputDate,
+                doi: actionOutputDoi,
+                type: 'editorial-decision',
+              },
             ],
-            "inputs": [
+            inputs: [
               {
-                "published": "2025-08-28T09:30:49",
-                "doi": "${actionInputDoi}",
-                "type": "preprint"
-              }
-            ]
-          }
+                published: '2025-08-28T09:30:49',
+                doi: actionInputDoi,
+                type: 'preprint',
+              },
+            ],
+          },
         ],
-        "assertions": [
+        assertions: [
           {
-            "status": "reviewed",
-            "item": "https://doi.org/10.1101/2024.07.25.605060"
-          }
+            status: 'reviewed',
+            item: 'https://doi.org/10.1101/2024.07.25.605060',
+          },
         ],
-        "inputs": [],
-        "previous-step": "_:b8",
-        "next-step": "_:b10"
+        inputs: [],
+        'previous-step': '_:b8',
+        'next-step': '_:b10',
       },
-      "_:b2": {
-        "inputs": [
+      '_:b2': {
+        inputs: [
           {
-            "published": "2024-07-30T11:52:23",
-            "doi": "https://doi.org/10.1101/2024.07.25.605060",
-            "type": "preprint"
-          }
+            published: '2024-07-30T11:52:23',
+            doi: 'https://doi.org/10.1101/2024.07.25.605060',
+            type: 'preprint',
+          },
         ],
-        "actions": [
+        actions: [
           {
-            "participants": [
+            participants: [
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Theo Desachy"
+                actor: {
+                  type: 'person',
+                  name: 'Theo Desachy',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Marc Thevenet"
+                actor: {
+                  type: 'person',
+                  name: 'Marc Thevenet',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Samuel Garcia"
+                actor: {
+                  type: 'person',
+                  name: 'Samuel Garcia',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Anistasha Lightning"
+                actor: {
+                  type: 'person',
+                  name: 'Anistasha Lightning',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Anne Didier"
+                actor: {
+                  type: 'person',
+                  name: 'Anne Didier',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Nathalie Mandairon"
+                actor: {
+                  type: 'person',
+                  name: 'Nathalie Mandairon',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Nicola Kuczewski"
+                actor: {
+                  type: 'person',
+                  name: 'Nicola Kuczewski',
                 },
-                "role": "author"
-              }
+                role: 'author',
+              },
             ],
-            "outputs": [
+            outputs: [
               {
-                "published": "2025-01-07T15:36:54",
-                "doi": "https://doi.org/10.1101/2024.07.25.605060 ",
-                "type": "preprint"
-              }
+                published: '2025-01-07T15:36:54',
+                doi: 'https://doi.org/10.1101/2024.07.25.605060 ',
+                type: 'preprint',
+              },
             ],
-            "inputs": []
+            inputs: [],
           },
           {
-            "participants": [
+            participants: [
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Theo Desachy"
+                actor: {
+                  type: 'person',
+                  name: 'Theo Desachy',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Marc Thevenet"
+                actor: {
+                  type: 'person',
+                  name: 'Marc Thevenet',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Samuel Garcia"
+                actor: {
+                  type: 'person',
+                  name: 'Samuel Garcia',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Anistasha Lightning"
+                actor: {
+                  type: 'person',
+                  name: 'Anistasha Lightning',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Anne Didier"
+                actor: {
+                  type: 'person',
+                  name: 'Anne Didier',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Nathalie Mandairon"
+                actor: {
+                  type: 'person',
+                  name: 'Nathalie Mandairon',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Nicola Kuczewski"
+                actor: {
+                  type: 'person',
+                  name: 'Nicola Kuczewski',
                 },
-                "role": "author"
-              }
+                role: 'author',
+              },
             ],
-            "outputs": [
+            outputs: [
               {
-                "published": "${actionOutputDate}",
-                "doi": "${actionOutputDoi}",
-                "type": "reply"
-              }
+                published: actionOutputDate,
+                doi: actionOutputDoi,
+                type: 'reply',
+              },
             ],
-            "inputs": []
-          }
+            inputs: [],
+          },
         ],
-        "assertions": [
+        assertions: [
           {
-            "status": "catalogued",
-            "item": "https://doi.org/10.1101/2024.07.25.605060"
-          }
+            status: 'catalogued',
+            item: 'https://doi.org/10.1101/2024.07.25.605060',
+          },
         ],
-        "previous-step": "_:b1",
-        "next-step": "_:b3"
+        'previous-step': '_:b1',
+        'next-step': '_:b3',
       },
-      "_:b4": {
-        "inputs": [
+      '_:b4': {
+        inputs: [
           {
-            "published": "2025-01-07T15:36:54",
-            "doi": "https://doi.org/10.1101/2024.07.25.605060 ",
-            "type": "preprint"
-          }
+            published: '2025-01-07T15:36:54',
+            doi: 'https://doi.org/10.1101/2024.07.25.605060 ',
+            type: 'preprint',
+          },
         ],
-        "actions": [
+        actions: [
           {
-            "participants": [
+            participants: [
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Theo Desachy"
+                actor: {
+                  type: 'person',
+                  name: 'Theo Desachy',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Marc Thevenet"
+                actor: {
+                  type: 'person',
+                  name: 'Marc Thevenet',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Samuel Garcia"
+                actor: {
+                  type: 'person',
+                  name: 'Samuel Garcia',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Anistasha Lightning"
+                actor: {
+                  type: 'person',
+                  name: 'Anistasha Lightning',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Anne Didier"
+                actor: {
+                  type: 'person',
+                  name: 'Anne Didier',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Nathalie Mandairon"
+                actor: {
+                  type: 'person',
+                  name: 'Nathalie Mandairon',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Nicola Kuczewski"
+                actor: {
+                  type: 'person',
+                  name: 'Nicola Kuczewski',
                 },
-                "role": "author"
-              }
+                role: 'author',
+              },
             ],
-            "outputs": [
+            outputs: [
               {
-                "published": "2025-03-06T10:00:34",
-                "doi": "https://doi.org/10.1101/2024.07.25.605060   ",
-                "type": "preprint"
-              }
+                published: '2025-03-06T10:00:34',
+                doi: 'https://doi.org/10.1101/2024.07.25.605060   ',
+                type: 'preprint',
+              },
             ],
-            "inputs": []
+            inputs: [],
           },
           {
-            "participants": [
+            participants: [
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Theo Desachy"
+                actor: {
+                  type: 'person',
+                  name: 'Theo Desachy',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Marc Thevenet"
+                actor: {
+                  type: 'person',
+                  name: 'Marc Thevenet',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Samuel Garcia"
+                actor: {
+                  type: 'person',
+                  name: 'Samuel Garcia',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Anistasha Lightning"
+                actor: {
+                  type: 'person',
+                  name: 'Anistasha Lightning',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Anne Didier"
+                actor: {
+                  type: 'person',
+                  name: 'Anne Didier',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Nathalie Mandairon"
+                actor: {
+                  type: 'person',
+                  name: 'Nathalie Mandairon',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Nicola Kuczewski"
+                actor: {
+                  type: 'person',
+                  name: 'Nicola Kuczewski',
                 },
-                "role": "author"
-              }
+                role: 'author',
+              },
             ],
-            "outputs": [
+            outputs: [
               {
-                "published": "${actionOutputDate}",
-                "doi": "${actionOutputDoi}",
-                "type": "reply"
-              }
+                published: actionOutputDate,
+                doi: actionOutputDoi,
+                type: 'reply',
+              },
             ],
-            "inputs": []
-          }
+            inputs: [],
+          },
         ],
-        "assertions": [
+        assertions: [
           {
-            "status": "catalogued",
-            "item": "https://doi.org/10.1101/2024.07.25.605060 "
-          }
+            status: 'catalogued',
+            item: 'https://doi.org/10.1101/2024.07.25.605060 ',
+          },
         ],
-        "previous-step": "_:b3",
-        "next-step": "_:b5"
+        'previous-step': '_:b3',
+        'next-step': '_:b5',
       },
-      "_:b6": {
-        "inputs": [
+      '_:b6': {
+        inputs: [
           {
-            "published": "2025-03-06T10:00:34",
-            "doi": "https://doi.org/10.1101/2024.07.25.605060   ",
-            "type": "preprint"
-          }
+            published: '2025-03-06T10:00:34',
+            doi: 'https://doi.org/10.1101/2024.07.25.605060   ',
+            type: 'preprint',
+          },
         ],
-        "actions": [
+        actions: [
           {
-            "participants": [
+            participants: [
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Theo Desachy"
+                actor: {
+                  type: 'person',
+                  name: 'Theo Desachy',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Marc Thevenet"
+                actor: {
+                  type: 'person',
+                  name: 'Marc Thevenet',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Samuel Garcia"
+                actor: {
+                  type: 'person',
+                  name: 'Samuel Garcia',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Anistasha Lightning"
+                actor: {
+                  type: 'person',
+                  name: 'Anistasha Lightning',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Anne Didier"
+                actor: {
+                  type: 'person',
+                  name: 'Anne Didier',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Nathalie Mandairon"
+                actor: {
+                  type: 'person',
+                  name: 'Nathalie Mandairon',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Nicola Kuczewski"
+                actor: {
+                  type: 'person',
+                  name: 'Nicola Kuczewski',
                 },
-                "role": "author"
-              }
+                role: 'author',
+              },
             ],
-            "outputs": [
+            outputs: [
               {
-                "published": "2025-06-17T11:42:21",
-                "doi": "https://doi.org/10.1101/2024.07.25.605060",
-                "type": "preprint"
-              }
+                published: '2025-06-17T11:42:21',
+                doi: 'https://doi.org/10.1101/2024.07.25.605060',
+                type: 'preprint',
+              },
             ],
-            "inputs": []
+            inputs: [],
           },
           {
-            "participants": [
+            participants: [
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Theo Desachy"
+                actor: {
+                  type: 'person',
+                  name: 'Theo Desachy',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Marc Thevenet"
+                actor: {
+                  type: 'person',
+                  name: 'Marc Thevenet',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Samuel Garcia"
+                actor: {
+                  type: 'person',
+                  name: 'Samuel Garcia',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Anistasha Lightning"
+                actor: {
+                  type: 'person',
+                  name: 'Anistasha Lightning',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Anne Didier"
+                actor: {
+                  type: 'person',
+                  name: 'Anne Didier',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Nathalie Mandairon"
+                actor: {
+                  type: 'person',
+                  name: 'Nathalie Mandairon',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Nicola Kuczewski"
+                actor: {
+                  type: 'person',
+                  name: 'Nicola Kuczewski',
                 },
-                "role": "author"
-              }
+                role: 'author',
+              },
             ],
-            "outputs": [
+            outputs: [
               {
-                "published": "${actionOutputDate}",
-                "doi": "${actionOutputDoi}",
-                "type": "reply"
-              }
+                published: actionOutputDate,
+                doi: actionOutputDoi,
+                type: 'reply',
+              },
             ],
-            "inputs": []
-          }
+            inputs: [],
+          },
         ],
-        "assertions": [
+        assertions: [
           {
-            "status": "catalogued",
-            "item": "https://doi.org/10.1101/2024.07.25.605060   "
-          }
+            status: 'catalogued',
+            item: 'https://doi.org/10.1101/2024.07.25.605060   ',
+          },
         ],
-        "previous-step": "_:b5",
-        "next-step": "_:b7"
+        'previous-step': '_:b5',
+        'next-step': '_:b7',
       },
-      "_:b8": {
-        "inputs": [
+      '_:b8': {
+        inputs: [
           {
-            "published": "2025-06-17T11:42:21",
-            "doi": "https://doi.org/10.1101/2024.07.25.605060",
-            "type": "preprint"
-          }
+            published: '2025-06-17T11:42:21',
+            doi: 'https://doi.org/10.1101/2024.07.25.605060',
+            type: 'preprint',
+          },
         ],
-        "actions": [
+        actions: [
           {
-            "participants": [
+            participants: [
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Theo Desachy"
+                actor: {
+                  type: 'person',
+                  name: 'Theo Desachy',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Marc Thevenet"
+                actor: {
+                  type: 'person',
+                  name: 'Marc Thevenet',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Samuel Garcia"
+                actor: {
+                  type: 'person',
+                  name: 'Samuel Garcia',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Anistasha Lightning"
+                actor: {
+                  type: 'person',
+                  name: 'Anistasha Lightning',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Anne Didier"
+                actor: {
+                  type: 'person',
+                  name: 'Anne Didier',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Nathalie Mandairon"
+                actor: {
+                  type: 'person',
+                  name: 'Nathalie Mandairon',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Nicola Kuczewski"
+                actor: {
+                  type: 'person',
+                  name: 'Nicola Kuczewski',
                 },
-                "role": "author"
-              }
+                role: 'author',
+              },
             ],
-            "outputs": [
+            outputs: [
               {
-                "published": "2025-08-28T09:30:49",
-                "doi": "https://doi.org/10.1101/2024.07.25.605060",
-                "type": "preprint"
-              }
+                published: '2025-08-28T09:30:49',
+                doi: 'https://doi.org/10.1101/2024.07.25.605060',
+                type: 'preprint',
+              },
             ],
-            "inputs": []
+            inputs: [],
           },
           {
-            "participants": [
+            participants: [
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Theo Desachy"
+                actor: {
+                  type: 'person',
+                  name: 'Theo Desachy',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Marc Thevenet"
+                actor: {
+                  type: 'person',
+                  name: 'Marc Thevenet',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Samuel Garcia"
+                actor: {
+                  type: 'person',
+                  name: 'Samuel Garcia',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Anistasha Lightning"
+                actor: {
+                  type: 'person',
+                  name: 'Anistasha Lightning',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Anne Didier"
+                actor: {
+                  type: 'person',
+                  name: 'Anne Didier',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Nathalie Mandairon"
+                actor: {
+                  type: 'person',
+                  name: 'Nathalie Mandairon',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Nicola Kuczewski"
+                actor: {
+                  type: 'person',
+                  name: 'Nicola Kuczewski',
                 },
-                "role": "author"
-              }
+                role: 'author',
+              },
             ],
-            "outputs": [
+            outputs: [
               {
-                "published": "${actionOutputDate}",
-                "doi": "${actionOutputDoi}",
-                "type": "reply"
-              }
+                published: actionOutputDate,
+                doi: actionOutputDoi,
+                type: 'reply',
+              },
             ],
-            "inputs": []
-          }
+            inputs: [],
+          },
         ],
-        "assertions": [
+        assertions: [
           {
-            "status": "catalogued",
-            "item": "https://doi.org/10.1101/2024.07.25.605060"
-          }
+            status: 'catalogued',
+            item: 'https://doi.org/10.1101/2024.07.25.605060',
+          },
         ],
-        "previous-step": "_:b7",
-        "next-step": "_:b9"
+        'previous-step': '_:b7',
+        'next-step': '_:b9',
       },
-      "_:b10": {
-        "inputs": [
+      '_:b10': {
+        inputs: [
           {
-            "published": "2025-08-28T09:30:49",
-            "doi": "https://doi.org/10.1101/2024.07.25.605060",
-            "type": "preprint"
-          }
+            published: '2025-08-28T09:30:49',
+            doi: 'https://doi.org/10.1101/2024.07.25.605060',
+            type: 'preprint',
+          },
         ],
-        "actions": [
+        actions: [
           {
-            "participants": [
+            participants: [
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Theo Desachy"
+                actor: {
+                  type: 'person',
+                  name: 'Theo Desachy',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Marc Thevenet"
+                actor: {
+                  type: 'person',
+                  name: 'Marc Thevenet',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Samuel Garcia"
+                actor: {
+                  type: 'person',
+                  name: 'Samuel Garcia',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Anistasha Lightning"
+                actor: {
+                  type: 'person',
+                  name: 'Anistasha Lightning',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Anne Didier"
+                actor: {
+                  type: 'person',
+                  name: 'Anne Didier',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Nathalie Mandairon"
+                actor: {
+                  type: 'person',
+                  name: 'Nathalie Mandairon',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Nicola Kuczewski"
+                actor: {
+                  type: 'person',
+                  name: 'Nicola Kuczewski',
                 },
-                "role": "author"
-              }
+                role: 'author',
+              },
             ],
-            "outputs": [
+            outputs: [
               {
-                "published": "2025-10-23T00:00:00",
-                "doi": "https://doi.org/10.24072/pcjournal.636",
-                "type": "journal-article"
-              }
+                published: '2025-10-23T00:00:00',
+                doi: 'https://doi.org/10.24072/pcjournal.636',
+                type: 'journal-article',
+              },
             ],
-            "inputs": []
-          }
+            inputs: [],
+          },
         ],
-        "assertions": [
+        assertions: [
           {
-            "status": "published",
-            "item": "https://doi.org/10.24072/pcjournal.636"
-          }
+            status: 'published',
+            item: 'https://doi.org/10.24072/pcjournal.636',
+          },
         ],
-        "previous-step": "_:b9"
-      }
+        'previous-step': '_:b9',
+      },
     },
-    "@context": "https://w3id.org/docmaps/context.jsonld"
-  }
-]`) as JSON;
+    '@context': 'https://w3id.org/docmaps/context.jsonld',
+  },
+] as unknown) as JSON;
 
-export const constructDocmapArrayWithoutReviewAction = (): JSON => JSON.parse(`[
+export const constructDocmapArrayWithoutReviewAction = (): JSON => ([
   {
-    "type": "docmap",
-    "id": "https://neuro.peercommunityin.org/metadata/recommendation?article_id=217",
-    "publisher": {
-      "name": "Peer Community in Neuroscience",
-      "url": "https://neuro.peercommunityin.org/about/"
+    type: 'docmap',
+    id: 'https://neuro.peercommunityin.org/metadata/recommendation?article_id=217',
+    publisher: {
+      name: 'Peer Community in Neuroscience',
+      url: 'https://neuro.peercommunityin.org/about/',
     },
-    "created": "2025-09-09T15:54:13",
-    "updated": "2025-09-09T15:54:13",
-    "first-step": "_:b0",
-    "steps": {
-      "_:b0": {
-        "inputs": [],
-        "actions": [
+    created: '2025-09-09T15:54:13',
+    updated: '2025-09-09T15:54:13',
+    'first-step': '_:b0',
+    steps: {
+      '_:b0': {
+        inputs: [],
+        actions: [
           {
-            "participants": [
+            participants: [
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Theo Desachy"
+                actor: {
+                  type: 'person',
+                  name: 'Theo Desachy',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Marc Thevenet"
+                actor: {
+                  type: 'person',
+                  name: 'Marc Thevenet',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Samuel Garcia"
+                actor: {
+                  type: 'person',
+                  name: 'Samuel Garcia',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Anistasha Lightning"
+                actor: {
+                  type: 'person',
+                  name: 'Anistasha Lightning',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Anne Didier"
+                actor: {
+                  type: 'person',
+                  name: 'Anne Didier',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Nathalie Mandairon"
+                actor: {
+                  type: 'person',
+                  name: 'Nathalie Mandairon',
                 },
-                "role": "author"
+                role: 'author',
               },
               {
-                "actor": {
-                  "type": "person",
-                  "name": "Nicola Kuczewski"
+                actor: {
+                  type: 'person',
+                  name: 'Nicola Kuczewski',
                 },
-                "role": "author"
-              }
+                role: 'author',
+              },
             ],
-            "outputs": [
+            outputs: [
               {
-                "published": "2024-07-30T11:52:23",
-                "doi": "https://doi.org/10.1101/2024.07.25.605060",
-                "type": "preprint"
-              }
+                published: '2024-07-30T11:52:23',
+                doi: 'https://doi.org/10.1101/2024.07.25.605060',
+                type: 'preprint',
+              },
             ],
-            "inputs": []
-          }
+            inputs: [],
+          },
         ],
-        "assertions": [
+        assertions: [
           {
-            "status": "catalogued",
-            "item": "https://doi.org/10.1101/2024.07.25.605060"
-          }
-        ]
-      }
+            status: 'catalogued',
+            item: 'https://doi.org/10.1101/2024.07.25.605060',
+          },
+        ],
+      },
     },
-    "@context": "https://w3id.org/docmaps/context.jsonld"
-  }
-]`) as JSON;
+    '@context': 'https://w3id.org/docmaps/context.jsonld',
+  },
+] as unknown) as JSON;
