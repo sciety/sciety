@@ -182,6 +182,7 @@ download-exploratory-test-from-prod:
 	aws s3 cp "s3://sciety-events-export/sciety--prod--events-from-cronjob.csv" "./data/exploratory-test-from-prod.csv"
 
 download-exploratory-test-from-staging:
+	rm -rf "./data/exploratory-test-from-staging.csv"
 	aws s3 cp "s3://sciety-events-export/sciety--staging--events-from-cronjob.csv" "./data/exploratory-test-from-staging.csv"
 
 exploratory-test-from-prod: node_modules clean-db build
