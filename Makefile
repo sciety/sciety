@@ -121,6 +121,7 @@ ingest-evaluations: build
 
 dev-sql: export TARGET = dev
 dev-sql:
+	@echo "Try SELECT * FROM events LIMIT 10; to see the most recent events recorded";
 	$(DOCKER_COMPOSE) exec -e PGUSER=user -e PGPASSWORD=secret -e PGDATABASE=sciety db psql
 
 staging-sql: verify-flux-prod-cluster
