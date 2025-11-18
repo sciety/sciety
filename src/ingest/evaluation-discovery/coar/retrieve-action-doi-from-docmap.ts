@@ -6,6 +6,8 @@ import * as tt from 'io-ts-types';
 import { Dependencies } from '../../discover-published-evaluations';
 import { decodeAndReportFailures } from '../decode-and-report-failures';
 
+export type ReviewActionFromDocmap = { actionDoi: string, actionDate: string, actionInputDoi: string };
+
 const stepWithActionDoiCodec = t.strict({
   actions: t.readonlyArray(t.strict({
     outputs: t.readonlyArray(t.strict({
@@ -31,7 +33,7 @@ export const retrieveActionDoiFromDocmap = (
   dependencies: Dependencies,
 ) => (
   docmapUri: string,
-): TE.TaskEither<string, { actionDoi: string, actionDate: string, actionInputDoi: string }> => pipe(
+): TE.TaskEither<string, ReviewActionFromDocmap> => pipe(
   docmapUri,
   dependencies.fetchData<JSON>,
   TE.flatMapEither(decodeAndReportFailures(docmapResponseCodec)),

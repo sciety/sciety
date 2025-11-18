@@ -6,12 +6,12 @@ import {
   constructDocmapArrayWithoutActionDoiUnderTest,
 } from './docmap-array-fixture';
 import {
-  retrieveActionDoiFromDocmap,
+  retrieveActionDoiFromDocmap, ReviewActionFromDocmap,
 } from '../../../../src/ingest/evaluation-discovery/coar/retrieve-action-doi-from-docmap';
 import { arbitraryDate, arbitraryString, arbitraryUri } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 
-const retrieveQueryResultErrorMessage = (result: E.Either<string, { actionDoi: string }>): string => pipe(
+const retrieveQueryResultErrorMessage = (result: E.Either<string, ReviewActionFromDocmap>): string => pipe(
   result,
   E.map(shouldNotBeCalled),
   E.getOrElse((e) => e),
@@ -20,7 +20,7 @@ const retrieveQueryResultErrorMessage = (result: E.Either<string, { actionDoi: s
 describe('retrieve-action-doi-from-docmap', () => {
   describe('when the request to the docmap uri fails', () => {
     const docmapUri = arbitraryUri();
-    let result: E.Either<string, { actionDoi: string }>;
+    let result: E.Either<string, ReviewActionFromDocmap>;
 
     beforeEach(async () => {
       result = await pipe(
@@ -43,7 +43,7 @@ describe('retrieve-action-doi-from-docmap', () => {
     const actionDate = arbitraryDate().toISOString();
     const actionInputDoi = arbitraryString();
     const inputUnderTest = { actionDoi, actionDate, actionInputDoi };
-    let result: { actionDoi: string, actionDate: string, actionInputDoi: string };
+    let result: ReviewActionFromDocmap;
 
     beforeEach(async () => {
       result = await pipe(
@@ -71,7 +71,7 @@ describe('retrieve-action-doi-from-docmap', () => {
 
   describe('when the request to the docmap uri does not return an array', () => {
     const docmapUri = arbitraryUri();
-    let result: E.Either<string, { actionDoi: string }>;
+    let result: E.Either<string, ReviewActionFromDocmap>;
 
     beforeEach(async () => {
       result = await pipe(
@@ -90,7 +90,7 @@ describe('retrieve-action-doi-from-docmap', () => {
 
   describe('when the request to the docmap uri returns an empty array', () => {
     const docmapUri = arbitraryUri();
-    let result: E.Either<string, { actionDoi: string }>;
+    let result: E.Either<string, ReviewActionFromDocmap>;
 
     beforeEach(async () => {
       result = await pipe(
@@ -109,7 +109,7 @@ describe('retrieve-action-doi-from-docmap', () => {
 
   describe('when the request to the docmap uri returns a docmap without an action doi', () => {
     const docmapUri = arbitraryUri();
-    let result: E.Either<string, { actionDoi: string }>;
+    let result: E.Either<string, ReviewActionFromDocmap>;
 
     beforeEach(async () => {
       result = await pipe(
