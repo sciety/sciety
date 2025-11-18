@@ -20,8 +20,8 @@ export const discoverPciEvaluations: DiscoverPublishedEvaluations = () => (
     paperExpressionDoi: decodedResponse.actionInputDoi,
     evaluationLocator: `doi:${decodedResponse.actionOutputDoi}`,
   })),
-  TE.map(() => ({
-    understood: [],
+  TE.map((publishedEvaluation) => ({
+    understood: [publishedEvaluation],
     skipped: [],
   })),
 );
