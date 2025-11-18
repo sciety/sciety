@@ -6,7 +6,7 @@ import * as tt from 'io-ts-types';
 import { Dependencies } from '../../discover-published-evaluations';
 import { decodeAndReportFailures } from '../decode-and-report-failures';
 
-export type ReviewActionFromDocmap = { actionDoi: string, actionDate: string, actionInputDoi: string };
+export type ReviewActionFromDocmap = { actionOutputDoi: string, actionOutputDate: string, actionInputDoi: string };
 
 const stepWithActionDoiCodec = t.strict({
   actions: t.readonlyArray(t.strict({
@@ -42,8 +42,8 @@ export const retrieveReviewActionFromDocmap = (
   TE.map(RA.findFirst(stepWithActionDoiCodec.is)),
   TE.flatMap(TE.fromOption(() => 'No Action DOI found.')),
   TE.map((step) => ({
-    actionDoi: step.actions[0].outputs[0].doi,
-    actionDate: step.actions[0].outputs[0].published,
+    actionOutputDoi: step.actions[0].outputs[0].doi,
+    actionOutputDate: step.actions[0].outputs[0].published,
     actionInputDoi: step.actions[0].inputs[0].doi,
   })),
 );
