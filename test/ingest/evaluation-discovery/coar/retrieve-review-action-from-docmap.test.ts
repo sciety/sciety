@@ -57,16 +57,8 @@ describe('retrieve-review-action-from-docmap', () => {
       )();
     });
 
-    it('returns an action doi', () => {
-      expect(result.actionOutputDoi).toStrictEqual(inputUnderTest.actionDoi);
-    });
-
-    it('returns a date of an action', () => {
-      expect(result.actionOutputDate).toStrictEqual(inputUnderTest.actionDate);
-    });
-
-    it('returns an action input doi', () => {
-      expect(result.actionInputDoi).toStrictEqual(inputUnderTest.actionInputDoi);
+    it('returns a review action', () => {
+      expect(result).toStrictEqual(inputUnderTest);
     });
   });
 
