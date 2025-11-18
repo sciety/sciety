@@ -6,8 +6,8 @@ import {
   constructDocmapArrayWithoutActionDoiUnderTest,
 } from './docmap-array-fixture';
 import {
-  retrieveActionDoiFromDocmap, ReviewActionFromDocmap,
-} from '../../../../src/ingest/evaluation-discovery/coar/retrieve-action-doi-from-docmap';
+  retrieveReviewActionFromDocmap, ReviewActionFromDocmap,
+} from '../../../../src/ingest/evaluation-discovery/coar/retrieve-review-action-from-docmap';
 import { arbitraryDate, arbitraryString, arbitraryUri } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 
@@ -17,7 +17,7 @@ const retrieveQueryResultErrorMessage = (result: E.Either<string, ReviewActionFr
   E.getOrElse((e) => e),
 );
 
-describe('retrieve-action-doi-from-docmap', () => {
+describe('retrieve-review-action-from-docmap', () => {
   describe('when the request to the docmap uri fails', () => {
     const docmapUri = arbitraryUri();
     let result: E.Either<string, ReviewActionFromDocmap>;
@@ -25,7 +25,7 @@ describe('retrieve-action-doi-from-docmap', () => {
     beforeEach(async () => {
       result = await pipe(
         docmapUri,
-        retrieveActionDoiFromDocmap({
+        retrieveReviewActionFromDocmap({
           fetchData: () => TE.left('fetch data fails for any reason'),
           fetchHead: () => TE.right(shouldNotBeCalled()),
         }),
@@ -48,7 +48,7 @@ describe('retrieve-action-doi-from-docmap', () => {
     beforeEach(async () => {
       result = await pipe(
         docmapUri,
-        retrieveActionDoiFromDocmap({
+        retrieveReviewActionFromDocmap({
           fetchData: <D>() => TE.right(constructDocmapArrayWithActionDoiUnderTest(inputUnderTest) as unknown as D),
           fetchHead: () => TE.right(shouldNotBeCalled()),
         }),
@@ -76,7 +76,7 @@ describe('retrieve-action-doi-from-docmap', () => {
     beforeEach(async () => {
       result = await pipe(
         docmapUri,
-        retrieveActionDoiFromDocmap({
+        retrieveReviewActionFromDocmap({
           fetchData: <D>() => TE.right({} as D),
           fetchHead: () => TE.right(shouldNotBeCalled()),
         }),
@@ -95,7 +95,7 @@ describe('retrieve-action-doi-from-docmap', () => {
     beforeEach(async () => {
       result = await pipe(
         docmapUri,
-        retrieveActionDoiFromDocmap({
+        retrieveReviewActionFromDocmap({
           fetchData: <D>() => TE.right([] as D),
           fetchHead: () => TE.right(shouldNotBeCalled()),
         }),
@@ -114,7 +114,7 @@ describe('retrieve-action-doi-from-docmap', () => {
     beforeEach(async () => {
       result = await pipe(
         docmapUri,
-        retrieveActionDoiFromDocmap({
+        retrieveReviewActionFromDocmap({
           fetchData: <D>() => TE.right(constructDocmapArrayWithoutActionDoiUnderTest() as unknown as D),
           fetchHead: () => TE.right(shouldNotBeCalled()),
         }),

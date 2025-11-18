@@ -1,6 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { retrieveActionDoiFromDocmap } from './retrieve-action-doi-from-docmap';
+import { retrieveReviewActionFromDocmap } from './retrieve-review-action-from-docmap';
 import { transformAnnouncementActionUriToSignpostingDocmapUri } from './transform-announcement-action-uri-to-signposting-docmap-uri';
 import {
   transformCoarNotificationUriToAnnouncementActionUri,
@@ -14,7 +14,7 @@ export const discoverPciEvaluations: DiscoverPublishedEvaluations = () => (
   'https://inbox-sciety-prod.elifesciences.org/inbox/urn:uuid:bf3513ee-1fef-4f30-a61b-20721b505f11',
   transformCoarNotificationUriToAnnouncementActionUri(dependencies),
   TE.chain(transformAnnouncementActionUriToSignpostingDocmapUri(dependencies)),
-  TE.chain(retrieveActionDoiFromDocmap(dependencies)),
+  TE.chain(retrieveReviewActionFromDocmap(dependencies)),
   TE.map((decodedResponse) => constructPublishedEvaluation({
     publishedOn: new Date(decodedResponse.actionDate),
     paperExpressionDoi: '10.24072/pcjournal.636',
