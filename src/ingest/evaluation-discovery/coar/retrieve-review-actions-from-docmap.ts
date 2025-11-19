@@ -33,7 +33,7 @@ const docmapResponseCodec = tt.readonlyNonEmptyArray(t.strict({
   steps: t.record(t.string, t.unknown),
 }));
 
-export const retrieveReviewActionFromDocmap = (
+export const retrieveReviewActionsFromDocmap = (
   dependencies: Dependencies,
 ) => (
   docmapUri: string,

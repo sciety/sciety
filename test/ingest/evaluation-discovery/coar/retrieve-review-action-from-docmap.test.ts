@@ -6,8 +6,8 @@ import {
   constructDocmapArrayWithReviewAction,
 } from './docmap-array-fixture';
 import {
-  retrieveReviewActionFromDocmap, ReviewActionsFromDocmap,
-} from '../../../../src/ingest/evaluation-discovery/coar/retrieve-review-action-from-docmap';
+  retrieveReviewActionsFromDocmap, ReviewActionsFromDocmap,
+} from '../../../../src/ingest/evaluation-discovery/coar/retrieve-review-actions-from-docmap';
 import { arbitraryDate, arbitraryString, arbitraryUri } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 
@@ -17,7 +17,7 @@ const retrieveQueryResultErrorMessage = (result: E.Either<string, ReviewActionsF
   E.getOrElse((e) => e),
 );
 
-describe('retrieve-review-action-from-docmap', () => {
+describe('retrieve-review-actions-from-docmap', () => {
   describe('when the request to the docmap uri fails', () => {
     const docmapUri = arbitraryUri();
     let result: E.Either<string, ReviewActionsFromDocmap>;
@@ -25,7 +25,7 @@ describe('retrieve-review-action-from-docmap', () => {
     beforeEach(async () => {
       result = await pipe(
         docmapUri,
-        retrieveReviewActionFromDocmap({
+        retrieveReviewActionsFromDocmap({
           fetchData: () => TE.left('fetch data fails for any reason'),
           fetchHead: () => TE.right(shouldNotBeCalled()),
         }),
@@ -49,7 +49,7 @@ describe('retrieve-review-action-from-docmap', () => {
     beforeEach(async () => {
       result = await pipe(
         docmapUri,
-        retrieveReviewActionFromDocmap({
+        retrieveReviewActionsFromDocmap({
           fetchData: <D>() => TE.right(constructDocmapArrayWithReviewAction(inputUnderTest) as unknown as D),
           fetchHead: () => TE.right(shouldNotBeCalled()),
         }),
@@ -69,7 +69,7 @@ describe('retrieve-review-action-from-docmap', () => {
     beforeEach(async () => {
       result = await pipe(
         docmapUri,
-        retrieveReviewActionFromDocmap({
+        retrieveReviewActionsFromDocmap({
           fetchData: <D>() => TE.right({} as D),
           fetchHead: () => TE.right(shouldNotBeCalled()),
         }),
@@ -88,7 +88,7 @@ describe('retrieve-review-action-from-docmap', () => {
     beforeEach(async () => {
       result = await pipe(
         docmapUri,
-        retrieveReviewActionFromDocmap({
+        retrieveReviewActionsFromDocmap({
           fetchData: <D>() => TE.right([] as D),
           fetchHead: () => TE.right(shouldNotBeCalled()),
         }),
@@ -107,7 +107,7 @@ describe('retrieve-review-action-from-docmap', () => {
     beforeEach(async () => {
       result = await pipe(
         docmapUri,
-        retrieveReviewActionFromDocmap({
+        retrieveReviewActionsFromDocmap({
           fetchData: <D>() => TE.right(constructDocmapArrayWithoutReviewAction() as unknown as D),
           fetchHead: () => TE.right(shouldNotBeCalled()),
         }),
