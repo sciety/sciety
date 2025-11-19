@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import {
   constructDocmapArrayWithoutReviewAction,
-  constructDocmapArrayWithReviewAction,
+  constructDocmapArrayWithReviewAction, constructDocmapArrayWithTwoReviewActions,
 } from './docmap-array-fixture';
 import {
   retrieveReviewActionsFromDocmap, ReviewActionsFromDocmap,
@@ -63,7 +63,35 @@ describe('retrieve-review-actions-from-docmap', () => {
   });
 
   describe('when the request to the docmap uri returns a docmap with two review actions', () => {
-    it.todo('returns the review actions');
+    const docmapUri = arbitraryUri();
+    const inputUnderTest = [
+      {
+        actionOutputDoi: arbitraryString(),
+        actionOutputDate: arbitraryDate().toISOString(),
+        actionInputDoi: arbitraryString(),
+      },
+      {
+        actionOutputDoi: arbitraryString(),
+        actionOutputDate: arbitraryDate().toISOString(),
+        actionInputDoi: arbitraryString(),
+      },
+    ];
+    let result: ReviewActionsFromDocmap;
+
+    beforeEach(async () => {
+      result = await pipe(
+        docmapUri,
+        retrieveReviewActionsFromDocmap({
+          fetchData: <D>() => TE.right(constructDocmapArrayWithTwoReviewActions(inputUnderTest) as unknown as D),
+          fetchHead: () => TE.right(shouldNotBeCalled()),
+        }),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
+
+    it.failing('returns the review actions', () => {
+      expect(result).toStrictEqual(inputUnderTest);
+    });
   });
 
   describe('when the request to the docmap uri does not return an array', () => {
