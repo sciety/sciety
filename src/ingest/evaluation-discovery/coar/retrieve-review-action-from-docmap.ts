@@ -6,7 +6,11 @@ import * as tt from 'io-ts-types';
 import { Dependencies } from '../../discover-published-evaluations';
 import { decodeAndReportFailures } from '../decode-and-report-failures';
 
-export type ReviewActionFromDocmap = { actionOutputDoi: string, actionOutputDate: string, actionInputDoi: string };
+export type ReviewActionsFromDocmap = ReadonlyArray<{
+  actionOutputDoi: string,
+  actionOutputDate: string,
+  actionInputDoi: string,
+}>;
 
 const stepWithActionDoiCodec = t.strict({
   actions: t.readonlyArray(t.strict({
@@ -33,7 +37,7 @@ export const retrieveReviewActionFromDocmap = (
   dependencies: Dependencies,
 ) => (
   docmapUri: string,
-): TE.TaskEither<string, ReviewActionFromDocmap> => pipe(
+): TE.TaskEither<string, ReviewActionsFromDocmap> => pipe(
   docmapUri,
   dependencies.fetchData<JSON>,
   TE.flatMapEither(decodeAndReportFailures(docmapResponseCodec)),
@@ -46,4 +50,5 @@ export const retrieveReviewActionFromDocmap = (
     actionOutputDate: step.actions[0].outputs[0].published,
     actionInputDoi: step.actions[0].inputs[0].doi,
   })),
+  TE.map((reviewAction) => [reviewAction]),
 );
