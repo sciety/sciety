@@ -62,6 +62,10 @@ describe('retrieve-review-actions-from-docmap', () => {
     });
   });
 
+  describe('when the request to the docmap uri returns a docmap with two review actions', () => {
+    it.todo('returns the review actions');
+  });
+
   describe('when the request to the docmap uri does not return an array', () => {
     const docmapUri = arbitraryUri();
     let result: E.Either<string, ReviewActionsFromDocmap>;
