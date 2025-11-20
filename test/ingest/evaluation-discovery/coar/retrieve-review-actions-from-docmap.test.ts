@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import {
   constructDocmapArrayWithoutReviewAction,
-  constructDocmapArrayWithOneReviewAction, constructDocmapArrayWithTwoReviewActions,
+  constructDocmapArrayWithOneReviewAction, constructDocmapArrayWithTwoReviewActions, arbitraryDocmapReviewAction,
 } from './docmap-array-fixture';
 import {
   retrieveReviewActionsFromDocmap, ReviewActionFromDocmap,
@@ -19,43 +19,18 @@ const retrieveQueryResultErrorMessage = (
   E.getOrElse((e) => e),
 );
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const arbitraryDocmapReviewAction = () => ({
-  participants: [{
-    actor: {
-      type: 'person',
-      name: arbitraryString(),
-    },
-    role: 'author',
-  }],
-  outputs: [{
-    doi: arbitraryString(),
-    published: arbitraryDate().toISOString(),
-    type: 'editorial-decision',
-  }],
-  inputs: [{
-    doi: arbitraryString(),
-    published: arbitraryDate().toISOString(),
-    type: 'preprint',
-  }],
-});
-
 describe('retrieve-review-actions-from-docmap', () => {
   describe('when the request to the docmap uri returns a docmap', () => {
     describe('with one review action', () => {
       const docmapUri = arbitraryUri();
-      const inputUnderTest = {
-        actionOutputDoi: arbitraryString(),
-        actionOutputDate: arbitraryDate().toISOString(),
-        actionInputDoi: arbitraryString(),
-      };
+      const docmapReviewAction = arbitraryDocmapReviewAction();
       let result: ReadonlyArray<ReviewActionFromDocmap>;
 
       beforeEach(async () => {
         result = await pipe(
           docmapUri,
           retrieveReviewActionsFromDocmap({
-            fetchData: <D>() => TE.right(constructDocmapArrayWithOneReviewAction(inputUnderTest) as unknown as D),
+            fetchData: <D>() => TE.right(constructDocmapArrayWithOneReviewAction(docmapReviewAction) as unknown as D),
             fetchHead: () => TE.right(shouldNotBeCalled()),
           }),
           TE.getOrElse(shouldNotBeCalled),
@@ -63,7 +38,11 @@ describe('retrieve-review-actions-from-docmap', () => {
       });
 
       it('returns a review action', () => {
-        expect(result).toStrictEqual([inputUnderTest]);
+        expect(result).toStrictEqual([{
+          actionOutputDoi: docmapReviewAction.outputs[0].doi,
+          actionOutputDate: docmapReviewAction.outputs[0].published,
+          actionInputDoi: docmapReviewAction.inputs[0].doi,
+        }]);
       });
     });
 
