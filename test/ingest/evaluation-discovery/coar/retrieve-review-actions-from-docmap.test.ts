@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import {
   constructDocmapArrayWithoutReviewAction,
-  constructDocmapArrayWithOneReviewAction, constructDocmapArrayWithTwoReviewActions, arbitraryDocmapReviewAction,
+  constructDocmapArrayWithReviewActions, constructDocmapArrayWithTwoReviewActions, arbitraryDocmapReviewAction,
 } from './docmap-array-fixture';
 import {
   retrieveReviewActionsFromDocmap, ReviewActionFromDocmap,
@@ -30,7 +30,7 @@ describe('retrieve-review-actions-from-docmap', () => {
         result = await pipe(
           docmapUri,
           retrieveReviewActionsFromDocmap({
-            fetchData: <D>() => TE.right(constructDocmapArrayWithOneReviewAction(docmapReviewAction) as unknown as D),
+            fetchData: <D>() => TE.right(constructDocmapArrayWithReviewActions([docmapReviewAction]) as unknown as D),
             fetchHead: () => TE.right(shouldNotBeCalled()),
           }),
           TE.getOrElse(shouldNotBeCalled),

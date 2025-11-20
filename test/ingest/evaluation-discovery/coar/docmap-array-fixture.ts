@@ -23,7 +23,9 @@ export const arbitraryDocmapReviewAction = () => ({
 
 type DocmapReviewAction = ReturnType<typeof arbitraryDocmapReviewAction>;
 
-export const constructDocmapArrayWithOneReviewAction = (docmapReviewAction: DocmapReviewAction): JSON => ([
+export const constructDocmapArrayWithReviewActions = (
+  docmapReviewActions: ReadonlyArray<DocmapReviewAction>,
+): JSON => ([
   {
     type: 'docmap',
     id: 'https://neuro.peercommunityin.org/metadata/recommendation?article_id=217',
@@ -109,7 +111,7 @@ export const constructDocmapArrayWithOneReviewAction = (docmapReviewAction: Docm
         'next-step': '_:b1',
       },
       '_:b1': {
-        actions: [docmapReviewAction],
+        actions: docmapReviewActions,
         assertions: [
           {
             status: 'reviewed',
