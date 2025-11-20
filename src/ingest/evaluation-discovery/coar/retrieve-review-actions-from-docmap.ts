@@ -44,7 +44,7 @@ export const retrieveReviewActionsFromDocmap = (
   TE.map((decodedResponse) => decodedResponse[0].steps),
   TE.map((steps) => Object.values(steps)),
   TE.map(RA.findFirst(stepWithActionDoiCodec.is)),
-  TE.flatMap(TE.fromOption(() => 'No Action DOI found.')),
+  TE.flatMap(TE.fromOption(() => 'No step with decodable action found.')),
   TE.map((step) => step.actions),
   TE.map(RA.map((action) => ({
     actionOutputDoi: action.outputs[0].doi,
