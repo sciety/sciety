@@ -16,7 +16,6 @@ export const discoverPciEvaluations: DiscoverPublishedEvaluations = () => (
   transformCoarNotificationUriToAnnouncementActionUri(dependencies),
   TE.chain(transformAnnouncementActionUriToSignpostingDocmapUri(dependencies)),
   TE.chain(retrieveReviewActionsFromDocmap(dependencies)),
-  (foo) => foo,
   TE.map(RA.map((reviewAction) => constructPublishedEvaluation({
     publishedOn: new Date(reviewAction.actionOutputDate),
     paperExpressionDoi: reviewAction.actionInputDoi,
