@@ -45,10 +45,10 @@ export const retrieveReviewActionsFromDocmap = (
   TE.map((steps) => Object.values(steps)),
   TE.map(RA.findFirst(stepWithActionDoiCodec.is)),
   TE.flatMap(TE.fromOption(() => 'No Action DOI found.')),
-  TE.map((step) => ({
-    actionOutputDoi: step.actions[0].outputs[0].doi,
-    actionOutputDate: step.actions[0].outputs[0].published,
-    actionInputDoi: step.actions[0].inputs[0].doi,
-  })),
-  TE.map((reviewAction) => [reviewAction]),
+  TE.map((step) => step.actions),
+  TE.map(RA.map((action) => ({
+    actionOutputDoi: action.outputs[0].doi,
+    actionOutputDate: action.outputs[0].published,
+    actionInputDoi: action.inputs[0].doi,
+  }))),
 );
