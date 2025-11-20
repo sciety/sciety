@@ -20,6 +20,125 @@ const retrieveQueryResultErrorMessage = (
 );
 
 describe('retrieve-review-actions-from-docmap', () => {
+  describe('when the request to the docmap uri returns a docmap', () => {
+    describe('with one review action', () => {
+      const docmapUri = arbitraryUri();
+      const inputUnderTest = {
+        actionOutputDoi: arbitraryString(),
+        actionOutputDate: arbitraryDate().toISOString(),
+        actionInputDoi: arbitraryString(),
+      };
+      let result: ReadonlyArray<ReviewActionFromDocmap>;
+
+      beforeEach(async () => {
+        result = await pipe(
+          docmapUri,
+          retrieveReviewActionsFromDocmap({
+            fetchData: <D>() => TE.right(constructDocmapArrayWithOneReviewAction(inputUnderTest) as unknown as D),
+            fetchHead: () => TE.right(shouldNotBeCalled()),
+          }),
+          TE.getOrElse(shouldNotBeCalled),
+        )();
+      });
+
+      it('returns a review action', () => {
+        expect(result).toStrictEqual([inputUnderTest]);
+      });
+    });
+
+    describe('with two review actions', () => {
+      const docmapUri = arbitraryUri();
+      const inputUnderTest = [
+        {
+          actionOutputDoi: arbitraryString(),
+          actionOutputDate: arbitraryDate().toISOString(),
+          actionInputDoi: arbitraryString(),
+        },
+        {
+          actionOutputDoi: arbitraryString(),
+          actionOutputDate: arbitraryDate().toISOString(),
+          actionInputDoi: arbitraryString(),
+        },
+      ];
+      let result: ReadonlyArray<ReviewActionFromDocmap>;
+
+      beforeEach(async () => {
+        result = await pipe(
+          docmapUri,
+          retrieveReviewActionsFromDocmap({
+            fetchData: <D>() => TE.right(constructDocmapArrayWithTwoReviewActions(inputUnderTest) as unknown as D),
+            fetchHead: () => TE.right(shouldNotBeCalled()),
+          }),
+          TE.getOrElse(shouldNotBeCalled),
+        )();
+      });
+
+      it('returns the review actions', () => {
+        expect(result).toStrictEqual(inputUnderTest);
+      });
+    });
+
+    describe('without an action doi', () => {
+      const docmapUri = arbitraryUri();
+      let result: E.Either<string, ReadonlyArray<ReviewActionFromDocmap>>;
+
+      beforeEach(async () => {
+        result = await pipe(
+          docmapUri,
+          retrieveReviewActionsFromDocmap({
+            fetchData: <D>() => TE.right(constructDocmapArrayWithoutReviewAction() as unknown as D),
+            fetchHead: () => TE.right(shouldNotBeCalled()),
+          }),
+        )();
+      });
+
+      it('returns on the left', () => {
+        expect(E.isLeft(result)).toBe(true);
+        expect(retrieveQueryResultErrorMessage(result)).toBe('No Action DOI found.');
+      });
+    });
+  });
+
+  describe('when the request to the docmap', () => {
+    describe('returns an empty array', () => {
+      const docmapUri = arbitraryUri();
+      let result: E.Either<string, ReadonlyArray<ReviewActionFromDocmap>>;
+
+      beforeEach(async () => {
+        result = await pipe(
+          docmapUri,
+          retrieveReviewActionsFromDocmap({
+            fetchData: <D>() => TE.right([] as D),
+            fetchHead: () => TE.right(shouldNotBeCalled()),
+          }),
+        )();
+      });
+
+      it('returns on the left', () => {
+        expect(E.isLeft(result)).toBe(true);
+      });
+    });
+
+    describe('does not return an array', () => {
+      const docmapUri = arbitraryUri();
+      let result: E.Either<string, ReadonlyArray<ReviewActionFromDocmap>>;
+
+      beforeEach(async () => {
+        result = await pipe(
+          docmapUri,
+          retrieveReviewActionsFromDocmap({
+            fetchData: <D>() => TE.right({} as D),
+            fetchHead: () => TE.right(shouldNotBeCalled()),
+          }),
+        )();
+      });
+
+      it('returns on the left', () => {
+        expect(E.isLeft(result)).toBe(true);
+      });
+    });
+  });
+
   describe('when the request to the docmap uri fails', () => {
     const docmapUri = arbitraryUri();
     let result: E.Either<string, ReadonlyArray<ReviewActionFromDocmap>>;
@@ -36,121 +155,6 @@ describe('retrieve-review-actions-from-docmap', () => {
 
     it('returns on the left', () => {
       expect(E.isLeft(result)).toBe(true);
-    });
-  });
-
-  describe('when the request to the docmap uri returns a docmap with one review action', () => {
-    const docmapUri = arbitraryUri();
-    const inputUnderTest = {
-      actionOutputDoi: arbitraryString(),
-      actionOutputDate: arbitraryDate().toISOString(),
-      actionInputDoi: arbitraryString(),
-    };
-    let result: ReadonlyArray<ReviewActionFromDocmap>;
-
-    beforeEach(async () => {
-      result = await pipe(
-        docmapUri,
-        retrieveReviewActionsFromDocmap({
-          fetchData: <D>() => TE.right(constructDocmapArrayWithOneReviewAction(inputUnderTest) as unknown as D),
-          fetchHead: () => TE.right(shouldNotBeCalled()),
-        }),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
-    });
-
-    it('returns a review action', () => {
-      expect(result).toStrictEqual([inputUnderTest]);
-    });
-  });
-
-  describe('when the request to the docmap uri returns a docmap with two review actions', () => {
-    const docmapUri = arbitraryUri();
-    const inputUnderTest = [
-      {
-        actionOutputDoi: arbitraryString(),
-        actionOutputDate: arbitraryDate().toISOString(),
-        actionInputDoi: arbitraryString(),
-      },
-      {
-        actionOutputDoi: arbitraryString(),
-        actionOutputDate: arbitraryDate().toISOString(),
-        actionInputDoi: arbitraryString(),
-      },
-    ];
-    let result: ReadonlyArray<ReviewActionFromDocmap>;
-
-    beforeEach(async () => {
-      result = await pipe(
-        docmapUri,
-        retrieveReviewActionsFromDocmap({
-          fetchData: <D>() => TE.right(constructDocmapArrayWithTwoReviewActions(inputUnderTest) as unknown as D),
-          fetchHead: () => TE.right(shouldNotBeCalled()),
-        }),
-        TE.getOrElse(shouldNotBeCalled),
-      )();
-    });
-
-    it('returns the review actions', () => {
-      expect(result).toStrictEqual(inputUnderTest);
-    });
-  });
-
-  describe('when the request to the docmap uri does not return an array', () => {
-    const docmapUri = arbitraryUri();
-    let result: E.Either<string, ReadonlyArray<ReviewActionFromDocmap>>;
-
-    beforeEach(async () => {
-      result = await pipe(
-        docmapUri,
-        retrieveReviewActionsFromDocmap({
-          fetchData: <D>() => TE.right({} as D),
-          fetchHead: () => TE.right(shouldNotBeCalled()),
-        }),
-      )();
-    });
-
-    it('returns on the left', () => {
-      expect(E.isLeft(result)).toBe(true);
-    });
-  });
-
-  describe('when the request to the docmap uri returns an empty array', () => {
-    const docmapUri = arbitraryUri();
-    let result: E.Either<string, ReadonlyArray<ReviewActionFromDocmap>>;
-
-    beforeEach(async () => {
-      result = await pipe(
-        docmapUri,
-        retrieveReviewActionsFromDocmap({
-          fetchData: <D>() => TE.right([] as D),
-          fetchHead: () => TE.right(shouldNotBeCalled()),
-        }),
-      )();
-    });
-
-    it('returns on the left', () => {
-      expect(E.isLeft(result)).toBe(true);
-    });
-  });
-
-  describe('when the request to the docmap uri returns a docmap without an action doi', () => {
-    const docmapUri = arbitraryUri();
-    let result: E.Either<string, ReadonlyArray<ReviewActionFromDocmap>>;
-
-    beforeEach(async () => {
-      result = await pipe(
-        docmapUri,
-        retrieveReviewActionsFromDocmap({
-          fetchData: <D>() => TE.right(constructDocmapArrayWithoutReviewAction() as unknown as D),
-          fetchHead: () => TE.right(shouldNotBeCalled()),
-        }),
-      )();
-    });
-
-    it('returns on the left', () => {
-      expect(E.isLeft(result)).toBe(true);
-      expect(retrieveQueryResultErrorMessage(result)).toBe('No Action DOI found.');
     });
   });
 });
