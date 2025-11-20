@@ -19,6 +19,27 @@ const retrieveQueryResultErrorMessage = (
   E.getOrElse((e) => e),
 );
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const arbitraryDocmapReviewAction = () => ({
+  participants: [{
+    actor: {
+      type: 'person',
+      name: arbitraryString(),
+    },
+    role: 'author',
+  }],
+  outputs: [{
+    doi: arbitraryString(),
+    published: arbitraryDate().toISOString(),
+    type: 'editorial-decision',
+  }],
+  inputs: [{
+    doi: arbitraryString(),
+    published: arbitraryDate().toISOString(),
+    type: 'preprint',
+  }],
+});
+
 describe('retrieve-review-actions-from-docmap', () => {
   describe('when the request to the docmap uri returns a docmap', () => {
     describe('with one review action', () => {
