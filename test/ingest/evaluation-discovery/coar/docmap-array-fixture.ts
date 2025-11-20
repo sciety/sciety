@@ -1,4 +1,4 @@
-export const constructDocmapArrayWithReviewAction = (
+export const constructDocmapArrayWithOneReviewAction = (
   {
     actionOutputDoi,
     actionOutputDate,
@@ -106,106 +106,6 @@ export const constructDocmapArrayWithReviewAction = (
                 published: actionOutputDate,
                 doi: actionOutputDoi,
                 type: 'editorial-decision',
-              },
-            ],
-            inputs: [
-              {
-                published: '2024-07-30T11:52:23',
-                doi: actionInputDoi,
-                type: 'preprint',
-              },
-            ],
-          },
-          {
-            participants: [
-              {
-                actor: {
-                  type: 'person',
-                  name: 'Georgie Mills',
-                },
-                role: 'author',
-              },
-            ],
-            outputs: [
-              {
-                published: actionOutputDate,
-                doi: actionOutputDoi,
-                type: 'review',
-              },
-            ],
-            inputs: [
-              {
-                published: '2024-07-30T11:52:23',
-                doi: actionInputDoi,
-                type: 'preprint',
-              },
-            ],
-          },
-          {
-            participants: [
-              {
-                actor: {
-                  type: 'person',
-                  name: 'Anonymous reviewer',
-                },
-                role: 'author',
-              },
-            ],
-            outputs: [
-              {
-                published: actionOutputDate,
-                doi: actionOutputDoi,
-                type: 'review',
-              },
-            ],
-            inputs: [
-              {
-                published: '2024-07-30T11:52:23',
-                doi: actionInputDoi,
-                type: 'preprint',
-              },
-            ],
-          },
-          {
-            participants: [
-              {
-                actor: {
-                  type: 'person',
-                  name: 'Daniel Lakens',
-                },
-                role: 'author',
-              },
-            ],
-            outputs: [
-              {
-                published: actionOutputDate,
-                doi: actionOutputDoi,
-                type: 'review',
-              },
-            ],
-            inputs: [
-              {
-                published: '2024-07-30T11:52:23',
-                doi: actionInputDoi,
-                type: 'preprint',
-              },
-            ],
-          },
-          {
-            participants: [
-              {
-                actor: {
-                  type: 'person',
-                  name: 'James McCutcheon',
-                },
-                role: 'author',
-              },
-            ],
-            outputs: [
-              {
-                published: actionOutputDate,
-                doi: actionOutputDoi,
-                type: 'review',
               },
             ],
             inputs: [
@@ -1219,31 +1119,6 @@ export const constructDocmapArrayWithTwoReviewActions = (
               {
                 published: '2024-07-30T11:52:23',
                 doi: secondReviewAction.actionInputDoi,
-                type: 'preprint',
-              },
-            ],
-          },
-          {
-            participants: [
-              {
-                actor: {
-                  type: 'person',
-                  name: 'Anonymous reviewer',
-                },
-                role: 'author',
-              },
-            ],
-            outputs: [
-              {
-                published: actionOutputDate,
-                doi: actionOutputDoi,
-                type: 'review',
-              },
-            ],
-            inputs: [
-              {
-                published: '2024-07-30T11:52:23',
-                doi: actionInputDoi,
                 type: 'preprint',
               },
             ],
