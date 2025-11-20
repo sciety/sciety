@@ -3,12 +3,12 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import {
   constructDocmapArrayWithoutReviewAction,
-  constructDocmapArrayWithReviewActions, constructDocmapArrayWithTwoReviewActions, arbitraryDocmapReviewAction,
+  constructDocmapArrayWithReviewActions, arbitraryDocmapReviewAction,
 } from './docmap-array-fixture';
 import {
   retrieveReviewActionsFromDocmap, ReviewActionFromDocmap,
 } from '../../../../src/ingest/evaluation-discovery/coar/retrieve-review-actions-from-docmap';
-import { arbitraryDate, arbitraryString, arbitraryUri } from '../../../helpers';
+import { arbitraryUri } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 
 const retrieveQueryResultErrorMessage = (
@@ -48,25 +48,27 @@ describe('retrieve-review-actions-from-docmap', () => {
 
     describe('with two review actions', () => {
       const docmapUri = arbitraryUri();
-      const inputUnderTest = [
-        {
-          actionOutputDoi: arbitraryString(),
-          actionOutputDate: arbitraryDate().toISOString(),
-          actionInputDoi: arbitraryString(),
-        },
-        {
-          actionOutputDoi: arbitraryString(),
-          actionOutputDate: arbitraryDate().toISOString(),
-          actionInputDoi: arbitraryString(),
-        },
-      ];
+      const docmapReviewAction1 = arbitraryDocmapReviewAction();
+      const docmapReviewAction2 = arbitraryDocmapReviewAction();
+      const expectedResult = [{
+        actionOutputDoi: docmapReviewAction1.outputs[0].doi,
+        actionOutputDate: docmapReviewAction1.outputs[0].published,
+        actionInputDoi: docmapReviewAction1.inputs[0].doi,
+      },
+      {
+        actionOutputDoi: docmapReviewAction2.outputs[0].doi,
+        actionOutputDate: docmapReviewAction2.outputs[0].published,
+        actionInputDoi: docmapReviewAction2.inputs[0].doi,
+      }];
       let result: ReadonlyArray<ReviewActionFromDocmap>;
 
       beforeEach(async () => {
         result = await pipe(
           docmapUri,
           retrieveReviewActionsFromDocmap({
-            fetchData: <D>() => TE.right(constructDocmapArrayWithTwoReviewActions(inputUnderTest) as unknown as D),
+            fetchData: <D>() => TE.right(
+              constructDocmapArrayWithReviewActions([docmapReviewAction1, docmapReviewAction2]) as unknown as D,
+            ),
             fetchHead: () => TE.right(shouldNotBeCalled()),
           }),
           TE.getOrElse(shouldNotBeCalled),
@@ -74,7 +76,7 @@ describe('retrieve-review-actions-from-docmap', () => {
       });
 
       it('returns the review actions', () => {
-        expect(result).toStrictEqual(inputUnderTest);
+        expect(result).toStrictEqual(expectedResult);
       });
     });
 
