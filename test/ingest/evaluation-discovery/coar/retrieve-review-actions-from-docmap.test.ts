@@ -53,6 +53,10 @@ describe('retrieve-review-actions-from-docmap', () => {
       });
     });
 
+    describe('with one review action and additional steps without review actions', () => {
+      it.todo('returns a review action, ignoring other steps');
+    });
+
     describe('with two review actions', () => {
       const docmapUri = arbitraryUri();
       let result: ReadonlyArray<ReviewActionFromDocmap>;
