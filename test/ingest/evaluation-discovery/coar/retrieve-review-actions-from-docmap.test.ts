@@ -3,6 +3,8 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import {
   constructDocmapArrayWithReviewActions, arbitraryDocmapReviewAction,
+  constructMinimalDocmapStepWithReviewActions,
+  constructMinimalDocmapWithSteps,
 } from './docmap-array-fixture';
 import {
   retrieveReviewActionsFromDocmap, ReviewActionFromDocmap,
@@ -72,7 +74,44 @@ describe('retrieve-review-actions-from-docmap', () => {
     });
 
     describe('with two review actions in two different steps', () => {
-      it.todo('returns the review actions');
+      const docmapUri = arbitraryUri();
+      const docmapReviewAction1 = arbitraryDocmapReviewAction();
+      const docmapReviewAction2 = arbitraryDocmapReviewAction();
+      const expectedResult = [{
+        actionOutputDoi: docmapReviewAction1.outputs[0].doi,
+        actionOutputDate: docmapReviewAction1.outputs[0].published,
+        actionInputDoi: docmapReviewAction1.inputs[0].doi,
+      },
+      {
+        actionOutputDoi: docmapReviewAction2.outputs[0].doi,
+        actionOutputDate: docmapReviewAction2.outputs[0].published,
+        actionInputDoi: docmapReviewAction2.inputs[0].doi,
+      }];
+      let result: ReadonlyArray<ReviewActionFromDocmap>;
+
+      const docmap = constructMinimalDocmapWithSteps(
+        {
+          '_:b1': constructMinimalDocmapStepWithReviewActions([docmapReviewAction1]),
+          '_:b3': constructMinimalDocmapStepWithReviewActions([docmapReviewAction2]),
+        },
+      );
+
+      beforeEach(async () => {
+        result = await pipe(
+          docmapUri,
+          retrieveReviewActionsFromDocmap({
+            fetchData: <D>() => TE.right(
+              [docmap] as unknown as D,
+            ),
+            fetchHead: () => TE.right(shouldNotBeCalled()),
+          }),
+          TE.getOrElse(shouldNotBeCalled),
+        )();
+      });
+
+      it.failing('returns the review actions', () => {
+        expect(result).toStrictEqual(expectedResult);
+      });
     });
   });
 
