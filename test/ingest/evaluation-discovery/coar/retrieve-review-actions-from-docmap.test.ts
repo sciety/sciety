@@ -13,6 +13,15 @@ import {
 import { arbitraryUri } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 
+const runQuery = async (uri: string, docmapResponse: unknown) => pipe(
+  uri,
+  retrieveReviewActionsFromDocmap({
+    fetchData: <D>() => TE.right([docmapResponse] as unknown as D),
+    fetchHead: () => TE.right(shouldNotBeCalled()),
+  }),
+  TE.getOrElse(shouldNotBeCalled),
+)();
+
 describe('retrieve-review-actions-from-docmap', () => {
   describe('when the request to the docmap uri returns a docmap', () => {
     const docmapReviewAction1 = arbitraryDocmapReviewAction();
@@ -39,14 +48,7 @@ describe('retrieve-review-actions-from-docmap', () => {
       );
 
       beforeEach(async () => {
-        result = await pipe(
-          docmapUri,
-          retrieveReviewActionsFromDocmap({
-            fetchData: <D>() => TE.right([docmap] as unknown as D),
-            fetchHead: () => TE.right(shouldNotBeCalled()),
-          }),
-          TE.getOrElse(shouldNotBeCalled),
-        )();
+        result = await runQuery(docmapUri, docmap);
       });
 
       it('returns a review action', () => {
@@ -66,14 +68,7 @@ describe('retrieve-review-actions-from-docmap', () => {
       );
 
       beforeEach(async () => {
-        result = await pipe(
-          docmapUri,
-          retrieveReviewActionsFromDocmap({
-            fetchData: <D>() => TE.right([docmap] as unknown as D),
-            fetchHead: () => TE.right(shouldNotBeCalled()),
-          }),
-          TE.getOrElse(shouldNotBeCalled),
-        )();
+        result = await runQuery(docmapUri, docmap);
       });
 
       it('returns a review action, ignoring other steps', () => {
@@ -92,16 +87,7 @@ describe('retrieve-review-actions-from-docmap', () => {
       );
 
       beforeEach(async () => {
-        result = await pipe(
-          docmapUri,
-          retrieveReviewActionsFromDocmap({
-            fetchData: <D>() => TE.right(
-              [docmap] as unknown as D,
-            ),
-            fetchHead: () => TE.right(shouldNotBeCalled()),
-          }),
-          TE.getOrElse(shouldNotBeCalled),
-        )();
+        result = await runQuery(docmapUri, docmap);
       });
 
       it('returns the review actions', () => {
@@ -121,16 +107,7 @@ describe('retrieve-review-actions-from-docmap', () => {
       );
 
       beforeEach(async () => {
-        result = await pipe(
-          docmapUri,
-          retrieveReviewActionsFromDocmap({
-            fetchData: <D>() => TE.right(
-              [docmap] as unknown as D,
-            ),
-            fetchHead: () => TE.right(shouldNotBeCalled()),
-          }),
-          TE.getOrElse(shouldNotBeCalled),
-        )();
+        result = await runQuery(docmapUri, docmap);
       });
 
       it('returns the review actions', () => {
