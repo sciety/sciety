@@ -109,7 +109,7 @@ describe('retrieve-review-actions-from-docmap', () => {
         )();
       });
 
-      it.failing('returns the review actions', () => {
+      it('returns the review actions', () => {
         expect(result).toStrictEqual(expectedResult);
       });
     });
