@@ -3,6 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import {
   arbitraryDocmapReviewAction,
+  constructMinimalDocmapStepWithoutReviewActions,
   constructMinimalDocmapStepWithReviewActions,
   constructMinimalDocmapWithSteps,
 } from './docmap-array-fixture';
@@ -54,7 +55,30 @@ describe('retrieve-review-actions-from-docmap', () => {
     });
 
     describe('with one review action and additional steps without review actions', () => {
-      it.todo('returns a review action, ignoring other steps');
+      const docmapUri = arbitraryUri();
+      let result: ReadonlyArray<ReviewActionFromDocmap>;
+
+      const docmap = constructMinimalDocmapWithSteps(
+        {
+          '_:b1': constructMinimalDocmapStepWithReviewActions([docmapReviewAction1]),
+          '_:b2': constructMinimalDocmapStepWithoutReviewActions(),
+        },
+      );
+
+      beforeEach(async () => {
+        result = await pipe(
+          docmapUri,
+          retrieveReviewActionsFromDocmap({
+            fetchData: <D>() => TE.right([docmap] as unknown as D),
+            fetchHead: () => TE.right(shouldNotBeCalled()),
+          }),
+          TE.getOrElse(shouldNotBeCalled),
+        )();
+      });
+
+      it('returns a review action, ignoring other steps', () => {
+        expect(result).toStrictEqual([expectedResultForReviewAction1]);
+      });
     });
 
     describe('with two review actions', () => {
