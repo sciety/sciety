@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import {
-  constructDocmapArrayWithReviewActions, arbitraryDocmapReviewAction,
+  arbitraryDocmapReviewAction,
   constructMinimalDocmapStepWithReviewActions,
   constructMinimalDocmapWithSteps,
 } from './docmap-array-fixture';
@@ -19,11 +19,17 @@ describe('retrieve-review-actions-from-docmap', () => {
       const docmapReviewAction = arbitraryDocmapReviewAction();
       let result: ReadonlyArray<ReviewActionFromDocmap>;
 
+      const docmap = constructMinimalDocmapWithSteps(
+        {
+          '_:b1': constructMinimalDocmapStepWithReviewActions([docmapReviewAction]),
+        },
+      );
+
       beforeEach(async () => {
         result = await pipe(
           docmapUri,
           retrieveReviewActionsFromDocmap({
-            fetchData: <D>() => TE.right(constructDocmapArrayWithReviewActions([docmapReviewAction]) as unknown as D),
+            fetchData: <D>() => TE.right([docmap] as unknown as D),
             fetchHead: () => TE.right(shouldNotBeCalled()),
           }),
           TE.getOrElse(shouldNotBeCalled),
@@ -55,12 +61,18 @@ describe('retrieve-review-actions-from-docmap', () => {
       }];
       let result: ReadonlyArray<ReviewActionFromDocmap>;
 
+      const docmap = constructMinimalDocmapWithSteps(
+        {
+          '_:b1': constructMinimalDocmapStepWithReviewActions([docmapReviewAction1, docmapReviewAction2]),
+        },
+      );
+
       beforeEach(async () => {
         result = await pipe(
           docmapUri,
           retrieveReviewActionsFromDocmap({
             fetchData: <D>() => TE.right(
-              constructDocmapArrayWithReviewActions([docmapReviewAction1, docmapReviewAction2]) as unknown as D,
+              [docmap] as unknown as D,
             ),
             fetchHead: () => TE.right(shouldNotBeCalled()),
           }),
