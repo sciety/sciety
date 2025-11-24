@@ -70,6 +70,10 @@ describe('retrieve-review-actions-from-docmap', () => {
         expect(result).toStrictEqual(expectedResult);
       });
     });
+
+    describe('with two review actions in two different steps', () => {
+      it.todo('returns the review actions');
+    });
   });
 
   describe('when the request to the docmap', () => {
