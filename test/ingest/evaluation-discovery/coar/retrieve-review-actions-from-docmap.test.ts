@@ -14,14 +14,26 @@ import { shouldNotBeCalled } from '../../../should-not-be-called';
 
 describe('retrieve-review-actions-from-docmap', () => {
   describe('when the request to the docmap uri returns a docmap', () => {
+    const docmapReviewAction1 = arbitraryDocmapReviewAction();
+    const docmapReviewAction2 = arbitraryDocmapReviewAction();
+    const expectedResultForReviewAction1 = {
+      actionOutputDoi: docmapReviewAction1.outputs[0].doi,
+      actionOutputDate: docmapReviewAction1.outputs[0].published,
+      actionInputDoi: docmapReviewAction1.inputs[0].doi,
+    };
+    const expectedResultForReviewAction2 = {
+      actionOutputDoi: docmapReviewAction2.outputs[0].doi,
+      actionOutputDate: docmapReviewAction2.outputs[0].published,
+      actionInputDoi: docmapReviewAction2.inputs[0].doi,
+    };
+
     describe('with one review action', () => {
       const docmapUri = arbitraryUri();
-      const docmapReviewAction = arbitraryDocmapReviewAction();
       let result: ReadonlyArray<ReviewActionFromDocmap>;
 
       const docmap = constructMinimalDocmapWithSteps(
         {
-          '_:b1': constructMinimalDocmapStepWithReviewActions([docmapReviewAction]),
+          '_:b1': constructMinimalDocmapStepWithReviewActions([docmapReviewAction1]),
         },
       );
 
@@ -37,28 +49,12 @@ describe('retrieve-review-actions-from-docmap', () => {
       });
 
       it('returns a review action', () => {
-        expect(result).toStrictEqual([{
-          actionOutputDoi: docmapReviewAction.outputs[0].doi,
-          actionOutputDate: docmapReviewAction.outputs[0].published,
-          actionInputDoi: docmapReviewAction.inputs[0].doi,
-        }]);
+        expect(result).toStrictEqual([expectedResultForReviewAction1]);
       });
     });
 
     describe('with two review actions', () => {
       const docmapUri = arbitraryUri();
-      const docmapReviewAction1 = arbitraryDocmapReviewAction();
-      const docmapReviewAction2 = arbitraryDocmapReviewAction();
-      const expectedResult = [{
-        actionOutputDoi: docmapReviewAction1.outputs[0].doi,
-        actionOutputDate: docmapReviewAction1.outputs[0].published,
-        actionInputDoi: docmapReviewAction1.inputs[0].doi,
-      },
-      {
-        actionOutputDoi: docmapReviewAction2.outputs[0].doi,
-        actionOutputDate: docmapReviewAction2.outputs[0].published,
-        actionInputDoi: docmapReviewAction2.inputs[0].doi,
-      }];
       let result: ReadonlyArray<ReviewActionFromDocmap>;
 
       const docmap = constructMinimalDocmapWithSteps(
@@ -81,24 +77,12 @@ describe('retrieve-review-actions-from-docmap', () => {
       });
 
       it('returns the review actions', () => {
-        expect(result).toStrictEqual(expectedResult);
+        expect(result).toStrictEqual([expectedResultForReviewAction1, expectedResultForReviewAction2]);
       });
     });
 
     describe('with two review actions in two different steps', () => {
       const docmapUri = arbitraryUri();
-      const docmapReviewAction1 = arbitraryDocmapReviewAction();
-      const docmapReviewAction2 = arbitraryDocmapReviewAction();
-      const expectedResult = [{
-        actionOutputDoi: docmapReviewAction1.outputs[0].doi,
-        actionOutputDate: docmapReviewAction1.outputs[0].published,
-        actionInputDoi: docmapReviewAction1.inputs[0].doi,
-      },
-      {
-        actionOutputDoi: docmapReviewAction2.outputs[0].doi,
-        actionOutputDate: docmapReviewAction2.outputs[0].published,
-        actionInputDoi: docmapReviewAction2.inputs[0].doi,
-      }];
       let result: ReadonlyArray<ReviewActionFromDocmap>;
 
       const docmap = constructMinimalDocmapWithSteps(
@@ -122,7 +106,7 @@ describe('retrieve-review-actions-from-docmap', () => {
       });
 
       it('returns the review actions', () => {
-        expect(result).toStrictEqual(expectedResult);
+        expect(result).toStrictEqual([expectedResultForReviewAction1, expectedResultForReviewAction2]);
       });
     });
   });
