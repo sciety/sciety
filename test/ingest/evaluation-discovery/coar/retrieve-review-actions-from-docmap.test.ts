@@ -28,8 +28,14 @@ const runQueryHappyPath = (uri: string, docmapResponse: unknown) => pipe(
 
 describe('retrieve-review-actions-from-docmap', () => {
   describe('when the request to the docmap uri returns a docmap', () => {
-    const docmapReviewAction1 = arbitraryDocmapReviewAction(arbitraryString(), arbitraryDate(), arbitraryString());
-    const docmapReviewAction2 = arbitraryDocmapReviewAction(arbitraryString(), arbitraryDate(), arbitraryString());
+    const outputDoi1 = arbitraryString();
+    const outputPublishedDate1 = arbitraryDate();
+    const inputDoi1 = arbitraryString();
+    const outputDoi2 = arbitraryString();
+    const outputPublishedDate2 = arbitraryDate();
+    const inputDoi2 = arbitraryString();
+    const docmapReviewAction1 = arbitraryDocmapReviewAction(outputDoi1, outputPublishedDate1, inputDoi1);
+    const docmapReviewAction2 = arbitraryDocmapReviewAction(outputDoi2, outputPublishedDate2, inputDoi2);
     const expectedResultForReviewAction1 = {
       actionOutputDoi: docmapReviewAction1.outputs[0].doi,
       actionOutputDate: docmapReviewAction1.outputs[0].published,
