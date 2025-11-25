@@ -25,19 +25,14 @@ type DocmapReviewAction = ReturnType<typeof arbitraryDocmapReviewAction>;
 
 export const constructMinimalDocmapStepWithReviewActions = (
   docmapReviewActions: ReadonlyArray<DocmapReviewAction>,
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-) => ({
+): unknown => ({
   actions: docmapReviewActions,
 });
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const constructMinimalDocmapStepWithoutReviewActions = () => ({
+export const constructMinimalDocmapStepWithoutReviewActions = (): unknown => ({
   actions: [{ type: 'other' }],
 });
 
-type StepWithReviewActions = ReturnType<typeof constructMinimalDocmapStepWithReviewActions>;
-
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const constructMinimalDocmapWithSteps = (steps: Record<string, StepWithReviewActions | unknown>) => ({
+export const constructMinimalDocmapWithSteps = (steps: Record<string, unknown>): unknown => ({
   steps,
 });
