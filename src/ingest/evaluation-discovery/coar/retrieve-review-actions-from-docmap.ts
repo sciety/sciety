@@ -12,7 +12,7 @@ export type ReviewActionFromDocmap = {
   actionInputDoi: string,
 };
 
-const stepWithActionDoiCodec = t.strict({
+const stepWithReviewActionCodec = t.strict({
   actions: t.readonlyArray(t.strict({
     outputs: t.readonlyArray(t.strict({
       published: t.string,
@@ -43,7 +43,7 @@ export const retrieveReviewActionsFromDocmap = (
   TE.flatMapEither(decodeAndReportFailures(docmapResponseCodec)),
   TE.map((decodedResponse) => decodedResponse[0].steps),
   TE.map((steps) => Object.values(steps)),
-  TE.map(RA.filter(stepWithActionDoiCodec.is)),
+  TE.map(RA.filter(stepWithReviewActionCodec.is)),
   TE.map(RA.chain((steps) => steps.actions)),
   TE.map(RA.map((action) => ({
     actionOutputDoi: action.outputs[0].doi,
