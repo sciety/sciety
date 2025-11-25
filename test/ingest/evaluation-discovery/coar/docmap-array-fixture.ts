@@ -21,10 +21,8 @@ export const arbitraryDocmapReviewAction = (outputDoi: string, outputPublishedDa
   }],
 });
 
-type DocmapReviewAction = ReturnType<typeof arbitraryDocmapReviewAction>;
-
 export const constructMinimalDocmapStepWithReviewActions = (
-  docmapReviewActions: ReadonlyArray<DocmapReviewAction>,
+  docmapReviewActions: ReadonlyArray<unknown>,
 ): unknown => ({
   actions: docmapReviewActions,
 });
