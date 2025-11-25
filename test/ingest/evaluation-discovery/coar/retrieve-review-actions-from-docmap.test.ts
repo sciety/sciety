@@ -13,16 +13,7 @@ import {
 import { arbitraryUri } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 
-const runQuery = async (uri: string, docmapResponse: unknown) => pipe(
-  uri,
-  retrieveReviewActionsFromDocmap({
-    fetchData: <D>() => TE.right([docmapResponse] as unknown as D),
-    fetchHead: () => TE.right(shouldNotBeCalled()),
-  }),
-  TE.getOrElse(shouldNotBeCalled),
-)();
-
-const runUnhappyPathQuery = (uri: string, nonDocmapResponse: unknown) => pipe(
+const runQuery = (uri: string, nonDocmapResponse: unknown) => pipe(
   uri,
   retrieveReviewActionsFromDocmap({
     fetchData: <D>() => TE.right([nonDocmapResponse] as unknown as D),
@@ -56,7 +47,10 @@ describe('retrieve-review-actions-from-docmap', () => {
       );
 
       beforeEach(async () => {
-        result = await runQuery(docmapUri, docmap);
+        result = await pipe(
+          runQuery(docmapUri, docmap),
+          TE.getOrElse(shouldNotBeCalled),
+        )();
       });
 
       it('returns a review action', () => {
@@ -76,7 +70,10 @@ describe('retrieve-review-actions-from-docmap', () => {
       );
 
       beforeEach(async () => {
-        result = await runQuery(docmapUri, docmap);
+        result = await pipe(
+          runQuery(docmapUri, docmap),
+          TE.getOrElse(shouldNotBeCalled),
+        )();
       });
 
       it('returns a review action, ignoring other steps', () => {
@@ -95,7 +92,10 @@ describe('retrieve-review-actions-from-docmap', () => {
       );
 
       beforeEach(async () => {
-        result = await runQuery(docmapUri, docmap);
+        result = await pipe(
+          runQuery(docmapUri, docmap),
+          TE.getOrElse(shouldNotBeCalled),
+        )();
       });
 
       it('returns the review actions', () => {
@@ -115,7 +115,10 @@ describe('retrieve-review-actions-from-docmap', () => {
       );
 
       beforeEach(async () => {
-        result = await runQuery(docmapUri, docmap);
+        result = await pipe(
+          runQuery(docmapUri, docmap),
+          TE.getOrElse(shouldNotBeCalled),
+        )();
       });
 
       it('returns the review actions', () => {
@@ -130,7 +133,7 @@ describe('retrieve-review-actions-from-docmap', () => {
       let result: E.Either<string, ReadonlyArray<ReviewActionFromDocmap>>;
 
       beforeEach(async () => {
-        result = await runUnhappyPathQuery(docmapUri, [])();
+        result = await runQuery(docmapUri, [])();
       });
 
       it('returns on the left', () => {
@@ -143,7 +146,7 @@ describe('retrieve-review-actions-from-docmap', () => {
       let result: E.Either<string, ReadonlyArray<ReviewActionFromDocmap>>;
 
       beforeEach(async () => {
-        result = await runUnhappyPathQuery(docmapUri, {})();
+        result = await runQuery(docmapUri, {})();
       });
 
       it('returns on the left', () => {
