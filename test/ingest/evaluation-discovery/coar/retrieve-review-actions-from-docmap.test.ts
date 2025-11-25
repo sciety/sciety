@@ -37,14 +37,14 @@ describe('retrieve-review-actions-from-docmap', () => {
     const docmapReviewAction1 = arbitraryDocmapReviewAction(outputDoi1, outputPublishedDate1, inputDoi1);
     const docmapReviewAction2 = arbitraryDocmapReviewAction(outputDoi2, outputPublishedDate2, inputDoi2);
     const expectedResultForReviewAction1 = {
-      actionOutputDoi: docmapReviewAction1.outputs[0].doi,
-      actionOutputDate: docmapReviewAction1.outputs[0].published,
-      actionInputDoi: docmapReviewAction1.inputs[0].doi,
+      actionOutputDoi: outputDoi1,
+      actionOutputDate: outputPublishedDate1.toISOString(),
+      actionInputDoi: inputDoi1,
     };
     const expectedResultForReviewAction2 = {
-      actionOutputDoi: docmapReviewAction2.outputs[0].doi,
-      actionOutputDate: docmapReviewAction2.outputs[0].published,
-      actionInputDoi: docmapReviewAction2.inputs[0].doi,
+      actionOutputDoi: outputDoi2,
+      actionOutputDate: outputPublishedDate2.toISOString(),
+      actionInputDoi: inputDoi2,
     };
 
     describe('with one review action', () => {
