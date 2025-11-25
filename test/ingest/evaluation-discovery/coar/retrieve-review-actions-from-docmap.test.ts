@@ -21,6 +21,11 @@ const runQuery = (uri: string, response: unknown) => pipe(
   }),
 );
 
+const runQueryHappyPath = (uri: string, docmapResponse: unknown) => pipe(
+  runQuery(uri, docmapResponse),
+  TE.getOrElse(shouldNotBeCalled),
+);
+
 describe('retrieve-review-actions-from-docmap', () => {
   describe('when the request to the docmap uri returns a docmap', () => {
     const docmapReviewAction1 = arbitraryDocmapReviewAction();
@@ -47,10 +52,7 @@ describe('retrieve-review-actions-from-docmap', () => {
       );
 
       beforeEach(async () => {
-        result = await pipe(
-          runQuery(docmapUri, docmap),
-          TE.getOrElse(shouldNotBeCalled),
-        )();
+        result = await runQueryHappyPath(docmapUri, docmap)();
       });
 
       it('returns a review action', () => {
@@ -70,10 +72,7 @@ describe('retrieve-review-actions-from-docmap', () => {
       );
 
       beforeEach(async () => {
-        result = await pipe(
-          runQuery(docmapUri, docmap),
-          TE.getOrElse(shouldNotBeCalled),
-        )();
+        result = await runQueryHappyPath(docmapUri, docmap)();
       });
 
       it('returns a review action, ignoring other steps', () => {
@@ -92,10 +91,7 @@ describe('retrieve-review-actions-from-docmap', () => {
       );
 
       beforeEach(async () => {
-        result = await pipe(
-          runQuery(docmapUri, docmap),
-          TE.getOrElse(shouldNotBeCalled),
-        )();
+        result = await runQueryHappyPath(docmapUri, docmap)();
       });
 
       it('returns the review actions', () => {
@@ -115,10 +111,7 @@ describe('retrieve-review-actions-from-docmap', () => {
       );
 
       beforeEach(async () => {
-        result = await pipe(
-          runQuery(docmapUri, docmap),
-          TE.getOrElse(shouldNotBeCalled),
-        )();
+        result = await runQueryHappyPath(docmapUri, docmap)();
       });
 
       it('returns the review actions', () => {
