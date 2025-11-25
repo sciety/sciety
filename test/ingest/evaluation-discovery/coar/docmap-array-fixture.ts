@@ -4,7 +4,7 @@ export const arbitraryDocmapReviewAction = (
   outputDoi: string,
   outputPublishedDate: Date,
   inputDoi: string,
-): unknown => ({
+): JSON => ({
   participants: [{
     actor: {
       type: 'person',
@@ -22,18 +22,18 @@ export const arbitraryDocmapReviewAction = (
     published: arbitraryDate().toISOString(),
     type: 'preprint',
   }],
-});
+} as unknown as JSON);
 
 export const constructMinimalDocmapStepWithReviewActions = (
   docmapReviewActions: ReadonlyArray<unknown>,
-): unknown => ({
+): JSON => ({
   actions: docmapReviewActions,
-});
+} as unknown as JSON);
 
-export const constructMinimalDocmapStepWithoutReviewActions = (): unknown => ({
+export const constructMinimalDocmapStepWithoutReviewActions = (): JSON => ({
   actions: [{ type: 'other' }],
-});
+} as unknown as JSON);
 
-export const constructMinimalDocmapWithSteps = (steps: Record<string, unknown>): unknown => ({
+export const constructMinimalDocmapWithSteps = (steps: Record<string, unknown>): JSON => ({
   steps,
-});
+} as unknown as JSON);
