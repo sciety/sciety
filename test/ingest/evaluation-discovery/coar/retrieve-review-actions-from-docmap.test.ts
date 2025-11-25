@@ -13,10 +13,10 @@ import {
 import { arbitraryUri } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 
-const runQuery = (uri: string, nonDocmapResponse: unknown) => pipe(
+const runQuery = (uri: string, response: unknown) => pipe(
   uri,
   retrieveReviewActionsFromDocmap({
-    fetchData: <D>() => TE.right([nonDocmapResponse] as unknown as D),
+    fetchData: <D>() => TE.right([response] as unknown as D),
     fetchHead: () => TE.right(shouldNotBeCalled()),
   }),
 );
