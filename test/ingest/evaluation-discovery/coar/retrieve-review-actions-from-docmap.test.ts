@@ -22,13 +22,13 @@ const runQuery = async (uri: string, docmapResponse: unknown) => pipe(
   TE.getOrElse(shouldNotBeCalled),
 )();
 
-const runUnhappyPathQuery = async (uri: string, nonDocmapResponse: unknown) => pipe(
+const runUnhappyPathQuery = (uri: string, nonDocmapResponse: unknown) => pipe(
   uri,
   retrieveReviewActionsFromDocmap({
     fetchData: <D>() => TE.right([nonDocmapResponse] as unknown as D),
     fetchHead: () => TE.right(shouldNotBeCalled()),
   }),
-)();
+);
 
 describe('retrieve-review-actions-from-docmap', () => {
   describe('when the request to the docmap uri returns a docmap', () => {
@@ -130,7 +130,7 @@ describe('retrieve-review-actions-from-docmap', () => {
       let result: E.Either<string, ReadonlyArray<ReviewActionFromDocmap>>;
 
       beforeEach(async () => {
-        result = await runUnhappyPathQuery(docmapUri, []);
+        result = await runUnhappyPathQuery(docmapUri, [])();
       });
 
       it('returns on the left', () => {
@@ -143,7 +143,7 @@ describe('retrieve-review-actions-from-docmap', () => {
       let result: E.Either<string, ReadonlyArray<ReviewActionFromDocmap>>;
 
       beforeEach(async () => {
-        result = await runUnhappyPathQuery(docmapUri, {});
+        result = await runUnhappyPathQuery(docmapUri, {})();
       });
 
       it('returns on the left', () => {
