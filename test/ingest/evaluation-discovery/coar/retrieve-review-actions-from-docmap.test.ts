@@ -10,7 +10,7 @@ import {
 import {
   retrieveReviewActionsFromDocmap, ReviewActionFromDocmap,
 } from '../../../../src/ingest/evaluation-discovery/coar/retrieve-review-actions-from-docmap';
-import { arbitraryUri } from '../../../helpers';
+import { arbitraryDate, arbitraryString, arbitraryUri } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 
 const runQuery = (uri: string, response: unknown) => pipe(
@@ -28,8 +28,8 @@ const runQueryHappyPath = (uri: string, docmapResponse: unknown) => pipe(
 
 describe('retrieve-review-actions-from-docmap', () => {
   describe('when the request to the docmap uri returns a docmap', () => {
-    const docmapReviewAction1 = arbitraryDocmapReviewAction();
-    const docmapReviewAction2 = arbitraryDocmapReviewAction();
+    const docmapReviewAction1 = arbitraryDocmapReviewAction(arbitraryString(), arbitraryDate(), arbitraryString());
+    const docmapReviewAction2 = arbitraryDocmapReviewAction(arbitraryString(), arbitraryDate(), arbitraryString());
     const expectedResultForReviewAction1 = {
       actionOutputDoi: docmapReviewAction1.outputs[0].doi,
       actionOutputDate: docmapReviewAction1.outputs[0].published,

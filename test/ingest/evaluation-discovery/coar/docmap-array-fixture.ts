@@ -1,7 +1,7 @@
 import { arbitraryDate, arbitraryString } from '../../../helpers';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const arbitraryDocmapReviewAction = () => ({
+export const arbitraryDocmapReviewAction = (outputDoi: string, outputPublishedDate: Date, inputDoi: string) => ({
   participants: [{
     actor: {
       type: 'person',
@@ -10,12 +10,12 @@ export const arbitraryDocmapReviewAction = () => ({
     role: 'author',
   }],
   outputs: [{
-    doi: arbitraryString(),
-    published: arbitraryDate().toISOString(),
+    doi: outputDoi,
+    published: outputPublishedDate.toISOString(),
     type: 'editorial-decision',
   }],
   inputs: [{
-    doi: arbitraryString(),
+    doi: inputDoi,
     published: arbitraryDate().toISOString(),
     type: 'preprint',
   }],
