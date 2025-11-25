@@ -2,10 +2,10 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import {
-  arbitraryDocmapReviewAction,
-  constructMinimalDocmapStepWithoutReviewActions,
-  constructMinimalDocmapStepWithReviewActions,
-  constructMinimalDocmapWithSteps,
+  exampleDocmapResponseReviewAction,
+  constructMinimalDocmapResponseExampleStepWithoutReviewActions,
+  constructMinimalDocmapResponseExampleStepWithReviewActions,
+  constructMinimalDocmapResponseExampleWithSteps,
 } from './docmap-array-fixture';
 import {
   retrieveReviewActionsFromDocmap, ReviewActionFromDocmap,
@@ -34,8 +34,8 @@ describe('retrieve-review-actions-from-docmap', () => {
     const outputDoi2 = arbitraryString();
     const outputPublishedDate2 = arbitraryDate();
     const inputDoi2 = arbitraryString();
-    const docmapReviewAction1 = arbitraryDocmapReviewAction(outputDoi1, outputPublishedDate1, inputDoi1);
-    const docmapReviewAction2 = arbitraryDocmapReviewAction(outputDoi2, outputPublishedDate2, inputDoi2);
+    const docmapReviewAction1 = exampleDocmapResponseReviewAction(outputDoi1, outputPublishedDate1, inputDoi1);
+    const docmapReviewAction2 = exampleDocmapResponseReviewAction(outputDoi2, outputPublishedDate2, inputDoi2);
     const expectedResultForReviewAction1 = {
       actionOutputDoi: outputDoi1,
       actionOutputDate: outputPublishedDate1.toISOString(),
@@ -51,9 +51,9 @@ describe('retrieve-review-actions-from-docmap', () => {
       const docmapUri = arbitraryUri();
       let result: ReadonlyArray<ReviewActionFromDocmap>;
 
-      const docmap = constructMinimalDocmapWithSteps(
+      const docmap = constructMinimalDocmapResponseExampleWithSteps(
         {
-          '_:b1': constructMinimalDocmapStepWithReviewActions([docmapReviewAction1]),
+          '_:b1': constructMinimalDocmapResponseExampleStepWithReviewActions([docmapReviewAction1]),
         },
       );
 
@@ -70,10 +70,10 @@ describe('retrieve-review-actions-from-docmap', () => {
       const docmapUri = arbitraryUri();
       let result: ReadonlyArray<ReviewActionFromDocmap>;
 
-      const docmap = constructMinimalDocmapWithSteps(
+      const docmap = constructMinimalDocmapResponseExampleWithSteps(
         {
-          '_:b1': constructMinimalDocmapStepWithReviewActions([docmapReviewAction1]),
-          '_:b2': constructMinimalDocmapStepWithoutReviewActions(),
+          '_:b1': constructMinimalDocmapResponseExampleStepWithReviewActions([docmapReviewAction1]),
+          '_:b2': constructMinimalDocmapResponseExampleStepWithoutReviewActions(),
         },
       );
 
@@ -90,9 +90,9 @@ describe('retrieve-review-actions-from-docmap', () => {
       const docmapUri = arbitraryUri();
       let result: ReadonlyArray<ReviewActionFromDocmap>;
 
-      const docmap = constructMinimalDocmapWithSteps(
+      const docmap = constructMinimalDocmapResponseExampleWithSteps(
         {
-          '_:b1': constructMinimalDocmapStepWithReviewActions([docmapReviewAction1, docmapReviewAction2]),
+          '_:b1': constructMinimalDocmapResponseExampleStepWithReviewActions([docmapReviewAction1, docmapReviewAction2]),
         },
       );
 
@@ -109,10 +109,10 @@ describe('retrieve-review-actions-from-docmap', () => {
       const docmapUri = arbitraryUri();
       let result: ReadonlyArray<ReviewActionFromDocmap>;
 
-      const docmap = constructMinimalDocmapWithSteps(
+      const docmap = constructMinimalDocmapResponseExampleWithSteps(
         {
-          '_:b1': constructMinimalDocmapStepWithReviewActions([docmapReviewAction1]),
-          '_:b3': constructMinimalDocmapStepWithReviewActions([docmapReviewAction2]),
+          '_:b1': constructMinimalDocmapResponseExampleStepWithReviewActions([docmapReviewAction1]),
+          '_:b3': constructMinimalDocmapResponseExampleStepWithReviewActions([docmapReviewAction2]),
         },
       );
 

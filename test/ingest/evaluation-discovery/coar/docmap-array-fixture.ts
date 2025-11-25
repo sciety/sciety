@@ -1,6 +1,6 @@
 import { arbitraryDate, arbitraryString } from '../../../helpers';
 
-export const arbitraryDocmapReviewAction = (
+export const exampleDocmapResponseReviewAction = (
   outputDoi: string,
   outputPublishedDate: Date,
   inputDoi: string,
@@ -24,16 +24,16 @@ export const arbitraryDocmapReviewAction = (
   }],
 } as unknown as JSON);
 
-export const constructMinimalDocmapStepWithReviewActions = (
+export const constructMinimalDocmapResponseExampleStepWithReviewActions = (
   docmapReviewActions: ReadonlyArray<unknown>,
 ): JSON => ({
   actions: docmapReviewActions,
 } as unknown as JSON);
 
-export const constructMinimalDocmapStepWithoutReviewActions = (): JSON => ({
+export const constructMinimalDocmapResponseExampleStepWithoutReviewActions = (): JSON => ({
   actions: [{ type: 'other' }],
 } as unknown as JSON);
 
-export const constructMinimalDocmapWithSteps = (steps: Record<string, unknown>): JSON => ({
+export const constructMinimalDocmapResponseExampleWithSteps = (steps: Record<string, unknown>): JSON => ({
   steps,
 } as unknown as JSON);
