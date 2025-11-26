@@ -30,6 +30,19 @@ describe('supported-expression-doi-from-uri', () => {
     });
   });
 
+  describe('when the input is supported as the new medrxiv/biorxiv (should be adopted in the above test cases)', () => {
+    describe.each([
+      ['medrxiv new link', 'https://www.medrxiv.org/content/10.64898/2021.06.18.21258689v1', '10.64898/2021.06.18.21258689'],
+      ['biorxiv new link', 'https://biorxiv.org/content/10.64898/2021.11.04.467308v1', '10.64898/2021.11.04.467308'],
+    ])('%s', (_, input, expectedDoi) => {
+      it.failing('extracts the doi from the input', () => {
+        const result = supportedExpressionDoiFromUri(input);
+
+        expect(result).toStrictEqual(E.right(expectedDoi));
+      });
+    });
+  });
+
   describe('when the input is not supported', () => {
     describe.each([
       ['empty', ''],
