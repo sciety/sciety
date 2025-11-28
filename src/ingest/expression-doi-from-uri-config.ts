@@ -47,7 +47,7 @@ export type PaperServerConfiguration = {
   prefix: string,
 };
 
-export const doesUriContainDoiPrefix = (uri: string, doiPrefix: string): boolean => uri.includes(doiPrefix);
+export const uriIsMissingDoiPrefix = (uri: string, doiPrefix: string): boolean => !uri.includes(doiPrefix);
 
 export const isSupported = (
   server: string, config: ExpressionDoiFromUriConfig,
