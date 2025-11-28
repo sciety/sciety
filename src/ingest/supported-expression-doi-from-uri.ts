@@ -59,12 +59,19 @@ const deriveDoiForSpecificServer = (serverData: PaperServerConfiguration, uri: s
   ),
 );
 
+const doesUriContainDoiPrefix = (uri: string, doiPrefix: string) => uri.includes(doiPrefix);
+
 export const supportedExpressionDoiFromUri = (uri: string): E.Either<string, string> => {
   const [, server] = /([a-z]+)\.(com|org|io)/.exec(uri) ?? [];
   if (!server) {
     return E.left(`server not found in "${uri}"`);
   }
   if (isSupported(server, expressionDoiFromUriConfig)) {
+    if (server === 'biorxiv' || server === 'medrxiv') {
+      if (!doesUriContainDoiPrefix(uri, expressionDoiFromUriConfig[server].prefix)) {
+        return E.left(`Doi prefix ${expressionDoiFromUriConfig[server].prefix} not found in ${uri}.`);
+      }
+    }
     return deriveDoiForSpecificServer(expressionDoiFromUriConfig[server], uri);
   }
   switch (server) {
