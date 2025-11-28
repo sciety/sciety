@@ -30,6 +30,32 @@ describe('supported-expression-doi-from-uri', () => {
     });
   });
 
+  describe('when the input URI contains the DOI prefix for Cold Spring Harbor Press (10.1101)', () => {
+    describe.each([
+      ['medrxiv cshp link', 'https://www.medrxiv.org/content/10.1101/2021.06.18.21258689v1', '10.1101/2021.06.18.21258689'],
+      ['biorxiv cshp link', 'https://biorxiv.org/content/10.1101/2021.11.04.467308v1', '10.1101/2021.11.04.467308'],
+    ])('%s', (_, input, expectedDoi) => {
+      it('extracts the doi from the input', () => {
+        const result = supportedExpressionDoiFromUri(input);
+
+        expect(result).toStrictEqual(E.right(expectedDoi));
+      });
+    });
+  });
+
+  describe('when the input URI contains the DOI prefix for openarxiv (10.64898)', () => {
+    describe.each([
+      ['medrxiv openrxiv link', 'https://www.medrxiv.org/content/10.64898/2021.06.18.21258689v1'],
+      ['biorxiv openrxiv link', 'https://biorxiv.org/content/10.64898/2021.11.04.467308v1'],
+    ])('%s', (_, input) => {
+      it.failing('extracts the doi from the input', () => {
+        const result = supportedExpressionDoiFromUri(input);
+
+        expect(result).toStrictEqual(E.left((expect.stringContaining(input))));
+      });
+    });
+  });
+
   describe('when the input is supported as the new medrxiv/biorxiv (should be adopted in the above test cases)', () => {
     describe.each([
       ['medrxiv new link', 'https://www.medrxiv.org/content/10.64898/2021.06.18.21258689v1', '10.64898/2021.06.18.21258689'],
@@ -59,6 +85,21 @@ describe('supported-expression-doi-from-uri', () => {
       ['invalid SciELO link', 'https://preprints.scielo.org/index.php/scielo/preprint/4639/8936/9328'],
     ])('%s', (_, input) => {
       it('returns a left', () => {
+        const result = supportedExpressionDoiFromUri(input);
+
+        expect(result).toStrictEqual(E.left(expect.stringContaining(input)));
+      });
+    });
+  });
+
+  describe('when the input URI contains a biorxiv/medrxiv short uri', () => {
+    describe.each([
+      ['medrxiv cgi short', 'http://medrxiv.org/cgi/content/short/2020.04.08.20058073', '10.1101/2020.04.08.20058073'],
+      ['medrxiv https cgi short', 'https://medrxiv.org/cgi/content/short/2020.07.31.20161216', '10.1101/2020.07.31.20161216'],
+      ['biorxiv cgi short', 'http://biorxiv.org/cgi/content/short/2020.04.08.20058073', '10.1101/2020.04.08.20058073'],
+      ['biorxiv https cgi short', 'https://biorxiv.org/cgi/content/short/2020.07.31.20161216', '10.1101/2020.07.31.20161216'],
+    ])('%s', (_, input) => {
+      it.failing('returns a left', () => {
         const result = supportedExpressionDoiFromUri(input);
 
         expect(result).toStrictEqual(E.left(expect.stringContaining(input)));
