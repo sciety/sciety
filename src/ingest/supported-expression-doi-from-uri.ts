@@ -65,12 +65,10 @@ export const supportedExpressionDoiFromUri = (uri: string): E.Either<string, str
   if (!server) {
     return E.left(`server not found in "${uri}"`);
   }
+  if ((server === 'biorxiv' || server === 'medrxiv') && !doesUriContainDoiPrefix(uri, expressionDoiFromUriConfig[server].prefix)) {
+    return E.left(`Doi prefix ${expressionDoiFromUriConfig[server].prefix} not found in ${uri}.`);
+  }
   if (isSupported(server, expressionDoiFromUriConfig)) {
-    if (server === 'biorxiv' || server === 'medrxiv') {
-      if (!doesUriContainDoiPrefix(uri, expressionDoiFromUriConfig[server].prefix)) {
-        return E.left(`Doi prefix ${expressionDoiFromUriConfig[server].prefix} not found in ${uri}.`);
-      }
-    }
     return deriveDoiForSpecificServer(expressionDoiFromUriConfig[server], uri);
   }
   switch (server) {
