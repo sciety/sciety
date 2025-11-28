@@ -47,6 +47,8 @@ export type PaperServerConfiguration = {
   prefix: string,
 };
 
+export const doesUriContainDoiPrefix = (uri: string, doiPrefix: string): boolean => uri.includes(doiPrefix);
+
 export const isSupported = (
   server: string, config: ExpressionDoiFromUriConfig,
 ): server is SupportedServerName => pipe(

@@ -4,6 +4,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { Eq as stringEq } from 'fp-ts/string';
 import {
   ExpressionDoiFromUriConfig, PaperServerConfiguration, isSupported, expressionDoiFromUriConfig,
+  doesUriContainDoiPrefix,
 } from './expression-doi-from-uri-config';
 
 const isPrefixOfASupportedServer = (config: ExpressionDoiFromUriConfig, prefix: string) => pipe(
@@ -58,8 +59,6 @@ const deriveDoiForSpecificServer = (serverData: PaperServerConfiguration, uri: s
     (endOfDoi) => `${serverData.startOfDoi}${endOfDoi}`,
   ),
 );
-
-const doesUriContainDoiPrefix = (uri: string, doiPrefix: string) => uri.includes(doiPrefix);
 
 export const supportedExpressionDoiFromUri = (uri: string): E.Either<string, string> => {
   const [, server] = /([a-z]+)\.(com|org|io)/.exec(uri) ?? [];
