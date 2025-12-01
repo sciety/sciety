@@ -49,16 +49,12 @@ describe('extract-prelights', () => {
     describe('when the preprintDoi contains the prefix for openarxiv (10.64898)', () => {
       const preprintDoi = `10.64898/${arbitraryWord()}`;
       const result = pipe(
-        [{
-          guid: `https://prelights.biologists.com/?post_type=highlight&#038;p=${postNumber}`,
-          category: '<a name = "highlight">highlight</a>',
-          pubDate,
-          preprintDoi,
-          author,
-        }],
+        [arbitraryPublishedEvaluation(postNumber, {
+          preprintDoi, pubDate, author,
+        })],
         extractPrelights,
       );
-
+x
       it('records the evaluation', () => {
         const expectedEvaluation = constructPublishedEvaluation({
           publishedOn: pubDate,
