@@ -6,7 +6,7 @@ import {
 } from '../../../helpers';
 
 describe('extract-prelights', () => {
-  describe('given a valid evaluation with a preprintDoi', () => {
+  describe('given a valid evaluation with a preprintDoi containing the prefix for Cold Spring Harbor Press (10.1101)', () => {
     const postNumber = arbitraryNumber(1000, 100000);
     const pubDate = arbitraryDate();
     const preprintDoi = `10.1101/${arbitraryWord()}`;
