@@ -65,6 +65,9 @@ const getServerFromUri = (uri: string) => {
   if (server === 'biorxiv') {
     return 'biorxivLegacy';
   }
+  if (server === 'medrxiv') {
+    return 'medrxivLegacy';
+  }
   return server;
 };
 
@@ -73,7 +76,7 @@ export const supportedExpressionDoiFromUri = (uri: string): E.Either<string, str
   if (!server) {
     return E.left(`server not found in "${uri}"`);
   }
-  if ((server === 'biorxivLegacy' || server === 'medrxiv') && uriIsMissingDoiPrefix(uri, expressionDoiFromUriConfig[server].prefix)) {
+  if ((server === 'biorxivLegacy' || server === 'medrxivLegacy') && uriIsMissingDoiPrefix(uri, expressionDoiFromUriConfig[server].prefix)) {
     return E.left(`Doi prefix ${expressionDoiFromUriConfig[server].prefix} not found in ${uri}.`);
   }
   if (isSupported(server, expressionDoiFromUriConfig)) {
