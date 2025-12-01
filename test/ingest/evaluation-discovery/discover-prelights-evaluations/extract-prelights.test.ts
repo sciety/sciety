@@ -5,20 +5,13 @@ import {
   arbitraryDate, arbitraryNumber, arbitraryString, arbitraryWord,
 } from '../../../helpers';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const arbitraryPublishedEvaluation = (preprintDoi: string) => {
-  const postNumber = arbitraryNumber(1000, 100000);
-  const pubDate = arbitraryDate();
-  const author = `${arbitraryString()}, ${arbitraryString()}`;
-
-  return {
-    guid: `https://prelights.biologists.com/?post_type=highlight&#038;p=${postNumber}`,
-    category: '<a name = "highlight">highlight</a>',
-    pubDate,
-    preprintDoi,
-    author,
-  };
-};
+const arbitraryPublishedEvaluation = (preprintDoi: string, pubDate: Date, postNumber: number, author: string) => ({
+  guid: `https://prelights.biologists.com/?post_type=highlight&#038;p=${postNumber}`,
+  category: '<a name = "highlight">highlight</a>',
+  pubDate,
+  preprintDoi,
+  author,
+});
 
 describe('extract-prelights', () => {
   describe('given a valid evaluation with a preprintDoi hosted on biorxiv or medrxiv', () => {
@@ -29,13 +22,7 @@ describe('extract-prelights', () => {
     describe('when the preprintDoi contains the prefix for Cold Spring Harbor Press (10.1101)', () => {
       const preprintDoi = `10.1101/${arbitraryWord()}`;
       const result = pipe(
-        [{
-          guid: `https://prelights.biologists.com/?post_type=highlight&#038;p=${postNumber}`,
-          category: '<a name = "highlight">highlight</a>',
-          pubDate,
-          preprintDoi,
-          author,
-        }],
+        [arbitraryPublishedEvaluation(preprintDoi, pubDate, postNumber, author)],
         extractPrelights,
       );
 
