@@ -54,7 +54,7 @@ describe('extract-prelights', () => {
         })],
         extractPrelights,
       );
-x
+
       it('records the evaluation', () => {
         const expectedEvaluation = constructPublishedEvaluation({
           publishedOn: pubDate,
