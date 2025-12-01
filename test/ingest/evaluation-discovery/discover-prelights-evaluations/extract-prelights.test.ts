@@ -25,15 +25,16 @@ describe('extract-prelights', () => {
     };
 
     describe('when the preprintDoi contains the prefix for Cold Spring Harbor Press (10.1101)', () => {
-      const preprintDoi = `10.1101/${arbitraryWord()}`;
+      const paperExpressionDoi = `10.1101/${arbitraryWord()}`;
       const result = pipe(
-        [arbitraryPublishedEvaluation(inputPartial.postNumber, { preprintDoi, ...inputPartial.data })],
+        paperExpressionDoi,
+        (preprintDoi) => [arbitraryPublishedEvaluation(inputPartial.postNumber, { preprintDoi, ...inputPartial.data })],
         extractPrelights,
       );
 
       it('records the evaluation', () => {
         const expectedEvaluation = constructPublishedEvaluation({
-          paperExpressionDoi: preprintDoi,
+          paperExpressionDoi,
           publishedOn: inputPartial.data.pubDate,
           evaluationLocator: `prelights:https://prelights.biologists.com/?post_type=highlight&p=${inputPartial.postNumber}`,
           authors: [inputPartial.data.author],
@@ -49,15 +50,16 @@ describe('extract-prelights', () => {
     });
 
     describe('when the preprintDoi contains the prefix for openarxiv (10.64898)', () => {
-      const preprintDoi = `10.64898/${arbitraryWord()}`;
+      const paperExpressionDoi = `10.64898/${arbitraryWord()}`;
       const result = pipe(
-        [arbitraryPublishedEvaluation(inputPartial.postNumber, { preprintDoi, ...inputPartial.data })],
+        paperExpressionDoi,
+        (preprintDoi) => [arbitraryPublishedEvaluation(inputPartial.postNumber, { preprintDoi, ...inputPartial.data })],
         extractPrelights,
       );
 
       it('records the evaluation', () => {
         const expectedEvaluation = constructPublishedEvaluation({
-          paperExpressionDoi: preprintDoi,
+          paperExpressionDoi,
           publishedOn: inputPartial.data.pubDate,
           evaluationLocator: `prelights:https://prelights.biologists.com/?post_type=highlight&p=${inputPartial.postNumber}`,
           authors: [inputPartial.data.author],
