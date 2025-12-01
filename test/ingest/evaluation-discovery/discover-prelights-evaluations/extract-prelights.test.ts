@@ -6,68 +6,68 @@ import {
 } from '../../../helpers';
 
 describe('extract-prelights', () => {
-  describe('given a valid evaluation with a preprintDoi containing the prefix for Cold Spring Harbor Press (10.1101)', () => {
+  describe('given a valid evaluation with a preprintDoi hosted on biorxiv or medrxiv', () => {
     const postNumber = arbitraryNumber(1000, 100000);
     const pubDate = arbitraryDate();
-    const preprintDoi = `10.1101/${arbitraryWord()}`;
     const author = `${arbitraryString()}, ${arbitraryString()}`;
-    const result = pipe(
-      [{
-        guid: `https://prelights.biologists.com/?post_type=highlight&#038;p=${postNumber}`,
-        category: '<a name = "highlight">highlight</a>',
-        pubDate,
-        preprintDoi,
-        author,
-      }],
-      extractPrelights,
-    );
 
-    it('records the evaluation', () => {
-      const expectedEvaluation = constructPublishedEvaluation({
-        publishedOn: pubDate,
-        paperExpressionDoi: preprintDoi,
-        evaluationLocator: `prelights:https://prelights.biologists.com/?post_type=highlight&p=${postNumber}`,
-        authors: [author],
-      });
+    describe('when the preprintDoi contains the prefix for Cold Spring Harbor Press (10.1101)', () => {
+      const preprintDoi = `10.1101/${arbitraryWord()}`;
+      const result = pipe(
+        [{
+          guid: `https://prelights.biologists.com/?post_type=highlight&#038;p=${postNumber}`,
+          category: '<a name = "highlight">highlight</a>',
+          pubDate,
+          preprintDoi,
+          author,
+        }],
+        extractPrelights,
+      );
 
-      expect(result).toStrictEqual({
-        understood: [
-          expectedEvaluation,
-        ],
-        skipped: [],
+      it('records the evaluation', () => {
+        const expectedEvaluation = constructPublishedEvaluation({
+          publishedOn: pubDate,
+          paperExpressionDoi: preprintDoi,
+          evaluationLocator: `prelights:https://prelights.biologists.com/?post_type=highlight&p=${postNumber}`,
+          authors: [author],
+        });
+
+        expect(result).toStrictEqual({
+          understood: [
+            expectedEvaluation,
+          ],
+          skipped: [],
+        });
       });
     });
-  });
 
-  describe('given a valid evaluation with a preprintDoi containing the prefix for openarxiv (10.64898)', () => {
-    const postNumber = arbitraryNumber(1000, 100000);
-    const pubDate = arbitraryDate();
-    const preprintDoi = `10.64898/${arbitraryWord()}`;
-    const author = `${arbitraryString()}, ${arbitraryString()}`;
-    const result = pipe(
-      [{
-        guid: `https://prelights.biologists.com/?post_type=highlight&#038;p=${postNumber}`,
-        category: '<a name = "highlight">highlight</a>',
-        pubDate,
-        preprintDoi,
-        author,
-      }],
-      extractPrelights,
-    );
+    describe('when the preprintDoi contains the prefix for openarxiv (10.64898)', () => {
+      const preprintDoi = `10.64898/${arbitraryWord()}`;
+      const result = pipe(
+        [{
+          guid: `https://prelights.biologists.com/?post_type=highlight&#038;p=${postNumber}`,
+          category: '<a name = "highlight">highlight</a>',
+          pubDate,
+          preprintDoi,
+          author,
+        }],
+        extractPrelights,
+      );
 
-    it('records the evaluation', () => {
-      const expectedEvaluation = constructPublishedEvaluation({
-        publishedOn: pubDate,
-        paperExpressionDoi: preprintDoi,
-        evaluationLocator: `prelights:https://prelights.biologists.com/?post_type=highlight&p=${postNumber}`,
-        authors: [author],
-      });
+      it('records the evaluation', () => {
+        const expectedEvaluation = constructPublishedEvaluation({
+          publishedOn: pubDate,
+          paperExpressionDoi: preprintDoi,
+          evaluationLocator: `prelights:https://prelights.biologists.com/?post_type=highlight&p=${postNumber}`,
+          authors: [author],
+        });
 
-      expect(result).toStrictEqual({
-        understood: [
-          expectedEvaluation,
-        ],
-        skipped: [],
+        expect(result).toStrictEqual({
+          understood: [
+            expectedEvaluation,
+          ],
+          skipped: [],
+        });
       });
     });
   });
