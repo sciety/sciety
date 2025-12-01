@@ -5,13 +5,16 @@ import {
   arbitraryDate, arbitraryNumber, arbitraryString, arbitraryWord,
 } from '../../../helpers';
 
-const arbitraryPublishedEvaluation = (preprintDoi: string, pubDate: Date, postNumber: number, author: string) => ({
-  guid: `https://prelights.biologists.com/?post_type=highlight&#038;p=${postNumber}`,
-  category: '<a name = "highlight">highlight</a>',
-  pubDate,
-  preprintDoi,
-  author,
-});
+const arbitraryPublishedEvaluation = (
+  data: { preprintDoi: string, pubDate: Date, postNumber: number, author: string },
+) => {
+  const { postNumber, ...other } = data;
+  return {
+    guid: `https://prelights.biologists.com/?post_type=highlight&#038;p=${postNumber}`,
+    category: '<a name = "highlight">highlight</a>',
+    ...other,
+  };
+};
 
 describe('extract-prelights', () => {
   describe('given a valid evaluation with a preprintDoi hosted on biorxiv or medrxiv', () => {
@@ -22,7 +25,9 @@ describe('extract-prelights', () => {
     describe('when the preprintDoi contains the prefix for Cold Spring Harbor Press (10.1101)', () => {
       const preprintDoi = `10.1101/${arbitraryWord()}`;
       const result = pipe(
-        [arbitraryPublishedEvaluation(preprintDoi, pubDate, postNumber, author)],
+        [arbitraryPublishedEvaluation({
+          preprintDoi, pubDate, postNumber, author,
+        })],
         extractPrelights,
       );
 
