@@ -60,8 +60,10 @@ const deriveDoiForSpecificServer = (serverData: PaperServerConfiguration, uri: s
   ),
 );
 
+const getServerFromUri = (uri: string) => /([a-z]+)\.(com|org|io)/.exec(uri) ?? [];
+
 export const supportedExpressionDoiFromUri = (uri: string): E.Either<string, string> => {
-  const [, server] = /([a-z]+)\.(com|org|io)/.exec(uri) ?? [];
+  const [, server] = getServerFromUri(uri);
   if (!server) {
     return E.left(`server not found in "${uri}"`);
   }
