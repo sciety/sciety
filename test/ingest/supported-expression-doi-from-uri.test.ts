@@ -40,13 +40,19 @@ describe('supported-expression-doi-from-uri', () => {
 
   describe('when the input URI contains the DOI prefix for openarxiv (10.64898)', () => {
     describe.each([
-      ['medrxiv openrxiv link', 'https://www.medrxiv.org/content/10.64898/2021.06.18.21258689v1'],
-      ['biorxiv openrxiv link', 'https://biorxiv.org/content/10.64898/2021.11.04.467308v1'],
-    ])('%s', (_, input) => {
-      it('returns a left', () => {
+      ['medrxiv openrxiv link', 'https://www.medrxiv.org/content/10.64898/2021.06.18.21258689v1', '10.64898/2021.06.18.21258689'],
+      ['biorxiv openrxiv link', 'https://biorxiv.org/content/10.64898/2021.11.04.467308v1', '10.64898/2021.11.04.467308'],
+    ])('%s', (_, input, expectedDoi) => {
+      it('returns a left (deprecated)', () => {
         const result = supportedExpressionDoiFromUri(input);
 
         expect(result).toStrictEqual(E.left((expect.stringContaining(input))));
+      });
+
+      it.failing('extracts the doi from the input (new behaviour)', () => {
+        const result = supportedExpressionDoiFromUri(input);
+
+        expect(result).toStrictEqual(E.right(expectedDoi));
       });
     });
   });
