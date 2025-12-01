@@ -40,7 +40,7 @@ export const extractPrelights = (items: ReadonlyArray<Prelight>): DiscoveredPubl
       (i) => skipWithReason(i, 'preprintDoi field is empty'),
     ),
     E.filterOrElse(
-      (i) => i.preprintDoi.startsWith('10.1101/'),
+      (i) => i.preprintDoi.startsWith('10.1101/') || i.preprintDoi.startsWith('10.64898/'),
       (i) => skipWithReason(i, `${i.preprintDoi} is not a biorxiv or medrxiv DOI`),
     ),
     E.map(toEvaluation),

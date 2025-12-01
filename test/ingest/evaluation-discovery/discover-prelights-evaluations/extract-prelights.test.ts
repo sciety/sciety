@@ -55,7 +55,7 @@ describe('extract-prelights', () => {
       extractPrelights,
     );
 
-    it.failing('records the evaluation', () => {
+    it('records the evaluation', () => {
       const expectedEvaluation = constructPublishedEvaluation({
         publishedOn: pubDate,
         paperExpressionDoi: preprintDoi,
