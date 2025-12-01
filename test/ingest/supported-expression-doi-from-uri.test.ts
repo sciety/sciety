@@ -43,7 +43,7 @@ describe('supported-expression-doi-from-uri', () => {
       ['medrxiv openrxiv link', 'https://www.medrxiv.org/content/10.64898/2021.06.18.21258689v1'],
       ['biorxiv openrxiv link', 'https://biorxiv.org/content/10.64898/2021.11.04.467308v1'],
     ])('%s', (_, input) => {
-      it('extracts the doi from the input', () => {
+      it('returns a left', () => {
         const result = supportedExpressionDoiFromUri(input);
 
         expect(result).toStrictEqual(E.left((expect.stringContaining(input))));
