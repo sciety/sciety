@@ -16,25 +16,27 @@ const arbitraryPublishedEvaluation = (
 
 describe('extract-prelights', () => {
   describe('given a valid evaluation with a preprintDoi hosted on biorxiv or medrxiv', () => {
-    const postNumber = arbitraryNumber(1000, 100000);
-    const pubDate = arbitraryDate();
-    const author = `${arbitraryString()}, ${arbitraryString()}`;
+    const inputPartial = {
+      postNumber: arbitraryNumber(1000, 100000),
+      data: {
+        pubDate: arbitraryDate(),
+        author: `${arbitraryString()}, ${arbitraryString()}`,
+      },
+    };
 
     describe('when the preprintDoi contains the prefix for Cold Spring Harbor Press (10.1101)', () => {
       const preprintDoi = `10.1101/${arbitraryWord()}`;
       const result = pipe(
-        [arbitraryPublishedEvaluation(postNumber, {
-          preprintDoi, pubDate, author,
-        })],
+        [arbitraryPublishedEvaluation(inputPartial.postNumber, { preprintDoi, ...inputPartial.data })],
         extractPrelights,
       );
 
       it('records the evaluation', () => {
         const expectedEvaluation = constructPublishedEvaluation({
-          publishedOn: pubDate,
           paperExpressionDoi: preprintDoi,
-          evaluationLocator: `prelights:https://prelights.biologists.com/?post_type=highlight&p=${postNumber}`,
-          authors: [author],
+          publishedOn: inputPartial.data.pubDate,
+          evaluationLocator: `prelights:https://prelights.biologists.com/?post_type=highlight&p=${inputPartial.postNumber}`,
+          authors: [inputPartial.data.author],
         });
 
         expect(result).toStrictEqual({
@@ -49,18 +51,16 @@ describe('extract-prelights', () => {
     describe('when the preprintDoi contains the prefix for openarxiv (10.64898)', () => {
       const preprintDoi = `10.64898/${arbitraryWord()}`;
       const result = pipe(
-        [arbitraryPublishedEvaluation(postNumber, {
-          preprintDoi, pubDate, author,
-        })],
+        [arbitraryPublishedEvaluation(inputPartial.postNumber, { preprintDoi, ...inputPartial.data })],
         extractPrelights,
       );
 
       it('records the evaluation', () => {
         const expectedEvaluation = constructPublishedEvaluation({
-          publishedOn: pubDate,
           paperExpressionDoi: preprintDoi,
-          evaluationLocator: `prelights:https://prelights.biologists.com/?post_type=highlight&p=${postNumber}`,
-          authors: [author],
+          publishedOn: inputPartial.data.pubDate,
+          evaluationLocator: `prelights:https://prelights.biologists.com/?post_type=highlight&p=${inputPartial.postNumber}`,
+          authors: [inputPartial.data.author],
         });
 
         expect(result).toStrictEqual({
