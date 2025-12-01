@@ -13,7 +13,7 @@ export const expressionDoiFromUriConfig: ExpressionDoiFromUriConfig = {
     regexToCaptureEndOfDoi: /download\/(\d+)\//,
     prefix: '10.1590',
   },
-  biorxiv: {
+  biorxivLegacy: {
     startOfDoi: '10.1101/',
     regexToCaptureEndOfDoi: /.*\/((?:\d{4}\.\d{2}\.\d{2}\.)?\d+).*/,
     prefix: '10.1101',
@@ -57,6 +57,6 @@ export const isSupported = (
   RA.elem(stringEq)(server),
 );
 
-type SupportedServerName = 'researchsquare' | 'scielo' | 'biorxiv' | 'medrxiv' | 'osf' | 'psyarxiv' | 'arxiv';
+type SupportedServerName = 'researchsquare' | 'scielo' | 'biorxivLegacy' | 'medrxiv' | 'osf' | 'psyarxiv' | 'arxiv';
 
 export type ExpressionDoiFromUriConfig = Record<SupportedServerName, PaperServerConfiguration>;
