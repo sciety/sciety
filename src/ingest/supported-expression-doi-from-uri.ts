@@ -2,6 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
 import { Eq as stringEq } from 'fp-ts/string';
+import { derivedUriContainingFullDoi } from './derived-uri-containing-full-doi';
 import {
   ExpressionDoiFromUriConfig, PaperServerConfiguration, isSupported, expressionDoiFromUriConfig,
   uriIsMissingDoiPrefix,
@@ -81,9 +82,6 @@ const getServerFromUri = (uri: string, config: ExpressionDoiFromUriConfig) => {
   }
   return server;
 };
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const derivedUriContainingFullDoi = (uri: string) => undefined;
 
 export const supportedExpressionDoiFromUri = (uri: string): E.Either<string, string> => {
   const server = getServerFromUri(uri, expressionDoiFromUriConfig);
