@@ -89,7 +89,7 @@ export const supportedExpressionDoiFromUri = (uri: string): E.Either<string, str
     return E.left(`server not found in "${uri}"`);
   }
   if (isBiorxivMedrxivServer(server) && uriIsMissingDoiPrefix(uri, expressionDoiFromUriConfig[server].prefix)) {
-    if (!deriveUriContainingFullDoi(uri)) {
+    if (E.isLeft(deriveUriContainingFullDoi(uri))) {
       return E.left(`Doi prefix ${expressionDoiFromUriConfig[server].prefix} not found in ${uri}.`);
     }
   }
