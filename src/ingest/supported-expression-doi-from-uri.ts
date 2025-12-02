@@ -82,7 +82,8 @@ const getServerFromUri = (uri: string, config: ExpressionDoiFromUriConfig) => {
   return server;
 };
 
-const derivedUriContainingFullDoi = () => undefined;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const derivedUriContainingFullDoi = (uri: string) => undefined;
 
 export const supportedExpressionDoiFromUri = (uri: string): E.Either<string, string> => {
   const server = getServerFromUri(uri, expressionDoiFromUriConfig);
@@ -90,7 +91,7 @@ export const supportedExpressionDoiFromUri = (uri: string): E.Either<string, str
     return E.left(`server not found in "${uri}"`);
   }
   if (isBiorxivMedrxivServer(server) && uriIsMissingDoiPrefix(uri, expressionDoiFromUriConfig[server].prefix)) {
-    if (!derivedUriContainingFullDoi()) {
+    if (!derivedUriContainingFullDoi(uri)) {
       return E.left(`Doi prefix ${expressionDoiFromUriConfig[server].prefix} not found in ${uri}.`);
     }
   }
