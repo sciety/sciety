@@ -28,6 +28,11 @@ export const expressionDoiFromUriConfig: ExpressionDoiFromUriConfig = {
     regexToCaptureEndOfDoi: /.*\/((?:\d{4}\.\d{2}\.\d{2}\.)?\d+).*/,
     prefix: '10.1101',
   },
+  medrxiv: {
+    startOfDoi: '10.64898/',
+    regexToCaptureEndOfDoi: /.*\/((?:\d{4}\.\d{2}\.\d{2}\.)?\d+).*/,
+    prefix: '10.64898',
+  },
   // This is unsafe for osf shortlinks as they might resolve to a DOI with a prefix that is not 10.31219
   osf: {
     startOfDoi: '10.31219/osf.io/',
@@ -62,6 +67,6 @@ export const isSupported = (
   RA.elem(stringEq)(server),
 );
 
-type SupportedServerName = 'researchsquare' | 'scielo' | 'biorxivLegacy' | 'biorxiv' | 'medrxivLegacy' | 'osf' | 'psyarxiv' | 'arxiv';
+type SupportedServerName = 'researchsquare' | 'scielo' | 'biorxivLegacy' | 'biorxiv' | 'medrxivLegacy' | 'medrxiv' | 'osf' | 'psyarxiv' | 'arxiv';
 
 export type ExpressionDoiFromUriConfig = Record<SupportedServerName, PaperServerConfiguration>;
