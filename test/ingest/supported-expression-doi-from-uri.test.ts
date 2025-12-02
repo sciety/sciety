@@ -80,11 +80,17 @@ describe('supported-expression-doi-from-uri', () => {
       ['medrxiv https cgi short', 'https://medrxiv.org/cgi/content/short/2020.07.31.20161216', '10.1101/2020.07.31.20161216'],
       ['biorxiv cgi short', 'http://biorxiv.org/cgi/content/short/483891', '10.1101/483891'],
       ['biorxiv https cgi short', 'https://biorxiv.org/cgi/content/short/483891', '10.1101/483891'],
-    ])('%s', (_, input) => {
-      it('returns a left', () => {
+    ])('%s', (_, input, expectedDoi) => {
+      it('returns a left (deprecated)', () => {
         const result = supportedExpressionDoiFromUri(input);
 
         expect(result).toStrictEqual(E.left(expect.stringContaining(input)));
+      });
+
+      it.failing('derives the doi from the input (expected behaviour)', () => {
+        const result = supportedExpressionDoiFromUri(input);
+
+        expect(result).toStrictEqual(E.right(expectedDoi));
       });
     });
   });
