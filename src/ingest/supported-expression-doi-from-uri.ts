@@ -5,6 +5,7 @@ import { Eq as stringEq } from 'fp-ts/string';
 import {
   ExpressionDoiFromUriConfig, PaperServerConfiguration, isSupported, expressionDoiFromUriConfig,
   uriIsMissingDoiPrefix,
+  isBiorxivMedrxivServer,
 } from './expression-doi-from-uri-config';
 
 const isPrefixOfASupportedServer = (config: ExpressionDoiFromUriConfig, prefix: string) => pipe(
@@ -80,14 +81,6 @@ const getServerFromUri = (uri: string, config: ExpressionDoiFromUriConfig) => {
   }
   return server;
 };
-
-type BiorxivMedrxivServer = 'biorxivLegacy' | 'medrxivLegacy' | 'medrxiv' | 'biorxiv';
-const isBiorxivMedrxivServer = (server: string): server is BiorxivMedrxivServer => (
-  server === 'biorxivLegacy'
-  || server === 'biorxiv'
-  || server === 'medrxivLegacy'
-  || server === 'medrxiv'
-);
 
 export const supportedExpressionDoiFromUri = (uri: string): E.Either<string, string> => {
   const server = getServerFromUri(uri, expressionDoiFromUriConfig);

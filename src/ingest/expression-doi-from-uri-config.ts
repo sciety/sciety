@@ -67,6 +67,15 @@ export const isSupported = (
   RA.elem(stringEq)(server),
 );
 
-type SupportedServerName = 'researchsquare' | 'scielo' | 'biorxivLegacy' | 'biorxiv' | 'medrxivLegacy' | 'medrxiv' | 'osf' | 'psyarxiv' | 'arxiv';
+type BiorxivMedrxivServer = 'biorxiv' | 'medrxiv' | 'biorxivLegacy' | 'medrxivLegacy';
+
+export const isBiorxivMedrxivServer = (server: string): server is BiorxivMedrxivServer => (
+  server === 'biorxiv'
+  || server === 'medrxiv'
+  || server === 'biorxivLegacy'
+  || server === 'medrxivLegacy'
+);
+
+type SupportedServerName = BiorxivMedrxivServer | 'researchsquare' | 'scielo' | 'osf' | 'psyarxiv' | 'arxiv';
 
 export type ExpressionDoiFromUriConfig = Record<SupportedServerName, PaperServerConfiguration>;
