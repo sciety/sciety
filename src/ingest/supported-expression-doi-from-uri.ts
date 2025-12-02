@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
 import { Eq as stringEq } from 'fp-ts/string';
-import { deriveUriContainingFullDoi } from './derive-uri-containing-full-doi';
+import { deriveUriContainingBiorxivMedrxivDoiPrefix } from './derive-uri-containing-biorxiv-medrxiv-doi-prefix';
 import {
   ExpressionDoiFromUriConfig, PaperServerConfiguration, isSupported, expressionDoiFromUriConfig,
   uriIsMissingDoiPrefix,
@@ -89,7 +89,7 @@ export const supportedExpressionDoiFromUri = (uri: string): E.Either<string, str
     return E.left(`server not found in "${uri}"`);
   }
   if (isBiorxivMedrxivServer(server) && uriIsMissingDoiPrefix(uri, expressionDoiFromUriConfig[server].prefix)) {
-    if (E.isLeft(deriveUriContainingFullDoi(uri))) {
+    if (E.isLeft(deriveUriContainingBiorxivMedrxivDoiPrefix(uri))) {
       return E.left(`Doi prefix ${expressionDoiFromUriConfig[server].prefix} not found in ${uri}.`);
     }
   }
