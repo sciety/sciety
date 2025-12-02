@@ -60,21 +60,21 @@ const deriveDoiForSpecificServer = (serverData: PaperServerConfiguration, uri: s
   ),
 );
 
-const getServerFromUri = (uri: string) => {
+const getServerFromUri = (uri: string, config: ExpressionDoiFromUriConfig) => {
   const [, server] = /([a-z]+)\.(com|org|io)/.exec(uri) ?? [];
   if (server === 'biorxiv') {
-    if (uri.includes('10.1101')) {
+    if (uri.includes(config.biorxivLegacy.startOfDoi)) {
       return 'biorxivLegacy';
     }
-    if (uri.includes('10.64898')) {
+    if (uri.includes(config.biorxiv.startOfDoi)) {
       return 'biorxiv';
     }
   }
   if (server === 'medrxiv') {
-    if (uri.includes('10.1101')) {
+    if (uri.includes(config.medrxivLegacy.startOfDoi)) {
       return 'medrxivLegacy';
     }
-    if (uri.includes('10.64898')) {
+    if (uri.includes(config.medrxiv.startOfDoi)) {
       return 'medrxiv';
     }
   }
@@ -82,7 +82,7 @@ const getServerFromUri = (uri: string) => {
 };
 
 export const supportedExpressionDoiFromUri = (uri: string): E.Either<string, string> => {
-  const server = getServerFromUri(uri);
+  const server = getServerFromUri(uri, expressionDoiFromUriConfig);
   if (!server) {
     return E.left(`server not found in "${uri}"`);
   }
