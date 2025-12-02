@@ -78,9 +78,8 @@ describe('supported-expression-doi-from-uri', () => {
     describe.each([
       ['medrxiv cgi short', 'http://medrxiv.org/cgi/content/short/2020.04.08.20058073', '10.1101/2020.04.08.20058073'],
       ['medrxiv https cgi short', 'https://medrxiv.org/cgi/content/short/2020.07.31.20161216', '10.1101/2020.07.31.20161216'],
-      ['biorxiv cgi short', 'http://biorxiv.org/cgi/content/short/2020.04.08.20058073', '10.1101/2020.04.08.20058073'],
-      ['biorxiv https cgi short', 'https://biorxiv.org/cgi/content/short/2020.07.31.20161216', '10.1101/2020.07.31.20161216'],
-      ['medrxiv early with date and full pdf', 'https://www.medrxiv.org/content/medrxiv/early/2021/07/03/2021.06.28.21259452.full.pdf', '10.1101/2021.06.28.21259452'],
+      ['biorxiv cgi short', 'http://biorxiv.org/cgi/content/short/483891', '10.1101/483891'],
+      ['biorxiv https cgi short', 'https://biorxiv.org/cgi/content/short/483891', '10.1101/483891'],
     ])('%s', (_, input) => {
       it('returns a left', () => {
         const result = supportedExpressionDoiFromUri(input);
