@@ -81,12 +81,20 @@ const getServerFromUri = (uri: string, config: ExpressionDoiFromUriConfig) => {
   return server;
 };
 
+type BiorxivMedrxivServer = 'biorxivLegacy' | 'medrxivLegacy' | 'medrxiv' | 'biorxiv';
+const isBiorxivMedrxivServer = (server: string): server is BiorxivMedrxivServer => (
+  server === 'biorxivLegacy'
+  || server === 'biorxiv'
+  || server === 'medrxivLegacy'
+  || server === 'medrxiv'
+);
+
 export const supportedExpressionDoiFromUri = (uri: string): E.Either<string, string> => {
   const server = getServerFromUri(uri, expressionDoiFromUriConfig);
   if (!server) {
     return E.left(`server not found in "${uri}"`);
   }
-  if ((server === 'biorxivLegacy' || server === 'medrxivLegacy' || server === 'biorxiv' || server === 'medrxiv') && uriIsMissingDoiPrefix(uri, expressionDoiFromUriConfig[server].prefix)) {
+  if (isBiorxivMedrxivServer(server) && uriIsMissingDoiPrefix(uri, expressionDoiFromUriConfig[server].prefix)) {
     return E.left(`Doi prefix ${expressionDoiFromUriConfig[server].prefix} not found in ${uri}.`);
   }
   if (isSupported(server, expressionDoiFromUriConfig)) {
