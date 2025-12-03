@@ -1,11 +1,9 @@
-import {
-  deriveUriContainingBiorxivMedrxivDoiPrefix,
-} from '../../src/ingest/derive-uri-containing-biorxiv-medrxiv-doi-prefix';
-
 describe('derive-uri-containing-biorxiv-medrxiv-doi-prefix', () => {
-  it.todo('returns a URI');
+  describe('when a URI containing a biorxiv or medrxiv DOI prefix is fetched', () => {
+    it.todo('returns URI on the right');
+  });
 
-  it.skip('returns a URI containing a biorxiv or medrxiv DOI prefix', () => {
-    expect(deriveUriContainingBiorxivMedrxivDoiPrefix('foo')).toContain('/10.64898/');
+  describe('when a URI that does not contain a biorxiv or medrxiv DOI prefix is fetched', () => {
+    it.todo('returns on the left');
   });
 });
