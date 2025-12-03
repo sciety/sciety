@@ -3,6 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
 import { Annotation } from './annotation';
+import { DependenciesForFetchHead } from '../../discover-published-evaluations';
 import { supportedExpressionDoiFromUri } from '../../supported-expression-doi-from-uri';
 import { PublishedEvaluation, constructPublishedEvaluation } from '../../types/published-evaluation';
 import { SkippedEvaluation } from '../../types/skipped-evaluation';
@@ -23,12 +24,13 @@ const mapTagToType = (
 );
 
 export const convertHypothesisAnnotationToEvaluation = (
+  dependencies: DependenciesForFetchHead,
   tagToEvaluationTypeMap: Record<string, ReadonlyArray<string>>,
 ) => (
   annotation: Annotation,
 ): E.Either<SkippedEvaluation, PublishedEvaluation> => pipe(
   annotation.uri,
-  supportedExpressionDoiFromUri,
+  supportedExpressionDoiFromUri(dependencies),
   E.filterOrElse(
     () => annotationContainsText(annotation),
     () => 'annotation text field is empty',

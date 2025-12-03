@@ -1,5 +1,10 @@
 import * as E from 'fp-ts/Either';
 import { supportedExpressionDoiFromUri } from '../../src/ingest/supported-expression-doi-from-uri';
+import { shouldNotBeCalled } from '../should-not-be-called';
+
+const dependencies = {
+  fetchHead: shouldNotBeCalled,
+};
 
 describe('supported-expression-doi-from-uri', () => {
   describe('when the input is supported', () => {
@@ -15,7 +20,7 @@ describe('supported-expression-doi-from-uri', () => {
       ['arXiv link', 'https://arxiv.org/abs/2212.00741', '10.48550/arXiv.2212.00741'],
     ])('%s', (_, input, expectedDoi) => {
       it('extracts the doi from the input', () => {
-        const result = supportedExpressionDoiFromUri(input);
+        const result = supportedExpressionDoiFromUri(dependencies)(input);
 
         expect(result).toStrictEqual(E.right(expectedDoi));
       });
@@ -31,7 +36,7 @@ describe('supported-expression-doi-from-uri', () => {
       ['biorxiv cshp link with no version indicator', 'https://biorxiv.org/content/10.1101/2021.11.04.467308', '10.1101/2021.11.04.467308'],
     ])('%s', (_, input, expectedDoi) => {
       it('extracts the doi from the input', () => {
-        const result = supportedExpressionDoiFromUri(input);
+        const result = supportedExpressionDoiFromUri(dependencies)(input);
 
         expect(result).toStrictEqual(E.right(expectedDoi));
       });
@@ -44,7 +49,7 @@ describe('supported-expression-doi-from-uri', () => {
       ['biorxiv openrxiv link', 'https://biorxiv.org/content/10.64898/2021.11.04.467308v1', '10.64898/2021.11.04.467308'],
     ])('%s', (_, input, expectedDoi) => {
       it('extracts the doi from the input', () => {
-        const result = supportedExpressionDoiFromUri(input);
+        const result = supportedExpressionDoiFromUri(dependencies)(input);
 
         expect(result).toStrictEqual(E.right(expectedDoi));
       });
@@ -67,7 +72,7 @@ describe('supported-expression-doi-from-uri', () => {
       ['invalid SciELO link', 'https://preprints.scielo.org/index.php/scielo/preprint/4639/8936/9328'],
     ])('%s', (_, input) => {
       it('returns a left', () => {
-        const result = supportedExpressionDoiFromUri(input);
+        const result = supportedExpressionDoiFromUri(dependencies)(input);
 
         expect(result).toStrictEqual(E.left(expect.stringContaining(input)));
       });
@@ -82,13 +87,13 @@ describe('supported-expression-doi-from-uri', () => {
       ['biorxiv https cgi short', 'https://biorxiv.org/cgi/content/short/483891', '10.1101/483891'],
     ])('%s', (_, input, expectedDoi) => {
       it('returns a left (deprecated)', () => {
-        const result = supportedExpressionDoiFromUri(input);
+        const result = supportedExpressionDoiFromUri(dependencies)(input);
 
         expect(result).toStrictEqual(E.left(expect.stringContaining(input)));
       });
 
       it.failing('derives the doi from the input (expected behaviour)', () => {
-        const result = supportedExpressionDoiFromUri(input);
+        const result = supportedExpressionDoiFromUri(dependencies)(input);
 
         expect(result).toStrictEqual(E.right(expectedDoi));
       });

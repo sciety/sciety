@@ -12,7 +12,7 @@ export const discoverEvaluationsFromHypothesisUser = (
 ): DiscoverPublishedEvaluations => (ingestDays) => (dependencies) => pipe(
   publisherUserId,
   Hyp.fetchEvaluationsByUserSince(ingestionWindowStartDate(ingestDays), dependencies.fetchData),
-  TE.map(RA.map(convertHypothesisAnnotationToEvaluation(tagToEvaluationTypeMap))),
+  TE.map(RA.map(convertHypothesisAnnotationToEvaluation(dependencies, tagToEvaluationTypeMap))),
   TE.map((parts) => ({
     understood: RA.rights(parts),
     skipped: RA.lefts(parts),
