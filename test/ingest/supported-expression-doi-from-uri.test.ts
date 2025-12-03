@@ -1,9 +1,9 @@
 import * as E from 'fp-ts/Either';
+import * as TE from 'fp-ts/TaskEither';
 import { supportedExpressionDoiFromUri } from '../../src/ingest/supported-expression-doi-from-uri';
-import { shouldNotBeCalled } from '../should-not-be-called';
 
 const dependencies = {
-  fetchHead: shouldNotBeCalled,
+  fetchHead: () => TE.left('force fail'),
 };
 
 describe('supported-expression-doi-from-uri', () => {
