@@ -6,10 +6,6 @@ import {
 } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 
-const dependencies = {
-  fetchHead: shouldNotBeCalled,
-};
-
 describe('convert-hypothesis-annotation-to-evaluation', () => {
   const supportedPreprintUri = 'https://www.medrxiv.org/content/10.1101/2021.06.18.21258689v1';
   const evaluationType1 = arbitraryString();
@@ -29,7 +25,7 @@ describe('convert-hypothesis-annotation-to-evaluation', () => {
         text: arbitraryWord(),
         tags: [],
       }),
-      convertHypothesisAnnotationToEvaluation(dependencies, tagToEvaluationTypeMap),
+      convertHypothesisAnnotationToEvaluation(tagToEvaluationTypeMap),
       E.getOrElseW(shouldNotBeCalled),
     );
 
@@ -43,7 +39,7 @@ describe('convert-hypothesis-annotation-to-evaluation', () => {
   });
 
   describe('when the url cannot be parsed to a doi', () => {
-    const result = convertHypothesisAnnotationToEvaluation(dependencies, tagToEvaluationTypeMap)({
+    const result = convertHypothesisAnnotationToEvaluation(tagToEvaluationTypeMap)({
       id: arbitraryWord(),
       created: arbitraryDate().toISOString(),
       uri: 'http://example.com',
@@ -57,7 +53,7 @@ describe('convert-hypothesis-annotation-to-evaluation', () => {
   });
 
   describe('when the evaluation relates to an highlight-only annotation', () => {
-    const result = convertHypothesisAnnotationToEvaluation(dependencies, tagToEvaluationTypeMap)({
+    const result = convertHypothesisAnnotationToEvaluation(tagToEvaluationTypeMap)({
       id: arbitraryWord(),
       created: arbitraryDate().toISOString(),
       uri: supportedPreprintUri,
@@ -79,7 +75,7 @@ describe('convert-hypothesis-annotation-to-evaluation', () => {
         text: arbitraryWord(),
         tags: [tagToEvaluationTypeMap[evaluationType1][arbitraryNumber(0, 2)]],
       }),
-      convertHypothesisAnnotationToEvaluation(dependencies, tagToEvaluationTypeMap),
+      convertHypothesisAnnotationToEvaluation(tagToEvaluationTypeMap),
       E.getOrElseW(shouldNotBeCalled),
     );
 
@@ -100,7 +96,7 @@ describe('convert-hypothesis-annotation-to-evaluation', () => {
           tagToEvaluationTypeMap[evaluationType2][arbitraryNumber(0, 2)],
         ],
       }),
-      convertHypothesisAnnotationToEvaluation(dependencies, tagToEvaluationTypeMap),
+      convertHypothesisAnnotationToEvaluation(tagToEvaluationTypeMap),
       E.getOrElseW(shouldNotBeCalled),
     );
 

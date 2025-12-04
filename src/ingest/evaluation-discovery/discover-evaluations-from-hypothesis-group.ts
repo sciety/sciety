@@ -16,7 +16,7 @@ export const discoverEvaluationsFromHypothesisGroup = (
     ingestionWindowStartDate(ingestDays, avoidWhenPublishedBefore),
     dependencies.fetchData,
   ),
-  TE.map(RA.map(convertHypothesisAnnotationToEvaluation(dependencies, tagToEvaluationTypeMap))),
+  TE.map(RA.map(convertHypothesisAnnotationToEvaluation(tagToEvaluationTypeMap))),
   TE.map((parts) => ({
     understood: RA.rights(parts),
     skipped: RA.lefts(parts),

@@ -2,8 +2,6 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
 import { Eq as stringEq } from 'fp-ts/string';
-import { deriveUriContainingBiorxivMedrxivDoiPrefix } from './derive-uri-containing-biorxiv-medrxiv-doi-prefix';
-import { DependenciesForFetchHead } from './discover-published-evaluations';
 import {
   ExpressionDoiFromUriConfig, PaperServerConfiguration, isSupported, expressionDoiFromUriConfig,
   uriIsMissingDoiPrefix,
@@ -85,8 +83,6 @@ const getServerFromUri = (uri: string, config: ExpressionDoiFromUriConfig) => {
 };
 
 export const supportedExpressionDoiFromUri = (
-  dependencies: DependenciesForFetchHead,
-) => (
   uri: string,
 ): E.Either<string, string> => {
   const server = getServerFromUri(uri, expressionDoiFromUriConfig);
@@ -94,9 +90,7 @@ export const supportedExpressionDoiFromUri = (
     return E.left(`server not found in "${uri}"`);
   }
   if (isBiorxivMedrxivServer(server) && uriIsMissingDoiPrefix(uri, expressionDoiFromUriConfig[server].prefix)) {
-    if (E.isLeft(deriveUriContainingBiorxivMedrxivDoiPrefix(dependencies)(uri))) {
-      return E.left(`Doi prefix ${expressionDoiFromUriConfig[server].prefix} not found in ${uri}.`);
-    }
+    return E.left(`Doi prefix ${expressionDoiFromUriConfig[server].prefix} not found in ${uri}.`);
   }
   if (isSupported(server, expressionDoiFromUriConfig)) {
     return deriveDoiForSpecificServer(expressionDoiFromUriConfig[server], uri);
