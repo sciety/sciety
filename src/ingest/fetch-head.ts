@@ -22,11 +22,9 @@ const axiosHead = async (ingestDebug: Configuration['ingestDebug'], url: string,
   });
 };
 
-// ts-unused-exports:disable-next-line
 export type FetchHead = (url: string, headers?: Record<string, string>)
 => TE.TaskEither<string, Record<string, unknown>>;
 
-// ts-unused-exports:disable-next-line
 export const fetchHead = (
   environment: Configuration,
 ): FetchHead => (
