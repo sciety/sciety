@@ -1,13 +1,14 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { DependenciesForFetchHead } from './discover-published-evaluations';
+import { Annotation } from './evaluation-discovery/hypothesis/annotation';
 
 export const deriveUriContainingBiorxivMedrxivDoiPrefix = (
   dependencies: DependenciesForFetchHead,
 ) => (
-  uri: string,
-): TE.TaskEither<string, string> => pipe(
-  uri,
+  annotation: Annotation,
+): TE.TaskEither<string, Annotation> => pipe(
+  annotation.uri,
   dependencies.fetchHead,
-  () => TE.right(uri),
+  () => TE.right(annotation),
 );

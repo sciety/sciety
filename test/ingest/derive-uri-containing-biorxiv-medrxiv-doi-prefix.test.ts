@@ -3,7 +3,8 @@ import * as TE from 'fp-ts/TaskEither';
 import {
   deriveUriContainingBiorxivMedrxivDoiPrefix,
 } from '../../src/ingest/derive-uri-containing-biorxiv-medrxiv-doi-prefix';
-import { arbitraryUri } from '../helpers';
+import { Annotation } from '../../src/ingest/evaluation-discovery/hypothesis/annotation';
+import { arbitraryDate, arbitraryString, arbitraryUri } from '../helpers';
 
 const dependencies = {
   fetchHead: () => TE.left('not implemented'),
@@ -11,7 +12,15 @@ const dependencies = {
 
 describe('derive-uri-containing-biorxiv-medrxiv-doi-prefix', () => {
   describe('when a URI containing a biorxiv or medrxiv DOI prefix is fetched', () => {
-    const result = deriveUriContainingBiorxivMedrxivDoiPrefix(dependencies)(arbitraryUri());
+    const annotation: Annotation = {
+      id: arbitraryString(),
+      created: arbitraryDate().toISOString(),
+      uri: arbitraryUri(),
+      text: arbitraryString(),
+      tags: [],
+    };
+
+    const result = deriveUriContainingBiorxivMedrxivDoiPrefix(dependencies)(annotation);
 
     it.skip('returns URI on the right', async () => {
       expect(E.isRight(await result())).toBe(true);
@@ -19,7 +28,15 @@ describe('derive-uri-containing-biorxiv-medrxiv-doi-prefix', () => {
   });
 
   describe('when a URI that does not contain a biorxiv or medrxiv DOI prefix is fetched', () => {
-    const result = deriveUriContainingBiorxivMedrxivDoiPrefix(dependencies)(arbitraryUri());
+    const annotation: Annotation = {
+      id: arbitraryString(),
+      created: arbitraryDate().toISOString(),
+      uri: arbitraryUri(),
+      text: arbitraryString(),
+      tags: [],
+    };
+
+    const result = deriveUriContainingBiorxivMedrxivDoiPrefix(dependencies)(annotation);
 
     it.skip('returns on the left', async () => {
       expect(E.isLeft(await result())).toBe(true);
