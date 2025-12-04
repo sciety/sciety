@@ -40,7 +40,7 @@ services:
       AUTH0_CALLBACK_URL: 'http://localhost:${APP_PORT:-8080}/auth0/callback'
       BONFIRE_SCIETY_ACCOUNT_EMAIL: '${BONFIRE_SCIETY_ACCOUNT_EMAIL}'
       BONFIRE_SCIETY_ACCOUNT_PASSWORD: '${BONFIRE_SCIETY_ACCOUNT_PASSWORD}'
-      DISPLAY_LAST_SERVER_STARTUP: 
+      DISPLAY_LAST_SERVER_STARTUP:
     ports:
       - '${APP_PORT:-8080}:80'
     restart: unless-stopped
@@ -48,7 +48,7 @@ services:
       - cache
 
   db:
-    image: postgres:13.18-alpine
+    image: postgres:14.19-alpine
     environment:
       POSTGRES_USER: 'user'
       POSTGRES_PASSWORD: 'secret'
