@@ -137,16 +137,16 @@ staging-sql: verify-flux-prod-cluster
 	-- psql
 
 staging-events-row-count: verify-flux-prod-cluster
-	kubectl run psql \
+	kubectl -n sciety run psql \
 	--image=postgres:12.3 \
-	--env=PGHOST=$$(kubectl get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGHOST') \
-	--env=PGDATABASE=$$(kubectl get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGDATABASE') \
-	--env=PGUSER=$$(kubectl get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGUSER') \
-	--env=PGPASSWORD=$$(kubectl get secret sciety--staging--secret-env-vars -o json | jq -r '.data.PGPASSWORD'| base64 -d) \
+	--env=PGHOST=$$(kubectl -n sciety get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGHOST') \
+	--env=PGDATABASE=$$(kubectl -n sciety get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGDATABASE') \
+	--env=PGUSER=$$(kubectl -n sciety get configmap sciety--staging--public-env-vars -o json | jq -r '.data.PGUSER') \
+	--env=PGPASSWORD=$$(kubectl -n sciety get secret sciety--staging--secret-env-vars -o json | jq -r '.data.PGPASSWORD'| base64 -d) \
 	-- sleep 600
-	kubectl wait --for condition=Ready pod psql
-	kubectl exec psql -- psql -c "SELECT count(*) FROM events;"
-	kubectl delete --wait=false pod psql
+	kubectl -n sciety wait --for condition=Ready pod psql
+	kubectl -n sciety exec psql -- psql -c "SELECT count(*) FROM events;"
+	kubectl -n sciety delete --wait=false pod psql
 
 prod-sql:
 	kubectl run psql \
