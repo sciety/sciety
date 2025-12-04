@@ -1,5 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
+import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import * as Hyp from './hypothesis';
 import { convertHypothesisAnnotationToEvaluation } from './hypothesis/convert-hypothesis-annotation-to-evaluation';
@@ -7,6 +8,9 @@ import { ingestionWindowStartDate } from './ingestion-window-start-date';
 import { deriveUriContainingBiorxivMedrxivDoiPrefix } from '../derive-uri-containing-biorxiv-medrxiv-doi-prefix';
 import { DiscoverPublishedEvaluations } from '../discover-published-evaluations';
 import { tagToEvaluationTypeMap } from '../tag-to-evaluation-type-map';
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const isUriFromBiorxivMedriv = (uri: string) => false;
 
 export const discoverEvaluationsFromHypothesisGroup = (
   publisherGroupId: string,
@@ -17,7 +21,14 @@ export const discoverEvaluationsFromHypothesisGroup = (
     ingestionWindowStartDate(ingestDays, avoidWhenPublishedBefore),
     dependencies.fetchData,
   ),
-  TE.flatMap(RA.traverse(TE.ApplicativePar)(deriveUriContainingBiorxivMedrxivDoiPrefix(dependencies))),
+  TE.flatMap(TE.traverseArray((annotation) => pipe(
+    annotation.uri,
+    isUriFromBiorxivMedriv,
+    B.match(
+      () => TE.right(annotation),
+      () => deriveUriContainingBiorxivMedrxivDoiPrefix(dependencies)(annotation),
+    ),
+  ))),
   TE.map(RA.map(convertHypothesisAnnotationToEvaluation(tagToEvaluationTypeMap))),
   TE.map((parts) => ({
     understood: RA.rights(parts),
