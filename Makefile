@@ -308,6 +308,7 @@ clean:
 
 clobber: clean
 	rm -rf build node_modules
+	docker compose down --volumes --remove-orphans --rmi all
 
 check-ci: compile-prod check
 
