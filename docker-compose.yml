@@ -48,7 +48,7 @@ services:
       - cache
 
   db:
-    image: postgres:12.19-alpine
+    image: postgres:13.18-alpine
     environment:
       POSTGRES_USER: 'user'
       POSTGRES_PASSWORD: 'secret'
