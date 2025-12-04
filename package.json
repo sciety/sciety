@@ -6,7 +6,7 @@
   "dependencies": {
     "@godaddy/terminus": "^4.12.1",
     "@googleapis/sheets": "^9.3.1",
-    "@koa/router": "^13.1.0",
+    "@koa/router": "^15.0.0",
     "@types/passport-local": "^1.0.38",
     "axios": "^1.7.7",
     "axios-cache-interceptor": "^1.8.3",
