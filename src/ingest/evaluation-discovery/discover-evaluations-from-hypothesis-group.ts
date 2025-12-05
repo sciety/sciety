@@ -25,7 +25,7 @@ export const discoverEvaluationsFromHypothesisGroup = (
     (uri) => isUriFromBiorxivMedrxiv(uri) && uriIsMissingBiorxivMedrxivDoiPrefix(uri),
     B.match(
       () => TE.right(annotation),
-      () => deriveUriContainingBiorxivMedrxivDoiPrefix(dependencies)(annotation),
+      () => (process.env.EXPERIMENT_ENABLED === 'true' ? deriveUriContainingBiorxivMedrxivDoiPrefix(dependencies)(annotation) : TE.right(annotation)),
     ),
   ))),
   TE.map(RA.map(convertHypothesisAnnotationToEvaluation(tagToEvaluationTypeMap))),

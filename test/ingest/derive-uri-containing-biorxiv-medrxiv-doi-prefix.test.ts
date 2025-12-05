@@ -22,7 +22,7 @@ describe('derive-uri-containing-biorxiv-medrxiv-doi-prefix', () => {
 
     const result = deriveUriContainingBiorxivMedrxivDoiPrefix(dependencies)(annotation);
 
-    it.skip('returns URI on the right', async () => {
+    it.failing('returns URI on the right', async () => {
       expect(E.isRight(await result())).toBe(true);
     });
   });
