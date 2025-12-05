@@ -5,6 +5,7 @@ import { arbitraryAnnotation } from './helpers';
 import {
   deriveUriContainingBiorxivMedrxivDoiPrefix,
 } from '../../src/ingest/derive-uri-containing-biorxiv-medrxiv-doi-prefix';
+import { arbitraryUri } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
 
 const dependencies = {
@@ -13,19 +14,22 @@ const dependencies = {
 
 describe('derive-uri-containing-biorxiv-medrxiv-doi-prefix', () => {
   describe('when a URI containing a biorxiv or medrxiv DOI prefix is fetched', () => {
-    const annotation = arbitraryAnnotation();
+    const inputUri = arbitraryUri();
+    const expectedResult = 'https://biorxiv.org/content/10.64898/2021.11.04.467308v1';
     let result: string;
 
     beforeEach(async () => {
       result = await pipe(
-        annotation.uri,
-        deriveUriContainingBiorxivMedrxivDoiPrefix(dependencies),
+        inputUri,
+        deriveUriContainingBiorxivMedrxivDoiPrefix({
+          fetchHead: () => TE.right({ link: expectedResult }),
+        }),
         TE.getOrElse(shouldNotBeCalled),
       )();
     });
 
-    it.skip('returns URI on the right', async () => {
-      expect(result).toBe(true);
+    it.failing('returns the fetched URI', async () => {
+      expect(result).toStrictEqual(expectedResult);
     });
   });
 
