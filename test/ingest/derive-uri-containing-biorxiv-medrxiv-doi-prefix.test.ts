@@ -1,16 +1,11 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { arbitraryAnnotation } from './helpers';
 import {
   deriveUriContainingBiorxivMedrxivDoiPrefix,
 } from '../../src/ingest/derive-uri-containing-biorxiv-medrxiv-doi-prefix';
 import { arbitraryUri } from '../helpers';
 import { shouldNotBeCalled } from '../should-not-be-called';
-
-const dependencies = {
-  fetchHead: () => TE.left('not implemented'),
-};
 
 describe('derive-uri-containing-biorxiv-medrxiv-doi-prefix', () => {
   describe('when a URI containing a biorxiv or medrxiv DOI prefix is fetched', () => {
@@ -34,12 +29,21 @@ describe('derive-uri-containing-biorxiv-medrxiv-doi-prefix', () => {
   });
 
   describe('when a URI that does not contain a biorxiv or medrxiv DOI prefix is fetched', () => {
-    const annotation = arbitraryAnnotation();
+    const inputUri = arbitraryUri();
+    const responseThatDoesNotContainRequiredPrefix = 'https://biorxiv.org/cgi/content/short/483891';
+    let result: E.Either<string, string>;
 
-    const result = deriveUriContainingBiorxivMedrxivDoiPrefix(dependencies)(annotation.uri);
+    beforeEach(async () => {
+      result = await pipe(
+        inputUri,
+        deriveUriContainingBiorxivMedrxivDoiPrefix({
+          fetchHead: () => TE.right({ link: responseThatDoesNotContainRequiredPrefix }),
+        }),
+      )();
+    });
 
-    it.skip('returns on the left', async () => {
-      expect(E.isLeft(await result())).toBe(true);
+    it.failing('returns on the left', async () => {
+      expect(E.isLeft(result)).toBe(true);
     });
   });
 });
