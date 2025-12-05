@@ -6,12 +6,10 @@ import * as Hyp from './hypothesis';
 import { convertHypothesisAnnotationToEvaluation } from './hypothesis/convert-hypothesis-annotation-to-evaluation';
 import { ingestionWindowStartDate } from './ingestion-window-start-date';
 import { isUriFromBiorxivMedrxiv } from './is-uri-from-biorxiv-medrxiv';
+import { uriIsMissingBiorxivMedrxivDoiPrefix } from './uri-is-missing-biorxiv-medrxiv-doi-prefix';
 import { deriveUriContainingBiorxivMedrxivDoiPrefix } from '../derive-uri-containing-biorxiv-medrxiv-doi-prefix';
 import { DiscoverPublishedEvaluations } from '../discover-published-evaluations';
 import { tagToEvaluationTypeMap } from '../tag-to-evaluation-type-map';
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const uriIsMissingBiorxivMedrxivDoiPrefix = (uri: string) => false;
 
 export const discoverEvaluationsFromHypothesisGroup = (
   publisherGroupId: string,
