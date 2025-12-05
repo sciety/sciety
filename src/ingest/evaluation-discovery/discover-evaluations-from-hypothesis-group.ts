@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import * as B from 'fp-ts/boolean';
@@ -6,19 +5,10 @@ import { pipe } from 'fp-ts/function';
 import * as Hyp from './hypothesis';
 import { convertHypothesisAnnotationToEvaluation } from './hypothesis/convert-hypothesis-annotation-to-evaluation';
 import { ingestionWindowStartDate } from './ingestion-window-start-date';
+import { isUriFromBiorxivMedrxiv } from './is-uri-from-biorxiv-medrxiv';
 import { deriveUriContainingBiorxivMedrxivDoiPrefix } from '../derive-uri-containing-biorxiv-medrxiv-doi-prefix';
 import { DiscoverPublishedEvaluations } from '../discover-published-evaluations';
 import { tagToEvaluationTypeMap } from '../tag-to-evaluation-type-map';
-
-const isUriFromBiorxivMedriv = (uri: string) => {
-  try {
-    const url = new URL(uri);
-    const hostname = url.hostname;
-    return hostname === 'biorxiv.org' || hostname === 'medrxiv.org';
-  } catch (e) {
-    return false;
-  }
-};
 
 export const discoverEvaluationsFromHypothesisGroup = (
   publisherGroupId: string,
@@ -31,7 +21,7 @@ export const discoverEvaluationsFromHypothesisGroup = (
   ),
   TE.flatMap(TE.traverseArray((annotation) => pipe(
     annotation.uri,
-    isUriFromBiorxivMedriv,
+    isUriFromBiorxivMedrxiv,
     B.match(
       () => TE.right(annotation),
       () => deriveUriContainingBiorxivMedrxivDoiPrefix(dependencies)(annotation),
