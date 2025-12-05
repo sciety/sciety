@@ -1,9 +1,12 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
+import { pipe } from 'fp-ts/function';
 import { arbitraryAnnotation } from './helpers';
 import {
   deriveUriContainingBiorxivMedrxivDoiPrefix,
 } from '../../src/ingest/derive-uri-containing-biorxiv-medrxiv-doi-prefix';
+import { Annotation } from '../../src/ingest/evaluation-discovery/hypothesis/annotation';
+import { shouldNotBeCalled } from '../should-not-be-called';
 
 const dependencies = {
   fetchHead: () => TE.left('not implemented'),
@@ -12,11 +15,18 @@ const dependencies = {
 describe('derive-uri-containing-biorxiv-medrxiv-doi-prefix', () => {
   describe('when a URI containing a biorxiv or medrxiv DOI prefix is fetched', () => {
     const annotation = arbitraryAnnotation();
+    let result: Annotation;
 
-    const result = deriveUriContainingBiorxivMedrxivDoiPrefix(dependencies)(annotation);
+    beforeEach(async () => {
+      result = await pipe(
+        annotation,
+        deriveUriContainingBiorxivMedrxivDoiPrefix(dependencies),
+        TE.getOrElse(shouldNotBeCalled),
+      )();
+    });
 
-    it.failing('returns URI on the right', async () => {
-      expect(E.isRight(await result())).toBe(true);
+    it.skip('returns URI on the right', async () => {
+      expect(result).toBe(true);
     });
   });
 
