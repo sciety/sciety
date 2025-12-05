@@ -1,3 +1,6 @@
+import { isUriFromBiorxivMedrxiv } from '../../../src/ingest/evaluation-discovery/is-uri-from-biorxiv-medrxiv';
+import { arbitraryString } from '../../helpers';
+
 describe('is-uri-from-biorxiv-medrxiv', () => {
   describe('given input can be parsed as a url', () => {
     describe('and contains biorxiv hostname', () => {
@@ -14,6 +17,8 @@ describe('is-uri-from-biorxiv-medrxiv', () => {
   });
 
   describe('given input can not be parsed as a url', () => {
-    it.todo('returns false');
+    it('returns false', () => {
+      expect(isUriFromBiorxivMedrxiv(arbitraryString())).toBe(false);
+    });
   });
 });
