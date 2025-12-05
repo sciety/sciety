@@ -4,7 +4,11 @@ import { arbitraryString, arbitraryUri } from '../../helpers';
 describe('is-uri-from-biorxiv-medrxiv', () => {
   describe('given input can be parsed as a url', () => {
     describe('and contains biorxiv hostname', () => {
-      it.todo('returns true');
+      const biorxivUri = 'http://biorxiv.org/cgi/content/short/483891';
+
+      it('returns true', () => {
+        expect(isUriFromBiorxivMedrxiv(biorxivUri)).toBe(true);
+      });
     });
 
     describe('and contains medrxiv hostname', () => {
