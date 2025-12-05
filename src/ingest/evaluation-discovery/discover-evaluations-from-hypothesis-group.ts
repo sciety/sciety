@@ -10,6 +10,9 @@ import { deriveUriContainingBiorxivMedrxivDoiPrefix } from '../derive-uri-contai
 import { DiscoverPublishedEvaluations } from '../discover-published-evaluations';
 import { tagToEvaluationTypeMap } from '../tag-to-evaluation-type-map';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const uriIsMissingBiorxivMedrxivDoiPrefix = (uri: string) => false;
+
 export const discoverEvaluationsFromHypothesisGroup = (
   publisherGroupId: string,
   avoidWhenPublishedBefore?: Date,
@@ -21,7 +24,7 @@ export const discoverEvaluationsFromHypothesisGroup = (
   ),
   TE.flatMap(TE.traverseArray((annotation) => pipe(
     annotation.uri,
-    isUriFromBiorxivMedrxiv,
+    (uri) => isUriFromBiorxivMedrxiv(uri) && uriIsMissingBiorxivMedrxivDoiPrefix(uri),
     B.match(
       () => TE.right(annotation),
       () => deriveUriContainingBiorxivMedrxivDoiPrefix(dependencies)(annotation),
