@@ -12,7 +12,11 @@ describe('is-uri-from-biorxiv-medrxiv', () => {
     });
 
     describe('and contains medrxiv hostname', () => {
-      it.todo('returns true');
+      const medrxivUri = 'http://medrxiv.org/cgi/content/short/2020.04.08.20058073';
+
+      it('returns true', () => {
+        expect(isUriFromBiorxivMedrxiv(medrxivUri)).toBe(true);
+      });
     });
 
     describe('and does not contain biorxiv nor medrxiv hostname', () => {
