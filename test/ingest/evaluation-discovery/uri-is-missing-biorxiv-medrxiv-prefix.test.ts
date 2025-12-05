@@ -13,7 +13,11 @@ describe('uri-is-missing-biorxiv-medrxiv-prefix', () => {
   });
 
   describe('when the uri contains the Cold Spring Harbor Press DOI prefix (10.1101)', () => {
-    it.todo('returns false');
+    const result = uriIsMissingBiorxivMedrxivDoiPrefix('https://biorxiv.org/content/10.1101/2021.11.04.467308v1');
+
+    it('returns false', () => {
+      expect(result).toBe(false);
+    });
   });
 
   describe('when the uri contains neither the DOI prefixes for openrxiv nor Cold Spring Harbor Press', () => {
