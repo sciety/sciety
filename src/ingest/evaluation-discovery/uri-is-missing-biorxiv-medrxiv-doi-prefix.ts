@@ -1,2 +1,1 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const uriIsMissingBiorxivMedrxivDoiPrefix = (uri: string): boolean => false;
+export const uriIsMissingBiorxivMedrxivDoiPrefix = (uri: string): boolean => !(uri.includes('10.64898') || uri.includes('10.1101'));

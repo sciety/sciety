@@ -21,7 +21,7 @@ describe('uri-is-missing-biorxiv-medrxiv-prefix', () => {
   });
 
   describe('when the uri contains neither the DOI prefixes for openrxiv nor Cold Spring Harbor Press', () => {
-    it.failing('returns true', () => {
+    it('returns true', () => {
       expect(uriIsMissingBiorxivMedrxivDoiPrefix(arbitraryUri())).toBe(true);
     });
   });
