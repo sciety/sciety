@@ -18,7 +18,7 @@ describe('derive-uri-containing-biorxiv-medrxiv-doi-prefix', () => {
 
     beforeEach(async () => {
       result = await pipe(
-        annotation,
+        annotation.uri,
         deriveUriContainingBiorxivMedrxivDoiPrefix(dependencies),
         TE.getOrElse(shouldNotBeCalled),
       )();
@@ -32,7 +32,7 @@ describe('derive-uri-containing-biorxiv-medrxiv-doi-prefix', () => {
   describe('when a URI that does not contain a biorxiv or medrxiv DOI prefix is fetched', () => {
     const annotation = arbitraryAnnotation();
 
-    const result = deriveUriContainingBiorxivMedrxivDoiPrefix(dependencies)(annotation);
+    const result = deriveUriContainingBiorxivMedrxivDoiPrefix(dependencies)(annotation.uri);
 
     it.skip('returns on the left', async () => {
       expect(E.isLeft(await result())).toBe(true);
