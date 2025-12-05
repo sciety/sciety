@@ -9,8 +9,7 @@ import { deriveUriContainingBiorxivMedrxivDoiPrefix } from '../derive-uri-contai
 import { DiscoverPublishedEvaluations } from '../discover-published-evaluations';
 import { tagToEvaluationTypeMap } from '../tag-to-evaluation-type-map';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const isUriFromBiorxivMedriv = (uri: string) => false;
+const isUriFromBiorxivMedriv = (uri: string) => (uri.includes('biorxiv') || uri.includes('medrxiv'));
 
 export const discoverEvaluationsFromHypothesisGroup = (
   publisherGroupId: string,
