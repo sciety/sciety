@@ -1,3 +1,8 @@
+import {
+  uriIsMissingBiorxivMedrxivDoiPrefix,
+} from '../../../src/ingest/evaluation-discovery/uri-is-missing-biorxiv-medrxiv-doi-prefix';
+import { arbitraryUri } from '../../helpers';
+
 describe('uri-is-missing-biorxiv-medrxiv-prefix', () => {
   describe('when the uri contains the openrxiv DOI prefix (10.64898)', () => {
     it.todo('returns false');
@@ -8,6 +13,8 @@ describe('uri-is-missing-biorxiv-medrxiv-prefix', () => {
   });
 
   describe('when the uri contains neither the DOI prefixes for openrxiv nor Cold Spring Harbor Press', () => {
-    it.todo('returns true');
+    it.failing('returns true', () => {
+      expect(uriIsMissingBiorxivMedrxivDoiPrefix(arbitraryUri())).toBe(true);
+    });
   });
 });
