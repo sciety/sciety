@@ -1,10 +1,9 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
+import { arbitraryAnnotation } from './helpers';
 import {
   deriveUriContainingBiorxivMedrxivDoiPrefix,
 } from '../../src/ingest/derive-uri-containing-biorxiv-medrxiv-doi-prefix';
-import { Annotation } from '../../src/ingest/evaluation-discovery/hypothesis/annotation';
-import { arbitraryDate, arbitraryString, arbitraryUri } from '../helpers';
 
 const dependencies = {
   fetchHead: () => TE.left('not implemented'),
@@ -12,13 +11,7 @@ const dependencies = {
 
 describe('derive-uri-containing-biorxiv-medrxiv-doi-prefix', () => {
   describe('when a URI containing a biorxiv or medrxiv DOI prefix is fetched', () => {
-    const annotation: Annotation = {
-      id: arbitraryString(),
-      created: arbitraryDate().toISOString(),
-      uri: arbitraryUri(),
-      text: arbitraryString(),
-      tags: [],
-    };
+    const annotation = arbitraryAnnotation();
 
     const result = deriveUriContainingBiorxivMedrxivDoiPrefix(dependencies)(annotation);
 
@@ -28,13 +21,7 @@ describe('derive-uri-containing-biorxiv-medrxiv-doi-prefix', () => {
   });
 
   describe('when a URI that does not contain a biorxiv or medrxiv DOI prefix is fetched', () => {
-    const annotation: Annotation = {
-      id: arbitraryString(),
-      created: arbitraryDate().toISOString(),
-      uri: arbitraryUri(),
-      text: arbitraryString(),
-      tags: [],
-    };
+    const annotation = arbitraryAnnotation();
 
     const result = deriveUriContainingBiorxivMedrxivDoiPrefix(dependencies)(annotation);
 

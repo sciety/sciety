@@ -3,14 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { discoverHypothesisEvaluations } from '../../../../src/ingest/evaluation-discovery/hypothesis/discover-hypothesis-evaluations';
 import { arbitraryDate, arbitraryWord } from '../../../helpers';
-
-const arbitraryAnnotation = () => ({
-  id: arbitraryWord(),
-  created: arbitraryWord(),
-  uri: arbitraryWord(),
-  text: arbitraryWord(),
-  tags: [arbitraryWord()],
-});
+import { arbitraryAnnotation } from '../../helpers';
 
 const populatedPage = TE.right({
   rows: [arbitraryAnnotation(), arbitraryAnnotation()],
