@@ -7,7 +7,7 @@ export const deriveUriContainingBiorxivMedrxivDoiPrefix = (
   dependencies: DependenciesForFetchHead,
 ) => (
   annotation: Annotation,
-): TE.TaskEither<string, Annotation> => pipe(
+): TE.TaskEither<string, string> => pipe(
   annotation.uri,
   dependencies.fetchHead,
   () => TE.left('not implemented'),

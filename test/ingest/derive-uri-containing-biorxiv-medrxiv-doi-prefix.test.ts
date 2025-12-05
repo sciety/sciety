@@ -5,7 +5,6 @@ import { arbitraryAnnotation } from './helpers';
 import {
   deriveUriContainingBiorxivMedrxivDoiPrefix,
 } from '../../src/ingest/derive-uri-containing-biorxiv-medrxiv-doi-prefix';
-import { Annotation } from '../../src/ingest/evaluation-discovery/hypothesis/annotation';
 import { shouldNotBeCalled } from '../should-not-be-called';
 
 const dependencies = {
@@ -15,7 +14,7 @@ const dependencies = {
 describe('derive-uri-containing-biorxiv-medrxiv-doi-prefix', () => {
   describe('when a URI containing a biorxiv or medrxiv DOI prefix is fetched', () => {
     const annotation = arbitraryAnnotation();
-    let result: Annotation;
+    let result: string;
 
     beforeEach(async () => {
       result = await pipe(
