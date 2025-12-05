@@ -1,3 +1,4 @@
+import { URL } from 'url';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import * as B from 'fp-ts/boolean';
@@ -9,7 +10,15 @@ import { deriveUriContainingBiorxivMedrxivDoiPrefix } from '../derive-uri-contai
 import { DiscoverPublishedEvaluations } from '../discover-published-evaluations';
 import { tagToEvaluationTypeMap } from '../tag-to-evaluation-type-map';
 
-const isUriFromBiorxivMedriv = (uri: string) => (uri.includes('biorxiv') || uri.includes('medrxiv'));
+const isUriFromBiorxivMedriv = (uri: string) => {
+  try {
+    const url = new URL(uri);
+    const hostname = url.hostname;
+    return hostname === 'biorxiv.org' || hostname === 'medrxiv.org';
+  } catch (e) {
+    return false;
+  }
+};
 
 export const discoverEvaluationsFromHypothesisGroup = (
   publisherGroupId: string,
