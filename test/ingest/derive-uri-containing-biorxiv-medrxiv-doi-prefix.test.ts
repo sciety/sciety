@@ -28,7 +28,7 @@ describe('derive-uri-containing-biorxiv-medrxiv-doi-prefix', () => {
       )();
     });
 
-    it.failing('returns the fetched URI', async () => {
+    it('returns the fetched URI', async () => {
       expect(result).toStrictEqual(expectedResult);
     });
   });
