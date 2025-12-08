@@ -6,7 +6,7 @@ import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryAnnotation } from '../helpers';
 
 const dependencies = {
-  fetchHead: () => TE.right({ link: '' }),
+  fetchHead: shouldNotBeCalled,
   fetchData: shouldNotBeCalled,
 };
 
