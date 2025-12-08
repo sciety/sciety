@@ -87,7 +87,16 @@ describe('refine-if-necessary-annotation-uri-for-biorxiv-medrxiv', () => {
     });
 
     describe('when the uri does not contain the biorxiv nor medrxiv hostname', () => {
-      it.todo('does not refine the uri of the annotation');
+      const annotation = arbitraryAnnotation();
+      let result: Annotation;
+
+      beforeEach(async () => {
+        result = await executeRefineIfNecessaryAnnotationUriForBiorxivMedrxiv(annotation, dependencies)();
+      });
+
+      it('does not refine the uri of the annotation', () => {
+        expect(result).toStrictEqual(annotation);
+      });
     });
   });
 
