@@ -16,12 +16,10 @@ export const refineIfNecessaryAnnotationUriForBiorxivMedrxiv = (
   (uri) => isUriFromBiorxivMedrxiv(uri) && uriIsMissingBiorxivMedrxivDoiPrefix(uri),
   B.match(
     () => TE.right(annotation),
-    () => (process.env.EXPERIMENT_ENABLED === 'true'
-      ? pipe(
-        annotation.uri,
-        deriveUriContainingBiorxivMedrxivDoiPrefix(dependencies),
-        TE.map((uri) => ({ ...annotation, uri })),
-      )
-      : TE.right(annotation)),
+    () => pipe(
+      annotation.uri,
+      deriveUriContainingBiorxivMedrxivDoiPrefix(dependencies),
+      TE.map((uri) => ({ ...annotation, uri })),
+    ),
   ),
 );
