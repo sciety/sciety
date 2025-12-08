@@ -42,7 +42,7 @@ describe('derive-uri-containing-biorxiv-medrxiv-doi-prefix', () => {
       )();
     });
 
-    it.failing('returns on the left', async () => {
+    it('returns on the left', async () => {
       expect(E.isLeft(result)).toBe(true);
     });
   });
