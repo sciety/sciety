@@ -101,6 +101,18 @@ describe('refine-if-necessary-annotation-uri-for-biorxiv-medrxiv', () => {
   });
 
   describe('given the annotation\'s uri cannot be parsed as a url', () => {
-    it.todo('does not refine the uri of the annotation');
+    const annotation = {
+      ...arbitraryAnnotation(),
+      uri: '1234',
+    };
+    let result: Annotation;
+
+    beforeEach(async () => {
+      result = await executeRefineIfNecessaryAnnotationUriForBiorxivMedrxiv(annotation, dependencies)();
+    });
+
+    it('does not refine the uri of the annotation', () => {
+      expect(result).toStrictEqual(annotation);
+    });
   });
 });
