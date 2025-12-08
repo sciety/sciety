@@ -57,8 +57,6 @@ export type PaperServerConfiguration = {
   prefix: string,
 };
 
-export const uriIsMissingDoiPrefix = (uri: string, doiPrefix: string): boolean => !uri.includes(doiPrefix);
-
 export const isSupported = (
   server: string, config: ExpressionDoiFromUriConfig,
 ): server is SupportedServerName => pipe(
@@ -68,13 +66,6 @@ export const isSupported = (
 );
 
 type BiorxivMedrxivServer = 'biorxiv' | 'medrxiv' | 'biorxivLegacy' | 'medrxivLegacy';
-
-export const isBiorxivMedrxivServer = (server: string): server is BiorxivMedrxivServer => (
-  server === 'biorxiv'
-  || server === 'medrxiv'
-  || server === 'biorxivLegacy'
-  || server === 'medrxivLegacy'
-);
 
 type SupportedServerName = BiorxivMedrxivServer | 'researchsquare' | 'scielo' | 'osf' | 'psyarxiv' | 'arxiv';
 
