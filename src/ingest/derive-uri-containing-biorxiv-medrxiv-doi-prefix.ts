@@ -24,7 +24,7 @@ export const deriveUriContainingBiorxivMedrxivDoiPrefix = (
 ): TE.TaskEither<string, string> => pipe(
   uri,
   dependencies.fetchHead,
-  TE.chainEitherK(decodeAndReportFailures(headCodec)),
+  TE.flatMapEither(decodeAndReportFailures(headCodec)),
   TE.map((response) => response.link),
-  TE.chainEitherK(linkContainsBiorxivMedrxivPrefix),
+  TE.flatMapEither(linkContainsBiorxivMedrxivPrefix),
 );
