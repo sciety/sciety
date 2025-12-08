@@ -3,7 +3,6 @@ import * as TE from 'fp-ts/TaskEither';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import { Annotation } from './hypothesis/annotation';
-import { uriIsMissingBiorxivMedrxivDoiPrefix } from './uri-is-missing-biorxiv-medrxiv-doi-prefix';
 import { deriveUriContainingBiorxivMedrxivDoiPrefix } from '../derive-uri-containing-biorxiv-medrxiv-doi-prefix';
 import { Dependencies } from '../discover-published-evaluations';
 
@@ -16,6 +15,8 @@ const isUriFromBiorxivMedrxiv = (uri: string): boolean => {
     return false;
   }
 };
+
+const uriIsMissingBiorxivMedrxivDoiPrefix = (uri: string): boolean => !(uri.includes('10.64898') || uri.includes('10.1101'));
 
 export const refineIfNecessaryAnnotationUriForBiorxivMedrxiv = (
   dependencies: Dependencies,
