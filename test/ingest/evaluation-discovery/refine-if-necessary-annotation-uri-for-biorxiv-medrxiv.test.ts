@@ -14,6 +14,7 @@ describe('refine-if-necessary-annotation-uri-for-biorxiv-medrxiv', () => {
   describe('given the annotation`s uri can be parsed as a url', () => {
     describe.each([
       ['biorxiv', 'https://biorxiv.org/content/10.1101/2021.11.04.467308', 'https://biorxiv.org/content/10.64898/2021.11.04.467308', 'http://biorxiv.org/cgi/content/short/483891', 'https://www.biorxiv.org/content/10.1101/483891'],
+      ['medrxiv', 'https://medrxiv.org/content/10.1101/2021.11.04.467308', 'https://medrxiv.org/content/10.64898/2021.11.04.467308', 'http://medrxiv.org/cgi/content/short/483891', 'https://www.medrxiv.org/content/10.1101/483891'],
     ])('when the uri contains the %s hostname', (_, cshpUri, openrxivUri, shortUri, expectedRefinedUri) => {
       describe('and the uri contains the Cold Spring Harbor Press DOI prefix (10.1101)', () => {
         const annotation = {
@@ -81,20 +82,6 @@ describe('refine-if-necessary-annotation-uri-for-biorxiv-medrxiv', () => {
         it('refines the uri of the annotation', () => {
           expect(result).toStrictEqual(annotationWithRefinedUri);
         });
-      });
-    });
-
-    describe('when the uri contains the medrxiv hostname', () => {
-      describe('and the uri contains the Cold Spring Harbor Press DOI prefix', () => {
-        it.todo('does not refine the uri of the annotation');
-      });
-
-      describe('and the uri contains the openrxiv DOI prefix', () => {
-        it.todo('does not refine the uri of the annotation');
-      });
-
-      describe('and the uri contains neither the DOI prefixes for openrxiv nor Cold Spring Harbor Press', () => {
-        it.todo('refines the uri of the annotation');
       });
     });
 
