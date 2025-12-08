@@ -54,7 +54,31 @@ describe('refine-if-necessary-annotation-uri-for-biorxiv-medrxiv', () => {
       });
 
       describe('and the uri contains neither the DOI prefixes for openrxiv nor Cold Spring Harbor Press', () => {
-        it.todo('refines the uri of the annotation');
+        const annotation = {
+          ...arbitraryAnnotation(),
+          uri: 'http://biorxiv.org/cgi/content/short/483891',
+        };
+        const expectedRefinedUri = 'https://www.biorxiv.org/content/10.1101/483891';
+        const annotationWithRefinedUri = {
+          ...annotation,
+          uri: expectedRefinedUri,
+        };
+        let result: Annotation;
+
+        beforeEach(async () => {
+          result = await pipe(
+            annotation,
+            refineIfNecessaryAnnotationUriForBiorxivMedrxiv({
+              ...dependencies,
+              fetchHead: () => TE.right({ link: expectedRefinedUri }),
+            }),
+            TE.getOrElse(shouldNotBeCalled),
+          )();
+        });
+
+        it('refines the uri of the annotation', () => {
+          expect(result).toStrictEqual(annotationWithRefinedUri);
+        });
       });
     });
 
