@@ -12,11 +12,13 @@ const dependencies = {
 
 describe('refine-if-necessary-annotation-uri-for-biorxiv-medrxiv', () => {
   describe('given the annotation`s uri can be parsed as a url', () => {
-    describe('when the uri contains the biorxiv hostname', () => {
+    describe.each([
+      ['biorxiv', 'https://biorxiv.org/content/10.1101/2021.11.04.467308', 'https://biorxiv.org/content/10.64898/2021.11.04.467308', 'http://biorxiv.org/cgi/content/short/483891', 'https://www.biorxiv.org/content/10.1101/483891'],
+    ])('when the uri contains the %s hostname', (_, cshpUri, openrxivUri, shortUri, expectedRefinedUri) => {
       describe('and the uri contains the Cold Spring Harbor Press DOI prefix (10.1101)', () => {
         const annotation = {
           ...arbitraryAnnotation(),
-          uri: 'https://biorxiv.org/content/10.1101/2021.11.04.467308',
+          uri: cshpUri,
         };
         let result: Annotation;
 
@@ -36,7 +38,7 @@ describe('refine-if-necessary-annotation-uri-for-biorxiv-medrxiv', () => {
       describe('and the uri contains the openrxiv DOI prefix (10.64898)', () => {
         const annotation = {
           ...arbitraryAnnotation(),
-          uri: 'https://biorxiv.org/content/10.64898/2021.11.04.467308',
+          uri: openrxivUri,
         };
         let result: Annotation;
 
@@ -56,9 +58,9 @@ describe('refine-if-necessary-annotation-uri-for-biorxiv-medrxiv', () => {
       describe('and the uri contains neither the DOI prefixes for openrxiv nor Cold Spring Harbor Press', () => {
         const annotation = {
           ...arbitraryAnnotation(),
-          uri: 'http://biorxiv.org/cgi/content/short/483891',
+          uri: shortUri,
         };
-        const expectedRefinedUri = 'https://www.biorxiv.org/content/10.1101/483891';
+
         const annotationWithRefinedUri = {
           ...annotation,
           uri: expectedRefinedUri,
