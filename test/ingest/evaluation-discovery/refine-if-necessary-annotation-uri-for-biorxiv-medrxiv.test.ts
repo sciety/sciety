@@ -1,16 +1,26 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import { Dependencies } from '../../../src/ingest/discover-published-evaluations';
 import { Annotation } from '../../../src/ingest/evaluation-discovery/hypothesis/annotation';
 import { refineIfNecessaryAnnotationUriForBiorxivMedrxiv } from '../../../src/ingest/evaluation-discovery/refine-if-necessary-annotation-uri-for-biorxiv-medrxiv';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryAnnotation } from '../helpers';
 
-const dependencies = {
-  fetchHead: shouldNotBeCalled,
-  fetchData: shouldNotBeCalled,
-};
+const executeRefineIfNecessaryAnnotationUriForBiorxivMedrxiv = (
+  annotation: Annotation,
+  dependencies: Dependencies,
+) => pipe(
+  annotation,
+  refineIfNecessaryAnnotationUriForBiorxivMedrxiv(dependencies),
+  TE.getOrElse(shouldNotBeCalled),
+);
 
 describe('refine-if-necessary-annotation-uri-for-biorxiv-medrxiv', () => {
+  const dependencies = {
+    fetchHead: shouldNotBeCalled,
+    fetchData: shouldNotBeCalled,
+  };
+
   describe('given the annotation`s uri can be parsed as a url', () => {
     describe.each([
       ['biorxiv', 'https://biorxiv.org/content/10.1101/2021.11.04.467308', 'https://biorxiv.org/content/10.64898/2021.11.04.467308', 'http://biorxiv.org/cgi/content/short/483891', 'https://www.biorxiv.org/content/10.1101/483891'],
@@ -24,11 +34,7 @@ describe('refine-if-necessary-annotation-uri-for-biorxiv-medrxiv', () => {
         let result: Annotation;
 
         beforeEach(async () => {
-          result = await pipe(
-            annotation,
-            refineIfNecessaryAnnotationUriForBiorxivMedrxiv(dependencies),
-            TE.getOrElse(shouldNotBeCalled),
-          )();
+          result = await executeRefineIfNecessaryAnnotationUriForBiorxivMedrxiv(annotation, dependencies)();
         });
 
         it('does not refine the uri of the annotation', () => {
@@ -44,11 +50,7 @@ describe('refine-if-necessary-annotation-uri-for-biorxiv-medrxiv', () => {
         let result: Annotation;
 
         beforeEach(async () => {
-          result = await pipe(
-            annotation,
-            refineIfNecessaryAnnotationUriForBiorxivMedrxiv(dependencies),
-            TE.getOrElse(shouldNotBeCalled),
-          )();
+          result = await executeRefineIfNecessaryAnnotationUriForBiorxivMedrxiv(annotation, dependencies)();
         });
 
         it('does not refine the uri of the annotation', () => {
@@ -69,13 +71,12 @@ describe('refine-if-necessary-annotation-uri-for-biorxiv-medrxiv', () => {
         let result: Annotation;
 
         beforeEach(async () => {
-          result = await pipe(
+          result = await executeRefineIfNecessaryAnnotationUriForBiorxivMedrxiv(
             annotation,
-            refineIfNecessaryAnnotationUriForBiorxivMedrxiv({
+            {
               ...dependencies,
               fetchHead: () => TE.right({ link: expectedRefinedUri }),
-            }),
-            TE.getOrElse(shouldNotBeCalled),
+            },
           )();
         });
 
