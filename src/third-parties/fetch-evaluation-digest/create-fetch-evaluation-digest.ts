@@ -2,6 +2,7 @@
 import { pipe } from 'fp-ts/function';
 import { fetchDoiEvaluationDigestByPublisher } from './fetch-doi-evaluation-digest-by-publisher';
 import { fetchEvaluationDigestFromAppropriateService } from './fetch-evaluation-digest-from-appropriate-service';
+import { fetchPciEvaluationDigest } from './fetch-pci-evaluation-digest';
 import { fetchHypothesisAnnotation } from './hypothesis';
 import { fetchMicrobiologySocietyEvaluationDigest } from './microbiology-society';
 import { fetchNcrcEvaluationDigest } from './ncrc';
@@ -18,6 +19,7 @@ export const createFetchEvaluationDigest = (queryExternalService: QueryExternalS
       {
         '10.5281': fetchZenodoRecord(queryExternalService, logger),
         '10.1099': fetchMicrobiologySocietyEvaluationDigest(queryExternalService, logger),
+        '10.24072': fetchPciEvaluationDigest(queryExternalService, logger),
       },
       logger,
     ),
