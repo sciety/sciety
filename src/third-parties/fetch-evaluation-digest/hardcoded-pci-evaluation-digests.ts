@@ -1,6 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const hardcodedPciEvaluationDigests = {
-  'doi:10.24072/pci.neuro.100217.d1': `<div class="pci2-recomm-review-container" id="d-320">
+export const hardcodedPciEvaluationDigests = {
+  '10.24072/pci.neuro.100217.d1': `<div class="pci2-recomm-review-container" id="d-320">
       <h4 class="pci2-recomm-text-label">Decision by <span><span><a class="cyp-user-profile-link" href="https://neuro.peercommunityin.org/public/user_public_page?userId=631"><b>Amanda Almacellas Barbanoj</b></a><a href="https://orcid.org/0000-0001-8816-2642" rel="noreferrer noopener" style="margin-right: 3px; position: relative; bottom: 12px; left: 2px" target="_blank" title="0000-0001-8816-2642"><img alt="ORCID_LOGO" heigth="12px" src="/PCINeuro/static/_25.10.1/images/ORCID_ID.svg" width="12px"></a></span> and <span><a class="cyp-user-profile-link" href="https://neuro.peercommunityin.org/public/user_public_page?userId=9"><b>Mahesh Karnani</b></a><a href="https://orcid.org/0000-0002-4810-4146" rel="noreferrer noopener" style="margin-right: 3px; position: relative; bottom: 12px; left: 2px" target="_blank" title="0000-0002-4810-4146"><img alt="ORCID_LOGO" heigth="12px" src="/PCINeuro/static/_25.10.1/images/ORCID_ID.svg" width="12px"></a></span></span>, <span><i>posted 15 Oct 2024</i></span><span><i>, validated 15 Oct 2024</i></span></h4>
       <div class="pci2-recomm-text">
         <p>The authors present an open source statistical power calculator in binary choice tasks often used in behavioural assessment, and demonstrate its utility with an example behavioural experiment.&nbsp;</p>
