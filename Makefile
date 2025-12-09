@@ -183,6 +183,23 @@ feature-test: node_modules clean-db build
 download-exploratory-test-from-prod:
 	rm -rf "./data/exploratory-test-from-prod.csv"
 	aws s3 cp "s3://sciety-events-export/sciety--prod--events-from-cronjob.csv" "./data/exploratory-test-from-prod.csv"
+	rm -rf "./data/exploratory-test-from-prod.rdb"
+	@REDIS_POD=$$(kubectl get pods --namespace sciety -l app.kubernetes.io/component=cache,app.kubernetes.io/instance=sciety--prod -o jsonpath='{.items[0].metadata.name}'); \
+	echo "Creating backup in Redis pod: $$REDIS_POD"; \
+	LASTSAVE_BEFORE=$$(kubectl exec --namespace sciety $$REDIS_POD -- redis-cli LASTSAVE); \
+	kubectl exec --namespace sciety $$REDIS_POD -- redis-cli BGSAVE; \
+	echo "Waiting for background save to complete..."; \
+	LASTSAVE_AFTER=$$LASTSAVE_BEFORE; \
+	while [ "$$LASTSAVE_AFTER" -eq "$$LASTSAVE_BEFORE" ]; do \
+		sleep 5; \
+		LASTSAVE_AFTER=$$(kubectl exec --namespace sciety $$REDIS_POD -- redis-cli LASTSAVE); \
+		echo "  Still waiting... (last save: $$LASTSAVE_AFTER)"; \
+	done; \
+	echo "Background save completed at: $$LASTSAVE_AFTER"; \
+	echo "Copying production Redis dump (this may take several minutes)..."; \
+	kubectl cp sciety/$$REDIS_POD:/data/dump.rdb ./data/exploratory-test-from-prod.rdb || \
+	(echo "First copy attempt failed, retrying..."; sleep 10; kubectl cp sciety/$$REDIS_POD:/data/dump.rdb ./data/exploratory-test-from-prod.rdb); \
+	echo "Production Redis backup saved to ./data/exploratory-test-from-prod.rdb"
 
 download-exploratory-test-from-staging:
 	rm -rf "./data/exploratory-test-from-staging.csv"
@@ -190,11 +207,18 @@ download-exploratory-test-from-staging:
 	rm -rf "./data/exploratory-test-from-staging.rdb"
 	@REDIS_POD=$$(kubectl get pods --namespace sciety -l app.kubernetes.io/component=cache,app.kubernetes.io/instance=sciety--staging -o jsonpath='{.items[0].metadata.name}'); \
 	echo "Creating backup in Redis pod: $$REDIS_POD"; \
+	LASTSAVE_BEFORE=$$(kubectl exec --namespace sciety $$REDIS_POD -- redis-cli LASTSAVE); \
 	kubectl exec --namespace sciety $$REDIS_POD -- redis-cli BGSAVE; \
 	echo "Waiting for background save to complete..."; \
-	sleep 10; \
-	kubectl exec --namespace sciety $$REDIS_POD -- redis-cli LASTSAVE; \
-	kubectl cp sciety/$$REDIS_POD:/data/dump.rdb ./data/exploratory-test-from-staging.rdb;
+	LASTSAVE_AFTER=$$LASTSAVE_BEFORE; \
+	while [ "$$LASTSAVE_AFTER" -eq "$$LASTSAVE_BEFORE" ]; do \
+		sleep 5; \
+		LASTSAVE_AFTER=$$(kubectl exec --namespace sciety $$REDIS_POD -- redis-cli LASTSAVE); \
+		echo "  Still waiting... (last save: $$LASTSAVE_AFTER)"; \
+	done; \
+	echo "Background save completed at: $$LASTSAVE_AFTER"; \
+	kubectl cp sciety/$$REDIS_POD:/data/dump.rdb ./data/exploratory-test-from-staging.rdb; \
+	echo "Staging Redis backup saved to ./data/exploratory-test-from-staging.rdb"
 
 exploratory-test-from-prod: node_modules clean-db build
 	@if ! [[ -f 'data/exploratory-test-from-prod.csv' ]]; then \
@@ -204,6 +228,11 @@ exploratory-test-from-prod: node_modules clean-db build
 	scripts/wait-for-database.sh
 	${DOCKER_COMPOSE} exec -T db psql -c "CREATE TABLE IF NOT EXISTS events ( id uuid, type varchar, date timestamp, payload jsonb, PRIMARY KEY (id));" sciety user
 	${DOCKER_COMPOSE} exec -T db psql -c "COPY events FROM '/data/exploratory-test-from-prod.csv' WITH CSV HEADER" sciety user
+	${DOCKER_COMPOSE} up -d cache
+	${DOCKER_COMPOSE} stop cache
+	${DOCKER_COMPOSE} cp ./data/exploratory-test-from-prod.rdb cache:/data/dump.rdb
+	${DOCKER_COMPOSE} start cache
+	@sleep 5
 	${DOCKER_COMPOSE} up -d app
 	scripts/wait-for-healthy.sh
 	${DOCKER_COMPOSE} logs -f app
