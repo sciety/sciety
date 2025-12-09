@@ -187,6 +187,14 @@ download-exploratory-test-from-prod:
 download-exploratory-test-from-staging:
 	rm -rf "./data/exploratory-test-from-staging.csv"
 	aws s3 cp "s3://sciety-events-export/sciety--staging--events-from-cronjob.csv" "./data/exploratory-test-from-staging.csv"
+	rm -rf "./data/exploratory-test-from-staging.rdb"
+	@REDIS_POD=$$(kubectl get pods --namespace sciety -l app.kubernetes.io/component=cache,app.kubernetes.io/instance=sciety--staging -o jsonpath='{.items[0].metadata.name}'); \
+	echo "Creating backup in Redis pod: $$REDIS_POD"; \
+	kubectl exec --namespace sciety $$REDIS_POD -- redis-cli BGSAVE; \
+	echo "Waiting for background save to complete..."; \
+	sleep 10; \
+	kubectl exec --namespace sciety $$REDIS_POD -- redis-cli LASTSAVE; \
+	kubectl cp sciety/$$REDIS_POD:/data/dump.rdb ./data/exploratory-test-from-staging.rdb;
 
 exploratory-test-from-prod: node_modules clean-db build
 	@if ! [[ -f 'data/exploratory-test-from-prod.csv' ]]; then \
@@ -204,10 +212,17 @@ exploratory-test-from-staging: node_modules clean-db build
 	@if ! [[ -f 'data/exploratory-test-from-staging.csv' ]]; then \
     echo "Ensure you have run: make download-exploratory-test-from-staging"; exit 1; \
 	fi
+	@if ! [[ -f 'data/exploratory-test-from-staging.rdb' ]]; then \
+    echo "Ensure you have run: make download-exploratory-test-from-staging"; exit 1; \
+	fi
 	${DOCKER_COMPOSE} up -d db
 	scripts/wait-for-database.sh
 	${DOCKER_COMPOSE} exec -T db psql -c "CREATE TABLE IF NOT EXISTS events ( id uuid, type varchar, date timestamp, payload jsonb, PRIMARY KEY (id));" sciety user
 	${DOCKER_COMPOSE} exec -T db psql -c "COPY events FROM '/data/exploratory-test-from-staging.csv' WITH CSV HEADER" sciety user
+	${DOCKER_COMPOSE} up -d cache
+	${DOCKER_COMPOSE} exec cache redis-cli FLUSHALL
+	docker cp ./data/exploratory-test-from-staging.rdb $$(${DOCKER_COMPOSE} ps -q cache):/data/dump.rdb
+	${DOCKER_COMPOSE} exec cache redis-cli DEBUG RELOAD
 	${DOCKER_COMPOSE} up -d app
 	scripts/wait-for-healthy.sh
 	${DOCKER_COMPOSE} logs -f app
