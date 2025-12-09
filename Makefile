@@ -199,7 +199,9 @@ download-exploratory-test-from-prod:
 	echo "Copying production Redis dump (this may take several minutes)..."; \
 	kubectl cp sciety/$$REDIS_POD:/data/dump.rdb ./data/exploratory-test-from-prod.rdb || \
 	(echo "First copy attempt failed, retrying..."; sleep 10; kubectl cp sciety/$$REDIS_POD:/data/dump.rdb ./data/exploratory-test-from-prod.rdb); \
-	echo "Production Redis backup saved to ./data/exploratory-test-from-prod.rdb"
+	echo "Production Redis backup saved to ./data/exploratory-test-from-prod.rdb"; \
+	echo "Cleaning up temporary dump file..."; \
+	kubectl exec --namespace sciety $$REDIS_POD -- rm -f /data/dump.rdb
 
 download-exploratory-test-from-staging:
 	rm -rf "./data/exploratory-test-from-staging.csv"
@@ -218,7 +220,9 @@ download-exploratory-test-from-staging:
 	done; \
 	echo "Background save completed at: $$LASTSAVE_AFTER"; \
 	kubectl cp sciety/$$REDIS_POD:/data/dump.rdb ./data/exploratory-test-from-staging.rdb; \
-	echo "Staging Redis backup saved to ./data/exploratory-test-from-staging.rdb"
+	echo "Staging Redis backup saved to ./data/exploratory-test-from-staging.rdb"; \
+	echo "Cleaning up temporary dump file..."; \
+	kubectl exec --namespace sciety $$REDIS_POD -- rm -f /data/dump.rdb
 
 exploratory-test-from-prod: node_modules clean-db build
 	@if ! [[ -f 'data/exploratory-test-from-prod.csv' ]]; then \
