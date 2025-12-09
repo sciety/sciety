@@ -1,48 +1,48 @@
-name: 'sciety'
+name: "sciety"
 
 services:
   app:
     build:
       context: .
     environment:
-      ALLOW_SITE_CRAWLERS: 'true'
-      APP_CACHE: 'redis'
-      APP_ORIGIN: 'http://localhost:${APP_PORT:-8080}'
-      APP_SECRET: 'secret'
-      CACHE_HOST: 'cache'
-      USE_STUB_ADAPTERS: '${USE_STUB_ADAPTERS:-false}'
-      USE_STUB_AVATARS: '${USE_STUB_AVATARS:-false}'
-      USE_STUB_LOGIN: '${USE_STUB_LOGIN:-false}'
+      ALLOW_SITE_CRAWLERS: "true"
+      APP_CACHE: "redis"
+      APP_ORIGIN: "http://localhost:${APP_PORT:-8080}"
+      APP_SECRET: "secret"
+      CACHE_HOST: "cache"
+      USE_STUB_ADAPTERS: "${USE_STUB_ADAPTERS:-false}"
+      USE_STUB_AVATARS: "${USE_STUB_AVATARS:-false}"
+      USE_STUB_LOGIN: "${USE_STUB_LOGIN:-false}"
       CROSSREF_API_BEARER_TOKEN:
       DISABLE_SAGAS: ${DISABLE_SAGAS:-false}
-      DISABLE_COOKIEBOT: '${DISABLE_COOKIEBOT}'
-      EXPERIMENT_ENABLED: 'true'
-      COAR_NOTIFICATION_DELIVERY_ENABLED: '${COAR_NOTIFICATION_DELIVERY_ENABLED}'
+      DISABLE_COOKIEBOT: "${DISABLE_COOKIEBOT}"
+      EXPERIMENT_ENABLED: "true"
+      COAR_NOTIFICATION_DELIVERY_ENABLED: "${COAR_NOTIFICATION_DELIVERY_ENABLED}"
       FATHOM_SITE_ID:
       GOOGLE_TAG_MANAGER_ID:
-      SCIETY_API: 'http://app'
-      SCIETY_TEAM_API_BEARER_TOKEN: 'secret'
+      SCIETY_API: "http://app"
+      SCIETY_TEAM_API_BEARER_TOKEN: "secret"
       INGEST_DEBUG:
       INGEST_EXCEPT:
       INGEST_ONLY:
       INGEST_DAYS:
       LOG_LEVEL:
-      PGUSER: 'user'
-      PGHOST: 'db'
-      PGPASSWORD: 'secret'
-      PGDATABASE: 'sciety'
-      PGSSLMODE: 'allow'
+      PGUSER: "user"
+      PGHOST: "db"
+      PGPASSWORD: "secret"
+      PGDATABASE: "sciety"
+      PGSSLMODE: "allow"
       PRELIGHTS_FEED_KEY:
-      PREREVIEW_BEARER_TOKEN: '${PREREVIEW_BEARER_TOKEN}'
-      AUTH0_CLIENT_ID: '${AUTH0_CLIENT_ID:-auth0-client-id}'
-      AUTH0_DOMAIN: 'dev-sqa2k3wwnhpxk36d.eu.auth0.com'
-      AUTH0_CLIENT_SECRET: '${AUTH0_CLIENT_SECRET:-auth0-client-secret}'
-      AUTH0_CALLBACK_URL: 'http://localhost:${APP_PORT:-8080}/auth0/callback'
-      BONFIRE_SCIETY_ACCOUNT_EMAIL: '${BONFIRE_SCIETY_ACCOUNT_EMAIL}'
-      BONFIRE_SCIETY_ACCOUNT_PASSWORD: '${BONFIRE_SCIETY_ACCOUNT_PASSWORD}'
+      PREREVIEW_BEARER_TOKEN: "${PREREVIEW_BEARER_TOKEN}"
+      AUTH0_CLIENT_ID: "${AUTH0_CLIENT_ID:-auth0-client-id}"
+      AUTH0_DOMAIN: "dev-sqa2k3wwnhpxk36d.eu.auth0.com"
+      AUTH0_CLIENT_SECRET: "${AUTH0_CLIENT_SECRET:-auth0-client-secret}"
+      AUTH0_CALLBACK_URL: "http://localhost:${APP_PORT:-8080}/auth0/callback"
+      BONFIRE_SCIETY_ACCOUNT_EMAIL: "${BONFIRE_SCIETY_ACCOUNT_EMAIL}"
+      BONFIRE_SCIETY_ACCOUNT_PASSWORD: "${BONFIRE_SCIETY_ACCOUNT_PASSWORD}"
       DISPLAY_LAST_SERVER_STARTUP:
     ports:
-      - '${APP_PORT:-8080}:80'
+      - "${APP_PORT:-8080}:80"
     restart: unless-stopped
     depends_on:
       - cache
@@ -50,18 +50,20 @@ services:
   db:
     image: postgres:14.19-alpine
     environment:
-      POSTGRES_USER: 'user'
-      POSTGRES_PASSWORD: 'secret'
-      POSTGRES_DB: 'sciety'
+      POSTGRES_USER: "user"
+      POSTGRES_PASSWORD: "secret"
+      POSTGRES_DB: "sciety"
     volumes:
-      - './data/backstop.csv:/data/backstop.csv'
-      - './data/exploratory-test-from-prod.csv:/data/exploratory-test-from-prod.csv'
-      - './data/exploratory-test-from-staging.csv:/data/exploratory-test-from-staging.csv'
+      - "./data/backstop.csv:/data/backstop.csv"
+      - "./data/exploratory-test-from-prod.csv:/data/exploratory-test-from-prod.csv"
+      - "./data/exploratory-test-from-staging.csv:/data/exploratory-test-from-staging.csv"
     healthcheck:
-      test: 'pg_isready --username $$POSTGRES_USER --dbnam $$POSTGRES_DB || exit 1'
+      test: "pg_isready --username $$POSTGRES_USER --dbnam $$POSTGRES_DB || exit 1"
       interval: 5s
     restart: unless-stopped
 
   cache:
     image: redis
+    ports:
+      - "${REDIS_PORT:-6382}:6379"
     restart: unless-stopped
