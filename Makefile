@@ -220,9 +220,10 @@ exploratory-test-from-staging: node_modules clean-db build
 	${DOCKER_COMPOSE} exec -T db psql -c "CREATE TABLE IF NOT EXISTS events ( id uuid, type varchar, date timestamp, payload jsonb, PRIMARY KEY (id));" sciety user
 	${DOCKER_COMPOSE} exec -T db psql -c "COPY events FROM '/data/exploratory-test-from-staging.csv' WITH CSV HEADER" sciety user
 	${DOCKER_COMPOSE} up -d cache
-	${DOCKER_COMPOSE} exec cache redis-cli FLUSHALL
-	docker cp ./data/exploratory-test-from-staging.rdb $$(${DOCKER_COMPOSE} ps -q cache):/data/dump.rdb
-	${DOCKER_COMPOSE} exec cache redis-cli DEBUG RELOAD
+	${DOCKER_COMPOSE} stop cache
+	${DOCKER_COMPOSE} cp ./data/exploratory-test-from-staging.rdb cache:/data/dump.rdb
+	${DOCKER_COMPOSE} start cache
+	@sleep 5
 	${DOCKER_COMPOSE} up -d app
 	scripts/wait-for-healthy.sh
 	${DOCKER_COMPOSE} logs -f app
