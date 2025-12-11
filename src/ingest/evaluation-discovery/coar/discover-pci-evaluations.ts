@@ -14,10 +14,11 @@ export const discoverPciEvaluations: DiscoverPublishedEvaluations = () => (
 ) => pipe(
   ['urn:uuid:bf3513ee-1fef-4f30-a61b-20721b505f11'],
   RA.map((notification) => `https://inbox-sciety-prod.elifesciences.org/inbox/${notification}`),
+  RA.map(transformCoarNotificationUriToAnnouncementActionUri(dependencies)),
+  RA.map(TE.chain(transformAnnouncementActionUriToSignpostingDocmapUri(dependencies))),
+  RA.map(TE.chain(retrieveReviewActionsFromDocmap(dependencies))),
   ([first]) => first,
-  transformCoarNotificationUriToAnnouncementActionUri(dependencies),
-  TE.chain(transformAnnouncementActionUriToSignpostingDocmapUri(dependencies)),
-  TE.chain(retrieveReviewActionsFromDocmap(dependencies)),
+  (foo) => foo,
   TE.map(RA.map((reviewAction) => constructPublishedEvaluation({
     publishedOn: new Date(reviewAction.actionOutputDate),
     paperExpressionDoi: reviewAction.actionInputDoi,
