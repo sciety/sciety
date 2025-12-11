@@ -17,13 +17,12 @@ export const discoverPciEvaluations: DiscoverPublishedEvaluations = () => (
   RA.map(transformCoarNotificationUriToAnnouncementActionUri(dependencies)),
   RA.map(TE.chain(transformAnnouncementActionUriToSignpostingDocmapUri(dependencies))),
   RA.map(TE.chain(retrieveReviewActionsFromDocmap(dependencies))),
-  ([first]) => first,
-  (foo) => foo,
-  TE.map(RA.map((reviewAction) => constructPublishedEvaluation({
+  RA.map(TE.map(RA.map((reviewAction) => constructPublishedEvaluation({
     publishedOn: new Date(reviewAction.actionOutputDate),
     paperExpressionDoi: reviewAction.actionInputDoi,
     evaluationLocator: `doi:${reviewAction.actionOutputDoi}`,
-  }))),
+  })))),
+  ([first]) => first,
   TE.map((publishedEvaluation) => ({
     understood: publishedEvaluation,
     skipped: [],
