@@ -12,7 +12,8 @@ import { constructPublishedEvaluation } from '../../types/published-evaluation';
 export const discoverPciEvaluations: DiscoverPublishedEvaluations = () => (
   dependencies,
 ) => pipe(
-  'https://inbox-sciety-prod.elifesciences.org/inbox/urn:uuid:bf3513ee-1fef-4f30-a61b-20721b505f11',
+  'urn:uuid:bf3513ee-1fef-4f30-a61b-20721b505f11',
+  (notification) => `https://inbox-sciety-prod.elifesciences.org/inbox/${notification}`,
   transformCoarNotificationUriToAnnouncementActionUri(dependencies),
   TE.chain(transformAnnouncementActionUriToSignpostingDocmapUri(dependencies)),
   TE.chain(retrieveReviewActionsFromDocmap(dependencies)),
