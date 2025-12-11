@@ -1,6 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { identity, pipe } from 'fp-ts/function';
 import { retrieveReviewActionsFromDocmap } from './retrieve-review-actions-from-docmap';
 import { transformAnnouncementActionUriToSignpostingDocmapUri } from './transform-announcement-action-uri-to-signposting-docmap-uri';
 import {
@@ -20,12 +20,13 @@ export const discoverPciEvaluations: DiscoverPublishedEvaluations = () => (
   RA.map(transformCoarNotificationUriToAnnouncementActionUri(dependencies)),
   RA.map(TE.chain(transformAnnouncementActionUriToSignpostingDocmapUri(dependencies))),
   RA.map(TE.chain(retrieveReviewActionsFromDocmap(dependencies))),
-  TE.traverseArray(TE.map(RA.map((reviewAction) => constructPublishedEvaluation({
+  TE.traverseArray(identity),
+  TE.map(RA.flatten),
+  TE.map(RA.map((reviewAction) => constructPublishedEvaluation({
     publishedOn: new Date(reviewAction.actionOutputDate),
     paperExpressionDoi: reviewAction.actionInputDoi,
     evaluationLocator: `doi:${reviewAction.actionOutputDoi}`,
-  })))),
-  TE.map(RA.flatten),
+  }))),
   TE.map((publishedEvaluation) => ({
     understood: publishedEvaluation,
     skipped: [],
