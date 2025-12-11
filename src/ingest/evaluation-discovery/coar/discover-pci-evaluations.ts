@@ -19,8 +19,8 @@ export const discoverPciEvaluations: DiscoverPublishedEvaluations = () => (
   RA.map((notification) => pipe(
     notification,
     transformCoarNotificationUriToAnnouncementActionUri(dependencies),
-    TE.chain(transformAnnouncementActionUriToSignpostingDocmapUri(dependencies)),
-    TE.chain(retrieveReviewActionsFromDocmap(dependencies)),
+    TE.flatMap(transformAnnouncementActionUriToSignpostingDocmapUri(dependencies)),
+    TE.flatMap(retrieveReviewActionsFromDocmap(dependencies)),
   )),
   TE.traverseArray(identity),
   TE.map(RA.flatten),
