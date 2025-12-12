@@ -64,4 +64,6 @@ services:
 
   cache:
     image: redis
+    ports:
+      - 3000:6379
     restart: unless-stopped
