@@ -17,7 +17,7 @@ const itemFromJson = t.type({
 });
 
 const europePmcResponse = t.type({
-  hitCount: t.number,
+  hitCount: t.literal(3),
   nextCursorMark: tt.optionFromNullable(t.string),
   resultList: t.type({
     result: t.array(itemFromJson),
