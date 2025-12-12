@@ -11,17 +11,6 @@ import { discoverRapidReviewsEvaluations } from './evaluation-discovery/discover
 import { Configuration } from './generate-configuration-from-environment';
 import { EvaluationDiscoveryProcess } from './update-all';
 
-const hardcodedCoarNotificationsConfiguration = {
-  evolutionaryBiology: [
-    'urn:uuid:0964db9c-c988-4185-891e-0c8a5c79adb9',
-    'urn:uuid:13add01f-61b3-4df5-bc7f-ad4ad9fe64f8',
-  ],
-  neuroscience: [
-    'urn:uuid:6d59e586-5c75-417c-ae15-6abdd8030539',
-    'urn:uuid:bf3513ee-1fef-4f30-a61b-20721b505f11',
-  ],
-};
-
 const kotahiDocmapsEvaluations = {
   groupId: 'b90854bf-795c-42ba-8664-8257b9c68b0c',
   name: 'Kotahi Test Docmaps',
@@ -53,7 +42,7 @@ export const evaluationDiscoveryProcesses = (environment: Configuration): Array<
     {
       groupId: '19b7464a-edbe-42e8-b7cc-04d1eb1f7332',
       name: 'PCI Evolutionary Biology',
-      discoverPublishedEvaluations: process.env.EXPERIMENT_ENABLED === 'true' ? discoverPciEvaluationsViaCoar(hardcodedCoarNotificationsConfiguration.evolutionaryBiology) : discoverPciEvaluations('https://evolbiol.peercommunityin.org/rss/rss4elife'),
+      discoverPublishedEvaluations: process.env.EXPERIMENT_ENABLED === 'true' ? discoverPciEvaluationsViaCoar('evolutionaryBiology') : discoverPciEvaluations('https://evolbiol.peercommunityin.org/rss/rss4elife'),
     },
     {
       groupId: '32025f28-0506-480e-84a0-b47ef1e92ec5',
@@ -78,7 +67,7 @@ export const evaluationDiscoveryProcesses = (environment: Configuration): Array<
     {
       groupId: 'af792cd3-1600-465c-89e5-250c48f793aa',
       name: 'PCI Neuroscience',
-      discoverPublishedEvaluations: process.env.EXPERIMENT_ENABLED === 'true' ? discoverPciEvaluationsViaCoar(hardcodedCoarNotificationsConfiguration.neuroscience) : discoverPciEvaluations('https://neuro.peercommunityin.org/rss/rss4elife'),
+      discoverPublishedEvaluations: process.env.EXPERIMENT_ENABLED === 'true' ? discoverPciEvaluationsViaCoar('neuroscience') : discoverPciEvaluations('https://neuro.peercommunityin.org/rss/rss4elife'),
     },
     {
       groupId: '53ed5364-a016-11ea-bb37-0242ac130002',
