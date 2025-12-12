@@ -10,7 +10,7 @@ import { Dependencies, DiscoverPublishedEvaluations } from '../../discover-publi
 import { constructPublishedEvaluation } from '../../types/published-evaluation';
 
 const transformNotificationToReviewActions = (dependencies: Dependencies) => (notification: string) => pipe(
-  notification,
+  `https://inbox-sciety-prod.elifesciences.org/inbox/${notification}`,
   transformCoarNotificationUriToAnnouncementActionUri(dependencies),
   TE.flatMap(transformAnnouncementActionUriToSignpostingDocmapUri(dependencies)),
   TE.flatMap(retrieveReviewActionsFromDocmap(dependencies)),
