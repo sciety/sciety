@@ -46,6 +46,16 @@ export const instantiateExternalQueries = (
       responseBodyCachePredicate: crossrefResponseBodyCachePredicate(logger),
     },
   );
+  const queryEuropePmcService = createCachingFetcher(
+    logger,
+    {
+      ...cachingFetcherOptions(redisClient),
+      responseBodyCachePredicate: (responseBody, url) => {
+        console.log(responseBody, url);
+        return url.includes('brain');
+      },
+    },
+  );
 
   return {
     fetchEvaluationDigest: createFetchEvaluationDigest(queryExternalService, logger),
@@ -68,6 +78,6 @@ export const instantiateExternalQueries = (
     createBonfireDiscussionAndRetrieveDiscussionId: createBonfireDiscussionAndRetrieveDiscussionId(logger),
     fetchStaticFile: fetchStaticFile(logger),
     fetchUserAvatarUrl: fetchUserAvatarUrl(queryExternalService, logger),
-    searchForPaperExpressions: searchEuropePmc(queryExternalService, logger),
+    searchForPaperExpressions: searchEuropePmc(queryEuropePmcService, logger),
   };
 };
