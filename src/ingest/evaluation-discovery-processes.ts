@@ -11,6 +11,13 @@ import { discoverRapidReviewsEvaluations } from './evaluation-discovery/discover
 import { Configuration } from './generate-configuration-from-environment';
 import { EvaluationDiscoveryProcess } from './update-all';
 
+const hardcodedCoarNotificationsConfiguration = {
+  evolutionaryBiology: [
+    'urn:uuid:0964db9c-c988-4185-891e-0c8a5c79adb9',
+    'urn:uuid:13add01f-61b3-4df5-bc7f-ad4ad9fe64f8',
+  ],
+};
+
 const kotahiDocmapsEvaluations = {
   groupId: 'b90854bf-795c-42ba-8664-8257b9c68b0c',
   name: 'Kotahi Test Docmaps',
@@ -42,10 +49,7 @@ export const evaluationDiscoveryProcesses = (environment: Configuration): Array<
     {
       groupId: '19b7464a-edbe-42e8-b7cc-04d1eb1f7332',
       name: 'PCI Evolutionary Biology',
-      discoverPublishedEvaluations: process.env.EXPERIMENT_ENABLED === 'true' ? discoverPciEvaluationsViaCoar([
-        'urn:uuid:0964db9c-c988-4185-891e-0c8a5c79adb9',
-        'urn:uuid:13add01f-61b3-4df5-bc7f-ad4ad9fe64f8',
-      ]) : discoverPciEvaluations('https://evolbiol.peercommunityin.org/rss/rss4elife'),
+      discoverPublishedEvaluations: process.env.EXPERIMENT_ENABLED === 'true' ? discoverPciEvaluationsViaCoar(hardcodedCoarNotificationsConfiguration.evolutionaryBiology) : discoverPciEvaluations('https://evolbiol.peercommunityin.org/rss/rss4elife'),
     },
     {
       groupId: '32025f28-0506-480e-84a0-b47ef1e92ec5',
