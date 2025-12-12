@@ -42,7 +42,8 @@ export const evaluationDiscoveryProcesses = (environment: Configuration): Array<
     {
       groupId: '19b7464a-edbe-42e8-b7cc-04d1eb1f7332',
       name: 'PCI Evolutionary Biology',
-      discoverPublishedEvaluations: discoverPciEvaluations('https://evolbiol.peercommunityin.org/rss/rss4elife'),
+      discoverPublishedEvaluations: process.env.EXPERIMENT_ENABLED === 'true' ? discoverPciEvaluationsViaCoar([
+      ]) : discoverPciEvaluations('https://evolbiol.peercommunityin.org/rss/rss4elife'),
     },
     {
       groupId: '32025f28-0506-480e-84a0-b47ef1e92ec5',
