@@ -1,9 +1,12 @@
+import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import { pipe } from 'fp-ts/function';
 import { createClient } from 'redis';
 import { fetchBonfireDiscussionId, createBonfireDiscussionAndRetrieveDiscussionId } from './bonfire';
 import { CachingFetcherOptions, createCachingFetcher } from './cache';
 import { crossrefResponseBodyCachePredicate } from './crossref';
 import { searchEuropePmc } from './europe-pmc';
+import { europePmcResponse } from './europe-pmc/search-europe-pmc';
 import { ExternalQueries } from './external-queries';
 import { fetchByCategory } from './fetch-by-category';
 import { createFetchEvaluationDigest } from './fetch-evaluation-digest';
@@ -50,10 +53,11 @@ export const instantiateExternalQueries = (
     logger,
     {
       ...cachingFetcherOptions(redisClient),
-      responseBodyCachePredicate: (responseBody, url) => {
-        console.log(responseBody, url);
-        return url.includes('brain');
-      },
+      responseBodyCachePredicate: (responseBody) => pipe(
+        responseBody,
+        europePmcResponse.decode,
+        E.isRight,
+      ),
     },
   );
 

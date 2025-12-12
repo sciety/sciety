@@ -16,7 +16,7 @@ const itemFromJson = t.type({
   doi: expressionDoiCodec,
 });
 
-const europePmcResponse = t.type({
+export const europePmcResponse = t.type({
   hitCount: t.number,
   nextCursorMark: tt.optionFromNullable(t.string),
   resultList: t.type({
