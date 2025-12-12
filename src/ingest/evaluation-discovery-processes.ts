@@ -42,7 +42,7 @@ export const evaluationDiscoveryProcesses = (environment: Configuration): Array<
     {
       groupId: '19b7464a-edbe-42e8-b7cc-04d1eb1f7332',
       name: 'PCI Evolutionary Biology',
-      discoverPublishedEvaluations: process.env.EXPERIMENT_ENABLED === 'true' ? discoverPciEvaluationsViaCoar('evolutionaryBiology') : discoverPciEvaluations('https://evolbiol.peercommunityin.org/rss/rss4elife'),
+      discoverPublishedEvaluations: process.env.EXPERIMENT_ENABLED === 'true' ? discoverPciEvaluationsViaCoar('https://evolbiol.peercommunityin.org/coar_notify/') : discoverPciEvaluations('https://evolbiol.peercommunityin.org/rss/rss4elife'),
     },
     {
       groupId: '32025f28-0506-480e-84a0-b47ef1e92ec5',
@@ -67,7 +67,7 @@ export const evaluationDiscoveryProcesses = (environment: Configuration): Array<
     {
       groupId: 'af792cd3-1600-465c-89e5-250c48f793aa',
       name: 'PCI Neuroscience',
-      discoverPublishedEvaluations: process.env.EXPERIMENT_ENABLED === 'true' ? discoverPciEvaluationsViaCoar('neuroscience') : discoverPciEvaluations('https://neuro.peercommunityin.org/rss/rss4elife'),
+      discoverPublishedEvaluations: process.env.EXPERIMENT_ENABLED === 'true' ? discoverPciEvaluationsViaCoar('https://neuro.peercommunityin.org/coar_notify/') : discoverPciEvaluations('https://neuro.peercommunityin.org/rss/rss4elife'),
     },
     {
       groupId: '53ed5364-a016-11ea-bb37-0242ac130002',
