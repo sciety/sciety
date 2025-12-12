@@ -4,7 +4,12 @@ import * as t from 'io-ts';
 import { Dependencies } from '../../discover-published-evaluations';
 import { decodeAndReportFailures } from '../decode-and-report-failures';
 
-const coarNotificationCodec = t.strict({
+const coarNotificationCodec = (originId?: string) => t.strict({
+  ...(originId ? {
+    origin: t.strict({
+      id: t.literal(originId),
+    }),
+  } : {}),
   object: t.strict({
     id: t.string,
   }),
@@ -12,9 +17,10 @@ const coarNotificationCodec = t.strict({
 
 export const transformCoarNotificationUriToAnnouncementActionUri = (
   dependencies: Dependencies,
+  originId?: string,
 ) => (uri: string): TE.TaskEither<string, string> => pipe(
   uri,
   dependencies.fetchData<JSON>,
-  TE.chainEitherK(decodeAndReportFailures(coarNotificationCodec)),
+  TE.flatMapEither(decodeAndReportFailures(coarNotificationCodec(originId))),
   TE.map((decodedResponse) => decodedResponse.object.id),
 );
