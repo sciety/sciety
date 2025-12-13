@@ -3,6 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import * as Str from 'fp-ts/string';
 import * as t from 'io-ts';
 import { retrieveReviewActionsFromDocmap } from './retrieve-review-actions-from-docmap';
 import { transformAnnouncementActionUriToSignpostingDocmapUri } from './transform-announcement-action-uri-to-signposting-docmap-uri';
@@ -13,30 +14,12 @@ import { Dependencies, DiscoverPublishedEvaluations } from '../../discover-publi
 import { constructPublishedEvaluation } from '../../types/published-evaluation';
 import { decodeAndReportFailures } from '../decode-and-report-failures';
 
-const retrieveNotificationsFromCoar = (dependencies: Dependencies, originId?: string) => <A>(value: A) => pipe(
-  'https://inbox-sciety-prod.elifesciences.org/notification_states/?read=false',
-  dependencies.fetchData<JSON>,
-  TE.flatMapEither(decodeAndReportFailures(t.array(t.string))),
-  TE.flatMap((notificationIds) => pipe(
-    notificationIds,
-    RA.map((notificationId) => pipe(
-      transformCoarNotificationUriToAnnouncementActionUri(dependencies, originId)(`https://inbox-sciety-prod.elifesciences.org/inbox/${notificationId}`),
-      TE.map(() => notificationId),
-    )),
-    RA.map(TE.match(
-      () => O.none,
-      O.some,
-    )),
-    T.sequenceSeqArray,
-    T.map(RA.compact),
-    TE.fromTask,
-  )),
-  TE.map(() => value),
-);
-
-const transformNotificationToReviewActions = (dependencies: Dependencies) => (notification: string) => pipe(
+const transformNotificationToReviewActions = (
+  dependencies: Dependencies,
+  originId?: string,
+) => (notification: string) => pipe(
   `https://inbox-sciety-prod.elifesciences.org/inbox/${notification}`,
-  transformCoarNotificationUriToAnnouncementActionUri(dependencies),
+  transformCoarNotificationUriToAnnouncementActionUri(dependencies, originId),
   TE.flatMap(transformAnnouncementActionUriToSignpostingDocmapUri(dependencies)),
   TE.flatMap(retrieveReviewActionsFromDocmap(dependencies)),
 );
@@ -55,17 +38,29 @@ const hardcodedCoarNotificationsConfiguration: Record<string, ReadonlyArray<stri
 export const discoverPciEvaluations = (groupIdentification: string): DiscoverPublishedEvaluations => () => (
   dependencies,
 ) => pipe(
-  hardcodedCoarNotificationsConfiguration[groupIdentification],
-  TE.traverseArray(transformNotificationToReviewActions(dependencies)),
+  'https://inbox-sciety-prod.elifesciences.org/notification_states/?read=false',
+  dependencies.fetchData<JSON>,
+  TE.flatMapEither(decodeAndReportFailures(t.array(t.string))),
+  TE.map((notifications) => pipe(
+    hardcodedCoarNotificationsConfiguration[groupIdentification] ?? [],
+    RA.concat(notifications),
+    RA.uniq(Str.Eq),
+  )),
+  TE.map(RA.map(transformNotificationToReviewActions(dependencies, groupIdentification))),
+  TE.map(RA.map(TE.match(
+    () => O.none,
+    O.some,
+  ))),
+  TE.flatMap(TE.traverseArray(TE.fromTask)),
+  TE.map(RA.compact),
   TE.map(RA.flatten),
-  TE.flatMap(retrieveNotificationsFromCoar(dependencies, groupIdentification)),
   TE.map(RA.map((reviewAction) => constructPublishedEvaluation({
     publishedOn: new Date(reviewAction.actionOutputDate),
     paperExpressionDoi: reviewAction.actionInputDoi,
     evaluationLocator: `doi:${reviewAction.actionOutputDoi}`,
   }))),
-  TE.map((publishedEvaluation) => ({
-    understood: publishedEvaluation,
+  TE.map((publishedEvaluations) => ({
+    understood: publishedEvaluations,
     skipped: [],
   })),
 );
