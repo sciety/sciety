@@ -1,3 +1,4 @@
+import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
@@ -23,7 +24,9 @@ export const retrieveCoarNotificationsByGroup = (dependencies: Dependencies) => 
     dependencies.fetchData,
     TE.chainEitherK(decodeAndReportFailures(coarInboxResponseCodec)),
     TE.map((response) => response.contains),
+    TE.map(RA.map((knownBrokenUrl) => knownBrokenUrl.replace('inboxurn', 'inbox/urn'))),
   );
+
   if (groupIdentification === 'https://evolbiol.peercommunityin.org/coar_notify/') {
     return TE.right([
       {
