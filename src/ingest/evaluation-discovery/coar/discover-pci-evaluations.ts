@@ -1,7 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { retrieveCoarNotificationsByGroup } from './retrieve-coar-notifications-by-group';
+import { NotificationDetails, retrieveCoarNotificationsByGroup } from './retrieve-coar-notifications-by-group';
 import { retrieveReviewActionsFromDocmap } from './retrieve-review-actions-from-docmap';
 import { transformAnnouncementActionUriToSignpostingDocmapUri } from './transform-announcement-action-uri-to-signposting-docmap-uri';
 import {
@@ -10,8 +10,12 @@ import {
 import { Dependencies, DiscoverPublishedEvaluations } from '../../discover-published-evaluations';
 import { constructPublishedEvaluation } from '../../types/published-evaluation';
 
-const transformNotificationToReviewActions = (dependencies: Dependencies) => (notification: string) => pipe(
-  `https://inbox-sciety-prod.elifesciences.org/inbox/${notification}`,
+const transformNotificationToReviewActions = (
+  dependencies: Dependencies,
+) => (
+  notificationDetails: NotificationDetails,
+) => pipe(
+  `https://inbox-sciety-prod.elifesciences.org/inbox/${notificationDetails.notificationId}`,
   transformCoarNotificationUriToAnnouncementActionUri(dependencies),
   TE.flatMap(transformAnnouncementActionUriToSignpostingDocmapUri(dependencies)),
   TE.flatMap(retrieveReviewActionsFromDocmap(dependencies)),
