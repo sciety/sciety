@@ -17,7 +17,7 @@ const coarNotificationCodec = (originId?: string) => t.strict({
 
 export const transformCoarNotificationUriToAnnouncementActionUri = (
   dependencies: Dependencies,
-  originId?: string,
+  originId: string,
 ) => (uri: string): TE.TaskEither<string, string> => pipe(
   uri,
   dependencies.fetchData<JSON>,

@@ -15,7 +15,7 @@ import { decodeAndReportFailures } from '../decode-and-report-failures';
 
 const transformNotificationToReviewActions = (
   dependencies: Dependencies,
-  originId?: string,
+  originId: string,
 ) => (notification: string) => pipe(
   `https://inbox-sciety-prod.elifesciences.org/inbox/${notification}`,
   transformCoarNotificationUriToAnnouncementActionUri(dependencies, originId),

@@ -2,21 +2,25 @@ import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { transformCoarNotificationUriToAnnouncementActionUri } from '../../../../src/ingest/evaluation-discovery/coar/transform-coar-notification-uri-to-announcement-action-uri';
-import { arbitraryUri } from '../../../helpers';
+import { arbitraryString, arbitraryUri } from '../../../helpers';
 import { shouldNotBeCalled } from '../../../should-not-be-called';
 
 describe('transform-coar-notification-uri-to-announcement-action-uri', () => {
   describe('when the coar notification uri request fails', () => {
     const coarNotificationUri = arbitraryUri();
+    const originId = arbitraryString();
     let result: E.Either<string, string>;
 
     beforeEach(async () => {
       result = await pipe(
         coarNotificationUri,
-        transformCoarNotificationUriToAnnouncementActionUri({
-          fetchData: () => TE.left('fetch data fails for any reason'),
-          fetchHead: () => TE.right(shouldNotBeCalled()),
-        }),
+        transformCoarNotificationUriToAnnouncementActionUri(
+          {
+            fetchData: () => TE.left('fetch data fails for any reason'),
+            fetchHead: () => TE.right(shouldNotBeCalled()),
+          },
+          originId,
+        ),
       )();
     });
 
@@ -27,6 +31,7 @@ describe('transform-coar-notification-uri-to-announcement-action-uri', () => {
 
   describe('when the coar notification uri returns an announcement', () => {
     const announcementActionUri = arbitraryUri();
+    const originId = arbitraryString();
     const stubbedSuccessfulResponse = {
       object: {
         id: announcementActionUri,
@@ -37,6 +42,9 @@ describe('transform-coar-notification-uri-to-announcement-action-uri', () => {
         ],
         'ietf:cite-as': null,
         url: null,
+      },
+      origin: {
+        id: originId,
       },
     };
     let result: string;
@@ -49,6 +57,7 @@ describe('transform-coar-notification-uri-to-announcement-action-uri', () => {
             fetchData: <D>() => TE.right(stubbedSuccessfulResponse as D),
             fetchHead: () => TE.right(shouldNotBeCalled()),
           },
+          originId,
         ),
         TE.getOrElse(shouldNotBeCalled),
       )();
@@ -61,6 +70,7 @@ describe('transform-coar-notification-uri-to-announcement-action-uri', () => {
 
   describe('when the coar notification uri returns data that is not an announcement', () => {
     const coarNotificationUri = arbitraryUri();
+    const originId = arbitraryString();
     const stubbedIncorrectData = {
       object: {
         object: null,
@@ -70,6 +80,9 @@ describe('transform-coar-notification-uri-to-announcement-action-uri', () => {
         ],
         'ietf:cite-as': null,
         url: null,
+      },
+      origin: {
+        id: originId,
       },
     };
     let result: E.Either<string, string>;
@@ -82,6 +95,7 @@ describe('transform-coar-notification-uri-to-announcement-action-uri', () => {
             fetchData: <D>() => TE.right(stubbedIncorrectData as D),
             fetchHead: () => TE.right(shouldNotBeCalled()),
           },
+          originId,
         ),
       )();
     });
