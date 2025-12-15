@@ -9,6 +9,17 @@ const coarInboxResponseCodec = t.strict({
   contains: t.array(t.string),
 });
 
+const notificationCodec = t.strict({
+  id: t.string,
+  type: t.array(t.union([t.literal('Announce'), t.literal('coar-notify:ReviewAction')])),
+  origin: t.strict({
+    id: t.string,
+  }),
+  object: t.strict({
+    id: t.string,
+  }),
+});
+
 export type NotificationDetails = {
   notificationId: string,
   notificationType: string,
@@ -25,6 +36,11 @@ export const retrieveCoarNotificationsByGroup = (dependencies: Dependencies) => 
     TE.chainEitherK(decodeAndReportFailures(coarInboxResponseCodec)),
     TE.map((response) => response.contains),
     TE.map(RA.map((knownBrokenUrl) => knownBrokenUrl.replace('inboxurn', 'inbox/urn'))),
+    TE.map(RA.map((notificationUrl) => pipe(
+      notificationUrl,
+      dependencies.fetchData,
+      TE.chainEitherK(decodeAndReportFailures(notificationCodec)),
+    ))),
   );
 
   if (groupIdentification === 'https://evolbiol.peercommunityin.org/coar_notify/') {
