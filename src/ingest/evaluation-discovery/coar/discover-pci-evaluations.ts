@@ -25,7 +25,7 @@ export const discoverPciEvaluations = (groupIdentification: string): DiscoverPub
   dependencies,
 ) => pipe(
   groupIdentification,
-  retrieveCoarNotificationsByGroup,
+  retrieveCoarNotificationsByGroup(dependencies),
   TE.flatMap(TE.traverseArray(transformNotificationToReviewActions(dependencies))),
   TE.map(RA.flatten),
   TE.map(RA.map((reviewAction) => constructPublishedEvaluation({

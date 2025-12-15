@@ -1,4 +1,5 @@
 import * as TE from 'fp-ts/TaskEither';
+import { Dependencies } from '../../discover-published-evaluations';
 
 export type NotificationDetails = {
   notificationId: string,
@@ -7,7 +8,8 @@ export type NotificationDetails = {
   originId: string,
 };
 
-export const retrieveCoarNotificationsByGroup = (
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const retrieveCoarNotificationsByGroup = (dependencies: Dependencies) => (
   groupIdentification: string,
 ): TE.TaskEither<string, ReadonlyArray<NotificationDetails>> => {
   if (groupIdentification === 'https://evolbiol.peercommunityin.org/coar_notify/') {
