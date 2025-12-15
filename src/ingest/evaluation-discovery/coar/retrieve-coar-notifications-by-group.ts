@@ -1,5 +1,12 @@
 import * as TE from 'fp-ts/TaskEither';
+import { pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
 import { Dependencies } from '../../discover-published-evaluations';
+import { decodeAndReportFailures } from '../decode-and-report-failures';
+
+const coarInboxResponseCodec = t.strict({
+  contains: t.array(t.string),
+});
 
 export type NotificationDetails = {
   notificationId: string,
@@ -8,10 +15,15 @@ export type NotificationDetails = {
   originId: string,
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const retrieveCoarNotificationsByGroup = (dependencies: Dependencies) => (
   groupIdentification: string,
 ): TE.TaskEither<string, ReadonlyArray<NotificationDetails>> => {
+  pipe(
+    'https://inbox-sciety-prod.elifesciences.org/inbox/',
+    dependencies.fetchData,
+    TE.chainEitherK(decodeAndReportFailures(coarInboxResponseCodec)),
+    TE.map((response) => response.contains),
+  );
   if (groupIdentification === 'https://evolbiol.peercommunityin.org/coar_notify/') {
     return TE.right([
       {
