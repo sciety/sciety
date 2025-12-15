@@ -4,12 +4,10 @@ import * as t from 'io-ts';
 import { Dependencies } from '../../discover-published-evaluations';
 import { decodeAndReportFailures } from '../decode-and-report-failures';
 
-const coarNotificationCodec = (originId?: string) => t.strict({
-  ...(originId ? {
-    origin: t.strict({
-      id: t.literal(originId),
-    }),
-  } : {}),
+const coarNotificationCodec = (originId: string) => t.strict({
+  origin: t.strict({
+    id: t.literal(originId),
+  }),
   object: t.strict({
     id: t.string,
   }),
