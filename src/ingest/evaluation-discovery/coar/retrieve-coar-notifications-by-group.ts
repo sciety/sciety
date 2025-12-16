@@ -23,14 +23,15 @@ const notificationCodec = t.strict({
   id: t.string,
   type: notificationTypeCodec,
   origin: t.strict({
-    id: t.string,
+    id: t.union([
+      t.literal('https://evolbiol.peercommunityin.org/coar_notify/'),
+      t.literal('https://neuro.peercommunityin.org/coar_notify/'),
+    ]),
   }),
   object: t.strict({
     id: t.string,
   }),
 });
-
-type Notification = t.TypeOf<typeof notificationCodec>;
 
 export type NotificationDetails = {
   notificationId: string,
@@ -38,8 +39,6 @@ export type NotificationDetails = {
   announcementActionUri: string,
   originId: string,
 };
-
-const isSupportedPciGroup = (notification: Notification) => notification;
 
 export const retrieveCoarNotificationsByGroup = (dependencies: Dependencies) => (
   groupIdentification: string,
@@ -54,7 +53,6 @@ export const retrieveCoarNotificationsByGroup = (dependencies: Dependencies) => 
       notificationUrl,
       dependencies.fetchData,
       TE.chainEitherK(decodeAndReportFailures(notificationCodec)),
-      TE.map(isSupportedPciGroup),
     ))),
   );
 
