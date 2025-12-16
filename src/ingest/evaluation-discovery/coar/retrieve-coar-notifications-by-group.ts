@@ -13,6 +13,7 @@ type NotificationTypeBrand = {
   readonly NotificationType: unique symbol,
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const notificationTypeCodec = t.brand(
   t.array(t.union([t.literal('Announce'), t.literal('coar-notify:ReviewAction')])),
   (input): input is t.Branded<Array<'Announce' | 'coar-notify:ReviewAction'>, NotificationTypeBrand> => input.length === 2 && input[0] === 'Announce' && input[1] === 'coar-notify:ReviewAction',
@@ -21,12 +22,9 @@ const notificationTypeCodec = t.brand(
 
 const notificationCodec = t.strict({
   id: t.string,
-  type: notificationTypeCodec,
+  type: t.array(t.string),
   origin: t.strict({
-    id: t.union([
-      t.literal('https://evolbiol.peercommunityin.org/coar_notify/'),
-      t.literal('https://neuro.peercommunityin.org/coar_notify/'),
-    ]),
+    id: t.string,
   }),
   object: t.strict({
     id: t.string,
@@ -57,15 +55,18 @@ export const retrieveCoarNotificationsByGroup = (dependencies: Dependencies) => 
     TE.chainEitherK(decodeAndReportFailures(coarInboxResponseCodec)),
     TE.map((response) => response.contains),
     TE.map(RA.map((knownBrokenUrl) => knownBrokenUrl.replace('inboxurn', 'inbox/urn'))),
-    TE.map(RA.map((notificationUrl) => pipe(
+    TE.flatMap(TE.traverseArray((notificationUrl) => pipe(
       notificationUrl,
       dependencies.fetchData,
       TE.chainEitherK(decodeAndReportFailures(notificationCodec)),
-      TE.filterOrElse(
-        isRelevantGroup(groupIdentification),
-        () => 'not a relevant group',
-      ),
     ))),
+    TE.map(RA.filter(isRelevantGroup(groupIdentification))),
+    TE.map(RA.map((relevantNotification) => ({
+      notificationId: relevantNotification.id,
+      notificationType: relevantNotification.type[1],
+      announcementActionUri: relevantNotification.object.id,
+      originId: relevantNotification.origin.id,
+    }))),
   );
 
   if (groupIdentification === 'https://evolbiol.peercommunityin.org/coar_notify/') {
