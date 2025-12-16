@@ -30,12 +30,16 @@ const notificationCodec = t.strict({
   }),
 });
 
+type Notification = t.TypeOf<typeof notificationCodec>;
+
 export type NotificationDetails = {
   notificationId: string,
   notificationType: string,
   announcementActionUri: string,
   originId: string,
 };
+
+const isSupportedPciGroup = (notification: Notification) => notification;
 
 export const retrieveCoarNotificationsByGroup = (dependencies: Dependencies) => (
   groupIdentification: string,
@@ -50,6 +54,7 @@ export const retrieveCoarNotificationsByGroup = (dependencies: Dependencies) => 
       notificationUrl,
       dependencies.fetchData,
       TE.chainEitherK(decodeAndReportFailures(notificationCodec)),
+      TE.map(isSupportedPciGroup),
     ))),
   );
 
