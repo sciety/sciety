@@ -9,9 +9,19 @@ const coarInboxResponseCodec = t.strict({
   contains: t.array(t.string),
 });
 
+type NotificationTypeBrand = {
+  readonly NotificationType: unique symbol,
+};
+
+const notificationTypeCodec = t.brand(
+  t.array(t.union([t.literal('Announce'), t.literal('coar-notify:ReviewAction')])),
+  (input): input is t.Branded<Array<'Announce' | 'coar-notify:ReviewAction'>, NotificationTypeBrand> => input.length === 2 && input[0] === 'Announce' && input[1] === 'coar-notify:ReviewAction',
+  'NotificationType',
+);
+
 const notificationCodec = t.strict({
   id: t.string,
-  type: t.array(t.union([t.literal('Announce'), t.literal('coar-notify:ReviewAction')])),
+  type: notificationTypeCodec,
   origin: t.strict({
     id: t.string,
   }),
