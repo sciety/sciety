@@ -158,16 +158,16 @@ prod-sql:
 	-- psql
 
 prod-events-row-count:
-	kubectl run psql \
+	kubectl -n sciety run psql \
 	--image=postgres:12.3 \
-	--env=PGHOST=$$(kubectl get configmap sciety--prod--public-env-vars -o json | jq -r '.data.PGHOST') \
-	--env=PGDATABASE=$$(kubectl get configmap sciety--prod--public-env-vars -o json | jq -r '.data.PGDATABASE') \
-	--env=PGUSER=$$(kubectl get configmap sciety--prod--public-env-vars -o json | jq -r '.data.PGUSER') \
-	--env=PGPASSWORD=$$(kubectl get secret sciety--prod--secret-env-vars -o json | jq -r '.data.PGPASSWORD'| base64 -d) \
+	--env=PGHOST=$$(kubectl -n sciety get configmap sciety--prod--public-env-vars -o json | jq -r '.data.PGHOST') \
+	--env=PGDATABASE=$$(kubectl -n sciety get configmap sciety--prod--public-env-vars -o json | jq -r '.data.PGDATABASE') \
+	--env=PGUSER=$$(kubectl -n sciety get configmap sciety--prod--public-env-vars -o json | jq -r '.data.PGUSER') \
+	--env=PGPASSWORD=$$(kubectl -n sciety get secret sciety--prod--secret-env-vars -o json | jq -r '.data.PGPASSWORD'| base64 -d) \
 	-- sleep 600
-	kubectl wait --for condition=Ready pod psql
-	kubectl exec psql -- psql -c "SELECT count(*) FROM events;"
-	kubectl delete --wait=false pod psql
+	kubectl -n sciety wait --for condition=Ready pod psql
+	kubectl -n sciety exec psql -- psql -c "SELECT count(*) FROM events;"
+	kubectl -n sciety delete --wait=false pod psql
 
 feature-test: export TARGET = fast
 feature-test: export USE_STUB_ADAPTERS = true
