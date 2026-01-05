@@ -51,7 +51,6 @@ export const retrieveCoarNotificationsByGroup = (dependencies: Dependencies) => 
     TE.map(RA.filter(isRelevantGroup(groupIdentification))),
     TE.map(RA.map((relevantNotification) => ({
       notificationId: relevantNotification.id,
-      notificationType: relevantNotification.type[1],
       announcementActionUri: relevantNotification.object.id,
       originId: relevantNotification.origin.id,
     }))),
