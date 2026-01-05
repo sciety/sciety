@@ -4,9 +4,6 @@ import { pipe } from 'fp-ts/function';
 import { NotificationDetails, retrieveCoarNotificationsByGroup } from './retrieve-coar-notifications-by-group';
 import { retrieveReviewActionsFromDocmap } from './retrieve-review-actions-from-docmap';
 import { transformAnnouncementActionUriToSignpostingDocmapUri } from './transform-announcement-action-uri-to-signposting-docmap-uri';
-import {
-  transformCoarNotificationUriToAnnouncementActionUri,
-} from './transform-coar-notification-uri-to-announcement-action-uri';
 import { Dependencies, DiscoverPublishedEvaluations } from '../../discover-published-evaluations';
 import { constructPublishedEvaluation } from '../../types/published-evaluation';
 
@@ -15,9 +12,8 @@ const transformNotificationToReviewActions = (
 ) => (
   notificationDetails: NotificationDetails,
 ) => pipe(
-  `https://inbox-sciety-prod.elifesciences.org/inbox/${notificationDetails.notificationId}`,
-  transformCoarNotificationUriToAnnouncementActionUri(dependencies),
-  TE.flatMap(transformAnnouncementActionUriToSignpostingDocmapUri(dependencies)),
+  notificationDetails.announcementActionUri,
+  transformAnnouncementActionUriToSignpostingDocmapUri(dependencies),
   TE.flatMap(retrieveReviewActionsFromDocmap(dependencies)),
 );
 
