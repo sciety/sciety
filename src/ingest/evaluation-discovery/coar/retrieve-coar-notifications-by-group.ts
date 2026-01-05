@@ -25,7 +25,6 @@ type Notification = t.TypeOf<typeof notificationCodec>;
 export type NotificationDetails = {
   notificationId: string,
   announcementActionUri: string,
-  originId: string,
 };
 
 const isRelevantGroup = (
@@ -52,7 +51,6 @@ export const retrieveCoarNotificationsByGroup = (dependencies: Dependencies) => 
     TE.map(RA.map((relevantNotification) => ({
       notificationId: relevantNotification.id,
       announcementActionUri: relevantNotification.object.id,
-      originId: relevantNotification.origin.id,
     }))),
   );
 
