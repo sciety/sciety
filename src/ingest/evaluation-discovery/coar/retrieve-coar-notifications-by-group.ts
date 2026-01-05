@@ -24,7 +24,6 @@ type Notification = t.TypeOf<typeof notificationCodec>;
 
 export type NotificationDetails = {
   notificationId: string,
-  notificationType: string,
   announcementActionUri: string,
   originId: string,
 };
