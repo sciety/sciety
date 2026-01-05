@@ -57,7 +57,8 @@ export const evaluationDiscoveryProcesses = (environment: Configuration): Array<
     {
       groupId: 'b90854bf-795c-42ba-8664-8257b9c68b0c',
       name: 'PCI Archaeology',
-      discoverPublishedEvaluations: discoverPciEvaluations('https://archaeo.peercommunityin.org/rss/rss4elife'),
+      discoverPublishedEvaluations: process.env.EXPERIMENT_ENABLED === 'true' ? discoverPciEvaluationsViaCoar('https://archaeo.peercommunityin.org/coar_notify/') : discoverPciEvaluations('https://archaeo.peercommunityin.org/rss/rss4elife'),
+
     },
     {
       groupId: '7a9e97d1-c1fe-4ac2-9572-4ecfe28f9f84',
