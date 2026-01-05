@@ -37,7 +37,7 @@ export const evaluationDiscoveryProcesses = (environment: Configuration): Array<
     {
       groupId: '74fd66e9-3b90-4b5a-a4ab-5be83db4c5de',
       name: 'PCI Zoology',
-      discoverPublishedEvaluations: discoverPciEvaluations('https://zool.peercommunityin.org/rss/rss4elife'),
+      discoverPublishedEvaluations: process.env.EXPERIMENT_ENABLED === 'true' ? discoverPciEvaluationsViaCoar('https://zool.peercommunityin.org/coar_notify/') : discoverPciEvaluations('https://zool.peercommunityin.org/rss/rss4elife'),
     },
     {
       groupId: '19b7464a-edbe-42e8-b7cc-04d1eb1f7332',
