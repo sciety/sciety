@@ -12,7 +12,7 @@ const hardcodedEnvironment = {
   enableDebugLogs: true,
 };
 
-const enabledGroupIdentifiers = ['https://zool.peercommunityin.org/coar_notify/'];
+const enabledGroupIdentifiers: ReadonlyArray<string> = process.env.EXPERIMENT_ENABLED === 'true' ? ['https://zool.peercommunityin.org/coar_notify/'] : [];
 
 const dependencies: Dependencies = {
   fetchData: fetchData(hardcodedEnvironment.enableDebugLogs),
@@ -20,8 +20,12 @@ const dependencies: Dependencies = {
 };
 
 void (async (): Promise<unknown> => pipe(
-  dependencies,
-  discoverPciEvaluationsViaCoar(enabledGroupIdentifiers[0])(hardcodedIngestDaysToSatisfyLegacySignature),
+  enabledGroupIdentifiers,
+  TE.traverseArray(
+    (
+      identifier,
+    ) => discoverPciEvaluationsViaCoar(identifier)(hardcodedIngestDaysToSatisfyLegacySignature)(dependencies),
+  ),
   TE.match(
     () => 1,
     () => 0,
