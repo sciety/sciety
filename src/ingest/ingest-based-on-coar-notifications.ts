@@ -6,15 +6,22 @@ import { discoverPciEvaluations as discoverPciEvaluationsViaCoar } from './evalu
 import { fetchData } from './fetch-data';
 import { fetchHead } from './fetch-head';
 
-const processNotifications = () => discoverPciEvaluationsViaCoar('https://zool.peercommunityin.org/coar_notify/');
+const hardcodedIngestDaysToSatisfyLegacySignature = 1;
+
+const hardcodedEnvironment = {
+  enableDebugLogs: true,
+};
+
+const enabledGroupIdentifiers = ['https://zool.peercommunityin.org/coar_notify/'];
 
 const dependencies: Dependencies = {
-  fetchData: fetchData(true),
-  fetchHead: fetchHead(true),
+  fetchData: fetchData(hardcodedEnvironment.enableDebugLogs),
+  fetchHead: fetchHead(hardcodedEnvironment.enableDebugLogs),
 };
 
 void (async (): Promise<unknown> => pipe(
-  processNotifications()(1)(dependencies),
+  dependencies,
+  discoverPciEvaluationsViaCoar(enabledGroupIdentifiers[0])(hardcodedIngestDaysToSatisfyLegacySignature),
   TE.match(
     () => 1,
     () => 0,
