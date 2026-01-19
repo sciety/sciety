@@ -130,8 +130,8 @@ const recordDiscoveredEvaluations = (
   process: EvaluationDiscoveryProcess,
 ): TE.TaskEither<unknown, void> => pipe(
   {
-    fetchData: fetchData(environment),
-    fetchHead: fetchHead(environment),
+    fetchData: fetchData(environment.ingestDebug),
+    fetchHead: fetchHead(environment.ingestDebug),
   },
   process.discoverPublishedEvaluations(environment.ingestDays),
   TE.bimap(
