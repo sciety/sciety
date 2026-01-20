@@ -5,16 +5,19 @@ import { formatValidationErrors } from 'io-ts-reporters';
 import * as tt from 'io-ts-types';
 import { report } from './report';
 
-export type Configuration = {
+type RecordingConfiguration = {
   targetApp: string,
   bearerToken: string,
+  ingestDebug: boolean,
+};
+
+export type Configuration = RecordingConfiguration & {
   ingestDays: number,
   preReviewBearerToken: string,
   crossrefApiBearerToken: string,
   prelightsFeedKey: string,
   ingestOnly: string | undefined,
   ingestExcept: string | undefined,
-  ingestDebug: boolean,
   experimentEnabled: boolean,
 };
 
