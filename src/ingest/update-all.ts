@@ -10,7 +10,7 @@ import { pipe } from 'fp-ts/function';
 import { DiscoverPublishedEvaluations } from './discover-published-evaluations';
 import { fetchData } from './fetch-data';
 import { fetchHead } from './fetch-head';
-import { Configuration } from './generate-configuration-from-environment';
+import { Configuration, RecordingConfiguration } from './generate-configuration-from-environment';
 import { report } from './report';
 import { DiscoveredPublishedEvaluations } from './types/discovered-published-evaluations';
 
@@ -62,11 +62,11 @@ axiosRetry(axios, {
   },
 });
 
-const send = (environment: Configuration) => (evaluationCommand: EvaluationCommand) => pipe(
+const send = (configuration: RecordingConfiguration) => (evaluationCommand: EvaluationCommand) => pipe(
   TE.tryCatch(
-    async () => axios.post(`${environment.targetApp}/api/record-evaluation-publication`, JSON.stringify(evaluationCommand), {
+    async () => axios.post(`${configuration.targetApp}/api/record-evaluation-publication`, JSON.stringify(evaluationCommand), {
       headers: {
-        Authorization: `Bearer ${environment.bearerToken}`,
+        Authorization: `Bearer ${configuration.bearerToken}`,
         'Content-Type': 'application/json',
       },
       timeout: 20000,
@@ -93,7 +93,7 @@ const countUniques = (accumulator: Record<string, number>, errorMessage: string)
 
 const sendRecordEvaluationCommands = (
   group: Group,
-  environment: Configuration,
+  configuration: RecordingConfiguration,
 ) => (discoveredPublishedEvaluations: DiscoveredPublishedEvaluations) => pipe(
   discoveredPublishedEvaluations.understood,
   RA.map((evaluation) => ({
@@ -104,7 +104,7 @@ const sendRecordEvaluationCommands = (
     authors: evaluation.authors,
     evaluationType: evaluation.evaluationType,
   })),
-  T.traverseSeqArray(send(environment)),
+  T.traverseSeqArray(send(configuration)),
   T.map((array) => {
     const leftsCount = RA.lefts(array).length;
     const lefts = pipe(
@@ -128,7 +128,7 @@ const sendRecordEvaluationCommands = (
 );
 
 const recordEvaluations = (
-  group: Group, environment: Configuration,
+  group: Group, configuration: RecordingConfiguration,
 ) => (
   input: TE.TaskEither<string, DiscoveredPublishedEvaluations>,
 ) => pipe(
@@ -139,9 +139,9 @@ const recordEvaluations = (
       cause: 'Could not discover any published evaluations',
       error,
     }),
-    reportSkippedItems(environment.ingestDebug, group),
+    reportSkippedItems(configuration.ingestDebug, group),
   ),
-  TE.chainW(sendRecordEvaluationCommands(group, environment)),
+  TE.chainW(sendRecordEvaluationCommands(group, configuration)),
   TE.bimap(
     report('warn', 'Ingestion failed'),
     report('info', 'Ingestion successful'),

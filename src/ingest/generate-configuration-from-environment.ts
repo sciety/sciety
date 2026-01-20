@@ -5,7 +5,7 @@ import { formatValidationErrors } from 'io-ts-reporters';
 import * as tt from 'io-ts-types';
 import { report } from './report';
 
-type RecordingConfiguration = {
+export type RecordingConfiguration = {
   targetApp: string,
   bearerToken: string,
   ingestDebug: boolean,
