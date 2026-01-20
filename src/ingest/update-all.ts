@@ -130,18 +130,11 @@ const sendRecordEvaluationCommands = (
 const recordEvaluations = (
   group: Group, configuration: RecordingConfiguration,
 ) => (
-  input: TE.TaskEither<string, DiscoveredPublishedEvaluations>,
+  input: DiscoveredPublishedEvaluations,
 ) => pipe(
   input,
-  TE.bimap(
-    (error) => ({
-      processName: group.name,
-      cause: 'Could not discover any published evaluations',
-      error,
-    }),
-    reportSkippedItems(configuration.ingestDebug, group),
-  ),
-  TE.chainW(sendRecordEvaluationCommands(group, configuration)),
+  reportSkippedItems(configuration.ingestDebug, group),
+  sendRecordEvaluationCommands(group, configuration),
   TE.bimap(
     report('warn', 'Ingestion failed'),
     report('info', 'Ingestion successful'),
@@ -158,7 +151,12 @@ const discoverAndRecordEvaluations = (
     fetchHead: fetchHead(environment.ingestDebug),
   },
   process.discoverPublishedEvaluations(environment.ingestDays),
-  recordEvaluations(process, environment),
+  TE.mapLeft((error) => ({
+    processName: process.name,
+    cause: 'Could not discover any published evaluations',
+    error,
+  })),
+  TE.chainW(recordEvaluations(process, environment)),
 );
 
 export const updateAll = (
