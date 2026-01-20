@@ -127,7 +127,7 @@ const sendRecordEvaluationCommands = (
   }),
 );
 
-const recordEvaluations = (
+export const recordEvaluations = (
   group: Group, configuration: RecordingConfiguration,
 ) => (
   input: E.Either<string, DiscoveredPublishedEvaluations>,

@@ -5,11 +5,23 @@ import { Dependencies } from './discover-published-evaluations';
 import { discoverPciEvaluations as discoverPciEvaluationsViaCoar } from './evaluation-discovery/coar/discover-pci-evaluations';
 import { fetchData } from './fetch-data';
 import { fetchHead } from './fetch-head';
+import { recordEvaluations } from './update-all';
 
 const hardcodedIngestDaysToSatisfyLegacySignature = 1;
 
 const hardcodedEnvironment = {
   enableDebugLogs: true,
+};
+
+const group = {
+  groupId: '',
+  name: '',
+};
+
+const configuration = {
+  targetApp: '',
+  bearerToken: '',
+  ingestDebug: true,
 };
 
 const enabledGroupIdentifiers: ReadonlyArray<string> = process.env.EXPERIMENT_ENABLED === 'true' ? ['https://zool.peercommunityin.org/coar_notify/'] : [];
@@ -24,7 +36,10 @@ void (async (): Promise<unknown> => pipe(
   TE.traverseArray(
     (
       identifier,
-    ) => discoverPciEvaluationsViaCoar(identifier)(hardcodedIngestDaysToSatisfyLegacySignature)(dependencies),
+    ) => pipe(
+      discoverPciEvaluationsViaCoar(identifier)(hardcodedIngestDaysToSatisfyLegacySignature)(dependencies),
+      T.chain(recordEvaluations(group, configuration)),
+    ),
   ),
   TE.match(
     () => 1,
