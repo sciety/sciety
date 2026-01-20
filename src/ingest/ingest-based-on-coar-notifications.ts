@@ -23,11 +23,18 @@ const hardcodedEnvironment = {
 
 const configuration = generateConfigurationFromEnvironment(process.env);
 
-const enabledGroups: ReadonlyArray<Group> = process.env.EXPERIMENT_ENABLED === 'true' ? [{
-  scietyGroupId: '74fd66e9-3b90-4b5a-a4ab-5be83db4c5de',
-  name: 'PCI Zoology',
-  coarNotifyId: 'https://zool.peercommunityin.org/coar_notify/',
-}] : [];
+const enabledGroups: ReadonlyArray<Group> = process.env.EXPERIMENT_ENABLED === 'true' ? [
+  {
+    scietyGroupId: '74fd66e9-3b90-4b5a-a4ab-5be83db4c5de',
+    name: 'PCI Zoology',
+    coarNotifyId: 'https://zool.peercommunityin.org/coar_notify/',
+  },
+  {
+    scietyGroupId: 'b90854bf-795c-42ba-8664-8257b9c68b0c',
+    name: 'PCI Archeology',
+    coarNotifyId: 'https://archaeo.peercommunityin.org/coar_notify/',
+  },
+] : [];
 
 const dependencies: Dependencies = {
   fetchData: fetchData(hardcodedEnvironment.enableDebugLogs),
