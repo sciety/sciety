@@ -66,7 +66,7 @@ const send = (environment: Configuration) => (evaluationCommand: EvaluationComma
         Authorization: `Bearer ${environment.bearerToken}`,
         'Content-Type': 'application/json',
       },
-      timeout: 10000,
+      timeout: 20000,
     }),
     (error) => {
       if (axios.isAxiosError(error)) {
