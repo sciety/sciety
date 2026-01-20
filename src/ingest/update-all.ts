@@ -124,16 +124,12 @@ const sendRecordEvaluationCommands = (
   }),
 );
 
-const recordDiscoveredEvaluations = (
-  environment: Configuration,
+const recordEvaluations = (
+  process: EvaluationDiscoveryProcess, environment: Configuration,
 ) => (
-  process: EvaluationDiscoveryProcess,
-): TE.TaskEither<unknown, void> => pipe(
-  {
-    fetchData: fetchData(environment.ingestDebug),
-    fetchHead: fetchHead(environment.ingestDebug),
-  },
-  process.discoverPublishedEvaluations(environment.ingestDays),
+  input: TE.TaskEither<string, DiscoveredPublishedEvaluations>,
+) => pipe(
+  input,
   TE.bimap(
     (error) => ({
       processName: process.name,
@@ -149,11 +145,25 @@ const recordDiscoveredEvaluations = (
   ),
 );
 
+const discoverAndRecordEvaluations = (
+  environment: Configuration,
+) => (
+  process: EvaluationDiscoveryProcess,
+): TE.TaskEither<unknown, void> => pipe(
+  {
+    fetchData: fetchData(environment.ingestDebug),
+    fetchHead: fetchHead(environment.ingestDebug),
+  },
+  process.discoverPublishedEvaluations(environment.ingestDays),
+  (bar) => bar,
+  recordEvaluations(process, environment),
+);
+
 export const updateAll = (
   environment: Configuration,
   evaluationDiscoveryProcesses: ReadonlyArray<EvaluationDiscoveryProcess>,
 ): TE.TaskEither<unknown, ReadonlyArray<void>> => pipe(
   evaluationDiscoveryProcesses,
-  T.traverseSeqArray(recordDiscoveredEvaluations(environment)),
+  T.traverseSeqArray(discoverAndRecordEvaluations(environment)),
   T.map(E.sequenceArray),
 );
