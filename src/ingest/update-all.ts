@@ -14,15 +14,18 @@ import { Configuration } from './generate-configuration-from-environment';
 import { report } from './report';
 import { DiscoveredPublishedEvaluations } from './types/discovered-published-evaluations';
 
-export type EvaluationDiscoveryProcess = {
+type Group = {
   groupId: string,
   name: string,
+};
+
+export type EvaluationDiscoveryProcess = Group & {
   discoverPublishedEvaluations: DiscoverPublishedEvaluations,
 };
 
 const reportSkippedItems = (
   ingestDebug: Configuration['ingestDebug'],
-  group: EvaluationDiscoveryProcess,
+  group: Group,
 ) => (
   discoveredPublishedEvaluations: DiscoveredPublishedEvaluations,
 ) => {
@@ -126,20 +129,20 @@ const sendRecordEvaluationCommands = (
 );
 
 const recordEvaluations = (
-  process: EvaluationDiscoveryProcess, environment: Configuration,
+  group: Group, environment: Configuration,
 ) => (
   input: TE.TaskEither<string, DiscoveredPublishedEvaluations>,
 ) => pipe(
   input,
   TE.bimap(
     (error) => ({
-      processName: process.name,
+      processName: group.name,
       cause: 'Could not discover any published evaluations',
       error,
     }),
-    reportSkippedItems(environment.ingestDebug, process),
+    reportSkippedItems(environment.ingestDebug, group),
   ),
-  TE.chainW(sendRecordEvaluationCommands(process.groupId, process.name, environment)),
+  TE.chainW(sendRecordEvaluationCommands(group.groupId, group.name, environment)),
   TE.bimap(
     report('warn', 'Ingestion failed'),
     report('info', 'Ingestion successful'),
