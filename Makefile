@@ -125,6 +125,7 @@ ingest-evaluations: build
 process-coar-notifications: export TARGET = dev
 process-coar-notifications: build
 	$(DOCKER_COMPOSE) run --name ingest --rm \
+	-e INGESTION_TARGET_APP=http://app \
 	app \
 	npx tsx src/ingest/ingest-based-on-coar-notifications
 
