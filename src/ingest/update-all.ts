@@ -159,7 +159,6 @@ const discoverAndRecordEvaluations = (
     fetchHead: fetchHead(environment.ingestDebug),
   },
   process.discoverPublishedEvaluations(environment.ingestDays),
-  (bar) => bar,
   recordEvaluations(process, environment),
 );
 
