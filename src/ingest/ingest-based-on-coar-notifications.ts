@@ -47,7 +47,7 @@ void (async (): Promise<unknown> => {
   }
   return pipe(
     enabledGroups,
-    TE.traverseArray(
+    TE.traverseSeqArray(
       (
         group,
       ) => pipe(
