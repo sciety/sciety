@@ -89,12 +89,13 @@ const countUniques = (accumulator: Record<string, number>, errorMessage: string)
 );
 
 const sendRecordEvaluationCommands = (
-  group: EvaluationDiscoveryProcess,
+  groupId: string,
+  groupName: string,
   environment: Configuration,
 ) => (discoveredPublishedEvaluations: DiscoveredPublishedEvaluations) => pipe(
   discoveredPublishedEvaluations.understood,
   RA.map((evaluation) => ({
-    groupId: group.groupId,
+    groupId,
     expressionDoi: evaluation.paperExpressionDoi,
     evaluationLocator: evaluation.evaluationLocator,
     publishedAt: evaluation.publishedOn,
@@ -111,7 +112,7 @@ const sendRecordEvaluationCommands = (
     );
     const rightsCount = RA.rights(array).length;
     const summary = {
-      groupName: group.name,
+      groupName,
       lefts,
       leftsTotal: leftsCount,
       rightsTotal: rightsCount,
@@ -138,7 +139,7 @@ const recordEvaluations = (
     }),
     reportSkippedItems(environment.ingestDebug, process),
   ),
-  TE.chainW(sendRecordEvaluationCommands(process, environment)),
+  TE.chainW(sendRecordEvaluationCommands(process.groupId, process.name, environment)),
   TE.bimap(
     report('warn', 'Ingestion failed'),
     report('info', 'Ingestion successful'),
