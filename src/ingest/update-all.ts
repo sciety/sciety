@@ -69,7 +69,7 @@ const send = (configuration: RecordingConfiguration) => (evaluationCommand: Eval
         Authorization: `Bearer ${configuration.bearerToken}`,
         'Content-Type': 'application/json',
       },
-      timeout: 60000,
+      timeout: 90000,
     }),
     (error) => {
       if (axios.isAxiosError(error)) {
