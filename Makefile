@@ -13,7 +13,7 @@ export IMAGE
 export IMAGE_TAG
 export AWS_DEFAULT_REGION
 
-.PHONY: backstop* build clean* dev feature-test find-* get* git-lfs graphs ingest* install lint* prod* replay-events-for-elife-subject-area-policy stop test* update* unused-exports watch* staging* replace-staging-database-with-snapshot-from-prod exploratory-test-from-* verify-flux-prod-cluster download-exploratory-test-from-prod download-exploratory-test-from-staging switch-to-flux-prod-cluster crossref-response check* compile* typecheck clobber connect* helm-dry-run process-coar-notifications
+.PHONY: backstop* build clean* dev feature-test find-* get* git-lfs graphs ingest* install lint* prod* replay-events-for-elife-subject-area-policy stop test* update* unused-exports watch* staging* replace-staging-database-with-snapshot-from-prod exploratory-test-from-* verify-flux-prod-cluster download-exploratory-test-from-prod download-exploratory-test-from-staging switch-to-flux-prod-cluster crossref-response check* compile* typecheck clobber connect* helm-dry-run process-coar-notifications manual-staging-ingestion-job
 
 dev: export TARGET = dev
 dev: export SCIETY_TEAM_API_BEARER_TOKEN = secret
@@ -121,6 +121,9 @@ ingest-evaluations: build
 		-e INGEST_DAYS=${INGEST_DAYS} \
 		app \
 		npx tsx src/ingest/update-event-data
+
+manual-staging-ingestion-job:
+	kubectl create job --from=cronjob/sciety--staging--ingestion sciety--staging--ingestion--manual -n sciety
 
 process-coar-notifications: export TARGET = dev
 process-coar-notifications: build
