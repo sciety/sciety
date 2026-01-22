@@ -72,11 +72,11 @@ const send = (configuration: RecordingConfiguration) => (evaluationCommand: Eval
       timeout: 90000,
     }),
     (error) => {
+      report('error', `Error while posting evaluation command: ${String(error)}. Error is: "${JSON.stringify(error)}". Failed command is ${JSON.stringify(evaluationCommand)}.`)({
+        error,
+        evaluationCommand,
+      });
       if (axios.isAxiosError(error)) {
-        report('error', `Error while posting evaluation command: ${String(error)}. Error is: "${JSON.stringify(error)}". Failed command is ${JSON.stringify(evaluationCommand)}.`)({
-          error,
-          evaluationCommand,
-        });
         return `Failed to post evaluation command: ${String(error)}. Response data is: "${JSON.stringify(error.response?.data)}"`;
       }
       return `Failed to post evaluation command: ${String(error)}`;
