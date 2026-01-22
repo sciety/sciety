@@ -73,7 +73,7 @@ const send = (configuration: RecordingConfiguration) => (evaluationCommand: Eval
     }),
     (error) => {
       if (axios.isAxiosError(error)) {
-        return `Failed to post evaluation command: ${String(error)}. Response data is: "${JSON.stringify(error.response?.data)}"`;
+        return `Failed to post evaluation command: ${String(error)}. Error is: "${JSON.stringify(error)}"`;
       }
       return `Failed to post evaluation command: ${String(error)}`;
     },
