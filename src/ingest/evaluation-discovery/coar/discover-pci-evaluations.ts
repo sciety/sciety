@@ -3,6 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
+import * as tt from 'io-ts-types';
 import { NotificationDetails, retrieveCoarNotificationsByGroup } from './retrieve-coar-notifications-by-group';
 import { retrieveReviewActionsFromDocmap, ReviewActionFromDocmap } from './retrieve-review-actions-from-docmap';
 import { transformAnnouncementActionUriToSignpostingDocmapUri } from './transform-announcement-action-uri-to-signposting-docmap-uri';
@@ -13,7 +14,7 @@ import { decodeAndReportFailures } from '../decode-and-report-failures';
 
 const validReviewActionCodec = t.strict({
   actionOutputDoi: t.string,
-  actionOutputDate: t.string,
+  actionOutputDate: tt.DateFromISOString,
   actionInputDoi: t.string,
 });
 
