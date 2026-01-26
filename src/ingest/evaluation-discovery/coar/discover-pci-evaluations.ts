@@ -2,12 +2,20 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
+import * as t from 'io-ts';
 import { NotificationDetails, retrieveCoarNotificationsByGroup } from './retrieve-coar-notifications-by-group';
 import { retrieveReviewActionsFromDocmap, ReviewActionFromDocmap } from './retrieve-review-actions-from-docmap';
 import { transformAnnouncementActionUriToSignpostingDocmapUri } from './transform-announcement-action-uri-to-signposting-docmap-uri';
 import { Dependencies, DiscoverPublishedEvaluations } from '../../discover-published-evaluations';
 import { constructPublishedEvaluation, PublishedEvaluation } from '../../types/published-evaluation';
 import { SkippedEvaluation } from '../../types/skipped-evaluation';
+import { decodeAndReportFailures } from '../decode-and-report-failures';
+
+const validReviewActionCodec = t.strict({
+  actionOutputDoi: t.string,
+  actionOutputDate: t.string,
+  actionInputDoi: t.string,
+});
 
 const transformNotificationToReviewActions = (
   dependencies: Dependencies,
@@ -22,12 +30,19 @@ const transformNotificationToReviewActions = (
 const convertToPublishedEvaluation = (
   reviewAction: ReviewActionFromDocmap,
 ): E.Either<SkippedEvaluation, PublishedEvaluation> => pipe(
-  constructPublishedEvaluation({
-    publishedOn: new Date(reviewAction.actionOutputDate),
-    paperExpressionDoi: reviewAction.actionInputDoi,
-    evaluationLocator: `doi:${reviewAction.actionOutputDoi}`,
-  }),
-  E.right,
+  reviewAction,
+  decodeAndReportFailures(validReviewActionCodec),
+  E.bimap(
+    (reason) => ({
+      item: `actionInputDoi: ${reviewAction.actionInputDoi}, actionOutputDate: ${reviewAction.actionOutputDate}, actionOutputDoi: ${reviewAction.actionOutputDoi}`,
+      reason,
+    }),
+    (decoded) => constructPublishedEvaluation({
+      publishedOn: new Date(decoded.actionOutputDate),
+      paperExpressionDoi: decoded.actionInputDoi,
+      evaluationLocator: `doi:${decoded.actionOutputDoi}`,
+    }),
+  ),
 );
 
 export const discoverPciEvaluations = (groupIdentification: string): DiscoverPublishedEvaluations => () => (
