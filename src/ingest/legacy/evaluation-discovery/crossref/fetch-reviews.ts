@@ -1,7 +1,7 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { FetchData } from '../../fetch-data';
-import { Configuration } from '../../generate-configuration-from-environment';
+import { FetchData } from '../../../fetch-data';
+import { Configuration } from '../../../generate-configuration-from-environment';
 
 export type CrossrefItem = {
   DOI: string,

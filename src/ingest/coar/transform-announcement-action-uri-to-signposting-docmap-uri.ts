@@ -6,7 +6,7 @@ import LinkHeader from 'http-link-header';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { DependenciesForFetchHead } from '../discover-published-evaluations';
-import { decodeAndReportFailures } from '../evaluation-discovery/decode-and-report-failures';
+import { decodeAndReportFailures } from '../legacy/evaluation-discovery/decode-and-report-failures';
 
 const headCodec = t.strict({
   link: t.string,

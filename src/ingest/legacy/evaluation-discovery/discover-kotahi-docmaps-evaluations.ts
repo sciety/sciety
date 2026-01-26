@@ -5,7 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { decodeAndReportFailures } from './decode-and-report-failures';
-import { DiscoverPublishedEvaluations } from '../discover-published-evaluations';
+import { DiscoverPublishedEvaluations } from '../../discover-published-evaluations';
 
 const url = 'https://kotahi-server-test.fly.dev/api/docmap/group_id/bcdf0f70-1b32-4aa8-9a9e-84265b23a30d/doi/10.1101/2025.03.27.645397';
 

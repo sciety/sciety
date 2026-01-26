@@ -3,9 +3,9 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as R from 'fp-ts/Record';
 import { pipe } from 'fp-ts/function';
 import { Annotation } from './annotation';
-import { supportedExpressionDoiFromUri } from '../../supported-expression-doi-from-uri';
-import { PublishedEvaluation, constructPublishedEvaluation } from '../../types/published-evaluation';
-import { SkippedEvaluation } from '../../types/skipped-evaluation';
+import { supportedExpressionDoiFromUri } from '../../../supported-expression-doi-from-uri';
+import { constructPublishedEvaluation, PublishedEvaluation } from '../../../types/published-evaluation';
+import { SkippedEvaluation } from '../../../types/skipped-evaluation';
 
 const annotationContainsText = (annotation: Annotation) => annotation.text.length > 0;
 

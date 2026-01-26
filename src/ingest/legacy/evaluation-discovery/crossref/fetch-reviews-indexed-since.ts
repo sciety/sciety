@@ -2,7 +2,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { FetchData } from '../../fetch-data';
+import { FetchData } from '../../../fetch-data';
 import { decodeAndReportFailures } from '../decode-and-report-failures';
 
 const crossrefReviewFromJson = t.type({

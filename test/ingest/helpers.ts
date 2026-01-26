@@ -1,4 +1,4 @@
-import { Annotation } from '../../src/ingest/evaluation-discovery/hypothesis/annotation';
+import { Annotation } from '../../src/ingest/legacy/evaluation-discovery/hypothesis/annotation';
 import { arbitraryUri, arbitraryWord } from '../helpers';
 
 export const arbitraryAnnotation = (): Annotation => ({

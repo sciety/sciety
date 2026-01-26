@@ -7,7 +7,7 @@ import { Dependencies } from '../discover-published-evaluations';
 import { fetchData } from '../fetch-data';
 import { fetchHead } from '../fetch-head';
 import { generateConfigurationFromEnvironment } from '../generate-configuration-from-environment';
-import { recordEvaluations } from '../update-all';
+import { recordEvaluations } from '../legacy/update-all';
 
 type Group = {
   scietyGroupId: string,

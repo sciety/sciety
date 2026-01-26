@@ -7,8 +7,8 @@ import { discoverPciEvaluations } from './evaluation-discovery/discover-pci-eval
 import { discoverPrelightsEvaluations } from './evaluation-discovery/discover-prelights-evaluations';
 import { discoverPrereviewEvaluations } from './evaluation-discovery/discover-prereview-evaluations';
 import { discoverRapidReviewsEvaluations } from './evaluation-discovery/discover-rapid-reviews-evaluations';
-import { Configuration } from './generate-configuration-from-environment';
 import { EvaluationDiscoveryProcess } from './update-all';
+import { Configuration } from '../generate-configuration-from-environment';
 
 const kotahiDocmapsEvaluations = {
   groupId: 'b90854bf-795c-42ba-8664-8257b9c68b0c',

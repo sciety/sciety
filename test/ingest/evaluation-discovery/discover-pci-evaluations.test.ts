@@ -1,8 +1,8 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { discoverPciEvaluations } from '../../../src/ingest/evaluation-discovery/discover-pci-evaluations';
-import { ingestionWindowStartDate } from '../../../src/ingest/evaluation-discovery/ingestion-window-start-date';
+import { discoverPciEvaluations } from '../../../src/ingest/legacy/evaluation-discovery/discover-pci-evaluations';
+import { ingestionWindowStartDate } from '../../../src/ingest/legacy/evaluation-discovery/ingestion-window-start-date';
 import { DiscoveredPublishedEvaluations } from '../../../src/ingest/types/discovered-published-evaluations';
 import { constructPublishedEvaluation } from '../../../src/ingest/types/published-evaluation';
 import { arbitraryString, arbitraryUri, arbitraryWord } from '../../helpers';

@@ -3,7 +3,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { arbitraryIngestDays } from './ingest-days.helper';
-import { discoverRapidReviewsEvaluations } from '../../../src/ingest/evaluation-discovery/discover-rapid-reviews-evaluations';
+import { discoverRapidReviewsEvaluations } from '../../../src/ingest/legacy/evaluation-discovery/discover-rapid-reviews-evaluations';
 import { DiscoveredPublishedEvaluations } from '../../../src/ingest/types/discovered-published-evaluations';
 import { constructPublishedEvaluation } from '../../../src/ingest/types/published-evaluation';
 import { arbitraryDate, arbitraryUri, arbitraryWord } from '../../helpers';

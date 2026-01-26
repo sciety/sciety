@@ -1,8 +1,8 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from '../../../src/ingest/discover-published-evaluations';
-import { Annotation } from '../../../src/ingest/evaluation-discovery/hypothesis/annotation';
-import { refineIfNecessaryAnnotationUriForBiorxivMedrxiv } from '../../../src/ingest/evaluation-discovery/refine-if-necessary-annotation-uri-for-biorxiv-medrxiv';
+import { Annotation } from '../../../src/ingest/legacy/evaluation-discovery/hypothesis/annotation';
+import { refineIfNecessaryAnnotationUriForBiorxivMedrxiv } from '../../../src/ingest/legacy/evaluation-discovery/refine-if-necessary-annotation-uri-for-biorxiv-medrxiv';
 import { shouldNotBeCalled } from '../../should-not-be-called';
 import { arbitraryAnnotation } from '../helpers';
 

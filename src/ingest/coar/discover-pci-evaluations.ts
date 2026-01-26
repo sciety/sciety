@@ -8,7 +8,7 @@ import { NotificationDetails, retrieveCoarNotificationsByGroup } from './retriev
 import { retrieveReviewActionsFromDocmap, ReviewActionFromDocmap } from './retrieve-review-actions-from-docmap';
 import { transformAnnouncementActionUriToSignpostingDocmapUri } from './transform-announcement-action-uri-to-signposting-docmap-uri';
 import { Dependencies } from '../discover-published-evaluations';
-import { decodeAndReportFailures } from '../evaluation-discovery/decode-and-report-failures';
+import { decodeAndReportFailures } from '../legacy/evaluation-discovery/decode-and-report-failures';
 import { DiscoveredPublishedEvaluations } from '../types/discovered-published-evaluations';
 import { PublishedEvaluation, constructPublishedEvaluation } from '../types/published-evaluation';
 import { SkippedEvaluation } from '../types/skipped-evaluation';

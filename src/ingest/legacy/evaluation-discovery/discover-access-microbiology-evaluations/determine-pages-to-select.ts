@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import { getCrossrefWorksApiUrlFilteredForMicrobiologySociety } from './get-crossref-works-api-filtered-for-microbiology-society-url';
-import { Dependencies } from '../../discover-published-evaluations';
+import { Dependencies } from '../../../discover-published-evaluations';
 import { decodeAndReportFailures } from '../decode-and-report-failures';
 
 const determinePagesToSelectCodec = t.strict({

@@ -3,8 +3,8 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { evaluationDiscoveryProcesses } from './evaluation-discovery-processes';
-import { Configuration, generateConfigurationFromEnvironment } from './generate-configuration-from-environment';
 import { EvaluationDiscoveryProcess, updateAll } from './update-all';
+import { Configuration, generateConfigurationFromEnvironment } from '../generate-configuration-from-environment';
 
 const shouldUpdate = (pattern: Configuration['ingestOnly']) => (group: EvaluationDiscoveryProcess) => {
   if (pattern) {

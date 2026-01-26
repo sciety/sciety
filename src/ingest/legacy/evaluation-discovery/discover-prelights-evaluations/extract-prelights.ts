@@ -1,8 +1,8 @@
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import { flow, pipe } from 'fp-ts/function';
-import { DiscoveredPublishedEvaluations } from '../../types/discovered-published-evaluations';
-import { constructPublishedEvaluation } from '../../types/published-evaluation';
+import { DiscoveredPublishedEvaluations } from '../../../types/discovered-published-evaluations';
+import { constructPublishedEvaluation } from '../../../types/published-evaluation';
 
 export type Prelight = {
   guid: string,

@@ -3,10 +3,10 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as CR from './crossref';
 import { ingestionWindowStartDate } from './ingestion-window-start-date';
-import { Dependencies, DiscoverPublishedEvaluations } from '../discover-published-evaluations';
-import { FetchData } from '../fetch-data';
-import { Configuration } from '../generate-configuration-from-environment';
-import { constructPublishedEvaluation } from '../types/published-evaluation';
+import { Dependencies, DiscoverPublishedEvaluations } from '../../discover-published-evaluations';
+import { FetchData } from '../../fetch-data';
+import { Configuration } from '../../generate-configuration-from-environment';
+import { constructPublishedEvaluation } from '../../types/published-evaluation';
 
 type BiorxivItem = {
   biorxiv_doi: string,

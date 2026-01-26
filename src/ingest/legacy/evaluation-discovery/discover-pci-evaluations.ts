@@ -7,8 +7,8 @@ import * as S from 'fp-ts/string';
 import * as t from 'io-ts';
 import { decodeAndReportFailures } from './decode-and-report-failures';
 import { ingestionWindowStartDate } from './ingestion-window-start-date';
-import { DiscoverPublishedEvaluations } from '../discover-published-evaluations';
-import { constructPublishedEvaluation } from '../types/published-evaluation';
+import { DiscoverPublishedEvaluations } from '../../discover-published-evaluations';
+import { constructPublishedEvaluation } from '../../types/published-evaluation';
 
 type Candidate = {
   date: string,
