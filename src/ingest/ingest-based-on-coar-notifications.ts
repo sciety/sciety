@@ -3,7 +3,7 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from './discover-published-evaluations';
-import { discoverPciEvaluations as discoverPciEvaluationsViaCoar } from './evaluation-discovery/coar/discover-pci-evaluations';
+import { discoverPciEvaluations } from './evaluation-discovery/coar/discover-pci-evaluations';
 import { fetchData } from './fetch-data';
 import { fetchHead } from './fetch-head';
 import { generateConfigurationFromEnvironment } from './generate-configuration-from-environment';
@@ -61,7 +61,7 @@ void (async (): Promise<unknown> => {
       (
         group,
       ) => pipe(
-        discoverPciEvaluationsViaCoar(group.coarNotifyId)(hardcodedIngestDaysToSatisfyLegacySignature)(dependencies),
+        discoverPciEvaluations(group.coarNotifyId)(hardcodedIngestDaysToSatisfyLegacySignature)(dependencies),
         T.chain(recordEvaluations({ groupId: group.scietyGroupId, name: group.name }, configuration.right)),
       ),
     ),
