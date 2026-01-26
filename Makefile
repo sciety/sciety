@@ -120,7 +120,7 @@ ingest-evaluations: build
 		-e INGEST_ONLY=${INGEST_ONLY} \
 		-e INGEST_DAYS=${INGEST_DAYS} \
 		app \
-		npx tsx src/ingest/update-event-data
+		npx tsx src/ingest/legacy/update-event-data
 
 manual-staging-ingestion-job:
 	kubectl create job --from=cronjob/sciety--staging--ingestion sciety--staging--ingestion--manual -n sciety
