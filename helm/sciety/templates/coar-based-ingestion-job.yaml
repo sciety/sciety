@@ -6,7 +6,7 @@ metadata:
     {{- include "sciety.labels" . | nindent 4 }}
     app.kubernetes.io/component: coar-based-ingestion
 spec:
-schedule: "15,45 * * * *"
+  schedule: "15,45 * * * *"
   concurrencyPolicy: "Forbid"
   startingDeadlineSeconds: 720
   jobTemplate:
