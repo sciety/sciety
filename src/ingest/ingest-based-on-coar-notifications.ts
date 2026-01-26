@@ -18,7 +18,7 @@ type Group = {
 const hardcodedIngestDaysToSatisfyLegacySignature = 1;
 
 const hardcodedEnvironment = {
-  enableDebugLogs: true,
+  enableDebugLogs: false,
 };
 
 const configuration = generateConfigurationFromEnvironment(process.env);
