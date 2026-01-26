@@ -1,0 +1,48 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}--coar-based-ingestion
+  labels:
+    {{- include "sciety.labels" . | nindent 4 }}
+    app.kubernetes.io/component: coar-based-ingestion
+spec:
+schedule: "15,45 * * * *"
+  concurrencyPolicy: "Forbid"
+  startingDeadlineSeconds: 720
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            {{- include "sciety.selectorLabels" . | nindent 12 }}
+            app.kubernetes.io/component: coar-based-ingestion
+        spec:
+          containers:
+          - name: app
+            resources:
+              requests:
+                cpu: 100m
+                memory: 150Mi
+            image: "{{ .Values.images.frontend.repository }}:{{ .Values.images.frontend.tag }}"
+            command: ["sh", "-c", "node ./build/ingest/ingest-based-on-coar-notifications"]
+            envFrom:
+            - configMapRef:
+                name: {{ .Release.Name }}--public-env-vars
+            - secretRef:
+                name: {{ .Release.Name }}--secret-env-vars
+            env:
+              - name: INGESTION_TARGET_APP
+                value: "https://{{ .Values.hostname }}"
+              - name: PREREVIEW_BEARER_TOKEN
+                value: {{ .Values.prereviewBearerToken }}
+              - name: EXPERIMENT_ENABLED
+                value: "{{ .Values.experimentEnabled }}"
+            volumeMounts:
+              - name: gcp-ncrc-key
+                mountPath: "/var/run/secrets/app"
+                readOnly: true
+          volumes:
+            - name: gcp-ncrc-key
+              secret:
+                secretName: ncrc-sheet-key
+          restartPolicy: Never
