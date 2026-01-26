@@ -34,6 +34,16 @@ const enabledGroups: ReadonlyArray<Group> = process.env.EXPERIMENT_ENABLED === '
     name: 'PCI Archeology',
     coarNotifyId: 'https://archaeo.peercommunityin.org/coar_notify/',
   },
+  {
+    scietyGroupId: '19b7464a-edbe-42e8-b7cc-04d1eb1f7332',
+    name: 'PCI Evolutionary Biology',
+    coarNotifyId: 'https://evolbiol.peercommunityin.org/coar_notify/',
+  },
+  {
+    scietyGroupId: 'af792cd3-1600-465c-89e5-250c48f793aa',
+    name: 'PCI Neuroscience',
+    coarNotifyId: 'https://neuro.peercommunityin.org/coar_notify/',
+  },
 ] : [];
 
 const dependencies: Dependencies = {

@@ -1,4 +1,3 @@
-import { discoverPciEvaluations as discoverPciEvaluationsViaCoar } from './evaluation-discovery/coar/discover-pci-evaluations';
 import { discoverAccessMicrobiologyEvaluations } from './evaluation-discovery/discover-access-microbiology-evaluations';
 import { discoverEvaluationsFromCrossrefViaBiorxiv } from './evaluation-discovery/discover-evaluations-from-crossref-via-biorxiv';
 import { discoverEvaluationsFromHypothesisGroup } from './evaluation-discovery/discover-evaluations-from-hypothesis-group';
@@ -37,12 +36,12 @@ export const evaluationDiscoveryProcesses = (environment: Configuration): Array<
     {
       groupId: '74fd66e9-3b90-4b5a-a4ab-5be83db4c5de',
       name: 'PCI Zoology',
-      discoverPublishedEvaluations: process.env.EXPERIMENT_ENABLED === 'true' ? discoverPciEvaluationsViaCoar('https://zool.peercommunityin.org/coar_notify/') : discoverPciEvaluations('https://zool.peercommunityin.org/rss/rss4elife'),
+      discoverPublishedEvaluations: discoverPciEvaluations('https://zool.peercommunityin.org/rss/rss4elife'),
     },
     {
       groupId: '19b7464a-edbe-42e8-b7cc-04d1eb1f7332',
       name: 'PCI Evolutionary Biology',
-      discoverPublishedEvaluations: process.env.EXPERIMENT_ENABLED === 'true' ? discoverPciEvaluationsViaCoar('https://evolbiol.peercommunityin.org/coar_notify/') : discoverPciEvaluations('https://evolbiol.peercommunityin.org/rss/rss4elife'),
+      discoverPublishedEvaluations: discoverPciEvaluations('https://evolbiol.peercommunityin.org/rss/rss4elife'),
     },
     {
       groupId: '32025f28-0506-480e-84a0-b47ef1e92ec5',
@@ -67,7 +66,7 @@ export const evaluationDiscoveryProcesses = (environment: Configuration): Array<
     {
       groupId: 'af792cd3-1600-465c-89e5-250c48f793aa',
       name: 'PCI Neuroscience',
-      discoverPublishedEvaluations: process.env.EXPERIMENT_ENABLED === 'true' ? discoverPciEvaluationsViaCoar('https://neuro.peercommunityin.org/coar_notify/') : discoverPciEvaluations('https://neuro.peercommunityin.org/rss/rss4elife'),
+      discoverPublishedEvaluations: discoverPciEvaluations('https://neuro.peercommunityin.org/rss/rss4elife'),
     },
     {
       groupId: '53ed5364-a016-11ea-bb37-0242ac130002',
