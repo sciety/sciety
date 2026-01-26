@@ -2,8 +2,8 @@ import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
-import { Dependencies } from '../../discover-published-evaluations';
-import { decodeAndReportFailures } from '../decode-and-report-failures';
+import { Dependencies } from '../discover-published-evaluations';
+import { decodeAndReportFailures } from '../evaluation-discovery/decode-and-report-failures';
 
 const coarInboxResponseCodec = t.strict({
   contains: t.array(t.string),

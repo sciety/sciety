@@ -5,8 +5,8 @@ import { pipe } from 'fp-ts/function';
 import LinkHeader from 'http-link-header';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { DependenciesForFetchHead } from '../../discover-published-evaluations';
-import { decodeAndReportFailures } from '../decode-and-report-failures';
+import { DependenciesForFetchHead } from '../discover-published-evaluations';
+import { decodeAndReportFailures } from '../evaluation-discovery/decode-and-report-failures';
 
 const headCodec = t.strict({
   link: t.string,

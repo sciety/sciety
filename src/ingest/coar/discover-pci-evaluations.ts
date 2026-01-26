@@ -7,11 +7,11 @@ import * as tt from 'io-ts-types';
 import { NotificationDetails, retrieveCoarNotificationsByGroup } from './retrieve-coar-notifications-by-group';
 import { retrieveReviewActionsFromDocmap, ReviewActionFromDocmap } from './retrieve-review-actions-from-docmap';
 import { transformAnnouncementActionUriToSignpostingDocmapUri } from './transform-announcement-action-uri-to-signposting-docmap-uri';
-import { Dependencies } from '../../discover-published-evaluations';
-import { DiscoveredPublishedEvaluations } from '../../types/discovered-published-evaluations';
-import { constructPublishedEvaluation, PublishedEvaluation } from '../../types/published-evaluation';
-import { SkippedEvaluation } from '../../types/skipped-evaluation';
-import { decodeAndReportFailures } from '../decode-and-report-failures';
+import { Dependencies } from '../discover-published-evaluations';
+import { decodeAndReportFailures } from '../evaluation-discovery/decode-and-report-failures';
+import { DiscoveredPublishedEvaluations } from '../types/discovered-published-evaluations';
+import { PublishedEvaluation, constructPublishedEvaluation } from '../types/published-evaluation';
+import { SkippedEvaluation } from '../types/skipped-evaluation';
 
 const validReviewActionCodec = t.strict({
   actionOutputDoi: t.string,

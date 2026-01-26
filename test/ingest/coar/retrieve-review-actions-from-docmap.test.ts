@@ -7,11 +7,9 @@ import {
   constructMinimalDocmapResponseExampleStepWithReviewActions,
   constructMinimalDocmapResponseExampleWithSteps,
 } from './docmap-array-fixture';
-import {
-  retrieveReviewActionsFromDocmap, ReviewActionFromDocmap,
-} from '../../../../src/ingest/evaluation-discovery/coar/retrieve-review-actions-from-docmap';
-import { arbitraryDate, arbitraryString, arbitraryUri } from '../../../helpers';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { retrieveReviewActionsFromDocmap, ReviewActionFromDocmap } from '../../../src/ingest/coar/retrieve-review-actions-from-docmap';
+import { arbitraryDate, arbitraryString, arbitraryUri } from '../../helpers';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 
 const runQuery = (uri: string, response: unknown) => pipe(
   uri,

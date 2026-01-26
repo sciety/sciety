@@ -1,11 +1,9 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import {
-  transformAnnouncementActionUriToSignpostingDocmapUri,
-} from '../../../../src/ingest/evaluation-discovery/coar/transform-announcement-action-uri-to-signposting-docmap-uri';
-import { arbitraryString, arbitraryUri } from '../../../helpers';
-import { shouldNotBeCalled } from '../../../should-not-be-called';
+import { transformAnnouncementActionUriToSignpostingDocmapUri } from '../../../src/ingest/coar/transform-announcement-action-uri-to-signposting-docmap-uri';
+import { arbitraryString, arbitraryUri } from '../../helpers';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 
 const runExternalQuery = (head: Record<string, string>) => (uri: string) => pipe(
   uri,

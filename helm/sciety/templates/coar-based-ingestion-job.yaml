@@ -24,7 +24,7 @@ spec:
                 cpu: 100m
                 memory: 150Mi
             image: "{{ .Values.images.frontend.repository }}:{{ .Values.images.frontend.tag }}"
-            command: ["sh", "-c", "node ./build/ingest/ingest-based-on-coar-notifications"]
+            command: ["sh", "-c", "node ./build/ingest/coar/ingest-based-on-coar-notifications"]
             envFrom:
             - configMapRef:
                 name: {{ .Release.Name }}--public-env-vars

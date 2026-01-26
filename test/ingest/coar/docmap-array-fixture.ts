@@ -1,4 +1,4 @@
-import { arbitraryDate, arbitraryString } from '../../../helpers';
+import { arbitraryDate, arbitraryString } from '../../helpers';
 
 export const exampleDocmapResponseReviewAction = (
   outputDoi: string,
