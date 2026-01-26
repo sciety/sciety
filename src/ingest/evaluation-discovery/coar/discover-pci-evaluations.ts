@@ -1,11 +1,13 @@
+import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { NotificationDetails, retrieveCoarNotificationsByGroup } from './retrieve-coar-notifications-by-group';
-import { retrieveReviewActionsFromDocmap } from './retrieve-review-actions-from-docmap';
+import { retrieveReviewActionsFromDocmap, ReviewActionFromDocmap } from './retrieve-review-actions-from-docmap';
 import { transformAnnouncementActionUriToSignpostingDocmapUri } from './transform-announcement-action-uri-to-signposting-docmap-uri';
 import { Dependencies, DiscoverPublishedEvaluations } from '../../discover-published-evaluations';
-import { constructPublishedEvaluation } from '../../types/published-evaluation';
+import { constructPublishedEvaluation, PublishedEvaluation } from '../../types/published-evaluation';
+import { SkippedEvaluation } from '../../types/skipped-evaluation';
 
 const transformNotificationToReviewActions = (
   dependencies: Dependencies,
@@ -17,6 +19,17 @@ const transformNotificationToReviewActions = (
   TE.flatMap(retrieveReviewActionsFromDocmap(dependencies)),
 );
 
+const convertToPublishedEvaluation = (
+  reviewAction: ReviewActionFromDocmap,
+): E.Either<SkippedEvaluation, PublishedEvaluation> => pipe(
+  constructPublishedEvaluation({
+    publishedOn: new Date(reviewAction.actionOutputDate),
+    paperExpressionDoi: reviewAction.actionInputDoi,
+    evaluationLocator: `doi:${reviewAction.actionOutputDoi}`,
+  }),
+  E.right,
+);
+
 export const discoverPciEvaluations = (groupIdentification: string): DiscoverPublishedEvaluations => () => (
   dependencies,
 ) => pipe(
@@ -24,13 +37,9 @@ export const discoverPciEvaluations = (groupIdentification: string): DiscoverPub
   retrieveCoarNotificationsByGroup(dependencies),
   TE.flatMap(TE.traverseArray(transformNotificationToReviewActions(dependencies))),
   TE.map(RA.flatten),
-  TE.map(RA.map((reviewAction) => constructPublishedEvaluation({
-    publishedOn: new Date(reviewAction.actionOutputDate),
-    paperExpressionDoi: reviewAction.actionInputDoi,
-    evaluationLocator: `doi:${reviewAction.actionOutputDoi}`,
-  }))),
-  TE.map((publishedEvaluation) => ({
-    understood: publishedEvaluation,
-    skipped: [],
+  TE.map(RA.map(convertToPublishedEvaluation)),
+  TE.map((evaluations) => ({
+    understood: RA.rights(evaluations),
+    skipped: RA.lefts(evaluations),
   })),
 );
