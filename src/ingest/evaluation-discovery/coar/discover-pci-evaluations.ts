@@ -7,7 +7,8 @@ import * as tt from 'io-ts-types';
 import { NotificationDetails, retrieveCoarNotificationsByGroup } from './retrieve-coar-notifications-by-group';
 import { retrieveReviewActionsFromDocmap, ReviewActionFromDocmap } from './retrieve-review-actions-from-docmap';
 import { transformAnnouncementActionUriToSignpostingDocmapUri } from './transform-announcement-action-uri-to-signposting-docmap-uri';
-import { Dependencies, DiscoverPublishedEvaluations } from '../../discover-published-evaluations';
+import { Dependencies } from '../../discover-published-evaluations';
+import { DiscoveredPublishedEvaluations } from '../../types/discovered-published-evaluations';
 import { constructPublishedEvaluation, PublishedEvaluation } from '../../types/published-evaluation';
 import { SkippedEvaluation } from '../../types/skipped-evaluation';
 import { decodeAndReportFailures } from '../decode-and-report-failures';
@@ -46,9 +47,9 @@ const convertToPublishedEvaluation = (
   ),
 );
 
-export const discoverPciEvaluations = (groupIdentification: string): DiscoverPublishedEvaluations => () => (
-  dependencies,
-) => pipe(
+export const discoverPciEvaluations = (
+  dependencies: Dependencies,
+) => (groupIdentification: string): TE.TaskEither<string, DiscoveredPublishedEvaluations> => pipe(
   groupIdentification,
   retrieveCoarNotificationsByGroup(dependencies),
   TE.flatMap(TE.traverseArray(transformNotificationToReviewActions(dependencies))),

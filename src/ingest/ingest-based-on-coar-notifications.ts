@@ -15,8 +15,6 @@ type Group = {
   coarNotifyId: string,
 };
 
-const hardcodedIngestDaysToSatisfyLegacySignature = 1;
-
 const hardcodedEnvironment = {
   enableDebugLogs: false,
 };
@@ -61,7 +59,8 @@ void (async (): Promise<unknown> => {
       (
         group,
       ) => pipe(
-        discoverPciEvaluations(group.coarNotifyId)(hardcodedIngestDaysToSatisfyLegacySignature)(dependencies),
+        group.coarNotifyId,
+        discoverPciEvaluations(dependencies),
         T.chain(recordEvaluations({ groupId: group.scietyGroupId, name: group.name }, configuration.right)),
       ),
     ),
