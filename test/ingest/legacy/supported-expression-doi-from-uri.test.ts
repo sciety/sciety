@@ -1,5 +1,5 @@
 import * as E from 'fp-ts/Either';
-import { supportedExpressionDoiFromUri } from '../../src/ingest/supported-expression-doi-from-uri';
+import { supportedExpressionDoiFromUri } from '../../../src/ingest/legacy/supported-expression-doi-from-uri';
 
 describe('supported-expression-doi-from-uri', () => {
   describe('when the input is supported', () => {
