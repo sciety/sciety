@@ -3,9 +3,9 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import {
   deriveUriContainingBiorxivMedrxivDoiPrefix,
-} from '../../src/ingest/derive-uri-containing-biorxiv-medrxiv-doi-prefix';
-import { arbitraryUri } from '../helpers';
-import { shouldNotBeCalled } from '../should-not-be-called';
+} from '../../../src/ingest/legacy/derive-uri-containing-biorxiv-medrxiv-doi-prefix';
+import { arbitraryUri } from '../../helpers';
+import { shouldNotBeCalled } from '../../should-not-be-called';
 
 describe('derive-uri-containing-biorxiv-medrxiv-doi-prefix', () => {
   describe('when a URI containing a biorxiv or medrxiv DOI prefix is fetched', () => {

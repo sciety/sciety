@@ -3,8 +3,8 @@ import * as TE from 'fp-ts/TaskEither';
 import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
 import { Annotation } from './hypothesis/annotation';
-import { deriveUriContainingBiorxivMedrxivDoiPrefix } from '../../derive-uri-containing-biorxiv-medrxiv-doi-prefix';
 import { Dependencies } from '../../discover-published-evaluations';
+import { deriveUriContainingBiorxivMedrxivDoiPrefix } from '../derive-uri-containing-biorxiv-medrxiv-doi-prefix';
 
 const isUriFromBiorxivMedrxiv = (uri: string): boolean => {
   try {
