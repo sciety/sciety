@@ -1,7 +1,9 @@
 # Task 2a: Systems Architecture Diagram
 ## Co-design Sprint on Bonfire Features for Preprints
 
-### Comprehensive System Architecture
+### Initial design of the proposed System Architecture
+
+- Initial architecture design which will be confirmed and/or adjusted during development.
 
 ```mermaid
 graph TB
