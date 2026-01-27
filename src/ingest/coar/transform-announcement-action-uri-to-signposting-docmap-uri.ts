@@ -5,7 +5,7 @@ import { pipe } from 'fp-ts/function';
 import LinkHeader from 'http-link-header';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { DependenciesForFetchHead } from '../discover-published-evaluations';
+import { Dependencies } from './dependencies';
 import { decodeAndReportFailures } from '../legacy/evaluation-discovery/decode-and-report-failures';
 
 const headCodec = t.strict({
@@ -31,7 +31,7 @@ const extractSignpostingDocmapUri = (head: Head) => pipe(
 );
 
 export const transformAnnouncementActionUriToSignpostingDocmapUri = (
-  dependencies: DependenciesForFetchHead,
+  dependencies: Dependencies,
 ) => (
   announcementActionUri: string,
 ): TE.TaskEither<string, string> => pipe(

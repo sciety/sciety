@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
-import { Dependencies } from '../discover-published-evaluations';
+import { Dependencies } from './dependencies';
 import { decodeAndReportFailures } from '../legacy/evaluation-discovery/decode-and-report-failures';
 
 export type ReviewActionFromDocmap = {
