@@ -1,9 +1,12 @@
 import { pipe } from 'fp-ts/function';
-import { extractPrelights } from '../../../../src/ingest/legacy/evaluation-discovery/discover-prelights-evaluations/extract-prelights';
-import { constructPublishedEvaluation } from '../../../../src/ingest/types/published-evaluation';
+import { extractPrelights } from '../../../../../src/ingest/legacy/evaluation-discovery/discover-prelights-evaluations/extract-prelights';
+import { constructPublishedEvaluation } from '../../../../../src/ingest/types/published-evaluation';
 import {
-  arbitraryDate, arbitraryNumber, arbitraryString, arbitraryWord,
-} from '../../../helpers';
+  arbitraryNumber,
+  arbitraryDate,
+  arbitraryString,
+  arbitraryWord,
+} from '../../../../helpers';
 
 const arbitraryPublishedEvaluation = (
   postNumber: number,
@@ -28,7 +31,12 @@ describe('extract-prelights', () => {
       const paperExpressionDoi = `10.1101/${arbitraryWord()}`;
       const result = pipe(
         paperExpressionDoi,
-        (preprintDoi) => [arbitraryPublishedEvaluation(inputPartial.postNumber, { preprintDoi, ...inputPartial.data })],
+        (preprintDoi) => [
+          arbitraryPublishedEvaluation(inputPartial.postNumber, {
+            preprintDoi,
+            ...inputPartial.data,
+          }),
+        ],
         extractPrelights,
       );
 
@@ -41,9 +49,7 @@ describe('extract-prelights', () => {
         });
 
         expect(result).toStrictEqual({
-          understood: [
-            expectedEvaluation,
-          ],
+          understood: [expectedEvaluation],
           skipped: [],
         });
       });
@@ -53,7 +59,12 @@ describe('extract-prelights', () => {
       const paperExpressionDoi = `10.64898/${arbitraryWord()}`;
       const result = pipe(
         paperExpressionDoi,
-        (preprintDoi) => [arbitraryPublishedEvaluation(inputPartial.postNumber, { preprintDoi, ...inputPartial.data })],
+        (preprintDoi) => [
+          arbitraryPublishedEvaluation(inputPartial.postNumber, {
+            preprintDoi,
+            ...inputPartial.data,
+          }),
+        ],
         extractPrelights,
       );
 
@@ -66,9 +77,7 @@ describe('extract-prelights', () => {
         });
 
         expect(result).toStrictEqual({
-          understood: [
-            expectedEvaluation,
-          ],
+          understood: [expectedEvaluation],
           skipped: [],
         });
       });
@@ -80,13 +89,15 @@ describe('extract-prelights', () => {
     const pubDate = arbitraryDate();
     const author = arbitraryString();
     const result = pipe(
-      [{
-        guid,
-        category: '<a name = "highlight">highlight</a>',
-        pubDate,
-        preprintDoi: '',
-        author,
-      }],
+      [
+        {
+          guid,
+          category: '<a name = "highlight">highlight</a>',
+          pubDate,
+          preprintDoi: '',
+          author,
+        },
+      ],
       extractPrelights,
     );
 
@@ -102,13 +113,15 @@ describe('extract-prelights', () => {
   describe('given an item that is not a highlight', () => {
     const guid = arbitraryWord();
     const result = pipe(
-      [{
-        guid,
-        category: '<a name = "something">something</a>',
-        pubDate: arbitraryDate(),
-        preprintDoi: arbitraryString(),
-        author: arbitraryString(),
-      }],
+      [
+        {
+          guid,
+          category: '<a name = "something">something</a>',
+          pubDate: arbitraryDate(),
+          preprintDoi: arbitraryString(),
+          author: arbitraryString(),
+        },
+      ],
       extractPrelights,
     );
 
@@ -124,13 +137,15 @@ describe('extract-prelights', () => {
   describe('when the preprint is not on biorxiv or medrxiv', () => {
     const guid = arbitraryWord();
     const result = pipe(
-      [{
-        guid,
-        category: '<a name = "highlight">highlight</a>',
-        pubDate: arbitraryDate(),
-        preprintDoi: `10.1234/${arbitraryWord()}`,
-        author: arbitraryString(),
-      }],
+      [
+        {
+          guid,
+          category: '<a name = "highlight">highlight</a>',
+          pubDate: arbitraryDate(),
+          preprintDoi: `10.1234/${arbitraryWord()}`,
+          author: arbitraryString(),
+        },
+      ],
       extractPrelights,
     );
 

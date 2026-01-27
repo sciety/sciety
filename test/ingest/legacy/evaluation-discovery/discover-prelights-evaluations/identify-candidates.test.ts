@@ -1,9 +1,9 @@
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { identifyCandidates } from '../../../../src/ingest/legacy/evaluation-discovery/discover-prelights-evaluations/identify-candidates';
-import { abortTest } from '../../../abort-test';
-import { arbitraryDate, arbitraryString, arbitraryUri } from '../../../helpers';
-import { arbitraryExpressionDoi } from '../../../types/expression-doi.helper';
+import { identifyCandidates } from '../../../../../src/ingest/legacy/evaluation-discovery/discover-prelights-evaluations/identify-candidates';
+import { abortTest } from '../../../../abort-test';
+import { arbitraryString, arbitraryDate, arbitraryUri } from '../../../../helpers';
+import { arbitraryExpressionDoi } from '../../../../types/expression-doi.helper';
 
 describe('identify-candidates', () => {
   describe('when the feed contains an item ...', () => {

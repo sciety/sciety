@@ -1,4 +1,4 @@
-import { ingestionWindowStartDate } from '../../../src/ingest/legacy/evaluation-discovery/ingestion-window-start-date';
+import { ingestionWindowStartDate } from '../../../../src/ingest/legacy/evaluation-discovery/ingestion-window-start-date';
 
 describe('ingestion-window-start-date', () => {
   beforeEach(() => {

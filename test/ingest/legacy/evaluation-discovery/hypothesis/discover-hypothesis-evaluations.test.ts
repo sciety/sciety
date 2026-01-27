@@ -1,9 +1,9 @@
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { discoverHypothesisEvaluations } from '../../../../src/ingest/legacy/evaluation-discovery/hypothesis/discover-hypothesis-evaluations';
-import { arbitraryDate, arbitraryWord } from '../../../helpers';
-import { arbitraryAnnotation } from '../../helpers';
+import { discoverHypothesisEvaluations } from '../../../../../src/ingest/legacy/evaluation-discovery/hypothesis/discover-hypothesis-evaluations';
+import { arbitraryWord, arbitraryDate } from '../../../../helpers';
+import { arbitraryAnnotation } from '../../../helpers';
 
 const populatedPage = TE.right({
   rows: [arbitraryAnnotation(), arbitraryAnnotation()],
