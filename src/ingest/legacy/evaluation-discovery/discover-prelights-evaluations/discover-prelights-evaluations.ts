@@ -2,7 +2,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { extractPrelights } from './extract-prelights';
 import { identifyCandidates } from './identify-candidates';
-import { DiscoverPublishedEvaluations } from '../../../discover-published-evaluations';
+import { DiscoverPublishedEvaluations } from '../../discover-published-evaluations';
 
 export const discoverPrelightsEvaluations = (
   prelightsFeedKey: string,

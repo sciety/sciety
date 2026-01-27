@@ -5,8 +5,8 @@ import * as Hyp from './hypothesis';
 import { convertHypothesisAnnotationToEvaluation } from './hypothesis/convert-hypothesis-annotation-to-evaluation';
 import { ingestionWindowStartDate } from './ingestion-window-start-date';
 import { refineIfNecessaryAnnotationUriForBiorxivMedrxiv } from './refine-if-necessary-annotation-uri-for-biorxiv-medrxiv';
-import { DiscoverPublishedEvaluations } from '../../discover-published-evaluations';
 import { tagToEvaluationTypeMap } from '../../tag-to-evaluation-type-map';
+import { DiscoverPublishedEvaluations } from '../discover-published-evaluations';
 
 export const discoverEvaluationsFromHypothesisUser = (
   publisherUserId: string,
