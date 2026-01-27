@@ -10,6 +10,7 @@ const runExternalQuery = (head: Record<string, string>) => (uri: string) => pipe
   transformAnnouncementActionUriToSignpostingDocmapUri(
     {
       fetchHead: () => TE.right(head),
+      fetchData: shouldNotBeCalled,
     },
   ),
 );
@@ -30,6 +31,7 @@ describe('transform-announcement-action-uri-to-signposting-docmap-uri', () => {
         announcementActionUri,
         transformAnnouncementActionUriToSignpostingDocmapUri({
           fetchHead: () => TE.left('fetch head fails for any reason'),
+          fetchData: shouldNotBeCalled,
         }),
       )();
     });
