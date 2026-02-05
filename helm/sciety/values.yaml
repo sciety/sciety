@@ -8,4 +8,3 @@ coarNotificationDeliveryEnabled: "false"
 fathomSiteId: 
 googleTagManagerId:
 healthchecksPingKey:
-certManagerClusterIssuer: "letsencrypt"
