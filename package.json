@@ -87,7 +87,7 @@
     "sass": "^1.93.3",
     "sass-unused": "^0.5.0",
     "stylelint": "^16.25.0",
-    "stylelint-config-sass-guidelines": "11.1",
+    "stylelint-config-sass-guidelines": "13.0",
     "stylelint-order": "^6.0.4",
     "taiko": "^1.4.0",
     "ts-unused-exports": "^11.0.1",
