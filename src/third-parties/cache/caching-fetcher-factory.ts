@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import Axios from 'axios';
 import {
   setupCache,
@@ -58,6 +57,6 @@ export const createCachingFetcher = (
     headers = {},
   ) => (url: string) => pipe(
     TE.tryCatch(async () => get<unknown>(url, headers), identity),
-    TE.mapLeft(logAndTransformToDataError(logger, new URL(url), notFoundLogLevel)),
+    TE.mapLeft(logAndTransformToDataError(logger, url, notFoundLogLevel)),
   );
 };
