@@ -1,28 +1,12 @@
-import * as E from 'fp-ts/Either';
-import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
-import {
-  flow, pipe,
-} from 'fp-ts/function';
+import { pipe } from 'fp-ts/function';
 import { EvaluationDigestFetcher } from './evaluation-digest-fetcher';
+import { extractPciGroupAbbreviation } from './extract-pci-group-abbreviation';
 import { Logger } from '../../logger';
 import * as DE from '../../types/data-error';
 import { toHtmlFragment } from '../../types/html-fragment';
 import { sanitise } from '../../types/sanitised-html-fragment';
 import { QueryExternalService } from '../query-external-service';
-
-const groupAbbreviationPatter = /10.24072\/pci\.([a-z]+)\./;
-
-const extractPciGroupAbbreviation = (key: string) => pipe(
-  groupAbbreviationPatter.exec(key),
-  E.fromNullable('regex failure'),
-  E.chain(
-    flow(
-      RA.lookup(1),
-      E.fromOption(() => 'no first capture group in regex match'),
-    ),
-  ),
-);
 
 const constructPciWebContentUrl = (
   key: string,
