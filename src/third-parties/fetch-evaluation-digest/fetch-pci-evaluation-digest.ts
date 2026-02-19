@@ -3,8 +3,7 @@ import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import {
-  flow,
-  identity, pipe,
+  flow, pipe,
 } from 'fp-ts/function';
 import { EvaluationDigestFetcher } from './evaluation-digest-fetcher';
 import { Logger } from '../../logger';
@@ -26,7 +25,11 @@ const extractPciGroupAbbreviation = (key: string) => pipe(
   ),
 );
 
-const constructPciWebContentUrl = (key: string) => identity;
+const constructPciWebContentUrl = (
+  key: string,
+) => (
+  abbreviation: string,
+) => `https://${abbreviation}.peercommunityin.org/content/doi/${key}`;
 
 export const fetchPciEvaluationDigest = (
   queryExternalService: QueryExternalService,
