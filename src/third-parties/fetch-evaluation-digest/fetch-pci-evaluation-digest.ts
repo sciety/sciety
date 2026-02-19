@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as E from 'fp-ts/Either';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
@@ -38,7 +37,10 @@ export const fetchPciEvaluationDigest = (
   key,
   extractPciGroupAbbreviation,
   TE.fromEither,
-  TE.mapLeft(() => DE.notFound),
+  TE.mapLeft((error) => {
+    logger('error', 'failed to extractPciGroupAbbreviation from provided evaluation DOI', { doi: key, error });
+    return DE.notFound;
+  }),
   TE.map(constructPciWebContentUrl(key)),
   TE.chain(queryExternalService('error')),
   TE.map((html) => sanitise(toHtmlFragment(html as string))),
