@@ -2,10 +2,10 @@
 import { pipe } from 'fp-ts/function';
 import { fetchDoiEvaluationDigestByPublisher } from './fetch-doi-evaluation-digest-by-publisher';
 import { fetchEvaluationDigestFromAppropriateService } from './fetch-evaluation-digest-from-appropriate-service';
-import { fetchPciEvaluationDigest } from './fetch-pci-evaluation-digest';
 import { fetchHypothesisAnnotation } from './hypothesis';
 import { fetchMicrobiologySocietyEvaluationDigest } from './microbiology-society';
 import { fetchNcrcEvaluationDigest } from './ncrc';
+import { fetchPciEvaluationDigest } from './pci/fetch-pci-evaluation-digest';
 import { fetchPrelightsHighlight } from './prelights';
 import { fetchRapidReviewsEvaluationDigest } from './rapid-reviews';
 import { fetchZenodoRecord } from './zenodo';

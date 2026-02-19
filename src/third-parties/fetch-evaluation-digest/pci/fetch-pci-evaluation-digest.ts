@@ -1,12 +1,12 @@
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { EvaluationDigestFetcher } from './evaluation-digest-fetcher';
 import { extractPciGroupAbbreviation } from './extract-pci-group-abbreviation';
-import { Logger } from '../../logger';
-import * as DE from '../../types/data-error';
-import { toHtmlFragment } from '../../types/html-fragment';
-import { sanitise } from '../../types/sanitised-html-fragment';
-import { QueryExternalService } from '../query-external-service';
+import { Logger } from '../../../logger';
+import * as DE from '../../../types/data-error';
+import { toHtmlFragment } from '../../../types/html-fragment';
+import { sanitise } from '../../../types/sanitised-html-fragment';
+import { QueryExternalService } from '../../query-external-service';
+import { EvaluationDigestFetcher } from '../evaluation-digest-fetcher';
 
 const constructPciWebContentUrl = (
   key: string,
