@@ -11,7 +11,7 @@
     "axios": "^1.7.7",
     "axios-cache-interceptor": "^1.8.3",
     "axios-retry": "4.5.0",
-    "cheerio": "^1.0.0",
+    "cheerio": "^1.2.0",
     "cls-rtracer": "^2.6.3",
     "escape-goat": "^3.0.0",
     "fast-xml-parser": "^5.3.4",
