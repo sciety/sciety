@@ -20,8 +20,12 @@ describe('extract-pci-group-abbreviation', () => {
   describe('given unsupported input', () => {
     describe.each([
       ['doi:10.24072/pci.zool.100006.d2'],
+      ['10.1101/pci.zool.100006.d2'],
+      ['10.24072/pci.zool25.100006.d2'],
+      ['10.24072/pca.zool.100006.d2'],
+      ['10.24072/pca.1234.100006.d2'],
     ])('%s', (input) => {
-      it('extracts the abbreviation', () => {
+      it('fails', () => {
         const result = extractPciGroupAbbreviation(input);
 
         expect(result._tag).toBe('Left');
