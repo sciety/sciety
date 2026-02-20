@@ -96,8 +96,8 @@ install: node_modules git-lfs
 
 node_modules: export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = true
 node_modules: export PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = true
-node_modules: package.json pnpm-lock.yaml
-	pnpm install --frozen-lockfile
+node_modules: package.json package-lock.json
+	npm clean-install
 	touch node_modules
 
 git-lfs:
