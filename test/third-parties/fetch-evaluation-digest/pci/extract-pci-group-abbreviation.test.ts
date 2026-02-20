@@ -7,12 +7,24 @@ describe('extract-pci-group-abbreviation', () => {
       ['10.24072/pci.neuro.100228.rev21', 'neuro'],
       ['10.24072/pci.evolbiol.100128', 'evolbiol'],
       ['10.24072/pci.archaeo.100459', 'archaeo'],
-      ['doi:10.24072/pci.zool.100006.d2', 'zool'],
+      ['10.24072/pci.zool.100006.d2', 'zool'],
     ])('%s', (input, expectedAbbreviation) => {
       it('extracts the abbreviation', () => {
         const result = extractPciGroupAbbreviation(input);
 
         expect(result).toStrictEqual(E.right(expectedAbbreviation));
+      });
+    });
+  });
+
+  describe('given unsupported input', () => {
+    describe.each([
+      ['doi:10.24072/pci.zool.100006.d2'],
+    ])('%s', (input) => {
+      it('extracts the abbreviation', () => {
+        const result = extractPciGroupAbbreviation(input);
+
+        expect(result._tag).toBe('Left');
       });
     });
   });

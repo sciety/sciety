@@ -4,7 +4,7 @@ import {
   flow, pipe,
 } from 'fp-ts/function';
 
-const groupAbbreviationPatter = /10.24072\/pci\.([a-z]+)\./;
+const groupAbbreviationPatter = /^10.24072\/pci\.([a-z]+)\./;
 
 export const extractPciGroupAbbreviation = (key: string): E.Either<string, string> => pipe(
   groupAbbreviationPatter.exec(key),
