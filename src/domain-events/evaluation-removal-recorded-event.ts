@@ -8,5 +8,8 @@ export const evaluationRemovalRecordedEventCodec = t.strict({
   type: t.literal('EvaluationRemovalRecorded'),
   date: tt.DateFromISOString,
   evaluationLocator: evaluationLocatorCodec,
-  reason: t.literal('published-on-incorrect-article'),
+  reason: t.union([
+    t.literal('published-on-incorrect-article'),
+    t.literal('published-with-incorrect-identifier'),
+  ]),
 });
