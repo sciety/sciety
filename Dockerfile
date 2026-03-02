@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY .npmrc \
   package.json \
-  package-lock.json \
+  pnpm-lock.yaml \
   ./
 
 
@@ -18,7 +18,7 @@ ENV TAIKO_SKIP_CHROMIUM_DOWNLOAD=true
 ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=true
 RUN npm install --global pnpm@10
 
-RUN npm ci
+RUN pnpm install --frozen-lockfile
 
 
 
@@ -72,7 +72,7 @@ RUN npm run build:css
 FROM node AS npm-prod
 
 RUN npm install --global pnpm@10
-RUN npm ci --production
+RUN pnpm install --frozen-lockfile --prod
 
 
 
