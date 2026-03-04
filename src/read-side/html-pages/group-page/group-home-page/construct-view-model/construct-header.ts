@@ -1,6 +1,8 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
+import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
+import * as S from 'fp-ts/string';
 import { Dependencies } from './dependencies';
 import { Params } from './params';
 import { constructGroupPagePath } from '../../../../../standards/paths';
@@ -17,7 +19,14 @@ const constructGroupListsPageHref = (group: Group, dependencies: Dependencies) =
     : O.some(constructGroupPagePath.lists.href(group))),
 );
 
-const constructGroupWebsiteHref = () => O.none;
+const constructGroupWebsiteHref = (group: Group) => pipe(
+  group.slug,
+  S.includes('pci'),
+  B.match(
+    () => O.none,
+    () => O.some(group.homepage),
+  ),
+);
 
 const checkFollowingStatus = (user: Params['user'], dependencies: Dependencies, groupId: GroupId) => pipe(
   user,
@@ -41,7 +50,7 @@ export const constructHeader = (dependencies: Dependencies, user: Params['user']
   followerCount: RA.size(dependencies.getFollowers(group.id)),
   groupAboutPageHref: constructGroupPagePath.about.href(group),
   groupListsPageHref: constructGroupListsPageHref(group, dependencies),
-  groupWebsiteHref: constructGroupWebsiteHref(),
+  groupWebsiteHref: constructGroupWebsiteHref(group),
   groupFollowersPageHref: constructGroupPagePath.followers.href(group),
   managementPageHref: showManagementLinkToAdmins(dependencies, user, group),
 });
