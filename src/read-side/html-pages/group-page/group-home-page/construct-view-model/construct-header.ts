@@ -1,8 +1,6 @@
 import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
-import * as B from 'fp-ts/boolean';
 import { pipe } from 'fp-ts/function';
-import * as S from 'fp-ts/string';
 import { Dependencies } from './dependencies';
 import { Params } from './params';
 import { constructGroupPagePath } from '../../../../../standards/paths';
@@ -21,11 +19,9 @@ const constructGroupListsPageHref = (group: Group, dependencies: Dependencies) =
 
 const constructGroupWebsiteHref = (group: Group) => pipe(
   group.slug,
-  S.includes('pci'),
-  B.match(
-    () => O.none,
-    () => O.some(group.homepage),
-  ),
+  (slug) => slug.match(/^pci-.+/),
+  O.fromNullable,
+  O.map(() => group.homepage),
 );
 
 const checkFollowingStatus = (user: Params['user'], dependencies: Dependencies, groupId: GroupId) => pipe(
