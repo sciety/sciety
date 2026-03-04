@@ -14,6 +14,14 @@ const renderGroupListsLink = (groupListsPageHref: PageHeaderViewModel['groupList
     (href) => `<a href="${href}" class="group-page-actions__secondary_button">Lists</a>`,
   ),
 );
+
+const renderGroupWebsiteLink = (groupWebsiteHref: PageHeaderViewModel['groupWebsiteHref']) => pipe(
+  groupWebsiteHref,
+  O.match(
+    () => '',
+    (href) => `<a href="${href}" class="group-page-actions__secondary_button">Website</a>`,
+  ),
+);
 const renderGroupFollowersLink = (groupFollowersPageHref: PageHeaderViewModel['groupFollowersPageHref'], followerCount: PageHeaderViewModel['followerCount']) => `
   <a href="${groupFollowersPageHref}">
     <span class="visually-hidden">This group has ${followerCount} </span>Followers<span aria-hidden="true"> (${followerCount})</span>
@@ -31,6 +39,7 @@ const renderManagementLink = (href: PageHeaderViewModel['managementPageHref']) =
 export const renderGroupPageActions = (viewmodel: PageHeaderViewModel): HtmlFragment => toHtmlFragment(`
   <div class="group-page-actions">
     ${renderFollowToggle(viewmodel.group.id, viewmodel.group.name)(viewmodel.isFollowing)}
+    ${renderGroupWebsiteLink(viewmodel.groupWebsiteHref)}
     ${renderAboutLink(viewmodel.groupAboutPageHref)}
     ${renderGroupListsLink(viewmodel.groupListsPageHref)}
     ${renderGroupFollowersLink(viewmodel.groupFollowersPageHref, viewmodel.followerCount)}
