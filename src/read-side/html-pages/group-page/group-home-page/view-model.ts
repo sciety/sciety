@@ -19,6 +19,7 @@ export type PageHeaderViewModel = CommonComponentsPageHeaderViewModel & {
   followerCount: number,
   groupAboutPageHref: string,
   groupListsPageHref: O.Option<string>,
+  groupWebsiteHref: O.Option<string>,
   groupFollowersPageHref: string,
   managementPageHref: O.Option<string>,
 };
