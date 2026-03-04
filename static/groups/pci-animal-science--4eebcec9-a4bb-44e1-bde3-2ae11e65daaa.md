@@ -26,4 +26,4 @@ Sciety uses the PReF (preprint review features) descriptors to describe key elem
 
 ## Content license
 
-Authors of comments, reviews and recommendations retain copyright© under [CC BY-ND](https://creativecommons.org/licenses/by-nd/4.0/).
+Authors of comments, reviews and recommendations retain copyright© under [CC BY](https://creativecommons.org/licenses/by/4.0/deed.en).
