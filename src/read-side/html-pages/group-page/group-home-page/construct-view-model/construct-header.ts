@@ -17,6 +17,8 @@ const constructGroupListsPageHref = (group: Group, dependencies: Dependencies) =
     : O.some(constructGroupPagePath.lists.href(group))),
 );
 
+const constructGroupWebsiteHref = () => O.none;
+
 const checkFollowingStatus = (user: Params['user'], dependencies: Dependencies, groupId: GroupId) => pipe(
   user,
   O.match(
@@ -39,7 +41,7 @@ export const constructHeader = (dependencies: Dependencies, user: Params['user']
   followerCount: RA.size(dependencies.getFollowers(group.id)),
   groupAboutPageHref: constructGroupPagePath.about.href(group),
   groupListsPageHref: constructGroupListsPageHref(group, dependencies),
-  groupWebsiteHref: O.none,
+  groupWebsiteHref: constructGroupWebsiteHref(),
   groupFollowersPageHref: constructGroupPagePath.followers.href(group),
   managementPageHref: showManagementLinkToAdmins(dependencies, user, group),
 });
