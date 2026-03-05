@@ -39,8 +39,8 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0
       fast-xml-parser:
-        specifier: ^5.3.4
-        version: 5.3.4
+        specifier: ^5.3.8
+        version: 5.3.8
       fp-ts:
         specifier: ^2.16.11
         version: 2.16.11
@@ -3250,8 +3250,8 @@ packages:
   fast-uri@3.0.1:
     resolution: {integrity: sha512-MWipKbbYiYI0UC7cl8m/i/IWTqfC8YXsqjzybjddLsFjStroQzsHXkc73JutMvBiXmOvapk+axIl79ig5t55Bw==}
 
-  fast-xml-parser@5.3.4:
-    resolution: {integrity: sha512-EFd6afGmXlCx8H8WTZHhAoDaWaGyuIBoZJ2mknrNxug+aZKjkp0a0dlars9Izl+jF+7Gu1/5f/2h68cQpe0IiA==}
+  fast-xml-parser@5.3.8:
+    resolution: {integrity: sha512-53jIF4N6u/pxvaL1eb/hEZts/cFLWZ92eCfLrNyCI0k38lettCG/Bs40W9pPwoPXyHQlKu2OUbQtiEIZK/J6Vw==}
     hasBin: true
 
   fastest-levenshtein@1.0.16:
@@ -6155,8 +6155,8 @@ packages:
   striptags@3.2.0:
     resolution: {integrity: sha512-g45ZOGzHDMe2bdYMdIvdAfCQkCTDMGBazSw1ypMowwGIee7ZQ5dU0rBJ8Jqgl+jAKIv4dbeE1jscZq9wid1Tkw==}
 
-  strnum@2.1.1:
-    resolution: {integrity: sha512-7ZvoFTiCnGxBtDqJ//Cu6fWtZtc7Y3x+QOirG15wztbdngGSkht27o2pyGWrVy0b4WAy3jbKmnoK6g5VlVNUUw==}
+  strnum@2.2.0:
+    resolution: {integrity: sha512-Y7Bj8XyJxnPAORMZj/xltsfo55uOiyHcU2tnAVzHUnSJR/KsEX+9RoDeXEnsXtl/CX4fAcrt64gZ13aGaWPeBg==}
 
   strtok3@9.0.1:
     resolution: {integrity: sha512-ERPW+XkvX9W2A+ov07iy+ZFJpVdik04GhDA4eVogiG9hpC97Kem2iucyzhFxbFRvQ5o2UckFtKZdp1hkGvnrEw==}
@@ -10166,9 +10166,9 @@ snapshots:
 
   fast-uri@3.0.1: {}
 
-  fast-xml-parser@5.3.4:
+  fast-xml-parser@5.3.8:
     dependencies:
-      strnum: 2.1.1
+      strnum: 2.2.0
 
   fastest-levenshtein@1.0.16: {}
 
@@ -13848,7 +13848,7 @@ snapshots:
 
   striptags@3.2.0: {}
 
-  strnum@2.1.1: {}
+  strnum@2.2.0: {}
 
   strtok3@9.0.1:
     dependencies:
