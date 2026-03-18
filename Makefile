@@ -124,13 +124,12 @@ ingest-evaluations: build
 
 manual-staging-ingestion-job:
 	kubectl create job --from=cronjob/sciety--staging--ingestion sciety--staging--ingestion--manual -n sciety
-
 process-coar-notifications: export TARGET = dev
 process-coar-notifications: build
 	$(DOCKER_COMPOSE) run --name ingest --rm \
 	-e INGESTION_TARGET_APP=http://app \
 	app \
-	npx tsx src/ingest/ingest-based-on-coar-notifications
+	npx tsx src/ingest/coar/ingest-based-on-coar-notifications
 
 dev-sql: export TARGET = dev
 dev-sql:
