@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@swc/cli": "^0.8.0",
-    "@swc/core": "^1.14.0",
+    "@swc/core": "^1.15.18",
     "@types/http-link-header": "^1.0.7",
     "@types/jest": "^30.0.0",
     "@types/koa": "^2.15.0",
