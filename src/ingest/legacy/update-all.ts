@@ -132,7 +132,7 @@ const sendRecordEvaluationCommands = (
 );
 
 export const recordEvaluations = (
-  group: Group, configuration: RecordingConfiguration,
+  group: Group, configuration: RecordingConfiguration, typeOfIngestion: 'legacy-ingestion' | 'coar-based-ingestion',
 ) => (
   input: E.Either<string, DiscoveredPublishedEvaluations>,
 ): TE.TaskEither<void, void> => pipe(
@@ -148,8 +148,8 @@ export const recordEvaluations = (
   ),
   TE.chainW(sendRecordEvaluationCommands(group, configuration)),
   TE.bimap(
-    report('warn', 'Ingestion failed'),
-    report('info', 'Ingestion successful'),
+    report('warn', `${typeOfIngestion} failed`),
+    report('info', `${typeOfIngestion} successful`),
   ),
 );
 
@@ -163,7 +163,7 @@ const discoverAndRecordEvaluations = (
     fetchHead: fetchHead(environment.ingestDebug),
   },
   process.discoverPublishedEvaluations(environment.ingestDays),
-  T.chain(recordEvaluations(process, environment)),
+  T.chain(recordEvaluations(process, environment, 'legacy-ingestion')),
 );
 
 export const updateAll = (

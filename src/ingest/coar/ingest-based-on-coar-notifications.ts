@@ -61,7 +61,7 @@ void (async (): Promise<unknown> => {
       ) => pipe(
         group.coarNotifyId,
         discoverPciEvaluations(dependencies),
-        T.chain(recordEvaluations({ groupId: group.scietyGroupId, name: group.name }, configuration.right)),
+        T.chain(recordEvaluations({ groupId: group.scietyGroupId, name: group.name }, configuration.right, 'coar-based-ingestion')),
       ),
     ),
     TE.match(
