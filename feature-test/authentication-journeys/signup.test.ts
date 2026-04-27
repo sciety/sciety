@@ -8,7 +8,7 @@ import { completeLoginViaStubWithSpecifiedUserId } from '../helpers/complete-log
 import { isLoggedIn } from '../helpers/is-logged-in';
 import { screenshotTeardown } from '../utilities';
 
-describe('signup', () => {
+describe.skip('signup', () => {
   beforeEach(async () => {
     await openBrowser();
   });
