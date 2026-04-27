@@ -35,12 +35,6 @@ const logOutMenuItem = () => `
   </li>
 `;
 
-const signUpMenuItem = () => `
-  <li class="utility-bar__list_item utility-bar__list_item--navigation">
-    <a href="/sign-up" class="utility-bar__list_link_secondary_button">Sign Up</a>
-  </li>
-`;
-
 const myFeedMenuItem = () => `
   <li class="utility-bar__list_item utility-bar__list_item--navigation">
     <a href="/my-feed" class="utility-bar__list_nav_link">My Feed</a>
@@ -81,7 +75,6 @@ const loggedOutMenuItems = () => `
   ${newsletterMenuItem()}
   ${aboutScietyMenuItem()}
   ${logInMenuItem()}
-  ${signUpMenuItem()}
 `;
 
 const loggedInMenuItems = (user: UserDetails) => `
