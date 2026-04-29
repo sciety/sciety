@@ -48,24 +48,15 @@ export const createApplicationServer = (
   }
 
   app.keys = [process.env.APP_SECRET ?? 'this-is-not-secret'];
-  if (process.env.EXPERIMENT_ENABLED === 'true') {
-    app.use(koaSession(
-      {
-        key: 'sciety:sess',
-        maxAge: 365 * 24 * 60 * 60 * 1000,
-        secure: isSecure,
-      },
-      app,
-    ));
-  } else {
-    app.use(koaSession(
-      {
-        maxAge: 365 * 24 * 60 * 60 * 1000,
-        secure: isSecure,
-      },
-      app,
-    ));
-  }
+
+  app.use(koaSession(
+    {
+      key: 'sciety:sess',
+      maxAge: 365 * 24 * 60 * 60 * 1000,
+      secure: isSecure,
+    },
+    app,
+  ));
 
   const shouldUseStubAdapters = process.env.USE_STUB_LOGIN === 'true';
 
