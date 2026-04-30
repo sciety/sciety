@@ -5,6 +5,7 @@ import { createConfigurePostMiddleware } from './create-configure-post-middlewar
 import { DependenciesForViews } from '../../read-side/dependencies-for-views';
 import { evaluatedPapers } from '../../read-side/non-html-views/api/evaluated-papers';
 import { groups } from '../../read-side/non-html-views/api/groups';
+import { listsOverview } from '../../read-side/non-html-views/api/lists';
 import { applicationStatus } from '../../read-side/non-html-views/api/status';
 import { ownedBy } from '../../read-side/non-html-views/owned-by';
 import { DependenciesForCommands } from '../../write-side';
@@ -42,6 +43,10 @@ export const configureRoutes = (
     {
       endpoint: 'lists/owned-by/:ownerId',
       handler: ownedBy,
+    },
+    {
+      endpoint: 'lists/overview',
+      handler: listsOverview,
     },
     {
       endpoint: 'status',
