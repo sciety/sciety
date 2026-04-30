@@ -13,4 +13,8 @@ export const constructViewModel = (dependencies: DependenciesForViews): ApiData 
     listOwner: list.ownerId,
     lastUpdated: list.updatedAt,
   })),
+  (listsOverview) => ({
+    listsCount: dependencies.listsStatusUserOnly(),
+    lists: listsOverview,
+  }),
 );

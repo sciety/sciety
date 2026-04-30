@@ -2,6 +2,7 @@ import { getAllUserLists } from './get-all-user-lists';
 import { getNonEmptyUserLists } from './get-non-empty-user-lists';
 import { handleEvent, initialState } from './handle-event';
 import { listsStatus } from './lists-status';
+import { listsStatusUserOnly } from './lists-status-user-only';
 import { lookupHardcodedListImage } from './lookup-hardcoded-list-image';
 import { lookupList } from './lookup-list';
 import { selectAllListsContainingExpression } from './select-all-lists-containing-expression';
@@ -14,6 +15,7 @@ export const lists = {
     getAllUserLists,
     getNonEmptyUserLists,
     listsStatus,
+    listsStatusUserOnly,
     lookupList,
     lookupHardcodedListImage,
     selectAllListsContainingExpression,
