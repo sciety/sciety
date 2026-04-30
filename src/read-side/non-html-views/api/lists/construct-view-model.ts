@@ -1,9 +1,14 @@
+import * as RA from 'fp-ts/ReadonlyArray';
+import { pipe } from 'fp-ts/function';
 import { DependenciesForViews } from '../../../dependencies-for-views';
 import { ApiData } from '../render-as-json';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const constructViewModel = (dependencies: DependenciesForViews): ApiData => ({
-
-  tbd: 0,
-
-});
+export const constructViewModel = (dependencies: DependenciesForViews): ApiData => pipe(
+  dependencies.getAllUserLists(),
+  RA.map((list) => ({
+    listId: list.id,
+    listName: list.name,
+    listOwner: list.ownerId,
+    lastUpdated: list.updatedAt,
+  })),
+);
