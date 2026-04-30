@@ -1,3 +1,4 @@
+import { getAllUserLists } from './get-all-user-lists';
 import { getNonEmptyUserLists } from './get-non-empty-user-lists';
 import { handleEvent, initialState } from './handle-event';
 import { listsStatus } from './lists-status';
@@ -10,6 +11,7 @@ import { selectListContainingExpression } from './select-list-containing-express
 
 export const lists = {
   queries: {
+    getAllUserLists,
     getNonEmptyUserLists,
     listsStatus,
     lookupList,
