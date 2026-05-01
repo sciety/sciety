@@ -1,6 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
-import { byMostRecentlyUpdated } from '../../../../read-models/lists/get-all-user-lists';
+import { byMostRecentlyUpdated } from '../../../../read-models/lists';
 import { DependenciesForViews } from '../../../dependencies-for-views';
 import { ApiData } from '../render-as-json';
 

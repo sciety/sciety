@@ -28,5 +28,5 @@ export const lists = {
 };
 
 export {
-  byUpdatedAt, eqList, List, toExpressionDoisByMostRecentlyAdded,
+  byUpdatedAt, byMostRecentlyUpdated, eqList, List, toExpressionDoisByMostRecentlyAdded,
 } from './list';
