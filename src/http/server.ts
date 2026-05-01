@@ -51,7 +51,7 @@ export const createApplicationServer = (
 
   app.use(koaSession(
     {
-      key: 'sciety:session:1',
+      key: 'sciety:session:2',
       maxAge: 365 * 24 * 60 * 60 * 1000,
       secure: isSecure,
     },
