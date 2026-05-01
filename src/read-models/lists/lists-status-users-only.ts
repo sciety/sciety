@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import { ReadModel } from './handle-event';
 import { isGroupId } from '../../types/list-owner-id';
 
-export const listsStatusUserOnly = (readModel: ReadModel) => (): Json => pipe(
+export const listsStatusUsersOnly = (readModel: ReadModel) => (): Json => pipe(
   Object.values(readModel.byListId),
   RA.partition((list) => !isGroupId(list.ownerId)),
   ({ right }) => ({

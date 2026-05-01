@@ -14,7 +14,7 @@ export const constructViewModel = (dependencies: DependenciesForViews): ApiData 
     lastUpdated: list.updatedAt,
   })),
   (listsOverview) => ({
-    listsCount: dependencies.listsStatusUserOnly(),
+    listsCount: dependencies.listsStatusUsersOnly(),
     lists: listsOverview,
   }),
 );
