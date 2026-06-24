@@ -68,6 +68,8 @@ jobs:
       - name: Feature test
         run: |
           make feature-test
+        env:
+          TAIKO_BROWSER_PATH: /usr/bin/google-chrome-stable
 
       - name: Push Image to GHCR
         if: github.ref == 'refs/heads/main'
