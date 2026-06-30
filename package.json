@@ -15,7 +15,7 @@
     "cheerio": "^1.2.0",
     "cls-rtracer": "^2.6.3",
     "escape-goat": "^3.0.0",
-    "fast-xml-parser": "^5.4.2",
+    "fast-xml-parser": "^5.7.0",
     "fp-ts": "^2.16.11",
     "googleapis-common": "^8.0.1",
     "http-link-header": "^1.1.3",
