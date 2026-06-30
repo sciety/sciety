@@ -32,7 +32,7 @@ describe('multiple-logins', () => {
 
     describe('when I then complete a log in from the About page', () => {
       beforeEach(async () => {
-        await goto(aboutPage);
+        await goto(aboutPage, { waitForEvents: ['loadEventFired'] });
         await click('Log In');
         await completeLoginViaStubWithSpecifiedUserId(createUserAccountCommand.userId);
       });
