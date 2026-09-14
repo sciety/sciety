@@ -11,14 +11,17 @@ import { toHtmlFragment } from '../../src/types/html-fragment';
 import * as PH from '../../src/types/publishing-history';
 import { sanitise } from '../../src/types/sanitised-html-fragment';
 import {
-  arbitraryDate, arbitrarySanitisedHtmlFragment, arbitraryString, arbitraryUrl, arbitraryWord,
+  arbitraryDate,
+  arbitrarySanitisedHtmlFragment,
+  arbitraryString,
+  arbitraryUrl,
+  arbitraryWord,
 } from '../helpers';
 import { arbitraryArticleServer } from '../types/article-server.helper';
 import { arbitraryExpressionDoi } from '../types/expression-doi.helper';
 
 export const createHappyPathExternalQueries = (): ExternalQueries => ({
   fetchByCategory: () => TE.right({ expressionDois: [arbitraryExpressionDoi()], totalItems: 1 }),
-  fetchBonfireDiscussionId: () => TE.right('1234'),
   createBonfireDiscussionAndRetrieveDiscussionId: () => TE.right('5678'),
   fetchExpressionFrontMatter: (paperExpressionLocator) => TE.right({
     doi: new ArticleId(paperExpressionLocator),

@@ -13,23 +13,29 @@ import { UserId } from '../types/user-id';
 
 type PageOfExpressions = { expressionDois: ReadonlyArray<ExpressionDoi>, totalItems: number };
 
-type FetchByCategory = (queryParameters: QueryParameters)
-=> TE.TaskEither<DE.DataError, PageOfExpressions>;
+type FetchByCategory = (
+  queryParameters: QueryParameters,
+) => TE.TaskEither<DE.DataError, PageOfExpressions>;
 
-type FetchBonfireDiscussionId = (expressionDoi: ExpressionDoi) => TE.TaskEither<DE.DataError, string>;
+type CreateBonfireDiscussionAndRetrieveDiscussionId = (
+  expressionDoi: ExpressionDoi,
+) => TE.TaskEither<DE.DataError, string>;
 
-type CreateBonfireDiscussionAndRetrieveDiscussionId = (expressionDoi: ExpressionDoi)
-=> TE.TaskEither<DE.DataError, string>;
+type FetchExpressionFrontMatter = (
+  expressionDoi: ExpressionDoi,
+) => TE.TaskEither<DE.DataError, ExpressionFrontMatter>;
 
-type FetchExpressionFrontMatter = (expressionDoi: ExpressionDoi)
-=> TE.TaskEither<DE.DataError, ExpressionFrontMatter>;
+type FetchRecommendedPapers = (
+  history: PublishingHistory,
+) => TE.TaskEither<DE.DataError, ReadonlyArray<ExpressionDoi>>;
 
-type FetchRecommendedPapers = (history: PublishingHistory)
-=> TE.TaskEither<DE.DataError, ReadonlyArray<ExpressionDoi>>;
+type FetchEvaluationDigest = (
+  id: EvaluationLocator,
+) => TE.TaskEither<DE.DataError, SanitisedHtmlFragment>;
 
-type FetchEvaluationDigest = (id: EvaluationLocator) => TE.TaskEither<DE.DataError, SanitisedHtmlFragment>;
-
-type FetchEvaluationHumanReadableOriginalUrl = (id: EvaluationLocator) => TE.TaskEither<DE.DataError, URL>;
+type FetchEvaluationHumanReadableOriginalUrl = (
+  id: EvaluationLocator,
+) => TE.TaskEither<DE.DataError, URL>;
 
 type FetchStaticFile = (filename: string) => TE.TaskEither<DE.DataError, string>;
 
@@ -41,13 +47,16 @@ type FetchUserAvatarUrl = (userId: UserId) => TE.TaskEither<DE.DataError, string
 
 type SearchForPaperExpressions = (
   pageSize: number,
-) => (query: string, cursor: O.Option<string>, evaluatedOnly: boolean) => TE.TaskEither<DE.DataError, SearchResults>;
+) => (
+  query: string,
+  cursor: O.Option<string>,
+  evaluatedOnly: boolean,
+) => TE.TaskEither<DE.DataError, SearchResults>;
 
 type FetchSearchCategories = () => TE.TaskEither<DE.DataError, ReadonlyArray<string>>;
 
 export type ExternalQueries = {
   fetchByCategory: FetchByCategory,
-  fetchBonfireDiscussionId: FetchBonfireDiscussionId,
   createBonfireDiscussionAndRetrieveDiscussionId: CreateBonfireDiscussionAndRetrieveDiscussionId,
   fetchEvaluationDigest: FetchEvaluationDigest,
   fetchEvaluationHumanReadableOriginalUrl: FetchEvaluationHumanReadableOriginalUrl,

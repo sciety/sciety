@@ -1,6 +1,5 @@
 import { URL } from 'url';
 import * as TE from 'fp-ts/TaskEither';
-import { fetchBonfireDiscussionId } from './fetch-bonfire-discussion-id';
 import { fetchByCategory } from './fetch-by-category';
 import { fetchEvaluation } from './fetch-evaluation';
 import { fetchPublishingHistory } from './fetch-publishing-history';
@@ -13,7 +12,6 @@ import { ExternalNotifications, ExternalQueries } from '../../third-parties';
 
 export const stubAdapters: ExternalQueries & ExternalNotifications = {
   fetchByCategory,
-  fetchBonfireDiscussionId,
   createBonfireDiscussionAndRetrieveDiscussionId: () => TE.right('1234'),
   fetchExpressionFrontMatter: localFetchPaperExpressionFrontMatter,
   fetchEvaluationHumanReadableOriginalUrl: () => TE.right(new URL('https://example.com')),

@@ -1,6 +1,6 @@
 import * as O from 'fp-ts/Option';
 import { createClient } from 'redis';
-import { fetchBonfireDiscussionId, createBonfireDiscussionAndRetrieveDiscussionId } from './bonfire';
+import { createBonfireDiscussionAndRetrieveDiscussionId } from './bonfire';
 import { CachingFetcherOptions, createCachingFetcher } from './cache';
 import { crossrefResponseBodyCachePredicate } from './crossref';
 import { searchEuropePmc } from './europe-pmc';
@@ -16,7 +16,9 @@ import { fetchStaticFile } from './fetch-static-file';
 import { fetchUserAvatarUrl } from './fetch-user-avatar-url';
 import { Logger } from '../logger';
 
-const cachingFetcherOptions = (redisClient: ReturnType<typeof createClient> | undefined): CachingFetcherOptions => {
+const cachingFetcherOptions = (
+  redisClient: ReturnType<typeof createClient> | undefined,
+): CachingFetcherOptions => {
   const maxAgeInMilliseconds = 24 * 60 * 60 * 1000;
   return redisClient !== undefined
     ? {
@@ -35,17 +37,11 @@ export const instantiateExternalQueries = (
   crossrefApiBearerToken: O.Option<string>,
   redisClient: ReturnType<typeof createClient> | undefined,
 ): ExternalQueries => {
-  const queryExternalService = createCachingFetcher(
-    logger,
-    cachingFetcherOptions(redisClient),
-  );
-  const queryCrossrefService = createCachingFetcher(
-    logger,
-    {
-      ...cachingFetcherOptions(redisClient),
-      responseBodyCachePredicate: crossrefResponseBodyCachePredicate(logger),
-    },
-  );
+  const queryExternalService = createCachingFetcher(logger, cachingFetcherOptions(redisClient));
+  const queryCrossrefService = createCachingFetcher(logger, {
+    ...cachingFetcherOptions(redisClient),
+    responseBodyCachePredicate: crossrefResponseBodyCachePredicate(logger),
+  });
 
   return {
     fetchEvaluationDigest: createFetchEvaluationDigest(queryExternalService, logger),
@@ -64,8 +60,8 @@ export const instantiateExternalQueries = (
     fetchRecommendedPapers: createFetchRecommendedPapers(queryExternalService, logger),
     fetchSearchCategories: fetchSearchCategories(queryExternalService, logger),
     fetchByCategory: fetchByCategory(queryExternalService, logger),
-    fetchBonfireDiscussionId: fetchBonfireDiscussionId(logger),
-    createBonfireDiscussionAndRetrieveDiscussionId: createBonfireDiscussionAndRetrieveDiscussionId(logger),
+    createBonfireDiscussionAndRetrieveDiscussionId:
+      createBonfireDiscussionAndRetrieveDiscussionId(logger),
     fetchStaticFile: fetchStaticFile(logger),
     fetchUserAvatarUrl: fetchUserAvatarUrl(queryExternalService, logger),
     searchForPaperExpressions: searchEuropePmc(queryExternalService, logger),
