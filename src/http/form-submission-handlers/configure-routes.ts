@@ -8,7 +8,6 @@ import { followHandler } from './follow-handler';
 import { removeArticleFromListHandler } from './remove-article-from-list-handler';
 import { removeListPromotionHandler } from './remove-list-promotion-handler';
 import { saveArticleHandler } from './save-article-handler';
-import { startBonfireDiscussionHandler } from './start-bonfire-discussion-handler';
 import {
   pathToSubmitEditListDetails,
   pathToSubmitAddAFeaturedList,
@@ -46,7 +45,6 @@ export const configureRoutes = (router: Router, dependencies: Dependencies): voi
 
   const formHandlerRoutesWithAuthentication = [
     { path: '/forms/remove-article-from-list', handler: removeArticleFromListHandler(dependencies) },
-    { path: '/forms/start-bonfire-discussion', handler: startBonfireDiscussionHandler(dependencies) },
     { path: '/unfollow', handler: unfollowHandler(dependencies) },
   ];
 
