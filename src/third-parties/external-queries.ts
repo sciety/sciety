@@ -17,10 +17,6 @@ type FetchByCategory = (
   queryParameters: QueryParameters,
 ) => TE.TaskEither<DE.DataError, PageOfExpressions>;
 
-type CreateBonfireDiscussionAndRetrieveDiscussionId = (
-  expressionDoi: ExpressionDoi,
-) => TE.TaskEither<DE.DataError, string>;
-
 type FetchExpressionFrontMatter = (
   expressionDoi: ExpressionDoi,
 ) => TE.TaskEither<DE.DataError, ExpressionFrontMatter>;
@@ -57,7 +53,6 @@ type FetchSearchCategories = () => TE.TaskEither<DE.DataError, ReadonlyArray<str
 
 export type ExternalQueries = {
   fetchByCategory: FetchByCategory,
-  createBonfireDiscussionAndRetrieveDiscussionId: CreateBonfireDiscussionAndRetrieveDiscussionId,
   fetchEvaluationDigest: FetchEvaluationDigest,
   fetchEvaluationHumanReadableOriginalUrl: FetchEvaluationHumanReadableOriginalUrl,
   fetchExpressionFrontMatter: FetchExpressionFrontMatter,

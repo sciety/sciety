@@ -1,6 +1,5 @@
 import * as O from 'fp-ts/Option';
 import { createClient } from 'redis';
-import { createBonfireDiscussionAndRetrieveDiscussionId } from './bonfire';
 import { CachingFetcherOptions, createCachingFetcher } from './cache';
 import { crossrefResponseBodyCachePredicate } from './crossref';
 import { searchEuropePmc } from './europe-pmc';
@@ -60,8 +59,6 @@ export const instantiateExternalQueries = (
     fetchRecommendedPapers: createFetchRecommendedPapers(queryExternalService, logger),
     fetchSearchCategories: fetchSearchCategories(queryExternalService, logger),
     fetchByCategory: fetchByCategory(queryExternalService, logger),
-    createBonfireDiscussionAndRetrieveDiscussionId:
-      createBonfireDiscussionAndRetrieveDiscussionId(logger),
     fetchStaticFile: fetchStaticFile(logger),
     fetchUserAvatarUrl: fetchUserAvatarUrl(queryExternalService, logger),
     searchForPaperExpressions: searchEuropePmc(queryExternalService, logger),

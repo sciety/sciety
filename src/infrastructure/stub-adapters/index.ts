@@ -12,7 +12,6 @@ import { ExternalNotifications, ExternalQueries } from '../../third-parties';
 
 export const stubAdapters: ExternalQueries & ExternalNotifications = {
   fetchByCategory,
-  createBonfireDiscussionAndRetrieveDiscussionId: () => TE.right('1234'),
   fetchExpressionFrontMatter: localFetchPaperExpressionFrontMatter,
   fetchEvaluationHumanReadableOriginalUrl: () => TE.right(new URL('https://example.com')),
   fetchEvaluationDigest: fetchEvaluation,
