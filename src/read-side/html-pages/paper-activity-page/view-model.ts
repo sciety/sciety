@@ -1,7 +1,6 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
-import { BonfireManagement } from './construct-view-model/construct-bonfire-management';
 import { ArticleAuthors } from '../../../types/article-authors';
 import { ArticleServer } from '../../../types/article-server';
 import * as EL from '../../../types/evaluation-locator';
@@ -84,5 +83,4 @@ export type ViewModel = {
   relatedArticles: O.Option<ReadonlyArray<ArticleCardViewModel>>,
   curationStatements: ReadonlyArray<CurationStatement>,
   reviewingGroups: ReadonlyArray<GroupLinkWithLogoViewModel>,
-  bonfireManagement: BonfireManagement,
 };
