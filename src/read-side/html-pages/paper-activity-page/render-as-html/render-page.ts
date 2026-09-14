@@ -1,4 +1,3 @@
-import { renderBonfireManagement } from './render-bonfire-management';
 import { renderFeed } from './render-feed';
 import { renderHeader } from './render-header';
 import { renderListedIn } from './render-listed-in';
@@ -18,7 +17,6 @@ export const renderPage = (viewmodel: ViewModel): HtmlFragment => toHtmlFragment
         ${renderReviewingGroups(viewmodel.reviewingGroups)}
         <a href="${viewmodel.expressionFullTextHref}" class="full-article-button">Read the full article</a>
         ${renderRelatedArticlesLink(viewmodel.relatedArticles)}
-        ${renderBonfireManagement(viewmodel.bonfireManagement)}
         <div class="list-management">
           ${renderListedIn(viewmodel.listedIn)}
           ${renderUserListManagement(viewmodel)}
