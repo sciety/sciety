@@ -48,7 +48,14 @@ const rawParamsCodec = t.type({
 
 type RawParams = t.TypeOf<typeof rawParamsCodec>;
 
-const filterOutContentNotToBeDisplayedDueToExceptionalCircumstances = (params: RawParams) => params.expressionDoi !== '10.31235/osf.io/rzjc9';
+const expressionDoisNotToBeDisplayedDueToExceptionalCircumstances = [
+  '10.31235/osf.io/rzjc9',
+  '10.21203/rs.3.rs-3537643/v1',
+];
+
+const filterOutContentNotToBeDisplayedDueToExceptionalCircumstances = (params: RawParams) => (
+  !expressionDoisNotToBeDisplayedDueToExceptionalCircumstances.includes(params.expressionDoi.toLowerCase())
+);
 
 const extendWithCanonicalForm = (input: RawParams) => ({
   user: input.user,
