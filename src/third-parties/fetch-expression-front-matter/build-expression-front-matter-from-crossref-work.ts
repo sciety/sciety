@@ -36,7 +36,7 @@ export const buildExpressionFrontMatterFromCrossrefWork = (
   logger: Logger,
   expressionDoi: ExpressionDoi,
 ): E.Either<DE.DataError, ExpressionFrontMatter> => {
-  const contextForLogs = { expressionDoi, crossrefWorkXml };
+  const contextForLogs = { expressionDoi };
 
   return pipe(
     crossrefWorkXml,

@@ -48,8 +48,10 @@ export const createApplicationServer = (
   }
 
   app.keys = [process.env.APP_SECRET ?? 'this-is-not-secret'];
+
   app.use(koaSession(
     {
+      key: 'sciety:session:2',
       maxAge: 365 * 24 * 60 * 60 * 1000,
       secure: isSecure,
     },

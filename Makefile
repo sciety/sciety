@@ -13,7 +13,7 @@ export IMAGE
 export IMAGE_TAG
 export AWS_DEFAULT_REGION
 
-.PHONY: backstop* build clean* dev feature-test find-* get* git-lfs graphs ingest* install lint* prod* replay-events-for-elife-subject-area-policy stop test* update* unused-exports watch* staging* replace-staging-database-with-snapshot-from-prod exploratory-test-from-* verify-flux-prod-cluster download-exploratory-test-from-prod download-exploratory-test-from-staging switch-to-flux-prod-cluster crossref-response check* compile* typecheck clobber connect* helm-dry-run process-coar-notifications manual-staging-ingestion-job
+.PHONY: backstop* build clean* dev feature-test find-* get* git-lfs graphs ingest* install lint* prod* replay-events-for-elife-subject-area-policy stop test* update* unused-exports watch* staging* replace-staging-database-with-snapshot-from-prod exploratory-test-from-* verify-flux-prod-cluster download-exploratory-test-from-prod download-exploratory-test-from-staging switch-to-flux-prod-cluster crossref-response check* compile* typecheck clobber connect* helm-dry-run process-coar-notifications manual-staging-ingestion-job manual-coar-staging-ingestion-job
 
 dev: export TARGET = dev
 dev: export SCIETY_TEAM_API_BEARER_TOKEN = secret
@@ -130,6 +130,9 @@ process-coar-notifications: build
 	-e INGESTION_TARGET_APP=http://app \
 	app \
 	npx tsx src/ingest/coar/ingest-based-on-coar-notifications
+
+manual-coar-staging-ingestion-job:
+	kubectl create job --from=cronjob/sciety--staging--coar-based-ingestion sciety--staging--coar-based-ingestion--manual -n sciety
 
 dev-sql: export TARGET = dev
 dev-sql:

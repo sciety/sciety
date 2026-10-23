@@ -27,9 +27,6 @@ const renderUserMenuLinks = (user: O.Option<UserDetails>) => pipe(
       <li>
         <a href="/log-in" class="mobile-menu__link mobile-menu__link_primary_button">Log In</a>
       </li>
-      <li>
-        <a href="/sign-up" class="mobile-menu__link mobile-menu__link_secondary_button">Sign Up</a>
-      </li>
     `,
     (loggedInUser) => `
       <li><a href="/my-feed" class="mobile-menu__link">My Feed</a></li>

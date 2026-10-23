@@ -1,6 +1,8 @@
+import { getAllUserLists } from './get-all-user-lists';
 import { getNonEmptyUserLists } from './get-non-empty-user-lists';
 import { handleEvent, initialState } from './handle-event';
 import { listsStatus } from './lists-status';
+import { listsStatusUsersOnly } from './lists-status-users-only';
 import { lookupHardcodedListImage } from './lookup-hardcoded-list-image';
 import { lookupList } from './lookup-list';
 import { selectAllListsContainingExpression } from './select-all-lists-containing-expression';
@@ -10,8 +12,10 @@ import { selectListContainingExpression } from './select-list-containing-express
 
 export const lists = {
   queries: {
+    getAllUserLists,
     getNonEmptyUserLists,
     listsStatus,
+    listsStatusUsersOnly,
     lookupList,
     lookupHardcodedListImage,
     selectAllListsContainingExpression,
@@ -24,5 +28,5 @@ export const lists = {
 };
 
 export {
-  byUpdatedAt, eqList, List, toExpressionDoisByMostRecentlyAdded,
+  byUpdatedAt, byMostRecentlyUpdated, eqList, List, toExpressionDoisByMostRecentlyAdded,
 } from './list';

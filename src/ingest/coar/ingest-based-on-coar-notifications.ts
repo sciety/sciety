@@ -55,15 +55,21 @@ void (async (): Promise<unknown> => {
   }
   return pipe(
     enabledGroups,
-    TE.traverseSeqArray(
-      (
-        group,
-      ) => pipe(
-        group.coarNotifyId,
-        discoverPciEvaluations(dependencies),
-        T.chain(recordEvaluations({ groupId: group.scietyGroupId, name: group.name }, configuration.right, 'coar-based-ingestion')),
-      ),
-    ),
+    TE.traverseSeqArray((group) => pipe(
+      group.coarNotifyId,
+      discoverPciEvaluations(dependencies),
+      TE.mapLeft(() => 'discovery failed' as const),
+      TE.chainW((discoveredEvaluations) => pipe(
+        E.right(discoveredEvaluations),
+        recordEvaluations(
+          { groupId: group.scietyGroupId, name: group.name },
+          configuration.right,
+          'coar-based-ingestion',
+        ),
+        TE.map(() => 'record evaluations succeeded' as const),
+        TE.orElseW(() => TE.right('record evaluations failed' as const)),
+      )),
+    )),
     TE.match(
       () => 1,
       () => 0,

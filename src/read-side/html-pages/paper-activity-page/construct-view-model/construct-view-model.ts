@@ -3,7 +3,6 @@ import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
-import { constructBonfireManagement } from './construct-bonfire-management';
 import { constructContainingList } from './construct-containing-list';
 import { constructRelatedArticles } from './construct-related-articles';
 import { constructUserListManagement } from './construct-user-list-management';
@@ -63,10 +62,6 @@ export const constructViewModel: ConstructViewModel<Params, ViewModel> = (depend
         TE.rightTask,
       ),
       publishingHistory: TE.right(publishingHistory),
-      bonfireManagement: pipe(
-        constructBonfireManagement(dependencies, params.latestExpressionDoi, O.isSome(params.user)),
-        TE.rightTask,
-      ),
     },
     sequenceS(TE.ApplyPar),
   )),
@@ -93,6 +88,5 @@ export const constructViewModel: ConstructViewModel<Params, ViewModel> = (depend
       })),
     ),
     reviewingGroups: constructReviewingGroups(dependencies, partial.publishingHistory),
-    bonfireManagement: partial.bonfireManagement,
   })),
 );

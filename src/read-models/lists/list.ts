@@ -15,6 +15,12 @@ export const byUpdatedAt: Ord.Ord<List> = pipe(
   Ord.contramap((list) => list.updatedAt),
 );
 
+export const byMostRecentlyUpdated: Ord.Ord<List> = pipe(
+  D.Ord,
+  Ord.reverse,
+  Ord.contramap((entry) => entry.updatedAt),
+);
+
 export const eqList: Eq.Eq<List> = pipe(
   S.Eq,
   Eq.contramap((list) => list.id),
