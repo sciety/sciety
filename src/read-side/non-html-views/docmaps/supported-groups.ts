@@ -14,6 +14,7 @@ const lifeScienceEditorsFoundationGroupId = GID.fromValidatedString('f2c9eafa-6e
 const accessMicrobiologyGroupId = GID.fromValidatedString('4d6a8908-22a9-45c8-bd56-3c7140647709');
 const kotahiDocmapsEvaluationGroupId = GID.fromValidatedString('b90854bf-795c-42ba-8664-8257b9c68b0c');
 const asapBioScieloGroupId = GID.fromValidatedString('36fbf532-ed07-4573-87fd-b0e22ee49827');
+const peerRefGroupId = GID.fromValidatedString('b5f31635-d32b-4df9-92a5-0325a1524343');
 
 const supportedGroups = [
   arcadiaScienceGroupId,
@@ -32,6 +33,7 @@ if (process.env.EXPERIMENT_ENABLED === 'true') {
   supportedGroups.push(elifeGroupId);
   supportedGroups.push(accessMicrobiologyGroupId);
   supportedGroups.push(kotahiDocmapsEvaluationGroupId);
+  supportedGroups.push(peerRefGroupId);
 }
 
 export { supportedGroups };
