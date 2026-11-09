@@ -101,6 +101,40 @@ describe('get-paper-expressions-from-biorxiv', () => {
         });
       });
     });
+
+    describe.each([
+      ['bioRxiv', 'biorxiv' as const],
+      ['medRxiv', 'medrxiv' as const],
+    ])('when the server name in the response is capitalised as %s', (serverInResponse, server) => {
+      it('returns an article-version event for each article version', async () => {
+        const expressionDoi = arbitraryExpressionDoi();
+        const queryExternalService = () => () => TE.right({
+          messages: [{ status: 'ok', category: 'all' }],
+          collection: [
+            {
+              date: '2019-12-31',
+              version: '1',
+              category: arbitraryString(),
+              server: serverInResponse,
+            },
+          ],
+        });
+
+        const events = await pipe(
+          getPaperExpressionsFromBiorxiv({ queryExternalService, logger: dummyLogger })(expressionDoi, server),
+          T.map(E.getOrElseW(() => [])),
+        )();
+
+        expect(events).toStrictEqual([{
+          expressionType: 'preprint',
+          expressionDoi,
+          publisherHtmlUrl: new URL(`https://www.${server}.org/content/${expressionDoi}v1`),
+          publishedAt: new Date('2019-12-31'),
+          publishedTo: `${expressionDoi}v1`,
+          server: O.some(server),
+        }]);
+      });
+    });
   });
 
   describe('when biorxiv is unavailable', () => {
@@ -133,6 +167,25 @@ describe('get-paper-expressions-from-biorxiv', () => {
               version: '2',
               category: arbitraryString(),
               server: 'biorxiv',
+            },
+          ],
+        });
+
+        const events = await getPaperExpressionsFromBiorxiv({ queryExternalService, logger: dummyLogger })(arbitraryExpressionDoi(), 'biorxiv')();
+
+        expect(E.isLeft(events)).toBe(true);
+      });
+    });
+
+    describe('where the server is neither biorxiv nor medrxiv', () => {
+      it('returns a left', async () => {
+        const queryExternalService = () => () => TE.right({
+          collection: [
+            {
+              date: '2020-01-01',
+              version: '1',
+              category: arbitraryString(),
+              server: 'arXiv',
             },
           ],
         });
