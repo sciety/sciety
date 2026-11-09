@@ -19,10 +19,15 @@ const constructAuthorName = (author: t.TypeOf<typeof orgOrPersonCodec>) => {
   return O.some(author['#text']);
 };
 
+const isAuthor = (contributor: t.TypeOf<typeof orgOrPersonCodec>) => (
+  contributor['@_contributor_role'] === 'author'
+  || (contributor.role ?? []).some((role) => role['@_type'] === 'author')
+);
+
 export const getAuthors = (commonFrontmatter: CommonFrontMatter): ArticleAuthors => pipe(
   commonFrontmatter.contributors,
   O.map((contributors) => contributors._org_or_person),
-  O.map(RA.filter((person) => person['@_contributor_role'] === 'author')),
+  O.map(RA.filter(isAuthor)),
   O.chain(O.traverseArray(constructAuthorName)),
   O.map(RA.map((name) => name.replace(/<[^>]*>/g, ''))),
 );

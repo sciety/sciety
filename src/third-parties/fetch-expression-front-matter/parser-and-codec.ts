@@ -4,16 +4,29 @@ import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { Logger } from '../../logger';
 
-const personNameCodec = t.strict({
-  given_name: tt.optionFromNullable(t.string),
-  surname: tt.optionFromNullable(t.string),
+// Crossref expresses a contributor's role either as a `contributor_role` attribute
+// (older deposits) or as one or more `<role type="..."/>` child elements (newer deposits).
+const contributorRoleCodec = t.partial({
   '@_contributor_role': t.string,
+  role: t.readonlyArray(t.partial({
+    '@_type': t.string,
+  })),
 });
 
-const organizationCodec = t.strict({
-  '#text': t.string,
-  '@_contributor_role': t.string,
-});
+const personNameCodec = t.exact(t.intersection([
+  t.type({
+    given_name: tt.optionFromNullable(t.string),
+    surname: tt.optionFromNullable(t.string),
+  }),
+  contributorRoleCodec,
+]));
+
+const organizationCodec = t.exact(t.intersection([
+  t.type({
+    '#text': t.string,
+  }),
+  contributorRoleCodec,
+]));
 
 export const orgOrPersonCodec = t.union([organizationCodec, personNameCodec]);
 
@@ -56,8 +69,11 @@ export type JournalOrPostedContent = t.TypeOf<typeof frontMatterCrossrefXmlRespo
 const parser = new XMLParser({
   stopNodes: ['*.title', '*.abstract', '*.given_name', '*.surname'],
   transformTagName: (tagName) => ((['organization', 'person_name']).includes(tagName) ? '_org_or_person' : tagName),
-  ignoreAttributes: (aName) => aName !== 'contributor_role',
-  isArray: (tagNameOfItem) => ['_org_or_person', 'titles', 'abstract'].includes(tagNameOfItem),
+  ignoreAttributes: (aName, jPath) => !(
+    aName === 'contributor_role'
+    || (aName === 'type' && typeof jPath === 'string' && jPath.endsWith('._org_or_person.role'))
+  ),
+  isArray: (tagNameOfItem) => ['_org_or_person', 'titles', 'abstract', 'role'].includes(tagNameOfItem),
   parseTagValue: false,
 });
 

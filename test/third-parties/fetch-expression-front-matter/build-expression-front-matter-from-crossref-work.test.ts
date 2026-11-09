@@ -318,6 +318,72 @@ describe('build-expression-front-matter-from-crossref-work', () => {
         });
       });
 
+      describe('when contributor roles are expressed as <role> elements', () => {
+        it('extracts person and organisational authors', () => {
+          const authors = extractAuthorsFromFrontMatter(`
+          <contributors>
+            <organization sequence="first">
+              <role type="author" vocab="crossref" />
+              SEQC2 Oncopanel Sequencing Working Group
+            </organization>
+            <person_name sequence="additional">
+              <given_name>Eesha</given_name>
+              <surname>Ross</surname>
+              <role type="author" vocab="crossref" />
+              <affiliations>
+                <institution>
+                  <institution_name>Some University</institution_name>
+                  <institution_id type="ror">https://ror.org/01rxvg760</institution_id>
+                </institution>
+              </affiliations>
+            </person_name>
+          </contributors>
+        `);
+
+          expect(authors).toStrictEqual(O.some(['SEQC2 Oncopanel Sequencing Working Group', 'Eesha Ross']));
+        });
+
+        it('only includes contributors with an author role', () => {
+          const authors = extractAuthorsFromFrontMatter(`
+          <contributors>
+            <person_name sequence="first">
+              <given_name>Eesha</given_name>
+              <surname>Ross</surname>
+              <role type="editor" vocab="crossref" />
+              <role type="author" vocab="crossref" />
+            </person_name>
+            <person_name sequence="additional">
+              <given_name>Fergus</given_name>
+              <surname>Fountain</surname>
+              <role type="reviewer" vocab="crossref" />
+            </person_name>
+          </contributors>
+        `);
+
+          expect(authors).toStrictEqual(O.some(['Eesha Ross']));
+        });
+      });
+
+      describe('when contributors use a mix of role attributes and <role> elements', () => {
+        it('extracts all authors', () => {
+          const authors = extractAuthorsFromFrontMatter(`
+          <contributors>
+            <person_name contributor_role="author" sequence="first">
+              <given_name>Eesha</given_name>
+              <surname>Ross</surname>
+            </person_name>
+            <person_name sequence="additional">
+              <given_name>Fergus</given_name>
+              <surname>Fountain</surname>
+              <role type="author" vocab="crossref" />
+            </person_name>
+          </contributors>
+        `);
+
+          expect(authors).toStrictEqual(O.some(['Eesha Ross', 'Fergus Fountain']));
+        });
+      });
+
       describe('when the mandatory surname is missing', () => {
         it('return O.none from getAuthors', () => {
           const authors = extractAuthorsFromFrontMatter(`
