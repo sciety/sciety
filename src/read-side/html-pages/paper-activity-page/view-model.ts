@@ -3,6 +3,7 @@ import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
 import { ArticleAuthors } from '../../../types/article-authors';
 import { ArticleServer } from '../../../types/article-server';
+import { AtprotoMention } from '../../../types/atproto-mention';
 import * as EL from '../../../types/evaluation-locator';
 import { ExpressionDoi } from '../../../types/expression-doi';
 import { HtmlFragment } from '../../../types/html-fragment';
@@ -48,10 +49,20 @@ export type CassyniSeminarPublishedFeedItem = {
   reviewedPaperDoi: ExpressionDoi,
 };
 
+export type AtprotoMentionPublishedFeedItem = {
+  type: 'atproto-mention-published',
+  publishedAt: Date,
+  source: AtprotoMention['source'],
+  authorHandle: string,
+  text: string,
+  href: string,
+};
+
 export type FeedItem =
   | EvaluationPublishedFeedItem
   | ExpressionPublishedFeedItem
-  | CassyniSeminarPublishedFeedItem;
+  | CassyniSeminarPublishedFeedItem
+  | AtprotoMentionPublishedFeedItem;
 
 type ListSummary = {
   listName: string,

@@ -21,6 +21,7 @@ import { arbitraryArticleServer } from '../types/article-server.helper';
 import { arbitraryExpressionDoi } from '../types/expression-doi.helper';
 
 export const createHappyPathExternalQueries = (): ExternalQueries => ({
+  fetchAtprotoMentions: () => TE.right([]),
   fetchByCategory: () => TE.right({ expressionDois: [arbitraryExpressionDoi()], totalItems: 1 }),
   fetchExpressionFrontMatter: (paperExpressionLocator) => TE.right({
     doi: new ArticleId(paperExpressionLocator),

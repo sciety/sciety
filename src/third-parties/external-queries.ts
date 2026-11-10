@@ -1,6 +1,7 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
+import { AtprotoMention } from '../types/atproto-mention';
 import * as DE from '../types/data-error';
 import { EvaluationLocator } from '../types/evaluation-locator';
 import { ExpressionDoi } from '../types/expression-doi';
@@ -12,6 +13,10 @@ import { SearchResults } from '../types/search-results';
 import { UserId } from '../types/user-id';
 
 type PageOfExpressions = { expressionDois: ReadonlyArray<ExpressionDoi>, totalItems: number };
+
+type FetchAtprotoMentions = (
+  history: PublishingHistory,
+) => TE.TaskEither<DE.DataError, ReadonlyArray<AtprotoMention>>;
 
 type FetchByCategory = (
   queryParameters: QueryParameters,
@@ -52,6 +57,7 @@ type SearchForPaperExpressions = (
 type FetchSearchCategories = () => TE.TaskEither<DE.DataError, ReadonlyArray<string>>;
 
 export type ExternalQueries = {
+  fetchAtprotoMentions: FetchAtprotoMentions,
   fetchByCategory: FetchByCategory,
   fetchEvaluationDigest: FetchEvaluationDigest,
   fetchEvaluationHumanReadableOriginalUrl: FetchEvaluationHumanReadableOriginalUrl,

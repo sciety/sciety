@@ -1,5 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
+import { renderAtprotoMentionPublishedFeedItem } from './render-atproto-mention-published-feed-item';
 import { renderEvaluationPublishedFeedItem } from './render-evaluation-published-feed-item';
 import { renderExpressionPublishedFeedItem } from './render-expression-published-feed-item';
 import { HtmlFragment, toHtmlFragment } from '../../../../types/html-fragment';
@@ -49,6 +50,8 @@ const renderFeedItem = (feedItem: FeedItem) => {
       return renderEvaluationPublishedFeedItem(feedItem, 850);
     case 'cassyni-seminar-published':
       return renderCassyniSeminarPublishedFeedItem(feedItem);
+    case 'atproto-mention-published':
+      return renderAtprotoMentionPublishedFeedItem(feedItem);
   }
 };
 
