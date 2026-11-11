@@ -51,8 +51,10 @@ jq -c -R --argjson starts "$(printf '%s\n' "${starts_of_doi[@]}" | jq -R . | jq 
   fromjson? // empty
   | select(
       (.doi | type) == "string"
-      and (.doi | ascii_downcase) as $doi
-      | any($starts[]; . as $start | $doi | startswith($start))
+      and (
+        (.doi | ascii_downcase) as $doi
+        | any($starts[]; . as $start | $doi | startswith($start))
+      )
     )
 ' "$input_file" > "$output_file"
 
