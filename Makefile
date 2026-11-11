@@ -337,4 +337,5 @@ helm-dry-run:
 	helm install --debug --dry-run --set hostname=example.sciety.org sciety--example ./helm/sciety
 
 update-dois-with-semble-mentions:
-	echo "Running update dois with semble mentions"
+	scripts/fetch-semble-cards-with-doi.sh 0 data/semble-cards-with-doi.jsonl
+	scripts/filter-semble-cards-for-supported-dois.sh data/semble-cards-with-doi.jsonl data/semble-cards-with-sciety-supported-dois.jsonl
