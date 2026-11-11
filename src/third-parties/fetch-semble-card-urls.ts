@@ -12,7 +12,7 @@ import * as DE from '../types/data-error';
 import { canonicalExpressionDoiCodec } from '../types/expression-doi';
 import * as PH from '../types/publishing-history';
 
-const sembleCardsFilename = 'semble-cards-with-doi-supported-dois.jsonl';
+const sembleCardsFilename = 'semble-cards-with-sciety-supported-dois.jsonl';
 
 const sembleCardCodec = t.type({
   doi: canonicalExpressionDoiCodec,

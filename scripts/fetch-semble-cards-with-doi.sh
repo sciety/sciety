@@ -19,7 +19,7 @@
 #
 # Usage: scripts/fetch-semble-cards-with-doi.sh [max-pages] [output-file]
 #   max-pages    stop after this many pages, 0 for no limit (default 0)
-#   output-file  where to write the pairs (default semble-cards-with-doi.jsonl);
+#   output-file  where to write the pairs (default data/semble-cards-with-doi.jsonl);
 #                if it already exists, new pairs are merged into it
 #
 # Environment variables:
@@ -28,7 +28,7 @@
 set -euo pipefail
 
 max_pages=${1:-0}
-output_file=${2:-semble-cards-with-doi.jsonl}
+output_file=${2:-data/semble-cards-with-doi.jsonl}
 delay_seconds=${DELAY_SECONDS:-1}
 cursor=${START_CURSOR:-}
 
