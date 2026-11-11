@@ -4,25 +4,13 @@ import * as TE from 'fp-ts/TaskEither';
 import { pipe } from 'fp-ts/function';
 import { Dependencies } from './dependencies';
 import { AtprotoMention } from '../../../../types/atproto-mention';
-import * as EDOI from '../../../../types/expression-doi';
 import * as PH from '../../../../types/publishing-history';
 import { AtprotoMentionPublishedFeedItem } from '../view-model';
 
-const blueskyEnabledForExpressionDois = [
-  EDOI.fromValidatedString('10.1101/2024.12.06.627200'),
-];
-
-const isBlueskyEnabledFor = (history: PH.PublishingHistory) => pipe(
-  history,
-  PH.getAllExpressionDois,
-  RA.some((expressionDoi) => RA.elem(EDOI.eqExpressionDoi)(expressionDoi)(blueskyEnabledForExpressionDois)),
-);
-
 const sourcesEnabledFor = (
-  history: PH.PublishingHistory,
   sembleCardUrls: ReadonlyArray<string>,
 ): ReadonlyArray<AtprotoMention['source']> => [
-  ...(isBlueskyEnabledFor(history) ? ['Bluesky' as const] : []),
+  'Bluesky',
   ...(RA.isNonEmpty(sembleCardUrls) ? ['Semble' as const] : []),
 ];
 
@@ -42,14 +30,8 @@ export const constructAtprotoMentionFeedItems = (
   dependencies.fetchSembleCardUrls(history),
   TE.getOrElseW(() => T.of<ReadonlyArray<string>>([])),
   T.chain((sembleCardUrls) => pipe(
-    sourcesEnabledFor(history, sembleCardUrls),
-    RA.match(
-      () => T.of([]),
-      (sources) => pipe(
-        dependencies.fetchAtprotoMentions(history, sources, sembleCardUrls),
-        TE.map(RA.map(toFeedItem)),
-        TE.getOrElseW(() => T.of([])),
-      ),
-    ),
+    dependencies.fetchAtprotoMentions(history, sourcesEnabledFor(sembleCardUrls), sembleCardUrls),
+    TE.map(RA.map(toFeedItem)),
+    TE.getOrElseW(() => T.of([])),
   )),
 );

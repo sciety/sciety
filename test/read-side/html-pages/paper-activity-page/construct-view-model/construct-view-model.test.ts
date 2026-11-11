@@ -7,7 +7,6 @@ import { constructViewModel } from '../../../../../src/read-side/html-pages/pape
 import { LoggedInUserListManagement, ViewModel } from '../../../../../src/read-side/html-pages/paper-activity-page/view-model';
 import { AtprotoMention } from '../../../../../src/types/atproto-mention';
 import * as DE from '../../../../../src/types/data-error';
-import * as EDOI from '../../../../../src/types/expression-doi';
 import * as LOID from '../../../../../src/types/list-owner-id';
 import { CreateListCommand, CreateUserAccountCommand } from '../../../../../src/write-side/commands';
 import { abortTest } from '../../../../abort-test';
@@ -59,8 +58,8 @@ describe('construct-view-model', () => {
     });
   });
 
-  describe('when the paper is enabled for Bluesky mentions', () => {
-    const enabledExpressionDoi = EDOI.fromValidatedString('10.1101/2024.12.06.627200');
+  describe('when the paper has no Semble cards', () => {
+    const paperExpressionDoi = arbitraryExpressionDoi();
 
     describe('and there are mentions', () => {
       const mention = arbitraryAtprotoMention();
@@ -70,7 +69,7 @@ describe('construct-view-model', () => {
       beforeEach(async () => {
         feedItems = await pipe(
           {
-            latestExpressionDoi: enabledExpressionDoi,
+            latestExpressionDoi: paperExpressionDoi,
             user: O.none,
           },
           constructViewModel({
@@ -107,7 +106,7 @@ describe('construct-view-model', () => {
       beforeEach(async () => {
         viewModel = await pipe(
           {
-            latestExpressionDoi: enabledExpressionDoi,
+            latestExpressionDoi: paperExpressionDoi,
             user: O.none,
           },
           constructViewModel({
@@ -154,8 +153,8 @@ describe('construct-view-model', () => {
       )();
     });
 
-    it('only requests mentions from Semble', () => {
-      expect(requestedSources).toStrictEqual(['Semble']);
+    it('requests mentions from Bluesky and Semble', () => {
+      expect(requestedSources).toStrictEqual(['Bluesky', 'Semble']);
     });
 
     it('requests Semble mentions for the urls of the cards', () => {
@@ -163,8 +162,9 @@ describe('construct-view-model', () => {
     });
   });
 
-  describe('when the Semble cards cannot be fetched and the paper is not enabled for Bluesky', () => {
+  describe('when the Semble cards cannot be fetched', () => {
     let viewModel: E.Either<unknown, ViewModel>;
+    let requestedSources: ReadonlyArray<AtprotoMention['source']>;
 
     beforeEach(async () => {
       viewModel = await pipe(
@@ -175,7 +175,10 @@ describe('construct-view-model', () => {
         constructViewModel({
           ...framework.dependenciesForViews,
           fetchSembleCardUrls: () => TE.left(arbitraryDataError()),
-          fetchAtprotoMentions: shouldNotBeCalled,
+          fetchAtprotoMentions: (_history, sources) => {
+            requestedSources = sources;
+            return TE.right([]);
+          },
         }),
       )();
     });
@@ -183,29 +186,9 @@ describe('construct-view-model', () => {
     it('returns on the right', () => {
       expect(E.isRight(viewModel)).toBe(true);
     });
-  });
 
-  describe('when the paper is not enabled for Bluesky or Semble mentions', () => {
-    let viewModel: E.Either<unknown, ViewModel>;
-
-    beforeEach(async () => {
-      viewModel = await pipe(
-        {
-          latestExpressionDoi: arbitraryExpressionDoi(),
-          user: O.none,
-        },
-        constructViewModel({
-          ...framework.dependenciesForViews,
-          fetchAtprotoMentions: shouldNotBeCalled,
-        }),
-      )();
-    });
-
-    it('does not include any mentions in the feed', () => {
-      expect(pipe(
-        viewModel,
-        E.map((v) => v.feedItemsByDateDescending.filter((item) => item.type === 'atproto-mention-published')),
-      )).toStrictEqual(E.right([]));
+    it('still requests mentions from Bluesky', () => {
+      expect(requestedSources).toStrictEqual(['Bluesky']);
     });
   });
 
