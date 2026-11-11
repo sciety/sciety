@@ -12,6 +12,7 @@ import { fetchExpressionFrontMatter } from './fetch-expression-front-matter';
 import { fetchPublishingHistory } from './fetch-publishing-history';
 import { createFetchRecommendedPapers } from './fetch-recommended-papers';
 import { fetchSearchCategories } from './fetch-search-categories';
+import { fetchSembleCardUrls } from './fetch-semble-card-urls';
 import { fetchStaticFile } from './fetch-static-file';
 import { fetchUserAvatarUrl } from './fetch-user-avatar-url';
 import { Logger } from '../logger';
@@ -61,6 +62,7 @@ export const instantiateExternalQueries = (
     fetchRecommendedPapers: createFetchRecommendedPapers(queryExternalService, logger),
     fetchSearchCategories: fetchSearchCategories(queryExternalService, logger),
     fetchByCategory: fetchByCategory(queryExternalService, logger),
+    fetchSembleCardUrls: fetchSembleCardUrls(logger),
     fetchStaticFile: fetchStaticFile(logger),
     fetchUserAvatarUrl: fetchUserAvatarUrl(queryExternalService, logger),
     searchForPaperExpressions: searchEuropePmc(queryExternalService, logger),

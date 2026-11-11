@@ -39,6 +39,7 @@ export const createHappyPathExternalQueries = (): ExternalQueries => ({
   ]),
   fetchEvaluationDigest: () => TE.right(arbitrarySanitisedHtmlFragment()),
   fetchSearchCategories: () => TE.right([arbitraryString()]),
+  fetchSembleCardUrls: () => TE.right([]),
   fetchStaticFile: () => TE.right('lorem ipsum'),
   fetchUserAvatarUrl: () => TE.right('/static/images/profile-dark.svg'),
   fetchPublishingHistory: (expressionDoi) => pipe(

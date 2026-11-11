@@ -8,15 +8,23 @@ import * as EDOI from '../../../../types/expression-doi';
 import * as PH from '../../../../types/publishing-history';
 import { AtprotoMentionPublishedFeedItem } from '../view-model';
 
-const enabledForExpressionDois = [
+const blueskyEnabledForExpressionDois = [
   EDOI.fromValidatedString('10.1101/2024.12.06.627200'),
 ];
 
-const isEnabledFor = (history: PH.PublishingHistory) => pipe(
+const isBlueskyEnabledFor = (history: PH.PublishingHistory) => pipe(
   history,
   PH.getAllExpressionDois,
-  RA.some((expressionDoi) => RA.elem(EDOI.eqExpressionDoi)(expressionDoi)(enabledForExpressionDois)),
+  RA.some((expressionDoi) => RA.elem(EDOI.eqExpressionDoi)(expressionDoi)(blueskyEnabledForExpressionDois)),
 );
+
+const sourcesEnabledFor = (
+  history: PH.PublishingHistory,
+  sembleCardUrls: ReadonlyArray<string>,
+): ReadonlyArray<AtprotoMention['source']> => [
+  ...(isBlueskyEnabledFor(history) ? ['Bluesky' as const] : []),
+  ...(RA.isNonEmpty(sembleCardUrls) ? ['Semble' as const] : []),
+];
 
 const toFeedItem = (mention: AtprotoMention): AtprotoMentionPublishedFeedItem => ({
   type: 'atproto-mention-published',
@@ -30,13 +38,18 @@ const toFeedItem = (mention: AtprotoMention): AtprotoMentionPublishedFeedItem =>
 export const constructAtprotoMentionFeedItems = (
   dependencies: Dependencies,
   history: PH.PublishingHistory,
-): T.Task<ReadonlyArray<AtprotoMentionPublishedFeedItem>> => (
-  isEnabledFor(history)
-    ? pipe(
-      history,
-      dependencies.fetchAtprotoMentions,
-      TE.map(RA.map(toFeedItem)),
-      TE.getOrElseW(() => T.of([])),
-    )
-    : T.of([])
+): T.Task<ReadonlyArray<AtprotoMentionPublishedFeedItem>> => pipe(
+  dependencies.fetchSembleCardUrls(history),
+  TE.getOrElseW(() => T.of<ReadonlyArray<string>>([])),
+  T.chain((sembleCardUrls) => pipe(
+    sourcesEnabledFor(history, sembleCardUrls),
+    RA.match(
+      () => T.of([]),
+      (sources) => pipe(
+        dependencies.fetchAtprotoMentions(history, sources, sembleCardUrls),
+        TE.map(RA.map(toFeedItem)),
+        TE.getOrElseW(() => T.of([])),
+      ),
+    ),
+  )),
 );

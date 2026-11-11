@@ -59,12 +59,13 @@ describe('construct-view-model', () => {
     });
   });
 
-  describe('when the paper is enabled for ATProto mentions', () => {
+  describe('when the paper is enabled for Bluesky mentions', () => {
     const enabledExpressionDoi = EDOI.fromValidatedString('10.1101/2024.12.06.627200');
 
     describe('and there are mentions', () => {
       const mention = arbitraryAtprotoMention();
       let feedItems: ViewModel['feedItemsByDateDescending'];
+      let requestedSources: ReadonlyArray<AtprotoMention['source']>;
 
       beforeEach(async () => {
         feedItems = await pipe(
@@ -74,11 +75,18 @@ describe('construct-view-model', () => {
           },
           constructViewModel({
             ...framework.dependenciesForViews,
-            fetchAtprotoMentions: () => TE.right([mention]),
+            fetchAtprotoMentions: (_history, sources) => {
+              requestedSources = sources;
+              return TE.right([mention]);
+            },
           }),
           TE.map((viewModel) => viewModel.feedItemsByDateDescending),
           TE.getOrElse(abortTest('constructViewModel unexpectedly is on the left')),
         )();
+      });
+
+      it('only requests mentions from Bluesky', () => {
+        expect(requestedSources).toStrictEqual(['Bluesky']);
       });
 
       it('includes the mentions in the feed', () => {
@@ -122,7 +130,62 @@ describe('construct-view-model', () => {
     });
   });
 
-  describe('when the paper is not enabled for ATProto mentions', () => {
+  describe('when the paper has Semble cards', () => {
+    const sembleCardUrl = arbitraryUri();
+    let requestedSources: ReadonlyArray<AtprotoMention['source']>;
+    let requestedAdditionalSembleUrls: ReadonlyArray<string>;
+
+    beforeEach(async () => {
+      await pipe(
+        {
+          latestExpressionDoi: arbitraryExpressionDoi(),
+          user: O.none,
+        },
+        constructViewModel({
+          ...framework.dependenciesForViews,
+          fetchSembleCardUrls: () => TE.right([sembleCardUrl]),
+          fetchAtprotoMentions: (_history, sources, additionalSembleUrls) => {
+            requestedSources = sources;
+            requestedAdditionalSembleUrls = additionalSembleUrls;
+            return TE.right([]);
+          },
+        }),
+        TE.getOrElse(abortTest('constructViewModel unexpectedly is on the left')),
+      )();
+    });
+
+    it('only requests mentions from Semble', () => {
+      expect(requestedSources).toStrictEqual(['Semble']);
+    });
+
+    it('requests Semble mentions for the urls of the cards', () => {
+      expect(requestedAdditionalSembleUrls).toStrictEqual([sembleCardUrl]);
+    });
+  });
+
+  describe('when the Semble cards cannot be fetched and the paper is not enabled for Bluesky', () => {
+    let viewModel: E.Either<unknown, ViewModel>;
+
+    beforeEach(async () => {
+      viewModel = await pipe(
+        {
+          latestExpressionDoi: arbitraryExpressionDoi(),
+          user: O.none,
+        },
+        constructViewModel({
+          ...framework.dependenciesForViews,
+          fetchSembleCardUrls: () => TE.left(arbitraryDataError()),
+          fetchAtprotoMentions: shouldNotBeCalled,
+        }),
+      )();
+    });
+
+    it('returns on the right', () => {
+      expect(E.isRight(viewModel)).toBe(true);
+    });
+  });
+
+  describe('when the paper is not enabled for Bluesky or Semble mentions', () => {
     let viewModel: E.Either<unknown, ViewModel>;
 
     beforeEach(async () => {

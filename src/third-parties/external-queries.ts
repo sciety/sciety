@@ -16,6 +16,8 @@ type PageOfExpressions = { expressionDois: ReadonlyArray<ExpressionDoi>, totalIt
 
 type FetchAtprotoMentions = (
   history: PublishingHistory,
+  sources: ReadonlyArray<AtprotoMention['source']>,
+  additionalSembleUrls: ReadonlyArray<string>,
 ) => TE.TaskEither<DE.DataError, ReadonlyArray<AtprotoMention>>;
 
 type FetchByCategory = (
@@ -37,6 +39,10 @@ type FetchEvaluationDigest = (
 type FetchEvaluationHumanReadableOriginalUrl = (
   id: EvaluationLocator,
 ) => TE.TaskEither<DE.DataError, URL>;
+
+type FetchSembleCardUrls = (
+  history: PublishingHistory,
+) => TE.TaskEither<DE.DataError, ReadonlyArray<string>>;
 
 type FetchStaticFile = (filename: string) => TE.TaskEither<DE.DataError, string>;
 
@@ -65,6 +71,7 @@ export type ExternalQueries = {
   fetchPublishingHistory: FetchPublishingHistory,
   fetchRecommendedPapers: FetchRecommendedPapers,
   fetchSearchCategories: FetchSearchCategories,
+  fetchSembleCardUrls: FetchSembleCardUrls,
   fetchStaticFile: FetchStaticFile,
   fetchUserAvatarUrl: FetchUserAvatarUrl,
   searchForPaperExpressions: SearchForPaperExpressions,

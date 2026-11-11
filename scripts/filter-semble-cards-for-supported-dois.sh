@@ -14,7 +14,7 @@
 # Usage: scripts/filter-semble-cards-for-supported-dois.sh input-file [output-file]
 #   input-file   JSON Lines file, one object with a doi property per line
 #   output-file  where to write the kept lines
-#                (default <input-file without .jsonl>.supported-dois.jsonl);
+#                (default <input-file without .jsonl>-supported-dois.jsonl);
 #                must not already exist
 set -euo pipefail
 
@@ -37,7 +37,7 @@ if [[ ! -f "$input_file" ]]; then
   exit 1
 fi
 
-output_file=${2:-"${input_file%.jsonl}.supported-dois.jsonl"}
+output_file=${2:-"${input_file%.jsonl}-supported-dois.jsonl"}
 if [[ -e "$output_file" ]]; then
   echo "Output file already exists, refusing to overwrite: $output_file" >&2
   exit 1

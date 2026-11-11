@@ -122,15 +122,23 @@ const failOnlyIfEverySourceFailed = (
   E.map(RA.flatten),
 );
 
+const fetchersBySource = {
+  Bluesky: fetchFromBluesky,
+  Semble: fetchFromSemble,
+};
+
 export const createFetchAtprotoMentions = (
   queryExternalService: QueryExternalService,
   logger: Logger,
-): ExternalQueries['fetchAtprotoMentions'] => (history) => pipe(
-  getPaperUrls(history),
-  RA.flatMap((paperUrl) => [
-    fetchFromBluesky(queryExternalService, logger)(paperUrl),
-    fetchFromSemble(queryExternalService, logger)(paperUrl),
-  ]),
+): ExternalQueries['fetchAtprotoMentions'] => (history, sources, additionalSembleUrls) => pipe(
+  sources,
+  RA.flatMap((source) => pipe(
+    source === 'Semble'
+      ? [...getPaperUrls(history), ...additionalSembleUrls]
+      : getPaperUrls(history),
+    RA.uniq(S.Eq),
+    RA.map(fetchersBySource[source](queryExternalService, logger)),
+  )),
   T.sequenceArray,
   T.map(failOnlyIfEverySourceFailed),
   TE.map(RA.uniq(byAtUri)),

@@ -19,6 +19,7 @@ export const stubAdapters: ExternalQueries & ExternalNotifications = {
   fetchPublishingHistory,
   fetchRecommendedPapers,
   fetchSearchCategories,
+  fetchSembleCardUrls: () => TE.right([]),
   fetchStaticFile,
   fetchUserAvatarUrl: () => TE.right('/static/images/profile-dark.svg'),
   searchForPaperExpressions,
