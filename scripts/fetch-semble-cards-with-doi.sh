@@ -4,6 +4,19 @@
 # url and doi pairs to a JSON Lines file:
 #   {"url": "...", "doi": "..."}
 #
+# The first line of the file records how far back the feed has been fetched:
+#   {"cutoff": "2026-11-11T11:03:52.000Z"}
+# The feed is newest first, so when the file has a cutoff the walk stops at the
+# first page holding an activity created before it, rather than walking the
+# whole feed. Without a cutoff line the whole feed is walked. Pairs are merged
+# into the existing file and deduplicated, so overlap with earlier runs is
+# harmless.
+#
+# The cutoff is moved forward to the newest activity seen only after a run
+# that started at the top of the feed and reached the cutoff (or the end of the
+# feed). A run stopped by max-pages, or one resumed with START_CURSOR, keeps
+# the old cutoff, so no gap is left behind.
+#
 # Usage: scripts/fetch-semble-cards-with-doi.sh [max-pages] [output-file]
 #   max-pages    stop after this many pages, 0 for no limit (default 0)
 #   output-file  where to write the pairs (default semble-cards-with-doi.jsonl);
@@ -22,6 +35,22 @@ cursor=${START_CURSOR:-}
 if ! [[ "$max_pages" =~ ^[0-9]+$ ]]; then
   echo "max-pages must be a whole number, got '$max_pages'" >&2
   exit 1
+fi
+
+# Converts an ISO 8601 UTC timestamp, with or without fractional seconds, to
+# epoch seconds; fractions are dropped, so comparisons are to the second.
+jq_defs='def ts: sub("\\.[0-9]+Z$"; "Z") | fromdateiso8601;'
+
+cutoff=''
+if [ -f "$output_file" ]; then
+  cutoff=$(jq -r -s 'map(select(type == "object" and has("cutoff")) | .cutoff) | first // empty' "$output_file")
+  if [ -n "$cutoff" ]; then
+    # Fail now rather than after fetching if the stored cutoff is not a timestamp.
+    jq -n --arg cutoff "$cutoff" "$jq_defs"' $cutoff | ts' > /dev/null
+    echo "Fetching activities back to the cutoff $cutoff" >&2
+  else
+    echo "No cutoff in $output_file, walking the whole feed" >&2
+  fi
 fi
 
 base_url='https://api.semble.so/xrpc/network.cosmik.feed.getGlobal?limit=100&activityTypes[]=CARD_COLLECTED'
@@ -74,13 +103,29 @@ fetch_page() {
   done
 }
 
+started_at_top=false
+if [ -z "$cursor" ]; then
+  started_at_top=true
+fi
+
 page=0
 total_activities=0
+newest_seen=''
+run_complete=false
 while true; do
   page=$((page + 1))
   fetch_page
 
   jq -c '.activities[] | select((.card.cardContent.doi // "") != "") | { url: .card.cardContent.url, doi: .card.cardContent.doi }' "$response_body" >> "$raw_output"
+
+  if [ "$page" -eq 1 ]; then
+    newest_seen=$(jq -r "$jq_defs"' [.activities[].createdAt] | if length == 0 then empty else max_by(ts) end' "$response_body")
+  fi
+
+  reached_cutoff=false
+  if [ -n "$cutoff" ]; then
+    reached_cutoff=$(jq -r --arg cutoff "$cutoff" "$jq_defs"' ($cutoff | ts) as $c | any(.activities[]; (.createdAt | ts) < $c)' "$response_body")
+  fi
 
   activities_on_page=$(jq '.activities | length' "$response_body")
   total_activities=$((total_activities + activities_on_page))
@@ -89,7 +134,13 @@ while true; do
 
   echo "Page $page: $activities_on_page activities, $(wc -l < "$raw_output" | tr -d ' ') cards with a doi so far, next cursor ${next_cursor:-none}" >&2
 
+  if [ "$reached_cutoff" = 'true' ]; then
+    echo "Reached activities older than the cutoff $cutoff" >&2
+    run_complete=true
+    break
+  fi
   if [ "$has_more" != 'true' ] || [ -z "$next_cursor" ] || [ "$next_cursor" = "$cursor" ]; then
+    run_complete=true
     break
   fi
   if [ "$max_pages" -gt 0 ] && [ "$page" -ge "$max_pages" ]; then
@@ -101,10 +152,24 @@ while true; do
   sleep "$delay_seconds"
 done
 
-if [ -f "$output_file" ]; then
-  cat "$output_file" "$raw_output" | jq -c -s 'unique[]' > "$merged_output"
+new_cutoff=$cutoff
+if [ "$run_complete" = 'true' ] && [ "$started_at_top" = 'true' ] && [ -n "$newest_seen" ]; then
+  new_cutoff=$newest_seen
 else
-  jq -c -s 'unique[]' "$raw_output" > "$merged_output"
+  echo "Run did not cover the feed from the top to the cutoff, keeping the cutoff ${cutoff:-(none)}" >&2
 fi
+
+{
+  if [ -n "$new_cutoff" ]; then
+    jq -c -n --arg cutoff "$new_cutoff" '{ cutoff: $cutoff }'
+  fi
+  {
+    if [ -f "$output_file" ]; then
+      jq -c 'select((type == "object" and has("cutoff")) | not)' "$output_file"
+    fi
+    cat "$raw_output"
+  } | jq -c -s 'unique[]'
+} > "$merged_output"
 mv "$merged_output" "$output_file"
-echo "Scanned $total_activities activities across $page pages; wrote $(wc -l < "$output_file" | tr -d ' ') distinct url and doi pairs to $output_file" >&2
+pair_count=$(jq -s 'map(select((type == "object" and has("cutoff")) | not)) | length' "$output_file")
+echo "Scanned $total_activities activities across $page pages; wrote $pair_count distinct url and doi pairs and the cutoff ${new_cutoff:-(none)} to $output_file" >&2
