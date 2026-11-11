@@ -13,7 +13,7 @@ export IMAGE
 export IMAGE_TAG
 export AWS_DEFAULT_REGION
 
-.PHONY: backstop* build clean* dev feature-test find-* get* git-lfs graphs ingest* install lint* prod* replay-events-for-elife-subject-area-policy stop test* update* unused-exports watch* staging* replace-staging-database-with-snapshot-from-prod exploratory-test-from-* verify-flux-prod-cluster download-exploratory-test-from-prod download-exploratory-test-from-staging switch-to-flux-prod-cluster crossref-response check* compile* typecheck clobber connect* helm-dry-run process-coar-notifications manual-staging-ingestion-job manual-coar-staging-ingestion-job
+.PHONY: backstop* build clean* dev feature-test find-* get* git-lfs graphs ingest* install lint* prod* replay-events-for-elife-subject-area-policy stop test* update* unused-exports watch* staging* replace-staging-database-with-snapshot-from-prod exploratory-test-from-* verify-flux-prod-cluster download-exploratory-test-from-prod download-exploratory-test-from-staging switch-to-flux-prod-cluster crossref-response check* compile* typecheck clobber connect* helm-dry-run process-coar-notifications manual-staging-ingestion-job manual-coar-staging-ingestion-job update-dois-with-semble-mentions
 
 dev: export TARGET = dev
 dev: export SCIETY_TEAM_API_BEARER_TOKEN = secret
@@ -335,3 +335,6 @@ connect-to-cache-dev:
 
 helm-dry-run:
 	helm install --debug --dry-run --set hostname=example.sciety.org sciety--example ./helm/sciety
+
+update-dois-with-semble-mentions:
+	echo "Running update dois with semble mentions"
