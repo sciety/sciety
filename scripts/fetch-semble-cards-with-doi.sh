@@ -6,7 +6,8 @@
 #
 # Usage: scripts/fetch-semble-cards-with-doi.sh [max-pages] [output-file]
 #   max-pages    stop after this many pages, 0 for no limit (default 0)
-#   output-file  where to write the pairs (default semble-cards-with-doi.jsonl)
+#   output-file  where to write the pairs (default semble-cards-with-doi.jsonl);
+#                if it already exists, new pairs are merged into it
 #
 # Environment variables:
 #   DELAY_SECONDS  pause between requests (default 1)
@@ -30,7 +31,8 @@ max_attempts=5
 response_body=$(mktemp)
 response_headers=$(mktemp)
 raw_output=$(mktemp)
-trap 'rm -f "$response_body" "$response_headers" "$raw_output"' EXIT
+merged_output=$(mktemp)
+trap 'rm -f "$response_body" "$response_headers" "$raw_output" "$merged_output"' EXIT
 
 fetch_page() {
   local url=$base_url
@@ -99,5 +101,10 @@ while true; do
   sleep "$delay_seconds"
 done
 
-jq -c -s 'unique[]' "$raw_output" > "$output_file"
+if [ -f "$output_file" ]; then
+  cat "$output_file" "$raw_output" | jq -c -s 'unique[]' > "$merged_output"
+else
+  jq -c -s 'unique[]' "$raw_output" > "$merged_output"
+fi
+mv "$merged_output" "$output_file"
 echo "Scanned $total_activities activities across $page pages; wrote $(wc -l < "$output_file" | tr -d ' ') distinct url and doi pairs to $output_file" >&2
