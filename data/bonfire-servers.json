@@ -4,216 +4,287 @@
     "version": "1.0.7",
     "openRegistrations": false,
     "users": 3,
-    "nodeinfo": "https://ap.tenak.net/.well-known/nodeinfo/2.1"
+    "nodeinfo": "https://ap.tenak.net/.well-known/nodeinfo/2.1",
+    "nodeName": "An instance of Bonfire",
+    "nodeDescription": "This is a bonfire demo instance for testing purposes"
   },
   {
     "domain": "bondev.mbbit.de",
     "version": "1.1.0-rc.1",
     "openRegistrations": false,
     "users": 2,
-    "nodeinfo": "https://bondev.mbbit.de/.well-known/nodeinfo/2.1"
+    "nodeinfo": "https://bondev.mbbit.de/.well-known/nodeinfo/2.1",
+    "nodeName": "Bonfire social Testinstanz Region Nordhessen",
+    "nodeDescription": "This is a bonfire demo instance for testing purposes. It may disapear any moment, is partially online, or or stay forever."
   },
   {
     "domain": "bonf.world",
     "version": "1.0.4",
     "openRegistrations": false,
     "users": 7,
-    "nodeinfo": "https://bonf.world/.well-known/nodeinfo/2.1"
+    "nodeinfo": "https://bonf.world/.well-known/nodeinfo/2.1",
+    "nodeName": "Bonf.World",
+    "nodeDescription": "This is a bonfire instance, being setup currently"
   },
   {
     "domain": "bonfire-social.thenexus.today",
     "version": "1.0.0",
     "openRegistrations": false,
     "users": 12,
-    "nodeinfo": "https://bonfire-social.thenexus.today/.well-known/nodeinfo/2.1"
+    "nodeinfo": "https://bonfire-social.thenexus.today/.well-known/nodeinfo/2.1",
+    "nodeName": "Bonfire at The Nexus Today",
+    "nodeDescription": "A (potentially-temporary) instance for playing with Bonfire."
   },
   {
     "domain": "bonfire.cafe",
     "version": "1.1.0-rc.8",
     "openRegistrations": false,
     "users": 11,
-    "nodeinfo": "https://bonfire.cafe/.well-known/nodeinfo/2.1"
+    "nodeinfo": "https://bonfire.cafe/.well-known/nodeinfo/2.1",
+    "nodeName": "bonfire.cafe",
+    "nodeDescription": "A space for Bonfire maintainers and contributors to communicate"
   },
   {
     "domain": "bonfire.cim.warwick.ac.uk",
     "version": "1.1.0-rc.5",
     "openRegistrations": false,
     "users": 33,
-    "nodeinfo": "https://bonfire.cim.warwick.ac.uk/.well-known/nodeinfo/2.1"
+    "nodeinfo": "https://bonfire.cim.warwick.ac.uk/.well-known/nodeinfo/2.1",
+    "nodeName": "Bonfire at Warwick",
+    "nodeDescription": "This is a federated digital space running [bonfire](https://bonfirenetworks.org/), a..."
   },
   {
     "domain": "bonfire.klasse-methode.it",
     "version": "1.0.4-alpha.6",
     "openRegistrations": false,
     "users": 8,
-    "nodeinfo": "https://bonfire.klasse-methode.it/.well-known/nodeinfo/2.1"
+    "nodeinfo": "https://bonfire.klasse-methode.it/.well-known/nodeinfo/2.1",
+    "nodeName": "An instance of Bonfire",
+    "nodeDescription": "This is a bonfire demo instance for testing purposes"
   },
   {
     "domain": "bonfire.lifeless.site",
     "version": "1.0.7",
     "openRegistrations": false,
     "users": 7,
-    "nodeinfo": "https://bonfire.lifeless.site/.well-known/nodeinfo/2.1"
+    "nodeinfo": "https://bonfire.lifeless.site/.well-known/nodeinfo/2.1",
+    "nodeName": "Bonfire of nearly lifeless.site",
+    "nodeDescription": "A network of scientists, researchers and developers building the next generation of open science digital spaces."
   },
   {
     "domain": "bonfire.notanother.pizza",
     "version": "1.0.7",
     "openRegistrations": false,
     "users": 6,
-    "nodeinfo": "https://bonfire.notanother.pizza/.well-known/nodeinfo/2.1"
+    "nodeinfo": "https://bonfire.notanother.pizza/.well-known/nodeinfo/2.1",
+    "nodeName": "An instance of Bonfire",
+    "nodeDescription": "This is a bonfire demo instance for testing purposes"
   },
   {
     "domain": "bonfire.opentech-auc.org",
     "version": "1.1.0-rc.5",
     "openRegistrations": false,
     "users": 35,
-    "nodeinfo": "https://bonfire.opentech-auc.org/.well-known/nodeinfo/2.1"
+    "nodeinfo": "https://bonfire.opentech-auc.org/.well-known/nodeinfo/2.1",
+    "nodeName": "Bonfire social",
+    "nodeDescription": "This Bonfire server is meant to be a self-managed digital community space for the students and staff of Amsterdam University College. \n\nIn terms of its connection to the wider Fediverse, it  only federates with https://social.edu.nl. So we can follow people on that server, and people from that server can follow us here. Beyond that, everything that happens here stays here!"
   },
   {
     "domain": "bonfire.social.coop",
     "version": "1.0.2",
     "openRegistrations": false,
     "users": 22,
-    "nodeinfo": "https://bonfire.social.coop/.well-known/nodeinfo/2.1"
+    "nodeinfo": "https://bonfire.social.coop/.well-known/nodeinfo/2.1",
+    "nodeName": "bonfire.social.coop",
+    "nodeDescription": "See https://wiki.social.coop and reach out to the TWG or CWG for more!"
   },
   {
     "domain": "bonfire.thewordnerd.info",
     "version": "1.0.6",
     "openRegistrations": false,
     "users": 2,
-    "nodeinfo": "https://bonfire.thewordnerd.info/.well-known/nodeinfo/2.1"
+    "nodeinfo": "https://bonfire.thewordnerd.info/.well-known/nodeinfo/2.1",
+    "nodeName": "Nolan's Social Media",
+    "nodeDescription": "Welcome to my social media!"
   },
   {
     "domain": "campground.bonfire.cafe",
     "version": "1.1.0-rc.8",
     "openRegistrations": true,
-    "users": 1022,
-    "nodeinfo": "https://campground.bonfire.cafe/.well-known/nodeinfo/2.1"
+    "users": 1023,
+    "nodeinfo": "https://campground.bonfire.cafe/.well-known/nodeinfo/2.1",
+    "nodeName": "An instance of Bonfire",
+    "nodeDescription": "This is a bonfire demo instance for testing purposes"
   },
   {
     "domain": "community.friendhyve.social",
     "version": "1.0.7",
     "openRegistrations": false,
     "users": 4,
-    "nodeinfo": "https://community.friendhyve.social/.well-known/nodeinfo/2.1"
+    "nodeinfo": "https://community.friendhyve.social/.well-known/nodeinfo/2.1",
+    "nodeName": "FriendHyve Community",
+    "nodeDescription": "FriendHyve Community is een plek voor gesprekken, groepen en gedeelde interesses. Ontdek onderwerpen die je interesseren, neem deel aan discussies of start je eigen groep en ontmoet mensen met dezelfde interesses."
   },
   {
     "domain": "demo.bonfire.cafe",
     "version": "1.1.0-rc.5",
     "openRegistrations": false,
     "users": 33,
-    "nodeinfo": "https://demo.bonfire.cafe/.well-known/nodeinfo/2.1"
+    "nodeinfo": "https://demo.bonfire.cafe/.well-known/nodeinfo/2.1",
+    "nodeName": "Bonfire Demo",
+    "nodeDescription": "This is a bonfire demo instance for testing purposes"
   },
   {
     "domain": "dialog.horneland.dk",
     "version": "1.0.7",
     "openRegistrations": true,
     "users": 9,
-    "nodeinfo": "https://dialog.horneland.dk/.well-known/nodeinfo/2.1"
+    "nodeinfo": "https://dialog.horneland.dk/.well-known/nodeinfo/2.1",
+    "nodeName": "Dialog på Horne Land",
+    "nodeDescription": "Et sted for meddelelse og dialog for beboere på Horne Land. Med forbindelse til det fødererede fællesskab."
+  },
+  {
+    "domain": "dissocial.duckdns.org",
+    "version": "1.1.0-rc.1",
+    "openRegistrations": false,
+    "users": 6,
+    "nodeinfo": "https://dissocial.duckdns.org/.well-known/nodeinfo/2.1",
+    "nodeName": "CasaMatta del Popolo di Gaeta",
+    "nodeDescription": "This is a bonfire demo instance for testing purposes"
   },
   {
     "domain": "fedi.linarphy.net",
     "version": "1.0.7",
     "openRegistrations": false,
     "users": 2,
-    "nodeinfo": "https://fedi.linarphy.net/.well-known/nodeinfo/2.1"
+    "nodeinfo": "https://fedi.linarphy.net/.well-known/nodeinfo/2.1",
+    "nodeName": "An instance of bonfire",
+    "nodeDescription": "This is a bonfire demo instance for testing purposes"
   },
   {
     "domain": "fedizen.net",
     "version": "1.1.0-rc.5",
     "openRegistrations": false,
     "users": 12,
-    "nodeinfo": "https://fedizen.net/.well-known/nodeinfo/2.1"
+    "nodeinfo": "https://fedizen.net/.well-known/nodeinfo/2.1",
+    "nodeName": "Fedizen",
+    "nodeDescription": "Fedizen is an experimental Bonfire instance being built specifically to aid network-wide discovery for all things Fediverse-related. Brought to you by the people at We Distribute!"
   },
   {
     "domain": "jump-spider.com",
     "version": "1.0.7",
     "openRegistrations": false,
     "users": 2,
-    "nodeinfo": "https://jump-spider.com/.well-known/nodeinfo/2.1"
+    "nodeinfo": "https://jump-spider.com/.well-known/nodeinfo/2.1",
+    "nodeName": "jump-spider.com",
+    "nodeDescription": "A single user instance for Serra Allgood, trying out Bonfire"
   },
   {
     "domain": "lapiazza.energieincomune.com",
     "version": "1.0.8-alpha.35",
     "openRegistrations": false,
     "users": 13,
-    "nodeinfo": "https://lapiazza.energieincomune.com/.well-known/nodeinfo/2.1"
+    "nodeinfo": "https://lapiazza.energieincomune.com/.well-known/nodeinfo/2.1",
+    "nodeName": "La Piazza di Energieincomune",
+    "nodeDescription": "Sito social ufficiale di EICOM dedicato ai distretti e a chi vuole partecipare al cambiamento economico e finanziario"
   },
   {
     "domain": "nyaa.social",
     "version": "1.1.0-rc.5",
     "openRegistrations": false,
     "users": 4,
-    "nodeinfo": "https://nyaa.social/.well-known/nodeinfo/2.1"
+    "nodeinfo": "https://nyaa.social/.well-known/nodeinfo/2.1",
+    "nodeName": "Nyaa!",
+    "nodeDescription": "An experimental Bonfire instance. Will not be used for production. Gone in 60 days.\n\nLemmy: https://ani.social"
   },
   {
     "domain": "openscience.network",
     "version": "1.1.0-rc.2",
     "openRegistrations": false,
     "users": 21,
-    "nodeinfo": "https://sandbox.openscience.network/.well-known/nodeinfo/2.1"
+    "nodeinfo": "https://sandbox.openscience.network/.well-known/nodeinfo/2.1",
+    "nodeName": "Open Science",
+    "nodeDescription": "We are a network of scientists, developers and organizations building the next generation of digital spaces for open science."
   },
   {
     "domain": "playground.bonfire.cafe",
     "version": "1.1.0-beta.20",
     "openRegistrations": false,
     "users": 754,
-    "nodeinfo": "https://playground.bonfire.cafe/.well-known/nodeinfo/2.1"
+    "nodeinfo": "https://playground.bonfire.cafe/.well-known/nodeinfo/2.1",
+    "nodeName": "Bonfire Playground",
+    "nodeDescription": "This is a bonfire demo instance for testing purposes"
   },
   {
     "domain": "sandbox.openscience.network",
     "version": "1.1.0-rc.2",
     "openRegistrations": false,
     "users": 21,
-    "nodeinfo": "https://sandbox.openscience.network/.well-known/nodeinfo/2.1"
+    "nodeinfo": "https://sandbox.openscience.network/.well-known/nodeinfo/2.1",
+    "nodeName": "Open Science",
+    "nodeDescription": "We are a network of scientists, developers and organizations building the next generation of digital spaces for open science."
   },
   {
     "domain": "social.democratictech.fund",
     "version": "1.1.0-rc.1",
     "openRegistrations": false,
     "users": 10,
-    "nodeinfo": "https://social.democratictech.fund/.well-known/nodeinfo/2.1"
+    "nodeinfo": "https://social.democratictech.fund/.well-known/nodeinfo/2.1",
+    "nodeName": "Democratic Tech Bonfire community space",
+    "nodeDescription": "This is a bonfire demo instance for testing, learning and shaping our own connected community space."
   },
   {
     "domain": "social.queerit.org",
     "version": "1.0.6",
     "openRegistrations": false,
     "users": 9,
-    "nodeinfo": "https://social.queerit.org/.well-known/nodeinfo/2.1"
+    "nodeinfo": "https://social.queerit.org/.well-known/nodeinfo/2.1",
+    "nodeName": "queer*it social",
+    "nodeDescription": "exploring how bonfire meets queer needs"
   },
   {
     "domain": "social.radmin.live",
     "version": "1.0.7",
     "openRegistrations": false,
     "users": 6,
-    "nodeinfo": "https://social.radmin.live/.well-known/nodeinfo/2.1"
+    "nodeinfo": "https://social.radmin.live/.well-known/nodeinfo/2.1",
+    "nodeName": "Radmin Social",
+    "nodeDescription": "This is Radmin's bonfire instance - https://radmin.live"
   },
   {
     "domain": "spark.box464.social",
     "version": "1.1.0-rc.5",
     "openRegistrations": false,
     "users": 15,
-    "nodeinfo": "https://spark.box464.social/.well-known/nodeinfo/2.1"
+    "nodeinfo": "https://spark.box464.social/.well-known/nodeinfo/2.1",
+    "nodeName": "Spark Social",
+    "nodeDescription": "An invite only Bonfire instance, testing out the latest and greatest features from the amazing dev team."
   },
   {
     "domain": "st-elmo.mycopunk.it",
     "version": "1.1.0-beta.27",
     "openRegistrations": true,
     "users": 4,
-    "nodeinfo": "https://st-elmo.mycopunk.it/.well-known/nodeinfo/2.1"
+    "nodeinfo": "https://st-elmo.mycopunk.it/.well-known/nodeinfo/2.1",
+    "nodeName": "St.Elmo's Fire",
+    "nodeDescription": "ActivityPub instance where the accounts are on AT"
   },
   {
     "domain": "vattenkylaren.se",
     "version": "1.0.7",
     "openRegistrations": false,
     "users": 2,
-    "nodeinfo": "https://vattenkylaren.se/.well-known/nodeinfo/2.1"
+    "nodeinfo": "https://vattenkylaren.se/.well-known/nodeinfo/2.1",
+    "nodeName": "Vattenkylaren",
+    "nodeDescription": "Vattenkylaren är lite av ett experiment för att se om det känns hållbart att drifta en egen instans i den vida fediversevärlden."
   },
   {
     "domain": "x.madiator.tech",
     "version": "1.0.7",
     "openRegistrations": false,
     "users": 2,
-    "nodeinfo": "https://x.madiator.tech/.well-known/nodeinfo/2.1"
+    "nodeinfo": "https://x.madiator.tech/.well-known/nodeinfo/2.1",
+    "nodeName": "Madiator's Bonfire",
+    "nodeDescription": "Only me and friends"
   }
 ]

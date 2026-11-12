@@ -8,10 +8,18 @@
 #       "version": "1.1.0",
 #       "openRegistrations": true,
 #       "users": 123,
-#       "nodeinfo": "https://bonfire.cafe/.well-known/nodeinfo/2.1"
+#       "nodeinfo": "https://bonfire.cafe/.well-known/nodeinfo/2.1",
+#       "nodeName": "bonfire.cafe",
+#       "nodeDescription": "A space for Bonfire maintainers and contributors to communicate"
 #     },
 #     ...
 #   ]
+#
+# nodeName and nodeDescription are the server's own name and description from
+# its NodeInfo metadata, as set by its admins, with surrounding whitespace
+# trimmed; they are null when the server does not report them. They are the
+# only hint of what a server is for (e.g. open science), as NodeInfo does not
+# say which Bonfire flavour a server runs.
 #
 # Candidate domains come from FediDB's directory of servers running Bonfire.
 # Each candidate is then checked against its own NodeInfo document, and only
@@ -139,13 +147,17 @@ while read -r domain; do
     continue
   fi
 
-  jq -c --arg domain "$domain" --arg nodeinfo "$nodeinfo_url" '{
-    domain: $domain,
-    version: .software.version,
-    openRegistrations: .openRegistrations,
-    users: .usage.users.total,
-    nodeinfo: $nodeinfo
-  }' "$response_body" >> "$servers"
+  jq -c --arg domain "$domain" --arg nodeinfo "$nodeinfo_url" '
+    def metadata_text($key): (.metadata | objects | .[$key] | strings | gsub("^\\s+|\\s+$"; "")) // null;
+    {
+      domain: $domain,
+      version: .software.version,
+      openRegistrations: .openRegistrations,
+      users: .usage.users.total,
+      nodeinfo: $nodeinfo,
+      nodeName: metadata_text("nodeName"),
+      nodeDescription: metadata_text("nodeDescription")
+    }' "$response_body" >> "$servers"
   found=$((found + 1))
   echo "Found $domain" >&2
 done < "$candidates"
