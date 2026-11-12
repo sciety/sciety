@@ -1,0 +1,219 @@
+[
+  {
+    "domain": "ap.tenak.net",
+    "version": "1.0.7",
+    "openRegistrations": false,
+    "users": 3,
+    "nodeinfo": "https://ap.tenak.net/.well-known/nodeinfo/2.1"
+  },
+  {
+    "domain": "bondev.mbbit.de",
+    "version": "1.1.0-rc.1",
+    "openRegistrations": false,
+    "users": 2,
+    "nodeinfo": "https://bondev.mbbit.de/.well-known/nodeinfo/2.1"
+  },
+  {
+    "domain": "bonf.world",
+    "version": "1.0.4",
+    "openRegistrations": false,
+    "users": 7,
+    "nodeinfo": "https://bonf.world/.well-known/nodeinfo/2.1"
+  },
+  {
+    "domain": "bonfire-social.thenexus.today",
+    "version": "1.0.0",
+    "openRegistrations": false,
+    "users": 12,
+    "nodeinfo": "https://bonfire-social.thenexus.today/.well-known/nodeinfo/2.1"
+  },
+  {
+    "domain": "bonfire.cafe",
+    "version": "1.1.0-rc.8",
+    "openRegistrations": false,
+    "users": 11,
+    "nodeinfo": "https://bonfire.cafe/.well-known/nodeinfo/2.1"
+  },
+  {
+    "domain": "bonfire.cim.warwick.ac.uk",
+    "version": "1.1.0-rc.5",
+    "openRegistrations": false,
+    "users": 33,
+    "nodeinfo": "https://bonfire.cim.warwick.ac.uk/.well-known/nodeinfo/2.1"
+  },
+  {
+    "domain": "bonfire.klasse-methode.it",
+    "version": "1.0.4-alpha.6",
+    "openRegistrations": false,
+    "users": 8,
+    "nodeinfo": "https://bonfire.klasse-methode.it/.well-known/nodeinfo/2.1"
+  },
+  {
+    "domain": "bonfire.lifeless.site",
+    "version": "1.0.7",
+    "openRegistrations": false,
+    "users": 7,
+    "nodeinfo": "https://bonfire.lifeless.site/.well-known/nodeinfo/2.1"
+  },
+  {
+    "domain": "bonfire.notanother.pizza",
+    "version": "1.0.7",
+    "openRegistrations": false,
+    "users": 6,
+    "nodeinfo": "https://bonfire.notanother.pizza/.well-known/nodeinfo/2.1"
+  },
+  {
+    "domain": "bonfire.opentech-auc.org",
+    "version": "1.1.0-rc.5",
+    "openRegistrations": false,
+    "users": 35,
+    "nodeinfo": "https://bonfire.opentech-auc.org/.well-known/nodeinfo/2.1"
+  },
+  {
+    "domain": "bonfire.social.coop",
+    "version": "1.0.2",
+    "openRegistrations": false,
+    "users": 22,
+    "nodeinfo": "https://bonfire.social.coop/.well-known/nodeinfo/2.1"
+  },
+  {
+    "domain": "bonfire.thewordnerd.info",
+    "version": "1.0.6",
+    "openRegistrations": false,
+    "users": 2,
+    "nodeinfo": "https://bonfire.thewordnerd.info/.well-known/nodeinfo/2.1"
+  },
+  {
+    "domain": "campground.bonfire.cafe",
+    "version": "1.1.0-rc.8",
+    "openRegistrations": true,
+    "users": 1022,
+    "nodeinfo": "https://campground.bonfire.cafe/.well-known/nodeinfo/2.1"
+  },
+  {
+    "domain": "community.friendhyve.social",
+    "version": "1.0.7",
+    "openRegistrations": false,
+    "users": 4,
+    "nodeinfo": "https://community.friendhyve.social/.well-known/nodeinfo/2.1"
+  },
+  {
+    "domain": "demo.bonfire.cafe",
+    "version": "1.1.0-rc.5",
+    "openRegistrations": false,
+    "users": 33,
+    "nodeinfo": "https://demo.bonfire.cafe/.well-known/nodeinfo/2.1"
+  },
+  {
+    "domain": "dialog.horneland.dk",
+    "version": "1.0.7",
+    "openRegistrations": true,
+    "users": 9,
+    "nodeinfo": "https://dialog.horneland.dk/.well-known/nodeinfo/2.1"
+  },
+  {
+    "domain": "fedi.linarphy.net",
+    "version": "1.0.7",
+    "openRegistrations": false,
+    "users": 2,
+    "nodeinfo": "https://fedi.linarphy.net/.well-known/nodeinfo/2.1"
+  },
+  {
+    "domain": "fedizen.net",
+    "version": "1.1.0-rc.5",
+    "openRegistrations": false,
+    "users": 12,
+    "nodeinfo": "https://fedizen.net/.well-known/nodeinfo/2.1"
+  },
+  {
+    "domain": "jump-spider.com",
+    "version": "1.0.7",
+    "openRegistrations": false,
+    "users": 2,
+    "nodeinfo": "https://jump-spider.com/.well-known/nodeinfo/2.1"
+  },
+  {
+    "domain": "lapiazza.energieincomune.com",
+    "version": "1.0.8-alpha.35",
+    "openRegistrations": false,
+    "users": 13,
+    "nodeinfo": "https://lapiazza.energieincomune.com/.well-known/nodeinfo/2.1"
+  },
+  {
+    "domain": "nyaa.social",
+    "version": "1.1.0-rc.5",
+    "openRegistrations": false,
+    "users": 4,
+    "nodeinfo": "https://nyaa.social/.well-known/nodeinfo/2.1"
+  },
+  {
+    "domain": "openscience.network",
+    "version": "1.1.0-rc.2",
+    "openRegistrations": false,
+    "users": 21,
+    "nodeinfo": "https://sandbox.openscience.network/.well-known/nodeinfo/2.1"
+  },
+  {
+    "domain": "playground.bonfire.cafe",
+    "version": "1.1.0-beta.20",
+    "openRegistrations": false,
+    "users": 754,
+    "nodeinfo": "https://playground.bonfire.cafe/.well-known/nodeinfo/2.1"
+  },
+  {
+    "domain": "sandbox.openscience.network",
+    "version": "1.1.0-rc.2",
+    "openRegistrations": false,
+    "users": 21,
+    "nodeinfo": "https://sandbox.openscience.network/.well-known/nodeinfo/2.1"
+  },
+  {
+    "domain": "social.democratictech.fund",
+    "version": "1.1.0-rc.1",
+    "openRegistrations": false,
+    "users": 10,
+    "nodeinfo": "https://social.democratictech.fund/.well-known/nodeinfo/2.1"
+  },
+  {
+    "domain": "social.queerit.org",
+    "version": "1.0.6",
+    "openRegistrations": false,
+    "users": 9,
+    "nodeinfo": "https://social.queerit.org/.well-known/nodeinfo/2.1"
+  },
+  {
+    "domain": "social.radmin.live",
+    "version": "1.0.7",
+    "openRegistrations": false,
+    "users": 6,
+    "nodeinfo": "https://social.radmin.live/.well-known/nodeinfo/2.1"
+  },
+  {
+    "domain": "spark.box464.social",
+    "version": "1.1.0-rc.5",
+    "openRegistrations": false,
+    "users": 15,
+    "nodeinfo": "https://spark.box464.social/.well-known/nodeinfo/2.1"
+  },
+  {
+    "domain": "st-elmo.mycopunk.it",
+    "version": "1.1.0-beta.27",
+    "openRegistrations": true,
+    "users": 4,
+    "nodeinfo": "https://st-elmo.mycopunk.it/.well-known/nodeinfo/2.1"
+  },
+  {
+    "domain": "vattenkylaren.se",
+    "version": "1.0.7",
+    "openRegistrations": false,
+    "users": 2,
+    "nodeinfo": "https://vattenkylaren.se/.well-known/nodeinfo/2.1"
+  },
+  {
+    "domain": "x.madiator.tech",
+    "version": "1.0.7",
+    "openRegistrations": false,
+    "users": 2,
+    "nodeinfo": "https://x.madiator.tech/.well-known/nodeinfo/2.1"
+  }
+]
