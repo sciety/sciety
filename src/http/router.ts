@@ -6,6 +6,7 @@ import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import send from 'koa-send';
 import { activitypubActor } from './activitypub-actor';
+import { activitypubInbox } from './activitypub-inbox';
 import * as api from './api';
 import * as authentication from './authentication';
 import { Config as AuthenticationRoutesConfig } from './authentication/configure-routes';
@@ -118,6 +119,8 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
       createAnnotationFormPage(dependencies),
     )),
   );
+
+  router.post('/activitypub/actor/inbox', activitypubInbox());
 
   router.get('/docmaps/v1', async (context, next) => {
     const staticFolder = path.resolve(__dirname, '../../static');
