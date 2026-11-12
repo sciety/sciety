@@ -5,6 +5,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { flow, pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import send from 'koa-send';
+import { activitypubActor } from './activitypub-actor';
 import * as api from './api';
 import * as authentication from './authentication';
 import { Config as AuthenticationRoutesConfig } from './authentication/configure-routes';
@@ -269,6 +270,7 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
   ];
 
   const miscellaneous = [
+    { endpoint: '/activitypub/actor', handler: activitypubActor() },
     { endpoint: '/ping', handler: ping() },
     { endpoint: '/robots.txt', handler: robots() },
     { endpoint: '/static/:file(.+)', handler: loadStaticFile(dependencies) },
