@@ -54,8 +54,6 @@ spec:
               value: {{ .Values.auth0Domain }}
             - name: AUTH0_CALLBACK_URL
               value: {{ .Values.auth0CallbackUrl }}
-            - name: ACTIVITYPUB_PRIVATE_KEY
-              value: {{ .Values.activitypubPrivateKey }}
           volumeMounts:
             - name: gcp-ncrc-key
               mountPath: "/var/run/secrets/app"
