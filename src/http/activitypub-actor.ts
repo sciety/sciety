@@ -6,7 +6,11 @@ import { pipe } from 'fp-ts/function';
 import { StatusCodes } from 'http-status-codes';
 import { Middleware } from 'koa';
 
-const appOrigin = process.env.APP_ORIGIN ?? 'https://sciety.org';
+export const appOrigin = process.env.APP_ORIGIN ?? 'https://sciety.org';
+
+export const actorPreferredUsername = 'sciety';
+
+export const actorIdFor = (origin: string): string => `${origin}/activitypub/actor`;
 
 type PublicKey = {
   id: string,
@@ -50,7 +54,7 @@ export const publicKeyPem = pipe(
 );
 
 export const constructActorDocument = (origin: string, actorPublicKeyPem: O.Option<string>): ActorDocument => {
-  const actorId = `${origin}/activitypub/actor`;
+  const actorId = actorIdFor(origin);
   return {
     '@context': [
       'https://www.w3.org/ns/activitystreams',
@@ -58,7 +62,7 @@ export const constructActorDocument = (origin: string, actorPublicKeyPem: O.Opti
     ],
     id: actorId,
     type: 'Application',
-    preferredUsername: 'sciety',
+    preferredUsername: actorPreferredUsername,
     name: 'Sciety',
     summary: 'Sciety (https://sciety.org) brings together evaluations and discussions of preprints. This account fetches public posts that mention preprints. Contact: team@sciety.org',
     url: `${origin}/about`,

@@ -18,6 +18,7 @@ import { ping } from './ping';
 import { requireLoggedInUser } from './require-logged-in-user';
 import { robots } from './robots';
 import { routeForNonHtmlView } from './route-for-non-html-view';
+import { webfinger } from './webfinger';
 import { EnvironmentVariables } from '../environment-variables';
 import { evaluationContentPathSpecification } from '../read-side/construct-evaluation-content-url';
 import { DependenciesForViews } from '../read-side/dependencies-for-views';
@@ -273,6 +274,7 @@ export const createRouter = (dependencies: Dependencies, config: Config): Router
   ];
 
   const miscellaneous = [
+    { endpoint: '/.well-known/webfinger', handler: webfinger() },
     { endpoint: '/activitypub/actor', handler: activitypubActor() },
     { endpoint: '/ping', handler: ping() },
     { endpoint: '/robots.txt', handler: robots() },
