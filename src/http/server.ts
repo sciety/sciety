@@ -2,9 +2,11 @@ import { createServer, Server } from 'http';
 import Router from '@koa/router';
 import rTracer from 'cls-rtracer';
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import Koa from 'koa';
 import koaPassport from 'koa-passport';
 import koaSession from 'koa-session';
+import { publicKeyPem } from './activitypub-actor';
 import { auth0PassportStrategy } from './authentication/auth0-passport-strategy';
 import { testingPassportStrategy } from './authentication/testing-passport-strategy';
 import { logRequestAndResponse } from './log-request-and-response';
@@ -36,6 +38,10 @@ export const createApplicationServer = (
   if (missingVariables.length) {
     logger('error', 'Missing environment variables', { missingVariables });
     return E.left(`Missing ${missingVariables.join(', ')} from environment variables`);
+  }
+
+  if (process.env.ACTIVITYPUB_PRIVATE_KEY && O.isNone(publicKeyPem)) {
+    logger('warn', 'ACTIVITYPUB_PRIVATE_KEY is set but could not be decoded; the ActivityPub actor will have no publicKey');
   }
 
   const appOrigin = environmentVariables.APP_ORIGIN;
