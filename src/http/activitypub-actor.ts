@@ -37,9 +37,8 @@ export const derivePublicKeyPem = (privateKeyPem: string): O.Option<string> => p
 
 const decodeBase64 = (value: string) => Buffer.from(value, 'base64').toString('utf8');
 
-export const derivePublicKeyPemFromDoubleBase64EncodedPrivateKey = (value: string): O.Option<string> => pipe(
+export const derivePublicKeyPemFromBase64EncodedPrivateKey = (value: string): O.Option<string> => pipe(
   value,
-  decodeBase64,
   decodeBase64,
   derivePublicKeyPem,
 );
@@ -47,7 +46,7 @@ export const derivePublicKeyPemFromDoubleBase64EncodedPrivateKey = (value: strin
 export const publicKeyPem = pipe(
   process.env.ACTIVITYPUB_PRIVATE_KEY,
   O.fromNullable,
-  O.chain(derivePublicKeyPemFromDoubleBase64EncodedPrivateKey),
+  O.chain(derivePublicKeyPemFromBase64EncodedPrivateKey),
 );
 
 export const constructActorDocument = (origin: string, actorPublicKeyPem: O.Option<string>): ActorDocument => {

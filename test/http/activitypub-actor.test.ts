@@ -4,7 +4,7 @@ import * as O from 'fp-ts/Option';
 import {
   constructActorDocument,
   derivePublicKeyPem,
-  derivePublicKeyPemFromDoubleBase64EncodedPrivateKey,
+  derivePublicKeyPemFromBase64EncodedPrivateKey,
 } from '../../src/http/activitypub-actor';
 
 describe('activitypub-actor', () => {
@@ -69,7 +69,7 @@ describe('activitypub-actor', () => {
     });
   });
 
-  describe('derivePublicKeyPemFromDoubleBase64EncodedPrivateKey', () => {
+  describe('derivePublicKeyPemFromBase64EncodedPrivateKey', () => {
     const { privateKey, publicKey } = generateKeyPairSync('rsa', {
       modulusLength: 2048,
       privateKeyEncoding: { type: 'pkcs8', format: 'pem' },
@@ -77,16 +77,16 @@ describe('activitypub-actor', () => {
     });
     const encodeBase64 = (value: string) => Buffer.from(value).toString('base64');
 
-    describe('given a double base64 encoded private key', () => {
+    describe('given a base64 encoded private key', () => {
       it('returns the matching public key', () => {
-        expect(derivePublicKeyPemFromDoubleBase64EncodedPrivateKey(encodeBase64(encodeBase64(privateKey))))
+        expect(derivePublicKeyPemFromBase64EncodedPrivateKey(encodeBase64(privateKey)))
           .toStrictEqual(O.some(publicKey));
       });
     });
 
-    describe('given a single base64 encoded private key', () => {
+    describe('given a private key that is not base64 encoded', () => {
       it('returns none', () => {
-        expect(derivePublicKeyPemFromDoubleBase64EncodedPrivateKey(encodeBase64(privateKey))).toStrictEqual(O.none);
+        expect(derivePublicKeyPemFromBase64EncodedPrivateKey(privateKey)).toStrictEqual(O.none);
       });
     });
   });
