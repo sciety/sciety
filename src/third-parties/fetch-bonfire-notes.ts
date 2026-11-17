@@ -59,7 +59,8 @@ const signedHeaders = (url: string, privateKeyPem: string): Record<string, strin
   const date = new Date().toUTCString();
   const signingString = `(request-target): get ${pathname}\nhost: ${host}\ndate: ${date}`;
   const signature = createSign('sha256').update(signingString).sign(privateKeyPem, 'base64');
-  const keyId = `${process.env.APP_ORIGIN ?? 'https://sciety.org'}/activitypub/actor#main-key`;
+  const keyId = process.env.ACTIVITYPUB_KEY_ID
+    ?? `${process.env.APP_ORIGIN ?? 'https://sciety.org'}/activitypub/actor#main-key`;
   return {
     Host: host,
     Date: date,
