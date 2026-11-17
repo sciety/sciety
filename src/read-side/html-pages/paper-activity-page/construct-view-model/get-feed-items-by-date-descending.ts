@@ -4,6 +4,7 @@ import * as Ord from 'fp-ts/Ord';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
+import { constructActivityPubMentionFeedItems } from './construct-activitypub-mention-feed-items';
 import { constructAtprotoMentionFeedItems } from './construct-atproto-mention-feed-items';
 import { Dependencies } from './dependencies';
 import { toEvaluationPublishedFeedItem } from './to-evaluation-published-feed-item';
@@ -83,6 +84,7 @@ export const getFeedItemsByDateDescending: GetFeedItemsByDateDescending = (
       T.of,
     ),
     atprotoMentions: constructAtprotoMentionFeedItems(dependencies, history),
+    activityPubMentions: constructActivityPubMentionFeedItems(dependencies, history),
   }),
   sequenceS(T.ApplyPar),
   T.map((items) => [
@@ -90,6 +92,7 @@ export const getFeedItemsByDateDescending: GetFeedItemsByDateDescending = (
     ...items.expressions,
     ...constructCassyniSeminarFeedItems(history),
     ...items.atprotoMentions,
+    ...items.activityPubMentions,
   ]),
   T.map(RA.sort(byDateDescending)),
 );

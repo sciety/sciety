@@ -58,11 +58,20 @@ export type AtprotoMentionPublishedFeedItem = {
   href: string,
 };
 
+export type ActivityPubMentionPublishedFeedItem = {
+  type: 'activitypub-mention-published',
+  publishedAt: Date,
+  authorHandle: string,
+  content: SanitisedHtmlFragment,
+  href: string,
+};
+
 export type FeedItem =
   | EvaluationPublishedFeedItem
   | ExpressionPublishedFeedItem
   | CassyniSeminarPublishedFeedItem
-  | AtprotoMentionPublishedFeedItem;
+  | AtprotoMentionPublishedFeedItem
+  | ActivityPubMentionPublishedFeedItem;
 
 type ListSummary = {
   listName: string,

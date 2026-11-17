@@ -5,6 +5,7 @@ import { identity, pipe } from 'fp-ts/function';
 import { List } from '../../../../../src/read-models/lists';
 import { constructViewModel } from '../../../../../src/read-side/html-pages/paper-activity-page/construct-view-model';
 import { LoggedInUserListManagement, ViewModel } from '../../../../../src/read-side/html-pages/paper-activity-page/view-model';
+import { ActivityPubMention } from '../../../../../src/types/activitypub-mention';
 import { AtprotoMention } from '../../../../../src/types/atproto-mention';
 import * as DE from '../../../../../src/types/data-error';
 import * as LOID from '../../../../../src/types/list-owner-id';
@@ -189,6 +190,63 @@ describe('construct-view-model', () => {
 
     it('still requests mentions from Bluesky', () => {
       expect(requestedSources).toStrictEqual(['Bluesky']);
+    });
+  });
+
+  describe('when the paper has Bonfire notes', () => {
+    const note: ActivityPubMention = {
+      id: 'https://mathstodon.xyz/users/albertcardona/statuses/117585949913699724',
+      url: 'https://mathstodon.xyz/@albertcardona/117585949913699724',
+      attributedTo: 'https://mathstodon.xyz/users/albertcardona',
+      content: '<p>A preprint<script>alert(1)</script></p>',
+      published: arbitraryDate(),
+    };
+    let feedItems: ViewModel['feedItemsByDateDescending'];
+
+    beforeEach(async () => {
+      feedItems = await pipe(
+        {
+          latestExpressionDoi: arbitraryExpressionDoi(),
+          user: O.none,
+        },
+        constructViewModel({
+          ...framework.dependenciesForViews,
+          fetchBonfireNotes: () => TE.right([note]),
+        }),
+        TE.map((viewModel) => viewModel.feedItemsByDateDescending),
+        TE.getOrElse(abortTest('constructViewModel unexpectedly is on the left')),
+      )();
+    });
+
+    it('includes the notes in the feed, with sanitised content', () => {
+      expect(feedItems).toContainEqual({
+        type: 'activitypub-mention-published',
+        publishedAt: note.published,
+        authorHandle: 'albertcardona@mathstodon.xyz',
+        content: '<p>A preprint</p>',
+        href: note.url,
+      });
+    });
+  });
+
+  describe('when the Bonfire notes cannot be fetched', () => {
+    let viewModel: E.Either<unknown, ViewModel>;
+
+    beforeEach(async () => {
+      viewModel = await pipe(
+        {
+          latestExpressionDoi: arbitraryExpressionDoi(),
+          user: O.none,
+        },
+        constructViewModel({
+          ...framework.dependenciesForViews,
+          fetchBonfireNotes: () => TE.left(arbitraryDataError()),
+        }),
+      )();
+    });
+
+    it('returns on the right', () => {
+      expect(E.isRight(viewModel)).toBe(true);
     });
   });
 

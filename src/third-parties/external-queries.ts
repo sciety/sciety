@@ -1,6 +1,7 @@
 import { URL } from 'url';
 import * as O from 'fp-ts/Option';
 import * as TE from 'fp-ts/TaskEither';
+import { ActivityPubMention } from '../types/activitypub-mention';
 import { AtprotoMention } from '../types/atproto-mention';
 import * as DE from '../types/data-error';
 import { EvaluationLocator } from '../types/evaluation-locator';
@@ -19,6 +20,10 @@ type FetchAtprotoMentions = (
   sources: ReadonlyArray<AtprotoMention['source']>,
   additionalSembleUrls: ReadonlyArray<string>,
 ) => TE.TaskEither<DE.DataError, ReadonlyArray<AtprotoMention>>;
+
+type FetchBonfireNotes = (
+  history: PublishingHistory,
+) => TE.TaskEither<DE.DataError, ReadonlyArray<ActivityPubMention>>;
 
 type FetchByCategory = (
   queryParameters: QueryParameters,
@@ -64,6 +69,7 @@ type FetchSearchCategories = () => TE.TaskEither<DE.DataError, ReadonlyArray<str
 
 export type ExternalQueries = {
   fetchAtprotoMentions: FetchAtprotoMentions,
+  fetchBonfireNotes: FetchBonfireNotes,
   fetchByCategory: FetchByCategory,
   fetchEvaluationDigest: FetchEvaluationDigest,
   fetchEvaluationHumanReadableOriginalUrl: FetchEvaluationHumanReadableOriginalUrl,

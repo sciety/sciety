@@ -12,6 +12,7 @@ import { ExternalNotifications, ExternalQueries } from '../../third-parties';
 
 export const stubAdapters: ExternalQueries & ExternalNotifications = {
   fetchAtprotoMentions: () => TE.right([]),
+  fetchBonfireNotes: () => TE.right([]),
   fetchByCategory,
   fetchExpressionFrontMatter: localFetchPaperExpressionFrontMatter,
   fetchEvaluationHumanReadableOriginalUrl: () => TE.right(new URL('https://example.com')),

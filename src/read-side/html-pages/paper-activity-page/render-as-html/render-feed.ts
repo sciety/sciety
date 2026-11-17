@@ -1,5 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray';
 import { pipe } from 'fp-ts/function';
+import { renderActivityPubMentionPublishedFeedItem } from './render-activitypub-mention-published-feed-item';
 import { renderAtprotoMentionPublishedFeedItem } from './render-atproto-mention-published-feed-item';
 import { renderEvaluationPublishedFeedItem } from './render-evaluation-published-feed-item';
 import { renderExpressionPublishedFeedItem } from './render-expression-published-feed-item';
@@ -52,6 +53,8 @@ const renderFeedItem = (feedItem: FeedItem) => {
       return renderCassyniSeminarPublishedFeedItem(feedItem);
     case 'atproto-mention-published':
       return renderAtprotoMentionPublishedFeedItem(feedItem);
+    case 'activitypub-mention-published':
+      return renderActivityPubMentionPublishedFeedItem(feedItem);
   }
 };
 
