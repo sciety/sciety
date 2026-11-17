@@ -5,8 +5,11 @@
 #
 # For each object the signing string, the response status and, for a 200, the
 # object's key fields are written to stdout, and the full object is written to
-# <output-dir>/<object-id>.json, replacing any earlier copy. Redirects are not
-# followed: a new host needs a new signature, so the Location is printed instead.
+# <output-dir>/<object-id>.json, replacing any earlier copy, as:
+#   {"bonfireUrl": "<the url requested>", "object": {...the object, unchanged...}}
+# A browser opening bonfireUrl is redirected to the post's page on Bonfire.
+# Redirects are not followed: a new host needs a new signature, so the Location
+# is printed instead.
 #
 # The private key is read from ACTIVITYPUB_PRIVATE_KEY, base64-encoded as the
 # app expects it. It must be the key whose public key is served at
@@ -91,7 +94,7 @@ fetch_signed() {
         echo "response is not JSON, not saved: $(cat "$response_body")"
         return
       fi
-      jq . "$response_body" > "$output_file"
+      jq --arg bonfireUrl "$url" '{bonfireUrl: $bonfireUrl, object: .}' "$response_body" > "$output_file"
       jq '{id, type, url, attributedTo, published, content: (.content // "" | .[0:300])}' "$response_body"
       echo "saved to: $output_file"
       ;;

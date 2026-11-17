@@ -1,94 +1,97 @@
 {
-  "@context": [
-    "https://www.w3.org/ns/activitystreams",
-    {
-      "@language": "en",
-      "Hashtag": "as:Hashtag",
-      "KeyPackage": "https://purl.archive.org/socialweb/mls#KeyPackage",
-      "ValueFlows": "https://w3id.org/valueflows#",
-      "_misskey_quote": "https://misskey-hub.net/ns/#_misskey_quote",
-      "commentsEnabled": "pt:commentsEnabled",
-      "mlsSignature": "https://purl.archive.org/socialweb/mls#Signature",
-      "mlsSignerKeyId": "https://purl.archive.org/socialweb/mls#SignerKeyId",
-      "om2": "http://www.ontology-of-units-of-measure.org/resource/om-2/",
-      "pt": "https://joinpeertube.org/ns#",
-      "quote": {
-        "@id": "https://w3id.org/fep/044f#quote",
-        "@type": "@id"
+  "bonfireUrl": "https://bonfire.cafe/pub/objects/01M74PBFVRXXJ03A0QT56XFSWM",
+  "object": {
+    "@context": [
+      "https://www.w3.org/ns/activitystreams",
+      {
+        "@language": "en",
+        "Hashtag": "as:Hashtag",
+        "KeyPackage": "https://purl.archive.org/socialweb/mls#KeyPackage",
+        "ValueFlows": "https://w3id.org/valueflows#",
+        "_misskey_quote": "https://misskey-hub.net/ns/#_misskey_quote",
+        "commentsEnabled": "pt:commentsEnabled",
+        "mlsSignature": "https://purl.archive.org/socialweb/mls#Signature",
+        "mlsSignerKeyId": "https://purl.archive.org/socialweb/mls#SignerKeyId",
+        "om2": "http://www.ontology-of-units-of-measure.org/resource/om-2/",
+        "pt": "https://joinpeertube.org/ns#",
+        "quote": {
+          "@id": "https://w3id.org/fep/044f#quote",
+          "@type": "@id"
+        },
+        "quoteAuthorization": {
+          "@id": "https://w3id.org/fep/044f#quoteAuthorization",
+          "@type": "@id"
+        },
+        "sensitive": "as:sensitive"
+      }
+    ],
+    "actor": "https://fediscience.org/users/rupdecat",
+    "atomUri": "https://fediscience.org/users/rupdecat/statuses/117596504130124409",
+    "attachment": [],
+    "attributedTo": "https://fediscience.org/users/rupdecat",
+    "cc": [
+      "https://fediscience.org/users/rupdecat/followers"
+    ],
+    "content": "<p>A nice DOI on my reading list for students of my reproducible computing course on HPC systems? <a href=\"https://doi.org/10.64898/2026.09.11.751004\" target=\"_blank\" rel=\"nofollow noopener\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">doi.org/10.64898/2026.09.11.75</span><span class=\"invisible\">1004</span></a> ! </p><p>&quot; From Prompt to Pipeline &amp; Really not a good idea to use LLMs for Workflow programming&quot;</p><p>SCNR</p><p><a href=\"https://fediscience.org/tags/noai\" class=\"mention hashtag\" rel=\"tag\">#<span>noai</span></a> <a href=\"https://fediscience.org/tags/ai\" class=\"mention hashtag\" rel=\"tag\">#<span>ai</span></a> <a href=\"https://fediscience.org/tags/reproduciblecomputing\" class=\"mention hashtag\" rel=\"tag\">#<span>reproduciblecomputing</span></a></p>",
+    "contentMap": {
+      "en": "<p>A nice DOI on my reading list for students of my reproducible computing course on HPC systems? <a href=\"https://doi.org/10.64898/2026.09.11.751004\" target=\"_blank\" rel=\"nofollow noopener\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">doi.org/10.64898/2026.09.11.75</span><span class=\"invisible\">1004</span></a> ! </p><p>&quot; From Prompt to Pipeline &amp; Really not a good idea to use LLMs for Workflow programming&quot;</p><p>SCNR</p><p><a href=\"https://fediscience.org/tags/noai\" class=\"mention hashtag\" rel=\"tag\">#<span>noai</span></a> <a href=\"https://fediscience.org/tags/ai\" class=\"mention hashtag\" rel=\"tag\">#<span>ai</span></a> <a href=\"https://fediscience.org/tags/reproduciblecomputing\" class=\"mention hashtag\" rel=\"tag\">#<span>reproduciblecomputing</span></a></p>"
+    },
+    "context": "https://fediscience.org/contexts/109245696038111591-117596504130124409",
+    "emoji": {},
+    "id": "https://fediscience.org/users/rupdecat/statuses/117596504130124409",
+    "inReplyTo": null,
+    "inReplyToAtomUri": null,
+    "interactionPolicy": {
+      "canQuote": {
+        "automaticApproval": [
+          "https://www.w3.org/ns/activitystreams#Public"
+        ]
+      }
+    },
+    "likes": {
+      "id": "https://fediscience.org/users/rupdecat/statuses/117596504130124409/likes",
+      "totalItems": 0,
+      "type": "Collection"
+    },
+    "published": "2026-11-11T06:57:31Z",
+    "replies": {
+      "first": {
+        "items": [],
+        "next": "https://fediscience.org/users/rupdecat/statuses/117596504130124409/replies?only_other_accounts=true&page=true",
+        "partOf": "https://fediscience.org/users/rupdecat/statuses/117596504130124409/replies",
+        "type": "CollectionPage"
       },
-      "quoteAuthorization": {
-        "@id": "https://w3id.org/fep/044f#quoteAuthorization",
-        "@type": "@id"
+      "id": "https://fediscience.org/users/rupdecat/statuses/117596504130124409/replies",
+      "type": "Collection"
+    },
+    "sensitive": false,
+    "shares": {
+      "id": "https://fediscience.org/users/rupdecat/statuses/117596504130124409/shares",
+      "totalItems": 0,
+      "type": "Collection"
+    },
+    "summary": "",
+    "tag": [
+      {
+        "href": "https://fediscience.org/tags/noai",
+        "name": "#noai",
+        "type": "Hashtag"
       },
-      "sensitive": "as:sensitive"
-    }
-  ],
-  "actor": "https://fediscience.org/users/rupdecat",
-  "atomUri": "https://fediscience.org/users/rupdecat/statuses/117596504130124409",
-  "attachment": [],
-  "attributedTo": "https://fediscience.org/users/rupdecat",
-  "cc": [
-    "https://fediscience.org/users/rupdecat/followers"
-  ],
-  "content": "<p>A nice DOI on my reading list for students of my reproducible computing course on HPC systems? <a href=\"https://doi.org/10.64898/2026.09.11.751004\" target=\"_blank\" rel=\"nofollow noopener\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">doi.org/10.64898/2026.09.11.75</span><span class=\"invisible\">1004</span></a> ! </p><p>&quot; From Prompt to Pipeline &amp; Really not a good idea to use LLMs for Workflow programming&quot;</p><p>SCNR</p><p><a href=\"https://fediscience.org/tags/noai\" class=\"mention hashtag\" rel=\"tag\">#<span>noai</span></a> <a href=\"https://fediscience.org/tags/ai\" class=\"mention hashtag\" rel=\"tag\">#<span>ai</span></a> <a href=\"https://fediscience.org/tags/reproduciblecomputing\" class=\"mention hashtag\" rel=\"tag\">#<span>reproduciblecomputing</span></a></p>",
-  "contentMap": {
-    "en": "<p>A nice DOI on my reading list for students of my reproducible computing course on HPC systems? <a href=\"https://doi.org/10.64898/2026.09.11.751004\" target=\"_blank\" rel=\"nofollow noopener\" translate=\"no\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">doi.org/10.64898/2026.09.11.75</span><span class=\"invisible\">1004</span></a> ! </p><p>&quot; From Prompt to Pipeline &amp; Really not a good idea to use LLMs for Workflow programming&quot;</p><p>SCNR</p><p><a href=\"https://fediscience.org/tags/noai\" class=\"mention hashtag\" rel=\"tag\">#<span>noai</span></a> <a href=\"https://fediscience.org/tags/ai\" class=\"mention hashtag\" rel=\"tag\">#<span>ai</span></a> <a href=\"https://fediscience.org/tags/reproduciblecomputing\" class=\"mention hashtag\" rel=\"tag\">#<span>reproduciblecomputing</span></a></p>"
-  },
-  "context": "https://fediscience.org/contexts/109245696038111591-117596504130124409",
-  "emoji": {},
-  "id": "https://fediscience.org/users/rupdecat/statuses/117596504130124409",
-  "inReplyTo": null,
-  "inReplyToAtomUri": null,
-  "interactionPolicy": {
-    "canQuote": {
-      "automaticApproval": [
-        "https://www.w3.org/ns/activitystreams#Public"
-      ]
-    }
-  },
-  "likes": {
-    "id": "https://fediscience.org/users/rupdecat/statuses/117596504130124409/likes",
-    "totalItems": 0,
-    "type": "Collection"
-  },
-  "published": "2026-11-11T06:57:31Z",
-  "replies": {
-    "first": {
-      "items": [],
-      "next": "https://fediscience.org/users/rupdecat/statuses/117596504130124409/replies?only_other_accounts=true&page=true",
-      "partOf": "https://fediscience.org/users/rupdecat/statuses/117596504130124409/replies",
-      "type": "CollectionPage"
-    },
-    "id": "https://fediscience.org/users/rupdecat/statuses/117596504130124409/replies",
-    "type": "Collection"
-  },
-  "sensitive": false,
-  "shares": {
-    "id": "https://fediscience.org/users/rupdecat/statuses/117596504130124409/shares",
-    "totalItems": 0,
-    "type": "Collection"
-  },
-  "summary": "",
-  "tag": [
-    {
-      "href": "https://fediscience.org/tags/noai",
-      "name": "#noai",
-      "type": "Hashtag"
-    },
-    {
-      "href": "https://fediscience.org/tags/ai",
-      "name": "#ai",
-      "type": "Hashtag"
-    },
-    {
-      "href": "https://fediscience.org/tags/reproduciblecomputing",
-      "name": "#reproduciblecomputing",
-      "type": "Hashtag"
-    }
-  ],
-  "to": [
-    "https://www.w3.org/ns/activitystreams#Public"
-  ],
-  "type": "Note",
-  "url": "https://fediscience.org/@rupdecat/117596504130124409"
+      {
+        "href": "https://fediscience.org/tags/ai",
+        "name": "#ai",
+        "type": "Hashtag"
+      },
+      {
+        "href": "https://fediscience.org/tags/reproduciblecomputing",
+        "name": "#reproduciblecomputing",
+        "type": "Hashtag"
+      }
+    ],
+    "to": [
+      "https://www.w3.org/ns/activitystreams#Public"
+    ],
+    "type": "Note",
+    "url": "https://fediscience.org/@rupdecat/117596504130124409"
+  }
 }

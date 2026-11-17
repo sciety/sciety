@@ -25,7 +25,7 @@ const toFeedItem = (note: ActivityPubMention): ActivityPubMentionPublishedFeedIt
   publishedAt: note.published,
   authorHandle: toAuthorHandle(note.attributedTo),
   content: sanitise(toHtmlFragment(note.content)),
-  href: note.url,
+  href: note.bonfireUrl,
 });
 
 export const constructActivityPubMentionFeedItems = (

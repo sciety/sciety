@@ -16,7 +16,7 @@ import * as PH from '../types/publishing-history';
 
 const bonfireNotesDirectory = path.resolve(__dirname, '..', '..', 'data', 'bonfire-activitypub-objects');
 
-export const activityPubNoteCodec = t.type({
+const activityPubNoteCodec = t.type({
   type: t.literal('Note'),
   id: t.string,
   url: t.string,
@@ -24,6 +24,22 @@ export const activityPubNoteCodec = t.type({
   content: t.string,
   published: tt.DateFromISOString,
 }, 'activityPubNoteCodec');
+
+const savedBonfireObjectCodec = t.type({
+  bonfireUrl: t.string,
+  object: activityPubNoteCodec,
+}, 'savedBonfireObjectCodec');
+
+const toActivityPubMention = (
+  { bonfireUrl, object }: t.TypeOf<typeof savedBonfireObjectCodec>,
+): ActivityPubMention => ({
+  id: object.id,
+  bonfireUrl,
+  url: object.url,
+  attributedTo: object.attributedTo,
+  content: object.content,
+  published: object.published,
+});
 
 const escapeForRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
@@ -64,7 +80,8 @@ export const fetchBonfireNotes = (logger: Logger): ExternalQueries['fetchBonfire
     files,
     RA.map((contents) => pipe(
       parseJson(contents),
-      E.chainW(decodeAndLogFailures(logger, activityPubNoteCodec)),
+      E.chainW(decodeAndLogFailures(logger, savedBonfireObjectCodec)),
+      E.map(toActivityPubMention),
     )),
     RA.rights,
     notesMentioningAnyOf(PH.getAllExpressionDois(history)),

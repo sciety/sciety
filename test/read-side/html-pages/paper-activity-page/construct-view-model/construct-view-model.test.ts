@@ -196,6 +196,7 @@ describe('construct-view-model', () => {
   describe('when the paper has Bonfire notes', () => {
     const note: ActivityPubMention = {
       id: 'https://mathstodon.xyz/users/albertcardona/statuses/117585949913699724',
+      bonfireUrl: 'https://bonfire.cafe/pub/objects/01M6ZWRSBGF4A8HGDDEBE8KNFG',
       url: 'https://mathstodon.xyz/@albertcardona/117585949913699724',
       attributedTo: 'https://mathstodon.xyz/users/albertcardona',
       content: '<p>A preprint<script>alert(1)</script></p>',
@@ -224,7 +225,7 @@ describe('construct-view-model', () => {
         publishedAt: note.published,
         authorHandle: 'albertcardona@mathstodon.xyz',
         content: '<p>A preprint</p>',
-        href: note.url,
+        href: note.bonfireUrl,
       });
     });
   });
