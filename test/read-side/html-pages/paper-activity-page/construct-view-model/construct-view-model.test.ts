@@ -194,40 +194,71 @@ describe('construct-view-model', () => {
   });
 
   describe('when the paper has ActivityPub notes', () => {
-    const note: ActivityPubMention = {
+    const arbitraryNote = (author: ActivityPubMention['author']): ActivityPubMention => ({
       id: 'https://mathstodon.xyz/users/albertcardona/statuses/117585949913699724',
       source: 'Bonfire',
       href: 'https://bonfire.cafe/pub/objects/01M6ZWRSBGF4A8HGDDEBE8KNFG',
       attributedTo: 'https://mathstodon.xyz/users/albertcardona',
-      author: O.none,
+      author,
       content: '<p>A preprint<script>alert(1)</script></p>',
       published: arbitraryDate(),
-    };
-    let feedItems: ViewModel['feedItemsByDateDescending'];
-
-    beforeEach(async () => {
-      feedItems = await pipe(
-        {
-          latestExpressionDoi: arbitraryExpressionDoi(),
-          user: O.none,
-        },
-        constructViewModel({
-          ...framework.dependenciesForViews,
-          fetchActivityPubNotes: () => TE.right([note]),
-        }),
-        TE.map((viewModel) => viewModel.feedItemsByDateDescending),
-        TE.getOrElse(abortTest('constructViewModel unexpectedly is on the left')),
-      )();
     });
 
-    it('includes the notes in the feed, with sanitised content', () => {
-      expect(feedItems).toContainEqual({
-        type: 'activitypub-mention-published',
-        publishedAt: note.published,
-        source: note.source,
-        authorHandle: 'albertcardona@mathstodon.xyz',
-        content: '<p>A preprint</p>',
-        href: note.href,
+    const feedItemsFor = async (note: ActivityPubMention) => pipe(
+      {
+        latestExpressionDoi: arbitraryExpressionDoi(),
+        user: O.none,
+      },
+      constructViewModel({
+        ...framework.dependenciesForViews,
+        fetchActivityPubNotes: () => TE.right([note]),
+      }),
+      TE.map((viewModel) => viewModel.feedItemsByDateDescending),
+      TE.getOrElse(abortTest('constructViewModel unexpectedly is on the left')),
+    )();
+
+    describe('and the author details are available', () => {
+      const author = {
+        displayName: arbitraryString(),
+        handle: arbitraryWord(),
+        avatarUrl: O.some(arbitraryUri()),
+      };
+      const note = arbitraryNote(O.some(author));
+      let feedItems: ViewModel['feedItemsByDateDescending'];
+
+      beforeEach(async () => {
+        feedItems = await feedItemsFor(note);
+      });
+
+      it('includes the notes in the feed, with the author details and sanitised content', () => {
+        expect(feedItems).toContainEqual({
+          type: 'activitypub-mention-published',
+          publishedAt: note.published,
+          source: note.source,
+          authorName: O.some(author.displayName),
+          authorHandle: author.handle,
+          authorAvatarUrl: author.avatarUrl,
+          content: '<p>A preprint</p>',
+          href: note.href,
+        });
+      });
+    });
+
+    describe('and the author details are not available', () => {
+      const note = arbitraryNote(O.none);
+      let feedItems: ViewModel['feedItemsByDateDescending'];
+
+      beforeEach(async () => {
+        feedItems = await feedItemsFor(note);
+      });
+
+      it('includes the notes in the feed, with a handle derived from the note', () => {
+        expect(feedItems).toContainEqual(expect.objectContaining({
+          type: 'activitypub-mention-published',
+          authorName: O.none,
+          authorHandle: 'albertcardona@mathstodon.xyz',
+          authorAvatarUrl: O.none,
+        }));
       });
     });
   });

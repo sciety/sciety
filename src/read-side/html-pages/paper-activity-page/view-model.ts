@@ -63,7 +63,9 @@ export type ActivityPubMentionPublishedFeedItem = {
   type: 'activitypub-mention-published',
   publishedAt: Date,
   source: ActivityPubMention['source'],
+  authorName: O.Option<string>,
   authorHandle: string,
+  authorAvatarUrl: O.Option<string>,
   content: SanitisedHtmlFragment,
   href: string,
 };

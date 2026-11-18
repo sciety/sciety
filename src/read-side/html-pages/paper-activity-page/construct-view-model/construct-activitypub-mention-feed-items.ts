@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -20,11 +21,27 @@ const toAuthorHandle = (attributedTo: string): string => {
   }
 };
 
+const toAuthorDetails = (note: ActivityPubMention) => pipe(
+  note.author,
+  O.match(
+    () => ({
+      authorName: O.none,
+      authorHandle: toAuthorHandle(note.attributedTo),
+      authorAvatarUrl: O.none,
+    }),
+    (author) => ({
+      authorName: O.some(author.displayName),
+      authorHandle: author.handle,
+      authorAvatarUrl: author.avatarUrl,
+    }),
+  ),
+);
+
 const toFeedItem = (note: ActivityPubMention): ActivityPubMentionPublishedFeedItem => ({
   type: 'activitypub-mention-published',
   publishedAt: note.published,
   source: note.source,
-  authorHandle: toAuthorHandle(note.attributedTo),
+  ...toAuthorDetails(note),
   content: sanitise(toHtmlFragment(note.content)),
   href: note.href,
 });
