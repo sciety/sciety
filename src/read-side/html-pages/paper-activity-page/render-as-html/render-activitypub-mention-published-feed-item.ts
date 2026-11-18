@@ -13,7 +13,7 @@ export const renderActivityPubMentionPublishedFeedItem: RenderActivityPubMention
       <div class="activity-feed__item__meta">
         <div class="activity-feed__item__title">
           <a href="${htmlEscape(feedItem.href)}">
-            Mentioned by @${htmlEscape(feedItem.authorHandle)} via Bonfire
+            Mentioned by @${htmlEscape(feedItem.authorHandle)} via ${htmlEscape(feedItem.source)}
           </a>
         </div>
         ${templateDate(feedItem.publishedAt, 'activity-feed__item__date')}

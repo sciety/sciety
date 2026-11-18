@@ -21,7 +21,7 @@ type FetchAtprotoMentions = (
   additionalSembleUrls: ReadonlyArray<string>,
 ) => TE.TaskEither<DE.DataError, ReadonlyArray<AtprotoMention>>;
 
-type FetchBonfireNotes = (
+type FetchActivityPubNotes = (
   history: PublishingHistory,
 ) => TE.TaskEither<DE.DataError, ReadonlyArray<ActivityPubMention>>;
 
@@ -69,7 +69,7 @@ type FetchSearchCategories = () => TE.TaskEither<DE.DataError, ReadonlyArray<str
 
 export type ExternalQueries = {
   fetchAtprotoMentions: FetchAtprotoMentions,
-  fetchBonfireNotes: FetchBonfireNotes,
+  fetchActivityPubNotes: FetchActivityPubNotes,
   fetchByCategory: FetchByCategory,
   fetchEvaluationDigest: FetchEvaluationDigest,
   fetchEvaluationHumanReadableOriginalUrl: FetchEvaluationHumanReadableOriginalUrl,

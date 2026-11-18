@@ -193,11 +193,11 @@ describe('construct-view-model', () => {
     });
   });
 
-  describe('when the paper has Bonfire notes', () => {
+  describe('when the paper has ActivityPub notes', () => {
     const note: ActivityPubMention = {
       id: 'https://mathstodon.xyz/users/albertcardona/statuses/117585949913699724',
-      bonfireUrl: 'https://bonfire.cafe/pub/objects/01M6ZWRSBGF4A8HGDDEBE8KNFG',
-      url: 'https://mathstodon.xyz/@albertcardona/117585949913699724',
+      source: 'Bonfire',
+      href: 'https://bonfire.cafe/pub/objects/01M6ZWRSBGF4A8HGDDEBE8KNFG',
       attributedTo: 'https://mathstodon.xyz/users/albertcardona',
       content: '<p>A preprint<script>alert(1)</script></p>',
       published: arbitraryDate(),
@@ -212,7 +212,7 @@ describe('construct-view-model', () => {
         },
         constructViewModel({
           ...framework.dependenciesForViews,
-          fetchBonfireNotes: () => TE.right([note]),
+          fetchActivityPubNotes: () => TE.right([note]),
         }),
         TE.map((viewModel) => viewModel.feedItemsByDateDescending),
         TE.getOrElse(abortTest('constructViewModel unexpectedly is on the left')),
@@ -223,14 +223,15 @@ describe('construct-view-model', () => {
       expect(feedItems).toContainEqual({
         type: 'activitypub-mention-published',
         publishedAt: note.published,
+        source: note.source,
         authorHandle: 'albertcardona@mathstodon.xyz',
         content: '<p>A preprint</p>',
-        href: note.bonfireUrl,
+        href: note.href,
       });
     });
   });
 
-  describe('when the Bonfire notes cannot be fetched', () => {
+  describe('when the ActivityPub notes cannot be fetched', () => {
     let viewModel: E.Either<unknown, ViewModel>;
 
     beforeEach(async () => {
@@ -241,7 +242,7 @@ describe('construct-view-model', () => {
         },
         constructViewModel({
           ...framework.dependenciesForViews,
-          fetchBonfireNotes: () => TE.left(arbitraryDataError()),
+          fetchActivityPubNotes: () => TE.left(arbitraryDataError()),
         }),
       )();
     });

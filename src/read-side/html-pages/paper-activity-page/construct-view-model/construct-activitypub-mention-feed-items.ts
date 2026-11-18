@@ -23,16 +23,17 @@ const toAuthorHandle = (attributedTo: string): string => {
 const toFeedItem = (note: ActivityPubMention): ActivityPubMentionPublishedFeedItem => ({
   type: 'activitypub-mention-published',
   publishedAt: note.published,
+  source: note.source,
   authorHandle: toAuthorHandle(note.attributedTo),
   content: sanitise(toHtmlFragment(note.content)),
-  href: note.bonfireUrl,
+  href: note.href,
 });
 
 export const constructActivityPubMentionFeedItems = (
   dependencies: Dependencies,
   history: PH.PublishingHistory,
 ): T.Task<ReadonlyArray<ActivityPubMentionPublishedFeedItem>> => pipe(
-  dependencies.fetchBonfireNotes(history),
+  dependencies.fetchActivityPubNotes(history),
   TE.map(RA.map(toFeedItem)),
   TE.getOrElseW(() => T.of([])),
 );

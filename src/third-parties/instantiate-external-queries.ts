@@ -4,8 +4,8 @@ import { CachingFetcherOptions, createCachingFetcher } from './cache';
 import { crossrefResponseBodyCachePredicate } from './crossref';
 import { searchEuropePmc } from './europe-pmc';
 import { ExternalQueries } from './external-queries';
+import { fetchActivityPubNotes } from './fetch-activitypub-notes';
 import { createFetchAtprotoMentions } from './fetch-atproto-mentions';
-import { fetchBonfireNotes } from './fetch-bonfire-notes';
 import { fetchByCategory } from './fetch-by-category';
 import { createFetchEvaluationDigest } from './fetch-evaluation-digest';
 import { fetchEvaluationHumanReadableOriginalUrl } from './fetch-evaluation-human-readable-original-url';
@@ -47,7 +47,7 @@ export const instantiateExternalQueries = (
 
   return {
     fetchAtprotoMentions: createFetchAtprotoMentions(queryExternalService, logger),
-    fetchBonfireNotes: fetchBonfireNotes(logger),
+    fetchActivityPubNotes: fetchActivityPubNotes(logger),
     fetchEvaluationDigest: createFetchEvaluationDigest(queryExternalService, logger),
     fetchEvaluationHumanReadableOriginalUrl: fetchEvaluationHumanReadableOriginalUrl(logger),
     fetchExpressionFrontMatter: fetchExpressionFrontMatter(

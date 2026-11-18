@@ -1,6 +1,7 @@
 import { URL } from 'url';
 import * as E from 'fp-ts/Either';
 import * as O from 'fp-ts/Option';
+import { ActivityPubMention } from '../../../types/activitypub-mention';
 import { ArticleAuthors } from '../../../types/article-authors';
 import { ArticleServer } from '../../../types/article-server';
 import { AtprotoMention } from '../../../types/atproto-mention';
@@ -61,6 +62,7 @@ export type AtprotoMentionPublishedFeedItem = {
 export type ActivityPubMentionPublishedFeedItem = {
   type: 'activitypub-mention-published',
   publishedAt: Date,
+  source: ActivityPubMention['source'],
   authorHandle: string,
   content: SanitisedHtmlFragment,
   href: string,

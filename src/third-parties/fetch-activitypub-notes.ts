@@ -18,18 +18,68 @@ import * as DE from '../types/data-error';
 import * as EDOI from '../types/expression-doi';
 import * as PH from '../types/publishing-history';
 
-const bonfirePosts: ReadonlyArray<{ url: string, dois: ReadonlyArray<EDOI.ExpressionDoi> }> = [
+type HardcodedPost = {
+  url: string,
+  source: ActivityPubMention['source'],
+  dois: ReadonlyArray<EDOI.ExpressionDoi>,
+};
+
+const hardcodedPosts: ReadonlyArray<HardcodedPost> = [
   {
     url: 'https://bonfire.cafe/pub/objects/01M74PBFVRXXJ03A0QT56XFSWM',
+    source: 'Bonfire',
     dois: [
       EDOI.fromValidatedString('10.64898/2026.09.11.751004'),
     ],
   },
   {
     url: 'https://bonfire.cafe/pub/objects/01M6ZWRSBGF4A8HGDDEBE8KNFG',
+    source: 'Bonfire',
     dois: [
       EDOI.fromValidatedString('10.64898/2026.06.08.730984'),
       EDOI.fromValidatedString('10.1101/2025.07.11.664448'),
+    ],
+  },
+  {
+    url: 'https://ecoevo.social/users/PeerCommunityIn/statuses/110898787082715407',
+    source: 'Mastodon',
+    dois: [
+      EDOI.fromValidatedString('10.1101/2023.04.27.538617'),
+    ],
+  },
+  {
+    url: 'https://ecoevo.social/users/PeerCommunityIn/statuses/110973481571242637',
+    source: 'Mastodon',
+    dois: [
+      EDOI.fromValidatedString('10.1101/2023.01.27.525839'),
+    ],
+  },
+  {
+    url: 'https://ecoevo.social/users/PeerCommunityIn/statuses/111125206971567151',
+    source: 'Mastodon',
+    dois: [
+      EDOI.fromValidatedString('10.1101/2022.12.09.519597'),
+    ],
+  },
+  {
+    url: 'https://ecoevo.social/users/PeerCommunityIn/statuses/111147567945124789',
+    source: 'Mastodon',
+    dois: [
+      EDOI.fromValidatedString('10.1101/2023.03.05.531080'),
+    ],
+  },
+  {
+    url: 'https://ecoevo.social/users/PeerCommunityIn/statuses/111222337507343232',
+    source: 'Mastodon',
+    dois: [
+      EDOI.fromValidatedString('10.1101/2022.10.11.509645'),
+    ],
+  },
+  {
+    url: 'https://mas.to/users/prereview/statuses/114631503581494067',
+    source: 'Mastodon',
+    dois: [
+      EDOI.fromValidatedString('10.1101/2025.04.27.650828'),
     ],
   },
 ];
@@ -45,10 +95,10 @@ const activityPubNoteCodec = t.type({
 
 type ActivityPubNote = t.TypeOf<typeof activityPubNoteCodec>;
 
-const toActivityPubMention = (bonfireUrl: string) => (note: ActivityPubNote): ActivityPubMention => ({
+const toActivityPubMention = (post: HardcodedPost) => (note: ActivityPubNote): ActivityPubMention => ({
   id: note.id,
-  bonfireUrl,
-  url: note.url,
+  source: post.source,
+  href: post.url,
   attributedTo: note.attributedTo,
   content: note.content,
   published: note.published,
@@ -69,40 +119,39 @@ const signedHeaders = (url: string, privateKeyPem: string): Record<string, strin
   };
 };
 
-const fetchNote = (logger: Logger, privateKeyPem: string) => (url: string) => pipe(
+const fetchNote = (logger: Logger, privateKeyPem: string) => (post: HardcodedPost) => pipe(
   TE.tryCatch(
-    async () => axios.get<unknown>(url, {
-      headers: constructHeadersWithUserAgent(signedHeaders(url, privateKeyPem)),
+    async () => axios.get<unknown>(post.url, {
+      headers: constructHeadersWithUserAgent(signedHeaders(post.url, privateKeyPem)),
       timeout: 5000,
     }),
     (error) => {
-      logger('error', 'Failed to fetch Bonfire note', { url, error: axios.isAxiosError(error) ? error.message : String(error) });
+      logger('error', 'Failed to fetch ActivityPub note', { url: post.url, source: post.source, error: axios.isAxiosError(error) ? error.message : String(error) });
       return DE.unavailable;
     },
   ),
   TE.chainEitherKW((response) => decodeAndLogFailures(logger, activityPubNoteCodec)(response.data)),
-  TE.map(toActivityPubMention(url)),
+  TE.map(toActivityPubMention(post)),
 );
 
 const decodeBase64 = (value: string) => Buffer.from(value, 'base64').toString('utf8');
 
-export const fetchBonfireNotes = (logger: Logger): ExternalQueries['fetchBonfireNotes'] => (history) => {
+export const fetchActivityPubNotes = (logger: Logger): ExternalQueries['fetchActivityPubNotes'] => (history) => {
   const dois = PH.getAllExpressionDois(history);
-  const relevantPostUrls = pipe(
-    bonfirePosts,
+  const relevantPosts = pipe(
+    hardcodedPosts,
     RA.filter((post) => post.dois.some((doi) => dois.includes(doi))),
-    RA.map((post) => post.url),
   );
-  if (relevantPostUrls.length === 0) {
+  if (relevantPosts.length === 0) {
     return TE.right([]);
   }
   const privateKey = process.env.ACTIVITYPUB_PRIVATE_KEY;
   if (privateKey === undefined || privateKey === '') {
-    logger('warn', 'ACTIVITYPUB_PRIVATE_KEY is not set; Bonfire notes cannot be fetched');
+    logger('warn', 'ACTIVITYPUB_PRIVATE_KEY is not set; ActivityPub notes cannot be fetched');
     return TE.right([]);
   }
   return pipe(
-    relevantPostUrls,
+    relevantPosts,
     T.traverseArray(fetchNote(logger, decodeBase64(privateKey))),
     T.map(RA.rights),
     T.map(E.right),
