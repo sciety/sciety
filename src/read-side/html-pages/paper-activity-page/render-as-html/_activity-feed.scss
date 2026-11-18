@@ -106,6 +106,30 @@ p.activity-feed__item__title {
   }
 }
 
+.activity-feed__item__footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.activity-feed__item__source-icon {
+  display: block;
+  height: functions.px-to-rem(24px);
+}
+
+.activity-feed__item__source-icon--mastodon {
+  width: functions.px-to-rem(29px);
+  background-color: settings.$colour-accent;
+  mask-image: url('/static/images/mastodon-social-icon.svg');
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+}
+
+.activity-feed__item__source-icon--bonfire {
+  width: functions.px-to-rem(20px);
+}
+
 .activity-feed__item__video_link {
   display: block;
   position: relative;
