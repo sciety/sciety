@@ -199,6 +199,7 @@ describe('construct-view-model', () => {
       source: 'Bonfire',
       href: 'https://bonfire.cafe/pub/objects/01M6ZWRSBGF4A8HGDDEBE8KNFG',
       attributedTo: 'https://mathstodon.xyz/users/albertcardona',
+      author: O.none,
       content: '<p>A preprint<script>alert(1)</script></p>',
       published: arbitraryDate(),
     };

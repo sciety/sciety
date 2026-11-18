@@ -3,17 +3,18 @@ import { createSign } from 'crypto';
 import { URL } from 'url';
 import axios from 'axios';
 import * as E from 'fp-ts/Either';
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { pipe } from 'fp-ts/function';
+import { flow, pipe } from 'fp-ts/function';
 import * as t from 'io-ts';
 import * as tt from 'io-ts-types';
 import { constructHeadersWithUserAgent } from './construct-headers-with-user-agent';
 import { decodeAndLogFailures } from './decode-and-log-failures';
 import { ExternalQueries } from './external-queries';
 import { Logger } from '../logger';
-import { ActivityPubMention } from '../types/activitypub-mention';
+import { ActivityPubAuthor, ActivityPubMention } from '../types/activitypub-mention';
 import * as DE from '../types/data-error';
 import * as EDOI from '../types/expression-doi';
 import * as PH from '../types/publishing-history';
@@ -95,11 +96,50 @@ const activityPubNoteCodec = t.type({
 
 type ActivityPubNote = t.TypeOf<typeof activityPubNoteCodec>;
 
-const toActivityPubMention = (post: HardcodedPost) => (note: ActivityPubNote): ActivityPubMention => ({
+const imageCodec = t.type({
+  url: t.union([t.string, t.type({ href: t.string })]),
+});
+
+const activityPubActorCodec = t.intersection([
+  t.type({
+    id: t.string,
+    preferredUsername: t.string,
+  }),
+  t.partial({
+    name: t.union([t.string, t.null]),
+    icon: t.union([imageCodec, t.readonlyArray(imageCodec), t.null]),
+  }),
+], 'activityPubActorCodec');
+
+type ActivityPubActor = t.TypeOf<typeof activityPubActorCodec>;
+
+const toAvatarUrl = (icon: ActivityPubActor['icon']): O.Option<string> => pipe(
+  O.fromNullable(icon),
+  O.chain((value) => (imageCodec.is(value) ? O.some(value) : RA.head(value))),
+  O.map((image) => (typeof image.url === 'string' ? image.url : image.url.href)),
+);
+
+const toActivityPubAuthor = (actor: ActivityPubActor): O.Option<ActivityPubAuthor> => pipe(
+  O.tryCatch(() => new URL(actor.id).host),
+  O.map((host) => ({
+    displayName: actor.name !== undefined && actor.name !== null && actor.name.trim() !== ''
+      ? actor.name
+      : actor.preferredUsername,
+    handle: `${actor.preferredUsername}@${host}`,
+    avatarUrl: toAvatarUrl(actor.icon),
+  })),
+);
+
+const toActivityPubMention = (
+  post: HardcodedPost,
+  note: ActivityPubNote,
+  author: O.Option<ActivityPubAuthor>,
+): ActivityPubMention => ({
   id: note.id,
   source: post.source,
   href: post.url,
   attributedTo: note.attributedTo,
+  author,
   content: note.content,
   published: note.published,
 });
@@ -119,19 +159,43 @@ const signedHeaders = (url: string, privateKeyPem: string): Record<string, strin
   };
 };
 
+const fetchSigned = (
+  logger: Logger,
+  privateKeyPem: string,
+  failureMessage: string,
+  url: string,
+  logPayload: Record<string, unknown> = {},
+) => TE.tryCatch(
+  async () => axios.get<unknown>(url, {
+    headers: constructHeadersWithUserAgent(signedHeaders(url, privateKeyPem)),
+    timeout: 5000,
+  }),
+  (error) => {
+    logger('error', failureMessage, { url, ...logPayload, error: axios.isAxiosError(error) ? error.message : String(error) });
+    return DE.unavailable;
+  },
+);
+
 const fetchNote = (logger: Logger, privateKeyPem: string) => (post: HardcodedPost) => pipe(
-  TE.tryCatch(
-    async () => axios.get<unknown>(post.url, {
-      headers: constructHeadersWithUserAgent(signedHeaders(post.url, privateKeyPem)),
-      timeout: 5000,
-    }),
-    (error) => {
-      logger('error', 'Failed to fetch ActivityPub note', { url: post.url, source: post.source, error: axios.isAxiosError(error) ? error.message : String(error) });
-      return DE.unavailable;
-    },
-  ),
+  fetchSigned(logger, privateKeyPem, 'Failed to fetch ActivityPub note', post.url, { source: post.source }),
   TE.chainEitherKW((response) => decodeAndLogFailures(logger, activityPubNoteCodec)(response.data)),
-  TE.map(toActivityPubMention(post)),
+);
+
+const fetchActor = (
+  logger: Logger,
+  privateKeyPem: string,
+) => (actorUrl: string): T.Task<O.Option<ActivityPubAuthor>> => pipe(
+  fetchSigned(logger, privateKeyPem, 'Failed to fetch ActivityPub actor', actorUrl),
+  TE.chainEitherKW((response) => decodeAndLogFailures(logger, activityPubActorCodec, { url: actorUrl })(response.data)),
+  T.map(flow(O.fromEither, O.chain(toActivityPubAuthor))),
+);
+
+const fetchMention = (logger: Logger, privateKeyPem: string) => (post: HardcodedPost) => pipe(
+  fetchNote(logger, privateKeyPem)(post),
+  TE.chainTaskK((note) => pipe(
+    fetchActor(logger, privateKeyPem)(note.attributedTo),
+    T.map((author) => toActivityPubMention(post, note, author)),
+  )),
 );
 
 const decodeBase64 = (value: string) => Buffer.from(value, 'base64').toString('utf8');
@@ -150,9 +214,10 @@ export const fetchActivityPubNotes = (logger: Logger): ExternalQueries['fetchAct
     logger('warn', 'ACTIVITYPUB_PRIVATE_KEY is not set; ActivityPub notes cannot be fetched');
     return TE.right([]);
   }
+  const privateKeyPem = decodeBase64(privateKey);
   return pipe(
     relevantPosts,
-    T.traverseArray(fetchNote(logger, decodeBase64(privateKey))),
+    T.traverseArray(fetchMention(logger, privateKeyPem)),
     T.map(RA.rights),
     T.map(E.right),
   );
