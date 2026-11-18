@@ -20,6 +20,10 @@
   @include card.list-item();
 }
 
+.activity-feed__item:has(> .activity-feed__item__contents--activitypub-mention) {
+  background-color: settings.$colour-background-grey;
+}
+
 .activity-feed__item__contents {
   margin-bottom: 1.5rem;
 }
