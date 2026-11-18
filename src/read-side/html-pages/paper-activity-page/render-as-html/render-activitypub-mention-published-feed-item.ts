@@ -17,7 +17,7 @@ const renderAuthor = (feedItem: ActivityPubMentionPublishedFeedItem) => pipe(
   feedItem.authorName,
   O.match(
     () => `@${htmlEscape(feedItem.authorHandle)}`,
-    (name) => `${htmlEscape(name)} (@${htmlEscape(feedItem.authorHandle)})`,
+    (name) => `${htmlEscape(name)}<br>(@${htmlEscape(feedItem.authorHandle)})`,
   ),
 );
 
@@ -32,7 +32,7 @@ export const renderActivityPubMentionPublishedFeedItem: RenderActivityPubMention
       <div class="activity-feed__item__meta">
         <div class="activity-feed__item__title">
           <a href="${htmlEscape(feedItem.href)}">
-            Mentioned by ${renderAuthor(feedItem)} via ${htmlEscape(feedItem.source)}
+            ${renderAuthor(feedItem)} via ${htmlEscape(feedItem.source)}
           </a>
         </div>
         ${templateDate(feedItem.publishedAt, 'activity-feed__item__date')}
