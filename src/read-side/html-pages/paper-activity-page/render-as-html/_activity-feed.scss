@@ -133,19 +133,7 @@ p.activity-feed-item__title {
 .activity-feed-item__source-icon {
   display: block;
   height: functions.px-to-rem(24px);
-}
-
-.activity-feed-item__source-icon--mastodon {
   width: functions.px-to-rem(29px);
-  background-color: settings.$colour-accent;
-  mask-image: url("/static/images/mastodon-social-icon.svg");
-  mask-repeat: no-repeat;
-  mask-position: center;
-  mask-size: contain;
-}
-
-.activity-feed-item__source-icon--bonfire {
-  width: functions.px-to-rem(20px);
 }
 
 .activity-feed-item__video_link {

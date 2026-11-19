@@ -22,8 +22,8 @@ const renderAuthor = (feedItem: ActivityPubMentionPublishedFeedItem) => pipe(
 );
 
 const sourceIcons: Record<ActivityPubMentionPublishedFeedItem['source'], string> = {
-  Bonfire: '<img class="activity-feed-item__source-icon activity-feed-item__source-icon--bonfire" src="/static/images/bonfire-social-icon.svg" alt="">',
-  Mastodon: '<span class="activity-feed-item__source-icon activity-feed-item__source-icon--mastodon" aria-hidden="true"></span>',
+  Bonfire: '<img class="activity-feed-item__source-icon" src="/static/images/bonfire-social-icon.svg" alt="">',
+  Mastodon: '<img class="activity-feed-item__source-icon" src="/static/images/mastodon-social-icon.svg" alt="">',
 };
 
 type RenderActivityPubMentionPublishedFeedItem = (feedItem: ActivityPubMentionPublishedFeedItem) => HtmlFragment;
