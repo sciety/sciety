@@ -30,7 +30,7 @@
 .activity-feed-item__header {
   margin-bottom: 1rem;
 
-  .activity-feed-item-contents--activitypub-mention & {
+  .activity-feed-item-contents--social-mention & {
     display: flex;
     justify-content: space-between;
   }
@@ -46,7 +46,7 @@
   width: avatar.$size--large;
   height: avatar.$size--large;
 
-  .activity-feed-item-contents--activitypub-mention & {
+  .activity-feed-item-contents--social-mention & {
     float: left;
     width: avatar.$size--medium;
     height: avatar.$size--medium;
@@ -57,7 +57,7 @@
 .activity-feed-item__date {
   color: settings.$colour-text-secondary;
 
-  .activity-feed-item-contents--activitypub-mention & {
+  .activity-feed-item-contents--social-mention & {
     display: inline-block;
     margin-block-start: functions.px-to-rem(12px);
   }

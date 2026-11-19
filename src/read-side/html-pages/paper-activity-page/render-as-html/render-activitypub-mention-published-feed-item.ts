@@ -31,7 +31,7 @@ type RenderActivityPubMentionPublishedFeedItem = (feedItem: ActivityPubMentionPu
 export const renderActivityPubMentionPublishedFeedItem: RenderActivityPubMentionPublishedFeedItem = (
   feedItem,
 ) => toHtmlFragment(`
-  <div class="activity-feed-item-contents activity-feed-item-contents--activitypub-mention">
+  <div class="activity-feed-item-contents activity-feed-item-contents--social-mention">
     <header class="activity-feed-item__header">
       <div class="activity-feed-item__header__author-information">  
         ${renderAvatar(feedItem.authorAvatarUrl)}
