@@ -36,12 +36,10 @@ const renderGroupNameAndLink = (groupDetails: EvaluationPublishedFeedItem['group
 );
 
 const eventMetadata = (feedItem: EvaluationPublishedFeedItem) => toHtmlFragment(`
-  <div class="activity-feed-item__meta">
-    <div class="activity-feed-item__title">
-      ${renderGroupNameAndLink(feedItem.groupDetails)}
-    </div>
-    ${templateDate(feedItem.publishedAt, 'activity-feed-item__date')}
+  <div class="activity-feed-item__title">
+    ${renderGroupNameAndLink(feedItem.groupDetails)}
   </div>
+  ${templateDate(feedItem.publishedAt, 'activity-feed-item__date')}
 `);
 
 const appendSourceLink = flow(

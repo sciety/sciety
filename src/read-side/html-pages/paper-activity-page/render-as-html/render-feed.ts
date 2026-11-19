@@ -13,12 +13,10 @@ const renderCassyniSeminarPublishedFeedItem = (feedItem: CassyniSeminarPublished
   <div class="activity-feed-item-contents">
     <header class="activity-feed-item__header">
       <img class="activity-feed-item__avatar" src="/static/images/cassyni-logo.png" alt="">
-      <div class="activity-feed-item__meta">
-        <div class="activity-feed-item__title">
-          <b>Video seminar held on Cassyni</b>
-        </div>
-        ${templateDate(feedItem.publishedAt, 'activity-feed-item__date')}
+      <div class="activity-feed-item__title">
+        <b>Video seminar held on Cassyni</b>
       </div>
+      ${templateDate(feedItem.publishedAt, 'activity-feed-item__date')}
     </header>
     <div class="activity-feed-item__body">
       <p>Seminar title: ${feedItem.title}</p>

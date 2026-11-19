@@ -27,21 +27,13 @@
 }
 
 .activity-feed-item__header {
-  display: flex;
-  align-items: center;
   margin-bottom: 1rem;
 }
 
 .activity-feed-item__avatar {
   margin-right: functions.px-to-rem(8px);
+  float: left;
   @include card.avatar();
-}
-
-.activity-feed-item__meta {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  flex-grow: 1;
 }
 
 .activity-feed-item__date {

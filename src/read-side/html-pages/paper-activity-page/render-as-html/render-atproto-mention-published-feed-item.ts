@@ -10,14 +10,12 @@ export const renderAtprotoMentionPublishedFeedItem: RenderAtprotoMentionPublishe
 ) => toHtmlFragment(`
   <div class="activity-feed-item-contents">
     <header class="activity-feed-item__header">
-      <div class="activity-feed-item__meta">
-        <div class="activity-feed-item__title">
-          <a href="${htmlEscape(feedItem.href)}">
-            Mentioned by @${htmlEscape(feedItem.authorHandle)} on ${htmlEscape(feedItem.source)}
-          </a>
-        </div>
-        ${templateDate(feedItem.publishedAt, 'activity-feed-item__date')}
+      <div class="activity-feed-item__title">
+        <a href="${htmlEscape(feedItem.href)}">
+          Mentioned by @${htmlEscape(feedItem.authorHandle)} on ${htmlEscape(feedItem.source)}
+        </a>
       </div>
+      ${templateDate(feedItem.publishedAt, 'activity-feed-item__date')}
     </header>
     <div class="activity-feed-item__body">
       <p>${htmlEscape(feedItem.text)}</p>
