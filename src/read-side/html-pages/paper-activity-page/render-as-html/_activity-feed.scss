@@ -1,3 +1,4 @@
+@use 'avatar';
 @use "card";
 @use "functions";
 @use "layout";
@@ -32,8 +33,14 @@
 
 .activity-feed-item__avatar {
   margin-right: functions.px-to-rem(8px);
-  float: left;
-  @include card.avatar();
+  float: right;
+  width: avatar.$size--large;
+  height: avatar.$size--large;
+
+  .activity-feed-item-contents--activitypub-mention & {
+    float: left;
+    @include card.avatar();
+  }
 }
 
 .activity-feed-item__date {
