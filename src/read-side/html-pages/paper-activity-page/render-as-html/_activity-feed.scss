@@ -48,12 +48,19 @@
 
   .activity-feed-item-contents--activitypub-mention & {
     float: left;
-    @include card.avatar();
+    width: avatar.$size--medium;
+    height: avatar.$size--medium;
+    margin-inline-end: functions.px-to-rem(12px);
   }
 }
 
 .activity-feed-item__date {
   color: settings.$colour-text-secondary;
+
+  .activity-feed-item-contents--activitypub-mention & {
+    display: inline-block;
+    margin-block-start: functions.px-to-rem(12px);
+  }
 }
 
 .activity-feed-item__title,

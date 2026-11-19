@@ -33,17 +33,17 @@ export const renderActivityPubMentionPublishedFeedItem: RenderActivityPubMention
 ) => toHtmlFragment(`
   <div class="activity-feed-item-contents activity-feed-item-contents--activitypub-mention">
     <header class="activity-feed-item__header">
-      <div class="activity-feed-item__header__author-information">        
+      <div class="activity-feed-item__header__author-information">  
         ${renderAvatar(feedItem.authorAvatarUrl)}
         <div class="activity-feed-item__title">
           <a href="${htmlEscape(feedItem.href)}">
             ${renderAuthor(feedItem)} via ${htmlEscape(feedItem.source)}
           </a>
         </div>
+        ${templateDate(feedItem.publishedAt, 'activity-feed-item__date')}
       </div>
       ${sourceIcons[feedItem.source]}
     </header>
-    ${templateDate(feedItem.publishedAt, 'activity-feed-item__date')}
     <div class="activity-feed-item__body">
       ${feedItem.content}
     </div>
