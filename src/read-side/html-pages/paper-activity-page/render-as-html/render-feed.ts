@@ -10,23 +10,23 @@ import { renderListItems } from '../../shared-components/list-items';
 import { CassyniSeminarPublishedFeedItem, FeedItem } from '../view-model';
 
 const renderCassyniSeminarPublishedFeedItem = (feedItem: CassyniSeminarPublishedFeedItem) => toHtmlFragment(`
-  <div class="activity-feed__item__contents">
-    <header class="activity-feed__item__header">
-      <img class="activity-feed__item__avatar" src="/static/images/cassyni-logo.png" alt="">
-      <div class="activity-feed__item__meta">
-        <div class="activity-feed__item__title">
+  <div class="activity-feed-item-contents">
+    <header class="activity-feed-item__header">
+      <img class="activity-feed-item__avatar" src="/static/images/cassyni-logo.png" alt="">
+      <div class="activity-feed-item__meta">
+        <div class="activity-feed-item__title">
           <b>Video seminar held on Cassyni</b>
         </div>
-        ${templateDate(feedItem.publishedAt, 'activity-feed__item__date')}
+        ${templateDate(feedItem.publishedAt, 'activity-feed-item__date')}
       </div>
     </header>
-    <div class="activity-feed__item__body">
+    <div class="activity-feed-item__body">
       <p>Seminar title: ${feedItem.title}</p>
       ${feedItem.reviewedPaperDoi === '10.46471/gigabyte.137' ? '<p>The following video starts at 25min 16sec.</p>' : ''}
-      <a class="activity-feed__item__video_link" href="${feedItem.videoLink}">
+      <a class="activity-feed-item__video_link" href="${feedItem.videoLink}">
         <span class="visually-hidden">Go to the seminar on Cassyni starting at the relevant time stamp.</span>
         <img src="${feedItem.imageUrl}" alt="">
-        <svg class="activity-feed__item__play_icon">
+        <svg class="activity-feed-item__play_icon">
           <style>
             .icon:hover circle {
               fill: rgb(206, 72, 26, 0.8);
@@ -67,7 +67,7 @@ export const renderFeed = (feedItems: ReadonlyArray<FeedItem>): HtmlFragment => 
     <section class="activity-feed">
       <h2 class="activity-feed__header">Article activity feed</h2>
       <ol role="list" class="activity-feed__list">
-        ${renderListItems(items, 'activity-feed__item')}
+        ${renderListItems(items, 'activity-feed-item')}
       </ol>
     </section>
   `,

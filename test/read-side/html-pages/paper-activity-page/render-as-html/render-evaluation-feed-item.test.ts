@@ -9,7 +9,7 @@ import * as RFI from '../evaluation-feed-item.helper';
 const toggleableContentSelector = '[data-behaviour="collapse_to_teaser"]';
 const teaserSelector = '[data-teaser]';
 const cheerioSafeIdSelector = (evaluationLocator: EvaluationLocator) => `#${evaluationLocatorCodec.encode(evaluationLocator).replace(':', '\\:')}`;
-const sourceLinkSelector = '.activity-feed__item__read_original_source';
+const sourceLinkSelector = '.activity-feed-item__read_original_source';
 
 describe('render-evaluation-feed-item', () => {
   const fullText = arbitraryWord(100);
@@ -51,7 +51,7 @@ describe('render-evaluation-feed-item', () => {
     it('renders without a teaser', async () => {
       expect(parsedResult(toggleableContentSelector)).toHaveLength(0);
       expect(parsedResult(teaserSelector)).toHaveLength(0);
-      expect(parsedResult('.activity-feed__item__body').text()).toStrictEqual(expect.stringContaining(fullText));
+      expect(parsedResult('.activity-feed-item__body').text()).toStrictEqual(expect.stringContaining(fullText));
       expect(parsedResult(sourceLinkSelector).attr('href')).toStrictEqual(source);
     });
 

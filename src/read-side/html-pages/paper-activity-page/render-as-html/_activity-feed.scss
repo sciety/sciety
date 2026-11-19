@@ -15,49 +15,49 @@
   }
 }
 
-.activity-feed__item {
+.activity-feed-item {
   border-bottom: 1px settings.$colour-furniture solid;
   padding-block: settings.$default-form-vertical-spacing;
   margin: 0;
   @include card.list-item();
 }
 
-.activity-feed__item__contents {
+.activity-feed-item-contents {
   margin-bottom: 0;
 }
 
-.activity-feed__item__header {
+.activity-feed-item__header {
   display: flex;
   align-items: center;
   margin-bottom: 1rem;
 }
 
-.activity-feed__item__avatar {
+.activity-feed-item__avatar {
   margin-right: functions.px-to-rem(8px);
   @include card.avatar();
 }
 
-.activity-feed__item__meta {
+.activity-feed-item__meta {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   flex-grow: 1;
 }
 
-.activity-feed__item__date {
+.activity-feed-item__date {
   color: settings.$colour-text-secondary;
 }
 
-.activity-feed__item__title,
-p.activity-feed__item__title {
+.activity-feed-item__title,
+p.activity-feed-item__title {
   padding-right: functions.px-to-rem(8px);
 }
 
-.activity-feed__item__title a {
+.activity-feed-item__title a {
   color: settings.$colour-text-primary;
 }
 
-.activity-feed__item__toggle {
+.activity-feed-item__toggle {
   font-weight: inherit;
   background: none;
   cursor: pointer;
@@ -73,13 +73,13 @@ p.activity-feed__item__title {
   }
 }
 
-.activity-feed__item__read_original_source {
+.activity-feed-item__read_original_source {
   @include link.engaged-state {
     text-decoration: underline;
   }
 }
 
-.activity-feed__item__body {
+.activity-feed-item__body {
   position: relative;
   width: 100%;
   margin-right: functions.px-to-rem(24px);
@@ -111,18 +111,18 @@ p.activity-feed__item__title {
   }
 }
 
-.activity-feed__item__footer {
+.activity-feed-item__footer {
   display: flex;
   justify-content: flex-end;
   margin-top: 1rem;
 }
 
-.activity-feed__item__source-icon {
+.activity-feed-item__source-icon {
   display: block;
   height: functions.px-to-rem(24px);
 }
 
-.activity-feed__item__source-icon--mastodon {
+.activity-feed-item__source-icon--mastodon {
   width: functions.px-to-rem(29px);
   background-color: settings.$colour-accent;
   mask-image: url("/static/images/mastodon-social-icon.svg");
@@ -131,22 +131,22 @@ p.activity-feed__item__title {
   mask-size: contain;
 }
 
-.activity-feed__item__source-icon--bonfire {
+.activity-feed-item__source-icon--bonfire {
   width: functions.px-to-rem(20px);
 }
 
-.activity-feed__item__video_link {
+.activity-feed-item__video_link {
   display: block;
   position: relative;
 }
 
-.activity-feed__item__play_icon {
+.activity-feed-item__play_icon {
   position: absolute;
   top: calc(50% - 50px);
   left: calc(50% - 50px);
 }
 
-.activity-feed__item__title {
+.activity-feed-item__title {
   a {
     @include link.normal-state {
       font-weight: bold;

@@ -47,7 +47,7 @@
     {
       "label": "An article page (expanded reviews)",
       "url": "http://sciety-test-app-1/articles/10.1101/646810",
-      "clickSelector": ".activity-feed__item__toggle",
+      "clickSelector": ".activity-feed-item__toggle",
       "selectors": [
         "main"
       ]
@@ -253,10 +253,14 @@
     "html_report": "backstop_data/html_report",
     "ci_report": "backstop_data/ci_report"
   },
-  "report": ["browser"],
+  "report": [
+    "browser"
+  ],
   "engine": "puppeteer",
   "engineOptions": {
-    "args": ["--no-sandbox"]
+    "args": [
+      "--no-sandbox"
+    ]
   },
   "dockerCommandTemplate": "docker run --rm -i --user $(id -u):$(id -g) --network sciety-test_default --mount type=bind,source=\"{cwd}\",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}",
   "asyncCaptureLimit": 5,

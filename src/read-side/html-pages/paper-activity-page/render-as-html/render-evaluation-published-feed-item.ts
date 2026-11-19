@@ -16,7 +16,7 @@ const avatar = (groupDetails: EvaluationPublishedFeedItem['groupDetails']) => pi
     (details) => details.avatarSrc,
   ),
   (src) => `
-    <img class="activity-feed__item__avatar" src="${src}" alt="">
+    <img class="activity-feed-item__avatar" src="${src}" alt="">
   `,
   toHtmlFragment,
 );
@@ -36,11 +36,11 @@ const renderGroupNameAndLink = (groupDetails: EvaluationPublishedFeedItem['group
 );
 
 const eventMetadata = (feedItem: EvaluationPublishedFeedItem) => toHtmlFragment(`
-  <div class="activity-feed__item__meta">
-    <div class="activity-feed__item__title">
+  <div class="activity-feed-item__meta">
+    <div class="activity-feed-item__title">
       ${renderGroupNameAndLink(feedItem.groupDetails)}
     </div>
-    ${templateDate(feedItem.publishedAt, 'activity-feed__item__date')}
+    ${templateDate(feedItem.publishedAt, 'activity-feed-item__date')}
   </div>
 `);
 
@@ -49,7 +49,7 @@ const appendSourceLink = flow(
   O.map(flow(
     (source) => `
       <div data-read-original-source>
-        <a href="${source.toString()}" class="activity-feed__item__read_original_source">
+        <a href="${source.toString()}" class="activity-feed-item__read_original_source">
           Read the original source
         </a>
       </div>
@@ -65,7 +65,7 @@ const renderWhenDigestAvailable = (teaserChars: number, feedItem: EvaluationPubl
     ${pipe(feedItem, appendSourceLink, O.getOrElse(constant('')))}
   `;
   let feedItemBody = `
-    <div class="activity-feed__item__body" data-behaviour="collapse_to_teaser">
+    <div class="activity-feed-item__body" data-behaviour="collapse_to_teaser">
       <div class="hidden" data-teaser${renderLangAttribute(feedItem.digestLanguageCode)}>
         ${teaserText}
       </div>
@@ -77,7 +77,7 @@ const renderWhenDigestAvailable = (teaserChars: number, feedItem: EvaluationPubl
 
   if (teaserText === digest) {
     feedItemBody = `
-      <div class="activity-feed__item__body">
+      <div class="activity-feed-item__body">
         <div>
           ${digestAndSourceLink}
         </div>
@@ -85,8 +85,8 @@ const renderWhenDigestAvailable = (teaserChars: number, feedItem: EvaluationPubl
     `;
   }
   return `
-    <article class="activity-feed__item__contents" id="${EL.evaluationLocatorCodec.encode(feedItem.id)}">
-      <header class="activity-feed__item__header">
+    <article class="activity-feed-item-contents" id="${EL.evaluationLocatorCodec.encode(feedItem.id)}">
+      <header class="activity-feed-item__header">
         ${avatar(feedItem.groupDetails)}
         ${eventMetadata(feedItem)}
       </header>
@@ -108,12 +108,12 @@ export const renderEvaluationPublishedFeedItem = (
   feedItem.digest,
   O.match(
     () => `
-      <article class="activity-feed__item__contents" id="${EL.evaluationLocatorCodec.encode(feedItem.id)}">
-        <header class="activity-feed__item__header">
+      <article class="activity-feed-item-contents" id="${EL.evaluationLocatorCodec.encode(feedItem.id)}">
+        <header class="activity-feed-item__header">
           ${avatar(feedItem.groupDetails)}
           ${eventMetadata(feedItem)}
         </header>
-        <div class="activity-feed__item__body">
+        <div class="activity-feed-item__body">
           <div>
             ${renderSourceLinkWhenDigestMissing(feedItem)}
           </div>
