@@ -85,7 +85,7 @@ const renderWhenDigestAvailable = (teaserChars: number, feedItem: EvaluationPubl
     `;
   }
   return `
-    <article class="activity-feed-item-contents" id="${EL.evaluationLocatorCodec.encode(feedItem.id)}">
+    <article class="activity-feed-item-contents activity-feed-item-contents--evaluation" id="${EL.evaluationLocatorCodec.encode(feedItem.id)}">
       <header class="activity-feed-item__header">
         ${avatar(feedItem.groupDetails)}
         ${eventMetadata(feedItem)}
@@ -108,7 +108,7 @@ export const renderEvaluationPublishedFeedItem = (
   feedItem.digest,
   O.match(
     () => `
-      <article class="activity-feed-item-contents" id="${EL.evaluationLocatorCodec.encode(feedItem.id)}">
+      <article class="activity-feed-item-contents activity-feed-item-contents--evaluation" id="${EL.evaluationLocatorCodec.encode(feedItem.id)}">
         <header class="activity-feed-item__header">
           ${avatar(feedItem.groupDetails)}
           ${eventMetadata(feedItem)}

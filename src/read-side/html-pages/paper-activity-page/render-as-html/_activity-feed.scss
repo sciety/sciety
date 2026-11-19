@@ -51,6 +51,10 @@
 .activity-feed-item__title,
 p.activity-feed-item__title {
   padding-right: functions.px-to-rem(8px);
+
+  .activity-feed-item-contents--evaluation & {
+    font-size: functions.px-to-rem(20px);
+  }
 }
 
 .activity-feed-item__title a {
