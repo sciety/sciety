@@ -1,4 +1,4 @@
-@use 'avatar';
+@use "avatar";
 @use "card";
 @use "functions";
 @use "layout";
@@ -29,6 +29,15 @@
 
 .activity-feed-item__header {
   margin-bottom: 1rem;
+
+  .activity-feed-item-contents--activitypub-mention & {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.activity-feed-item__header__author-information {
+  flex-basis: 80%;
 }
 
 .activity-feed-item__avatar {
@@ -112,12 +121,6 @@ p.activity-feed-item__title {
   .hidden {
     display: none;
   }
-}
-
-.activity-feed-item__footer {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 1rem;
 }
 
 .activity-feed-item__source-icon {
