@@ -19,6 +19,8 @@ const toFeedItem = (mention: AtprotoMention): AtprotoMentionPublishedFeedItem =>
   publishedAt: mention.createdAt,
   source: mention.source,
   authorHandle: mention.authorHandle,
+  authorName: mention.authorName,
+  authorAvatarUrl: mention.authorAvatarUrl,
   text: mention.text,
   href: mention.href,
 });

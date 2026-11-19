@@ -55,6 +55,8 @@ export type AtprotoMentionPublishedFeedItem = {
   publishedAt: Date,
   source: AtprotoMention['source'],
   authorHandle: string,
+  authorName: O.Option<string>,
+  authorAvatarUrl: O.Option<string>,
   text: string,
   href: string,
 };

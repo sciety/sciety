@@ -1,5 +1,6 @@
 import * as E from 'fp-ts/Either';
 import * as Eq from 'fp-ts/Eq';
+import * as O from 'fp-ts/Option';
 import * as RA from 'fp-ts/ReadonlyArray';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -19,9 +20,15 @@ import { QueryExternalService } from '../query-external-service';
 const blueskySearchPostsResponseCodec = t.type({
   posts: t.array(t.type({
     uri: t.string,
-    author: t.type({
-      handle: t.string,
-    }),
+    author: t.intersection([
+      t.type({
+        handle: t.string,
+      }),
+      t.partial({
+        displayName: t.string,
+        avatar: t.string,
+      }),
+    ]),
     record: t.type({
       text: t.string,
       createdAt: tt.DateFromISOString,
@@ -31,15 +38,26 @@ const blueskySearchPostsResponseCodec = t.type({
 
 const sembleLibrariesForUrlResponseCodec = t.type({
   libraries: t.array(t.type({
-    user: t.type({
-      handle: t.string,
-    }),
+    user: t.intersection([
+      t.type({
+        handle: t.string,
+      }),
+      t.partial({
+        name: t.string,
+        avatarUrl: t.string,
+      }),
+    ]),
     card: t.type({
       uri: t.string,
       createdAt: tt.DateFromISOString,
     }),
   })),
 }, 'sembleLibrariesForUrlResponseCodec');
+
+const nonBlank = (value: string | undefined): O.Option<string> => pipe(
+  O.fromNullable(value),
+  O.filter((v) => v.trim() !== ''),
+);
 
 const toRecordKey = (atUri: string) => atUri.substring(atUri.lastIndexOf('/') + 1);
 
@@ -61,6 +79,8 @@ const fetchFromBluesky = (
         atUri: post.uri,
         source: 'Bluesky' as const,
         authorHandle: post.author.handle,
+        authorName: nonBlank(post.author.displayName),
+        authorAvatarUrl: nonBlank(post.author.avatar),
         text: post.record.text,
         createdAt: post.record.createdAt,
         href: `https://bsky.app/profile/${post.author.handle}/post/${toRecordKey(post.uri)}`,
@@ -87,6 +107,8 @@ const fetchFromSemble = (
         atUri: library.card.uri,
         source: 'Semble' as const,
         authorHandle: library.user.handle,
+        authorName: nonBlank(library.user.name),
+        authorAvatarUrl: nonBlank(library.user.avatarUrl),
         text: 'Saved this paper to their library',
         createdAt: library.card.createdAt,
         href: `https://semble.so/url?id=${encodeURIComponent(paperUrl)}`,

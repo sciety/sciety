@@ -25,6 +25,8 @@ const arbitraryAtprotoMention = (): AtprotoMention => ({
   atUri: `at://did:plc:${arbitraryWord()}/app.bsky.feed.post/${arbitraryWord()}`,
   source: 'Bluesky',
   authorHandle: arbitraryWord(),
+  authorName: O.some(arbitraryString()),
+  authorAvatarUrl: O.some(arbitraryUri()),
   text: arbitraryString(),
   href: arbitraryUri(),
   createdAt: arbitraryDate(),
@@ -95,6 +97,8 @@ describe('construct-view-model', () => {
           publishedAt: mention.createdAt,
           source: mention.source,
           authorHandle: mention.authorHandle,
+          authorName: mention.authorName,
+          authorAvatarUrl: mention.authorAvatarUrl,
           text: mention.text,
           href: mention.href,
         });
