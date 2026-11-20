@@ -36,8 +36,8 @@ $_clear-button-inline-size: 48px;
   background-color: transparent;
   border-width: 0;
   cursor: pointer;
-  width: functions.px-to-rem($_clear-button-inline-size);
-  height: $_text-input-height;
+  inline-size: functions.px-to-rem($_clear-button-inline-size);
+  block-size: $_text-input-height;
 }
 
 .search-form__clear_icon {

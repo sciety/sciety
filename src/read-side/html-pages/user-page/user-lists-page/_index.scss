@@ -8,8 +8,8 @@
   margin-block: 0 functions.px-to-rem(24px);
 
   .page-header__avatar {
-    width: avatar.$size--large;
-    height: avatar.$size--large;
+    inline-size: avatar.$size--large;
+    block-size: avatar.$size--large;
     flex: 0 0 avatar.$size--large;
     margin-inline-end: functions.px-to-rem(16px);
     @include avatar.border();

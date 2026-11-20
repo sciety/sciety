@@ -117,14 +117,14 @@ $_avatar-height-coupled-to-buttons: 34px;
 
 .utility-bar-user-profile__avatar {
   background-color: settings.$colour-white;
-  width: functions.px-to-rem($_avatar-height-coupled-to-buttons);
-  height: auto;
+  inline-size: functions.px-to-rem($_avatar-height-coupled-to-buttons);
+  block-size: auto;
   margin-inline-end: functions.px-to-rem(20px);
   display: inline-block;
   @include avatar.border();
 
   @include breakpoints.site-header() {
-    width: functions.px-to-rem(avatar.$size--in-site-header);
+    inline-size: functions.px-to-rem(avatar.$size--in-site-header);
     margin-inline-end: functions.px-to-rem($_avatar-right-margin);
   }
 }
@@ -135,12 +135,12 @@ $_avatar-height-coupled-to-buttons: 34px;
 
   @include breakpoints.site-header() {
     display: unset;
-    max-width: functions.px-to-rem($_space-allocated-to-avatar-and-handle - avatar.$size--in-site-header - $_avatar-right-margin);
+    max-inline-size: functions.px-to-rem($_space-allocated-to-avatar-and-handle - avatar.$size--in-site-header - $_avatar-right-margin);
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
   @include breakpoints.site-header-show-full-user-handle($_space-allocated-to-avatar-and-handle) {
-    max-width: none;
+    max-inline-size: none;
   }
 }

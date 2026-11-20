@@ -15,7 +15,7 @@ $_value-statements-max-width: functions.px-to-rem(996px);
 .home-page-value-statements {
   padding-inline: functions.px-to-rem(settings.$default-gutter);
   margin-inline: auto;
-  max-width: $_value-statements-max-width;
+  max-inline-size: $_value-statements-max-width;
 }
 
 .home-page-value-statements__title {
@@ -39,7 +39,7 @@ $_value-statements-max-width: functions.px-to-rem(996px);
 
 .home-page-value-statement__copy {
   @include breakpoints.not-narrow() {
-    width: 50ch;
+    inline-size: 50ch;
     margin-inline-end: 4rem;
   } 
 
@@ -57,8 +57,8 @@ $_value-statements-max-width: functions.px-to-rem(996px);
 }
 
 .home-page-value-statement__image {
-  width: 100%;
-  max-width: 490px;
-  height: auto;
-  max-height: 365px;
+  inline-size: 100%;
+  max-inline-size: 490px;
+  block-size: auto;
+  max-block-size: 365px;
 }

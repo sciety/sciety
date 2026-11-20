@@ -90,8 +90,8 @@ $_card-border-radius: settings.$border-radius;
 }
 
 @mixin avatar() {
-  width: avatar.$size--small;
-  height: avatar.$size--small;
+  inline-size: avatar.$size--small;
+  block-size: avatar.$size--small;
   flex: 0 0 avatar.$size--small;
   @include avatar.border();
 }

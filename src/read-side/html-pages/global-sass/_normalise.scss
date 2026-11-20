@@ -24,7 +24,7 @@ html {
 }
 
 body {
-  min-height: 100vh;
+  min-block-size: 100vh;
   font-family: settings.$font-family;
   font-size: settings.$base-font-measure;
   line-height: 1.5;
@@ -123,7 +123,7 @@ textarea {
 
 textarea {
   display: block;
-  width: 100%;
+  inline-size: 100%;
   margin-block-end: functions.px-to-rem(settings.$default-form-gutter);
   padding: functions.px-to-rem(settings.$default-form-gutter);
   border: settings.$border-width solid settings.$colour-furniture;
@@ -147,8 +147,8 @@ input[type='checkbox'] {
 
 input[type='radio'] {
   flex-shrink: 0;
-  height: functions.px-to-rem(22px);
-  width: functions.px-to-rem(22px);
+  block-size: functions.px-to-rem(22px);
+  inline-size: functions.px-to-rem(22px);
   margin-block: 0;
 }
 

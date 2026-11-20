@@ -17,8 +17,8 @@ $_search-button-width-on-mobile: $_search-icon-size + $_search-button-padding * 
 $_left-links-width-not-narrow: 280px;
 
 .site-header {
-  width: 100%;
-  height: functions.px-to-rem(settings.$site-header-height);
+  inline-size: 100%;
+  block-size: functions.px-to-rem(settings.$site-header-height);
   display: flex;
   @include schemed-colours.light();
 
@@ -48,14 +48,14 @@ $_left-links-width-not-narrow: 280px;
   flex-grow: 1;
 
   @include breakpoints.site-header() {
-    width: functions.px-to-rem($_left-links-width-not-narrow);
+    inline-size: functions.px-to-rem($_left-links-width-not-narrow);
   }
 }
 
 .site-header__left_links_list {
   display: flex;
   align-items: center;
-  height: 100%;
+  block-size: 100%;
   justify-content: space-between;
   @include list.basics();
 
@@ -75,7 +75,7 @@ $_left-links-width-not-narrow: 280px;
 }
 
 .site-header__logo {
-  height: functions.px-to-rem(34px);
+  block-size: functions.px-to-rem(34px);
 }
 
 .site-header__right_links {
@@ -92,8 +92,8 @@ $_left-links-width-not-narrow: 280px;
 }
 
 .site-header__menu_icon {
-  width: $_menu-icon-size;
-  height: $_menu-icon-size;
+  inline-size: $_menu-icon-size;
+  block-size: $_menu-icon-size;
 }
 
 .site-header__menu_link {
@@ -127,8 +127,8 @@ $_left-links-width-not-narrow: 280px;
 }
 
 .site-header__search_icon {
-  width: $_search-icon-size;
-  height: $_search-icon-size;
+  inline-size: $_search-icon-size;
+  block-size: $_search-icon-size;
 }
 
 .site-header__search_label {

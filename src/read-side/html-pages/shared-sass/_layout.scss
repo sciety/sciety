@@ -7,22 +7,22 @@ $vertical-spacing-coupled-to-page-header: 3rem;
 @mixin visually-hidden() {
   border: 0;
   clip: rect(0 0 0 0);
-  height: 1px;
+  block-size: 1px;
   margin: -1px;
   overflow: hidden;
   padding: 0;
   position: absolute;
-  width: 1px;
+  inline-size: 1px;
   user-select: none;
 }
 
 @mixin visually-unhidden() {
   clip: auto;
-  height: auto;
+  block-size: auto;
   margin: 0;
   overflow: unset;
   position: static;
-  width: auto;
+  inline-size: auto;
   user-select: unset;
 }
 
@@ -64,7 +64,7 @@ $vertical-spacing-coupled-to-page-header: 3rem;
 }
 
 @mixin page-container() {
-  min-height: 100vh;
+  min-block-size: 100vh;
   display: flex;
   flex-direction: column;
 

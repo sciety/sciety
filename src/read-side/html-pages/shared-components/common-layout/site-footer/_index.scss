@@ -14,7 +14,7 @@ $_outer-vertical-spacing: functions.px-to-rem(32px);
 
 .pre-footer {
   margin-block-end: $_outer-vertical-spacing;
-  max-width: functions.px-to-rem(1200px);
+  max-inline-size: functions.px-to-rem(1200px);
   display: flex;
   flex-direction: column;
   justify-content: center;

@@ -2,12 +2,12 @@
 @use 'breakpoints';
 
 .page-header__visual_heading {
-  width: 100%;
-  height: 200px;
+  inline-size: 100%;
+  block-size: 200px;
 
   @include breakpoints.not-narrow() {
-    width: 400px;
-    height: 200px;
+    inline-size: 400px;
+    block-size: 200px;
   }
 }
 

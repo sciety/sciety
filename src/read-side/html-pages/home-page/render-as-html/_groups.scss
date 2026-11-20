@@ -9,7 +9,7 @@
   padding-inline: functions.px-to-rem(settings.$default-gutter);
   margin-inline: auto;
   margin-block-end: common.$section-vertical-separation;
-  max-width: common.$home-page-section-max-width;
+  max-inline-size: common.$home-page-section-max-width;
 }
 
 .home-page-groups__title {

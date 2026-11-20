@@ -9,7 +9,7 @@
 @use 'local-settings';
 
 .article-page-wrapper {
-  width: 100%;
+  inline-size: 100%;
 }
 
 .article-page-header-wrapper {
@@ -36,7 +36,7 @@
 
 .page-header.page-header--article {
   margin-block: 0 local-settings.$component-vertical-spacing;
-  max-width: functions.px-to-rem(settings.$max-site-width);
+  max-inline-size: functions.px-to-rem(settings.$max-site-width);
 
   @include breakpoints.not-narrow {
     margin: 0 auto;
@@ -86,7 +86,7 @@
   justify-content: space-between;
 
   img {
-    max-height: 2rem;
+    max-block-size: 2rem;
   }
 }
 

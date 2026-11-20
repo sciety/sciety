@@ -8,7 +8,7 @@ $_card-asset-gutter: functions.px-to-rem(8px);
 .list-card {
   $_is-entire-card-linked: true;
   display: flex;
-  height: 100%;
+  block-size: 100%;
   @include card.basics($_is-entire-card-linked);
 }
 
@@ -44,7 +44,7 @@ $_card-asset-gutter: functions.px-to-rem(8px);
 
   @include breakpoints.not-narrow() {
     display:unset;
-    max-width: $_image-max-width;
+    max-inline-size: $_image-max-width;
     object-fit: contain;
     margin-inline-start: $_card-asset-gutter;
   }

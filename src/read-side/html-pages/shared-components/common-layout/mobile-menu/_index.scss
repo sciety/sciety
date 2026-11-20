@@ -13,7 +13,7 @@ $_mobile-menu-perimeter-spacing: functions.px-to-rem(24px);
 
 .mobile-menu {
   padding-block-start: $_mobile-menu-perimeter-spacing;
-  height: 100vh;
+  block-size: 100vh;
   display: flex;
   flex-direction: column-reverse;
   justify-content: flex-end;
@@ -58,8 +58,8 @@ $_mobile-menu-perimeter-spacing: functions.px-to-rem(24px);
 
 .mobile-menu__user_avatar {
   background-color: settings.$colour-white;
-  width: functions.px-to-rem(avatar.$size--small);
-  height: auto;
+  inline-size: functions.px-to-rem(avatar.$size--small);
+  block-size: auto;
   display: inline-block;
   margin-inline-end: functions.px-to-rem(12px);
   @include avatar.border();

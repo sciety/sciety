@@ -102,8 +102,8 @@ $_clear-button-inline-size: 48px;
 .standard-form__full_width_text_input {
   border: settings.$border-width solid settings.$colour-furniture;
   border-radius: settings.$border-radius;
-  height: $_text-input-height;
-  width: 100%;
+  block-size: $_text-input-height;
+  inline-size: 100%;
   padding-block: functions.px-to-rem(17px);
   padding-inline: functions.px-to-rem(12px) functions.px-to-rem($_clear-button-inline-size);
   margin-block-end: functions.px-to-rem(8px);

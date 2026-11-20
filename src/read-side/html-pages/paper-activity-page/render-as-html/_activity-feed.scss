@@ -41,14 +41,14 @@
 
 .activity-feed-item__avatar {
   float: inline-end;
-  width: avatar.$size--large;
-  height: avatar.$size--large;
+  inline-size: avatar.$size--large;
+  block-size: avatar.$size--large;
   margin-inline-end: functions.px-to-rem(8px);
 
   .activity-feed-item-contents--social-mention & {
     float: inline-start;
-    width: avatar.$size--medium;
-    height: avatar.$size--medium;
+    inline-size: avatar.$size--medium;
+    block-size: avatar.$size--medium;
     margin-inline-end: functions.px-to-rem(12px);
   }
 }
@@ -99,7 +99,7 @@ p.activity-feed-item__title {
 
 .activity-feed-item__body {
   position: relative;
-  width: 100%;
+  inline-size: 100%;
   margin-inline-end: functions.px-to-rem(24px);
 
   h3 {
@@ -120,7 +120,7 @@ p.activity-feed-item__title {
   }
 
   img {
-    max-width: 100%;
+    max-inline-size: 100%;
   }
 
   .hidden {
@@ -130,8 +130,8 @@ p.activity-feed-item__title {
 
 .activity-feed-item__source-icon {
   display: block;
-  height: functions.px-to-rem(24px);
-  width: functions.px-to-rem(29px);
+  block-size: functions.px-to-rem(24px);
+  inline-size: functions.px-to-rem(29px);
 }
 
 .activity-feed-item__video_link {

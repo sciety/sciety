@@ -53,8 +53,8 @@ $_image-max-width: 200px;
 }
 
 .page-header--list .page-header__avatar {
-  width: avatar.$size--medium;
-  height: avatar.$size--medium;
+  inline-size: avatar.$size--medium;
+  block-size: avatar.$size--medium;
   margin-inline-end: functions.px-to-rem(8px);
   @include avatar.border();
 }
@@ -70,7 +70,7 @@ $_image-max-width: 200px;
 }
 
 .page-header--list .page-header__list_image {
-  max-width: $_image-max-width;
+  max-inline-size: $_image-max-width;
   object-fit: contain;
   margin-block-end: functions.px-to-rem(32px);
 }

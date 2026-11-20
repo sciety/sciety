@@ -24,8 +24,8 @@
 }
 
 .sciety-grid-two-columns {
-  width: 100%;
-  max-width: functions.px-to-rem(settings.$max-site-width);
+  inline-size: 100%;
+  max-inline-size: functions.px-to-rem(settings.$max-site-width);
   flex-grow: 1;
   @include breakpoints.not-narrow {
     margin: 0 auto;
