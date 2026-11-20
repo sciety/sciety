@@ -40,10 +40,10 @@
 }
 
 .activity-feed-item__avatar {
-  margin-inline-end: functions.px-to-rem(8px);
   float: right;
   width: avatar.$size--large;
   height: avatar.$size--large;
+  margin-inline-end: functions.px-to-rem(8px);
 
   .activity-feed-item-contents--social-mention & {
     float: left;
