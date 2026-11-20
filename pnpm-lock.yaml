@@ -21,14 +21,14 @@ importers:
         specifier: ^1.0.38
         version: 1.0.38
       axios:
-        specifier: ^1.16.0
-        version: 1.16.0(debug@4.4.3(supports-color@9.4.0))
+        specifier: ^1.20.0
+        version: 1.20.0(debug@4.4.3(supports-color@9.4.0))(supports-color@9.4.0)
       axios-cache-interceptor:
         specifier: ^1.12.0
-        version: 1.12.0(axios@1.16.0(debug@4.4.3(supports-color@9.4.0)))
+        version: 1.12.0(axios@1.20.0(debug@4.4.3(supports-color@9.4.0))(supports-color@9.4.0))
       axios-retry:
         specifier: 4.5.0
-        version: 4.5.0(axios@1.16.0(debug@4.4.3(supports-color@9.4.0)))
+        version: 4.5.0(axios@1.20.0(debug@4.4.3(supports-color@9.4.0))(supports-color@9.4.0))
       cheerio:
         specifier: ^1.2.0
         version: 1.2.0
@@ -88,7 +88,7 @@ importers:
         version: 0.3.5(fp-ts@2.16.11)(monocle-ts@2.3.13(fp-ts@2.16.11))
       passport-auth0:
         specifier: ^1.4.5
-        version: 1.4.5(debug@4.4.3(supports-color@9.4.0))
+        version: 1.4.5(debug@4.4.3(supports-color@9.4.0))(supports-color@9.4.0)
       passport-local:
         specifier: ^1.0.0
         version: 1.0.0
@@ -2306,8 +2306,8 @@ packages:
     peerDependencies:
       axios: 0.x || 1.x
 
-  axios@1.16.0:
-    resolution: {integrity: sha512-6hp5CwvTPlN2A31g5dxnwAX0orzM7pmCRDLnZSX772mv8WDqICwFjowHuPs04Mc8deIld1+ejhtaMn5vp6b+1w==}
+  axios@1.20.0:
+    resolution: {integrity: sha512-r8aOh8j9cGKpgQAqpzrUHnSIc6a59Y3Xf/cv8sy1DrHCkZHzQGEuoq1tARk6qSyDdtQGSDgpb9kFlruzPvrgwg==}
 
   b4a@1.6.7:
     resolution: {integrity: sha512-OnAYlL5b7LEkALw87fUVafQw5rVR9RjwGd4KUwNQ6DrrNmaVaUCgLipfVlzrPQ4tWOR9P0IXGNOx50jYCCdSJg==}
@@ -9353,27 +9353,29 @@ snapshots:
     dependencies:
       possible-typed-array-names: 1.0.0
 
-  axios-cache-interceptor@1.12.0(axios@1.16.0(debug@4.4.3(supports-color@9.4.0))):
+  axios-cache-interceptor@1.12.0(axios@1.20.0(debug@4.4.3(supports-color@9.4.0))(supports-color@9.4.0)):
     dependencies:
-      axios: 1.16.0(debug@4.4.3(supports-color@9.4.0))
+      axios: 1.20.0(debug@4.4.3(supports-color@9.4.0))(supports-color@9.4.0)
       cache-parser: 1.2.6
       fast-defer: 1.1.9
       http-vary: 1.0.3
       object-code: 2.0.0
       try: 1.0.3
 
-  axios-retry@4.5.0(axios@1.16.0(debug@4.4.3(supports-color@9.4.0))):
+  axios-retry@4.5.0(axios@1.20.0(debug@4.4.3(supports-color@9.4.0))(supports-color@9.4.0)):
     dependencies:
-      axios: 1.16.0(debug@4.4.3(supports-color@9.4.0))
+      axios: 1.20.0(debug@4.4.3(supports-color@9.4.0))(supports-color@9.4.0)
       is-retry-allowed: 2.2.0
 
-  axios@1.16.0(debug@4.4.3(supports-color@9.4.0)):
+  axios@1.20.0(debug@4.4.3(supports-color@9.4.0))(supports-color@9.4.0):
     dependencies:
       follow-redirects: 1.16.3(debug@4.4.3(supports-color@9.4.0))
       form-data: 4.0.6
+      https-proxy-agent: 5.0.1(supports-color@9.4.0)
       proxy-from-env: 2.1.0
     transitivePeerDependencies:
       - debug
+      - supports-color
 
   b4a@1.6.7: {}
 
@@ -13694,13 +13696,14 @@ snapshots:
 
   pascalcase@0.1.1: {}
 
-  passport-auth0@1.4.5(debug@4.4.3(supports-color@9.4.0)):
+  passport-auth0@1.4.5(debug@4.4.3(supports-color@9.4.0))(supports-color@9.4.0):
     dependencies:
-      axios: 1.16.0(debug@4.4.3(supports-color@9.4.0))
+      axios: 1.20.0(debug@4.4.3(supports-color@9.4.0))(supports-color@9.4.0)
       passport-oauth: 1.0.0
       passport-oauth2: 1.6.1
     transitivePeerDependencies:
       - debug
+      - supports-color
 
   passport-local@1.0.0:
     dependencies:
