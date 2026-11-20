@@ -5,19 +5,18 @@
 .page-header--user {
   display: flex;
   align-items: center;
-  margin-top: 0;
-  margin-bottom: functions.px-to-rem(24px);
+  margin-block: 0 functions.px-to-rem(24px);
 
   .page-header__avatar {
     width: avatar.$size--large;
     height: avatar.$size--large;
     flex: 0 0 avatar.$size--large;
-    margin-right: functions.px-to-rem(16px);
+    margin-inline-end: functions.px-to-rem(16px);
     @include avatar.border();
   }
 
   h1 {
-    margin-bottom: 0;
+    margin-block-end: 0;
   }
 
   .page-header__handle {
@@ -30,12 +29,10 @@
 }
 
 .static-message {
-  padding-top: functions.px-to-rem(16px);
-  margin-left: functions.px-to-rem(16px);
-  margin-right: functions.px-to-rem(16px);
+  padding-block-start: functions.px-to-rem(16px);
+  margin-inline: functions.px-to-rem(16px);
 
   @include breakpoints.not-narrow() {
-    margin-left: 0;
-    margin-right: 0;
+    margin-inline: 0;
   }
 }

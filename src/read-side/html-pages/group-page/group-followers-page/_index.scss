@@ -20,11 +20,11 @@
 }
 
 .user-card__handle {
-  margin-bottom: 0.5rem;
+  margin-block-end: 0.5rem;
 }
 
 .user-card__avatar {
-  margin-left: functions.px-to-rem(32px);
+  margin-inline-start: functions.px-to-rem(32px);
   @include card.avatar();
 }
 

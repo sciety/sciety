@@ -7,14 +7,14 @@
 @use 'list';
 
 .tab-list {
-  border-bottom: 2px solid transparent;
-  margin-bottom: 0;
+  border-block-end: 2px solid transparent;
+  margin-block-end: 0;
   @include list.basics();
 }
 
 .tab {
   padding: 0;
-  margin-bottom: functions.px-to-rem(14px);
+  margin-block-end: functions.px-to-rem(14px);
   text-transform: uppercase;
   @include typography.button();
 
@@ -24,7 +24,7 @@
 
   @include breakpoints.not-narrow() {
     display: inline-block;
-    margin-bottom: -2px;
+    margin-block-end: -2px;
     text-align: center;
     padding: functions.px-to-rem(13px) 0.8rem functions.px-to-rem(15px);
   }
@@ -54,6 +54,6 @@
 
 .tab--active {
   @include breakpoints.not-narrow() {
-    border-bottom: 2px solid settings.$colour-accent;
+    border-block-end: 2px solid settings.$colour-accent;
   }
 }

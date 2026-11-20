@@ -6,21 +6,19 @@
 @use 'common';
 
 .home-page-groups {
-  padding-left: functions.px-to-rem(settings.$default-gutter);
-  padding-right: functions.px-to-rem(settings.$default-gutter);
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: common.$section-vertical-separation;
+  padding-inline: functions.px-to-rem(settings.$default-gutter);
+  margin-inline: auto;
+  margin-block-end: common.$section-vertical-separation;
   max-width: common.$home-page-section-max-width;
 }
 
 .home-page-groups__title {
-  margin-bottom: functions.px-to-rem(32px);
+  margin-block-end: functions.px-to-rem(32px);
   @include common.section-heading-on-not-narrow();
 }
 
 .home-page-groups-list {
-  margin-bottom: functions.px-to-rem(32px);
+  margin-block-end: functions.px-to-rem(32px);
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;

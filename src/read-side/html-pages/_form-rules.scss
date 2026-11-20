@@ -11,7 +11,7 @@ $_clear-button-inline-size: 48px;
 .error-summary {
   border: settings.$border-width solid settings.$colour-alert;
   padding: functions.px-to-rem(settings.$default-form-gutter);
-  margin-bottom: functions.px-to-rem(48px);
+  margin-block-end: functions.px-to-rem(48px);
 
   p {
     color: settings.$colour-alert;
@@ -19,7 +19,7 @@ $_clear-button-inline-size: 48px;
 
   ul {
     color: settings.$colour-alert;
-    margin-top: 0;
+    margin-block-start: 0;
   }
 }
 
@@ -29,17 +29,15 @@ $_clear-button-inline-size: 48px;
     functions.px-to-rem(settings.$default-gutter);
 
   border: settings.$border-width solid settings.$colour-furniture;
-  border-left-width: 0;
-  border-right-width: 0;
+  border-inline-width: 0;
 
   @include breakpoints.not-narrow {
     border-radius: settings.$border-radius;
-    border-left-width: settings.$border-width;
-    border-right-width: settings.$border-width;
+    border-inline-width: settings.$border-width;
   }
 
   button[type="submit"] {
-    margin-right: functions.px-to-rem(
+    margin-inline-end: functions.px-to-rem(
             settings.$default-form-element-separation
     );
     @include button.primary();
@@ -47,7 +45,7 @@ $_clear-button-inline-size: 48px;
 
   dl {
     padding: functions.px-to-rem(12px) 0;
-    margin-bottom: 1.5rem;
+    margin-block-end: 1.5rem;
     font-size: $_label-font-size;
 
     @include breakpoints.not-narrow() {
@@ -61,13 +59,13 @@ $_clear-button-inline-size: 48px;
     }
 
     dd {
-      margin-left: 0;
-      margin-bottom: functions.px-to-rem(6px);
+      margin-inline-start: 0;
+      margin-block-end: functions.px-to-rem(6px);
     }
   }
 
   section {
-    margin-bottom: functions.px-to-rem(settings.$default-form-vertical-spacing);
+    margin-block-end: functions.px-to-rem(settings.$default-form-vertical-spacing);
   }
 }
 
@@ -75,7 +73,7 @@ $_clear-button-inline-size: 48px;
   display: block;
   font-weight: bold;
   font-size: $_label-font-size;
-  margin-bottom: functions.px-to-rem(settings.$default-form-gutter);
+  margin-block-end: functions.px-to-rem(settings.$default-form-gutter);
 }
 
 .standard-form__sub_heading_secondary_text {
@@ -84,7 +82,7 @@ $_clear-button-inline-size: 48px;
 
 .standard-form__helper_text {
   color: $_microcopy-colour;
-  margin-bottom: functions.px-to-rem(settings.$default-form-gutter);
+  margin-block-end: functions.px-to-rem(settings.$default-form-gutter);
 }
 
 .standard-form__constraints {
@@ -94,7 +92,7 @@ $_clear-button-inline-size: 48px;
 .standard-form__labelled_selectable_control {
   display: flex;
   align-items: center;
-  margin-bottom: functions.px-to-rem(8px);
+  margin-block-end: functions.px-to-rem(8px);
 }
 
 .standard-form__cancel {
@@ -106,10 +104,8 @@ $_clear-button-inline-size: 48px;
   border-radius: settings.$border-radius;
   height: $_text-input-height;
   width: 100%;
-  padding-top: functions.px-to-rem(17px);
-  padding-bottom: functions.px-to-rem(17px);
-  padding-left: functions.px-to-rem(12px);
-  padding-right: functions.px-to-rem($_clear-button-inline-size);
-  margin-bottom: functions.px-to-rem(8px);
+  padding-block: functions.px-to-rem(17px);
+  padding-inline: functions.px-to-rem(12px) functions.px-to-rem($_clear-button-inline-size);
+  margin-block-end: functions.px-to-rem(8px);
   color: settings.$colour-text-primary;
 }

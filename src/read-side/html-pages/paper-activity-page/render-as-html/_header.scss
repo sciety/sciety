@@ -13,48 +13,43 @@
 }
 
 .article-page-header-wrapper {
-  margin-bottom: local-settings.$component-vertical-spacing;
+  margin-block-end: local-settings.$component-vertical-spacing;
 }
 
 @mixin _apply-page-gutter-as-padding() {
   & {
-    padding-left: settings.$default-gutter;
-    padding-right: settings.$default-gutter;
+    padding-inline: settings.$default-gutter;
   }
 
   @include breakpoints.not-narrow() {
-    padding-left: 0;
-    padding-right: 0;
+    padding-inline: 0;
   }
 }
 
 .article-page-header-wrapper--with-curation-statements {
-  padding-bottom: local-settings.$component-vertical-spacing;
+  padding-block-end: local-settings.$component-vertical-spacing;
   background-color: settings.$colour-background-grey;
-  margin-top: calc(-1 * #{settings.$border-width});
+  margin-block-start: calc(-1 * #{settings.$border-width});
   @include layout.allow-edge-to-edge-content-when-narrow();
   @include _apply-page-gutter-as-padding();
 }
 
 .page-header.page-header--article {
-  margin-top: 0;
-  margin-bottom: local-settings.$component-vertical-spacing;
+  margin-block: 0 local-settings.$component-vertical-spacing;
   max-width: functions.px-to-rem(settings.$max-site-width);
 
   @include breakpoints.not-narrow {
     margin: 0 auto;
-    padding-left: functions.px-to-rem(settings.$default-gutter);
-    padding-right: functions.px-to-rem(settings.$default-gutter);
+    padding-inline: functions.px-to-rem(settings.$default-gutter);
   }
 }
 
 .article-author-list {
-  margin-top: 0;
-  margin-bottom: 0;
+  margin-block: 0;
   @include list.basics();
 
   + * {
-    clear: left;
+    clear: inline-start;
   }
 
   @supports (display: flow-root) {
@@ -67,23 +62,22 @@
 }
 
 .article-author-list > li {
-  float: left;
+  float: inline-start;
   font-weight: bold;
   @include list.author-separator-terminator();
 }
 
 .curation-statements {
-  margin-top: 3rem;
-  margin-bottom: 0;
+  margin-block: 3rem 0;
   @include list.basics();
 }
 
 .curation-statement {
-  margin-bottom: 3rem;
+  margin-block-end: 3rem;
   @include standard-separator.top(3rem);
 
   &:last-child {
-    margin-bottom: 0;
+    margin-block-end: 0;
   }
 }
 
@@ -97,8 +91,7 @@
 }
 
 .curation-statement-full-text {
-  padding-left: functions.px-to-rem(32px);
-  padding-right: functions.px-to-rem(32px);
+  padding-inline: functions.px-to-rem(32px);
   @include curation-statement.quote(
     $quotation-mark-font-size: 48px,
     $close-quotation-bottom-offset: -32px,

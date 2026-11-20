@@ -8,16 +8,13 @@ $_value-statements-max-width: functions.px-to-rem(996px);
 .home-page-value-statements-wrapper {
   color: settings.$colour-white;
   background-color: settings.$colour-value-statement-background;
-  padding-top: common.$section-vertical-separation;
-  padding-bottom: common.$section-vertical-separation;
-  margin-bottom: common.$section-vertical-separation;
+  padding-block: common.$section-vertical-separation;
+  margin-block-end: common.$section-vertical-separation;
 }
 
 .home-page-value-statements {
-  padding-left: functions.px-to-rem(settings.$default-gutter);
-  padding-right: functions.px-to-rem(settings.$default-gutter);
-  margin-left: auto;
-  margin-right: auto;
+  padding-inline: functions.px-to-rem(settings.$default-gutter);
+  margin-inline: auto;
   max-width: $_value-statements-max-width;
 }
 
@@ -26,7 +23,7 @@ $_value-statements-max-width: functions.px-to-rem(996px);
 }
 
 .home-page-value-statement {
-  margin-bottom: 4rem;
+  margin-block-end: 4rem;
 
   @include breakpoints.not-narrow() {
     display: flex;
@@ -43,13 +40,12 @@ $_value-statements-max-width: functions.px-to-rem(996px);
 .home-page-value-statement__copy {
   @include breakpoints.not-narrow() {
     width: 50ch;
-    margin-right: 4rem;
+    margin-inline-end: 4rem;
   } 
 
   .home-page-value-statement--reverse-order & {
     @include breakpoints.not-narrow() {
-      margin-right: 0;
-      margin-left: 4rem;
+      margin-inline: 4rem 0;
     }
   }
 }

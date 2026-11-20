@@ -16,19 +16,17 @@ $_card-border-radius: settings.$border-radius;
     background-color: settings.$colour-white;
     padding: 1rem functions.px-to-rem(settings.$default-gutter);
     border: settings.$border-width solid settings.$colour-furniture;
-    border-left-width: 0;
-    border-right-width: 0;
+    border-inline-width: 0;
   }
 
   @include breakpoints.not-narrow {
     border-radius: $_card-border-radius;
-    border-left-width: settings.$border-width;
-    border-right-width: settings.$border-width;
+    border-inline-width: settings.$border-width;
   }
 }
 
 @mixin title() {
-  margin-bottom: 0.25rem;
+  margin-block-end: 0.25rem;
   @include typography.card-title();
 }
 
@@ -57,10 +55,7 @@ $_card-border-radius: settings.$border-radius;
   &::after {
     content: '';
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    inset: 0;
     border-radius: $_card-border-radius;
   }
 }
@@ -72,26 +67,25 @@ $_card-border-radius: settings.$border-radius;
 }
 
 @mixin list() {
-  margin-top: 0;
-  margin-bottom: 1.5rem;
+  margin-block: 0 1.5rem;
   @include list.basics();
 
   > li {
-    margin-bottom: 0.5rem;
+    margin-block-end: 0.5rem;
 
     &:last-child {
-      margin-bottom: 0;
+      margin-block-end: 0;
     }
   }
 }
 
 @mixin list-item() {
   & {
-    margin-bottom: 0.5rem;
+    margin-block-end: 0.5rem;
   }
 
   &:last-child {
-    margin-bottom: 0;
+    margin-block-end: 0;
   }
 }
 

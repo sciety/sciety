@@ -27,36 +27,32 @@ $vertical-spacing-coupled-to-page-header: 3rem;
 }
 
 @mixin page-content-horizontal-margins() {
-  margin-left: functions.px-to-rem(settings.$default-gutter);
-  margin-right: functions.px-to-rem(settings.$default-gutter);
+  margin-inline: functions.px-to-rem(settings.$default-gutter);
 
   @include breakpoints.not-narrow {
-    margin-left: 0;
-    margin-right: 0;
+    margin-inline: 0;
   }
 }
 
 @mixin allow-edge-to-edge-content-when-narrow() {
-  margin-left: settings.$default-gutter * -1;
-  margin-right: settings.$default-gutter * -1;
+  margin-inline: settings.$default-gutter * -1;
 
   @include breakpoints.not-narrow {
-    margin-left: 0;
-    margin-right: 0;
+    margin-inline: 0;
   }
 }
 
 @mixin page-header-top-space() {
-  padding-top: 1rem;
+  padding-block-start: 1rem;
 
   @include breakpoints.not-narrow {
-    padding-top: 2.5rem;
+    padding-block-start: 2.5rem;
   }
 }
 
 @mixin page-header-bottom-space() {
   & {
-    margin-bottom: $vertical-spacing-coupled-to-page-header;
+    margin-block-end: $vertical-spacing-coupled-to-page-header;
   }
 }
 

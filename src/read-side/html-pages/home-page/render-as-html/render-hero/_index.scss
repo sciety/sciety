@@ -8,10 +8,10 @@
 $_width-at-which-image-is-too-narrow: 1680px;
 
 @mixin _vertical-spacing-in-hero() {
-  margin-bottom: functions.px-to-rem(20px);
+  margin-block-end: functions.px-to-rem(20px);
 
   @include breakpoints.not-narrow() {
-    margin-bottom: functions.px-to-rem(40px);
+    margin-block-end: functions.px-to-rem(40px);
   }
 
 }
@@ -55,25 +55,21 @@ $_width-at-which-image-is-too-narrow: 1680px;
 
 .home-page-hero {
   color: settings.$colour-white;
-  padding-bottom: functions.px-to-rem(48px);
-  padding-right: functions.px-to-rem(settings.$default-gutter);
-  padding-left: functions.px-to-rem(settings.$default-gutter);
-  padding-top: functions.px-to-rem(20px);
+  padding-block: functions.px-to-rem(20px) functions.px-to-rem(48px);
+  padding-inline: functions.px-to-rem(settings.$default-gutter);
 
   @include breakpoints.site-header() {
-    padding-top: functions.px-to-rem(193px);
+    padding-block-start: functions.px-to-rem(193px);
   }
 }
 
 .home-page-hero__content_title {
-  margin-top: functions.px-to-rem(20px);
-  margin-bottom: functions.px-to-rem(8px);
+  margin-block: functions.px-to-rem(20px) functions.px-to-rem(8px);
   text-align: center;
   @include typography.sizing(32px, 38px);
 
   @include breakpoints.not-narrow() {
-    margin-bottom: functions.px-to-rem(40px);
-    margin-top: 0;
+    margin-block: 0 functions.px-to-rem(40px);
     @include typography.sizing(54px, 62px);
   }
 }
@@ -84,7 +80,7 @@ $_width-at-which-image-is-too-narrow: 1680px;
   @include typography.sizing(20px, 26px);
 
   @include breakpoints.not-narrow() {
-    margin-bottom: functions.px-to-rem(76px);
+    margin-block-end: functions.px-to-rem(76px);
     @include typography.sizing(24px, 28px);
   }
 }

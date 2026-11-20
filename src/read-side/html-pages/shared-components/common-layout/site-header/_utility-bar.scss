@@ -17,13 +17,13 @@ $_avatar-height-coupled-to-buttons: 34px;
 
 .utility-bar {
   display: flex;
-  margin-right: 0;
+  margin-inline-end: 0;
   flex-grow: 1;
   align-self: center;
   @include schemed-colours.light();
 
   @include breakpoints.site-header() {
-    margin-right: functions.px-to-rem(settings.$default-gutter);
+    margin-inline-end: functions.px-to-rem(settings.$default-gutter);
   }
 }
 
@@ -34,23 +34,23 @@ $_avatar-height-coupled-to-buttons: 34px;
 .utility-bar__list {
   display: flex;
   justify-content: flex-start;
-  margin-bottom: 0;
-  margin-left: auto;
+  margin-block-end: 0;
+  margin-inline-start: auto;
   @include list.basics();
 }
 
 .utility-bar__list_item {
-  padding-right: functions.px-to-rem(24px);
+  padding-inline-end: functions.px-to-rem(24px);
   flex-shrink: 0;
   display: flex;
   align-items: center;
 
   &:first-child {
-    margin-left: auto;
+    margin-inline-start: auto;
   }
 
   &:last-child {
-    padding-right: 0;
+    padding-inline-end: 0;
   }
 }
 
@@ -63,9 +63,8 @@ $_avatar-height-coupled-to-buttons: 34px;
 }
 
 .utility-bar__list_nav_link {
-  padding-top: $_navigation-text-top-spacing;
-  padding-bottom: $_navigation-text-bottom-spacing;
-  border-bottom: settings.$navigation-link-border-width solid transparent;
+  padding-block: $_navigation-text-top-spacing $_navigation-text-bottom-spacing;
+  border-block-end: settings.$navigation-link-border-width solid transparent;
   display: block;
   @include typography.button();
 
@@ -120,19 +119,18 @@ $_avatar-height-coupled-to-buttons: 34px;
   background-color: settings.$colour-white;
   width: functions.px-to-rem($_avatar-height-coupled-to-buttons);
   height: auto;
-  margin-right: functions.px-to-rem(20px);
+  margin-inline-end: functions.px-to-rem(20px);
   display: inline-block;
   @include avatar.border();
 
   @include breakpoints.site-header() {
     width: functions.px-to-rem(avatar.$size--in-site-header);
-    margin-right: functions.px-to-rem($_avatar-right-margin);
+    margin-inline-end: functions.px-to-rem($_avatar-right-margin);
   }
 }
 
 .utility-bar-user-profile__handle {
-  padding-top: $_navigation-text-top-spacing;
-  padding-bottom: $_navigation-text-bottom-spacing;
+  padding-block: $_navigation-text-top-spacing $_navigation-text-bottom-spacing;
   display: none;
 
   @include breakpoints.site-header() {

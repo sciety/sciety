@@ -2,11 +2,11 @@
 @use 'button';
 
 .group-page-featured-lists {
-  margin-bottom: calc(3rem - 1.5rem);
+  margin-block-end: calc(3rem - 1.5rem);
 }
 
 .group-page-feed {
-  margin-bottom: 1.5rem;
+  margin-block-end: 1.5rem;
 }
 
 .follow-button {

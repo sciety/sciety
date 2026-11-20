@@ -31,8 +31,8 @@ $_card-asset-gutter: functions.px-to-rem(8px);
   display: flex;
   align-items: center;
   gap: functions.px-to-rem(8px);
-  margin-bottom: functions.px-to-rem(16px);
-  margin-left: $_card-asset-gutter * -1;
+  margin-block-end: functions.px-to-rem(16px);
+  margin-inline-start: $_card-asset-gutter * -1;
 }
 
 .list-card__meta {
@@ -46,11 +46,11 @@ $_card-asset-gutter: functions.px-to-rem(8px);
     display:unset;
     max-width: $_image-max-width;
     object-fit: contain;
-    margin-left: $_card-asset-gutter;
+    margin-inline-start: $_card-asset-gutter;
   }
 }
 
 .list-card__avatar {
-  margin-left: $_card-asset-gutter;
+  margin-inline-start: $_card-asset-gutter;
   @include card.avatar();
 }

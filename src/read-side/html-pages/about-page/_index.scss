@@ -4,14 +4,12 @@
 @use 'settings';
 
 .about-page-figure {
-  margin-top: 0;
-  margin-left: 0;
-  margin-right: 0;
-  margin-bottom: functions.px-to-rem(32px);
+  margin-block: 0 functions.px-to-rem(32px);
+  margin-inline: 0;
 
   img {
     width: 100%;
-    margin-bottom: functions.px-to-rem(8px);
+    margin-block-end: functions.px-to-rem(8px);
   }
 
   figcaption {
@@ -25,7 +23,7 @@
   justify-content: center;
 
   a {
-    margin-bottom: functions.px-to-rem(24px);
+    margin-block-end: functions.px-to-rem(24px);
     @include button.primary-link();
   }
 }
@@ -34,9 +32,8 @@
   @include list.basics();
 
   li {
-    padding-top: functions.px-to-rem(32px);
-    padding-bottom: functions.px-to-rem(32px);
-    border-bottom: settings.$colour-furniture solid 1px;
+    padding-block: functions.px-to-rem(32px);
+    border-block-end: settings.$colour-furniture solid 1px;
 
     a {
       display: flex;

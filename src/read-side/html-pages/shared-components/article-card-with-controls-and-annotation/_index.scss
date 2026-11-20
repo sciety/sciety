@@ -11,8 +11,8 @@ $_triangle-size: 32px;
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
     grid-column-gap: functions.px-to-rem(settings.$default-gutter);
-    padding-bottom: 0;
-    border-bottom-width: 0;
+    padding-block-end: 0;
+    border-block-end-width: 0;
   }
 
   .article-card-content {
@@ -27,7 +27,7 @@ $_triangle-size: 32px;
   border: settings.$border-width solid settings.$colour-accent;
   border-radius: settings.$border-radius;
   padding: functions.px-to-rem(16px);
-  margin-top: functions.px-to-rem(40px);
+  margin-block-start: functions.px-to-rem(40px);
   position: relative;
 
   &::before {
@@ -36,17 +36,17 @@ $_triangle-size: 32px;
     height: $_triangle-size;
     width: $_triangle-size;
     position: absolute;
-    top: functions.px-to-rem(-$_triangle-size);
-    left: functions.px-to-rem(32px);
+    inset-block-start: functions.px-to-rem(-$_triangle-size);
+    inset-inline-start: functions.px-to-rem(32px);
   }
 
   @include breakpoints.two-column-display() {
-    margin-top: 0;
+    margin-block-start: 0;
 
     &::before {
       transform: rotate(-90deg);
-      top: functions.px-to-rem(48px);
-      left: functions.px-to-rem(-$_triangle-size);
+      inset-block-start: functions.px-to-rem(48px);
+      inset-inline-start: functions.px-to-rem(-$_triangle-size);
     }
   }
 
@@ -55,7 +55,7 @@ $_triangle-size: 32px;
   }
 
   p:last-child {
-    margin-bottom: 0;
+    margin-block-end: 0;
   }
 
 }
@@ -63,16 +63,16 @@ $_triangle-size: 32px;
 .article-card-annotation__header {
   display: flex;
   align-items: center;
-  margin-bottom: functions.px-to-rem(12px);
+  margin-block-end: functions.px-to-rem(12px);
 
   h4 {
-    margin-bottom: 0;
+    margin-block-end: 0;
   }
 }
 
 .article-card-annotation__avatar {
   width: avatar.$size--small;
   height: avatar.$size--small;
-  margin-right: functions.px-to-rem(16px);
+  margin-inline-end: functions.px-to-rem(16px);
   @include avatar.border();
 }

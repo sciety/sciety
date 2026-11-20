@@ -14,7 +14,7 @@ $_card-padding: 16px;
 .article-card {
   position: relative;
   background-color: settings.$colour-white;
-  padding-top: 2rem;
+  padding-block-start: 2rem;
   @include standard-separator.bottom(2.5rem);
 }
 
@@ -27,7 +27,7 @@ $_card-padding: 16px;
   font-size: functions.px-to-rem(20px);
   line-height: 1.3;
   font-weight: bold;
-  margin-bottom: 1rem;
+  margin-block-end: 1rem;
 
   @include breakpoints.not-narrow() {
     font-size: functions.px-to-rem(24px);
@@ -35,7 +35,7 @@ $_card-padding: 16px;
 }
 
 .article-card__error_message {
-  margin-bottom: functions.px-to-rem(8px);
+  margin-block-end: functions.px-to-rem(8px);
 }
 
 .article-card__reviewing_groups {
@@ -46,7 +46,7 @@ $_card-padding: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-right: calc(#{functions.px-to-rem($_footer-icon-separation)} + #{$_optional-controls-icon-size});
+  margin-inline-end: calc(#{functions.px-to-rem($_footer-icon-separation)} + #{$_optional-controls-icon-size});
 }
 
 .article-card__meta {
@@ -57,12 +57,12 @@ $_card-padding: 16px;
   display: flex;
   gap: functions.px-to-rem(settings.$click-target-separation);
   align-items: center;
-  margin-top: functions.px-to-rem(16px);
+  margin-block-start: functions.px-to-rem(16px);
 }
 
 
 .article-card-teasers {
-  margin-bottom: functions.px-to-rem(24px);
+  margin-block-end: functions.px-to-rem(24px);
   background-color: settings.$colour-background-grey;
   @include list.basics();
 
@@ -72,10 +72,10 @@ $_card-padding: 16px;
 }
 
 .article-card-teasers__teaser {
-  margin-bottom: functions.px-to-rem(48px);
+  margin-block-end: functions.px-to-rem(48px);
 
   &:last-child {
-    margin-bottom: 0;
+    margin-block-end: 0;
   }
 }
 
@@ -84,8 +84,7 @@ $_card-padding: 16px;
 }
 
 .article-card-teasers__teaser_quote {
-  padding-left: functions.px-to-rem($_card-padding);
-  padding-right: functions.px-to-rem($_card-padding);
+  padding-inline: functions.px-to-rem($_card-padding);
   @include curation-statement.quote(
     $quotation-mark-font-size: 32px,
     $close-quotation-bottom-offset: -8px,

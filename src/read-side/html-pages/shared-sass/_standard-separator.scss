@@ -5,10 +5,10 @@ $_style: solid;
 $_width: settings.$border-width;
 
 @mixin top($distance) {
-  border-top: $_width $_style $_colour;
-  padding-top: $distance;
+  border-block-start: $_width $_style $_colour;
+  padding-block-start: $distance;
 }
 @mixin bottom($distance) {
-  border-bottom: $_width $_style $_colour;
-  padding-bottom: $distance;
+  border-block-end: $_width $_style $_colour;
+  padding-block-end: $distance;
 }

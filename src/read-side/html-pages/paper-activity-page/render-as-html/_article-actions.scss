@@ -9,11 +9,11 @@
 @use "local-settings";
 
 .article-actions {
-  margin-bottom: local-settings.$component-vertical-spacing;
+  margin-block-end: local-settings.$component-vertical-spacing;
   @include layout.column-two();
 
   @include breakpoints.two-column-display {
-    padding-left: functions.px-to-rem(40px);
+    padding-inline-start: functions.px-to-rem(40px);
     grid-row: unset;
   }
 }
@@ -23,37 +23,37 @@
 }
 
 .article-actions-reviewing-groups {
-  margin-bottom: functions.px-to-rem(32px);
+  margin-block-end: functions.px-to-rem(32px);
   @include list.basics();
 }
 
 .article-actions-reviewing-groups__item {
-  margin-bottom: functions.px-to-rem(16px);
+  margin-block-end: functions.px-to-rem(16px);
 }
 
 .full-article-button {
-  margin-bottom: functions.px-to-rem(32px);
+  margin-block-end: functions.px-to-rem(32px);
   @include button.primary-link();
 }
 
 .see-related-articles-button {
-  margin-bottom: functions.px-to-rem(32px);
+  margin-block-end: functions.px-to-rem(32px);
   @include button.secondary-link();
 
   @include breakpoints.two-column-display {
-    margin-bottom: functions.px-to-rem(80px);
+    margin-block-end: functions.px-to-rem(80px);
   }
 }
 
 .logged-out-call-to-action {
-  margin-bottom: functions.px-to-rem(24px);
+  margin-block-end: functions.px-to-rem(24px);
   @include button.secondary-link();
 }
 
 .saved-to-list {
   display: flex;
   align-items: center;
-  margin-bottom: functions.px-to-rem(24px);
+  margin-block-end: functions.px-to-rem(24px);
   @include typography.button();
 }
 
@@ -62,7 +62,7 @@
 }
 
 .saved-to-list__icon {
-  margin-right: functions.px-to-rem(3px);
+  margin-inline-end: functions.px-to-rem(3px);
 }
 
 .list-management {
@@ -70,15 +70,15 @@
 }
 
 .list-management__listed-in {
-  margin-bottom: functions.px-to-rem(32px);
+  margin-block-end: functions.px-to-rem(32px);
 }
 
 .listed-in-list {
-  margin-bottom: 0;
+  margin-block-end: 0;
   @include list.basics();
 
   li {
-    margin-bottom: functions.px-to-rem(8px);
+    margin-block-end: functions.px-to-rem(8px);
   }
 }
 

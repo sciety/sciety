@@ -1,11 +1,10 @@
 @use 'breakpoints';
 
 .article-abstract {
-  margin-bottom: 3rem;
+  margin-block-end: 3rem;
 
   @include breakpoints.not-narrow {
-    padding-right: 0;
-    padding-left: 0;
+    padding-inline: 0;
   }
 
   p {

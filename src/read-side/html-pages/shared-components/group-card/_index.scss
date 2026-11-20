@@ -20,11 +20,11 @@
 }
 
 .group-card__description {
-  margin-bottom: 0.5rem;
+  margin-block-end: 0.5rem;
 }
 
 .group-card__avatar {
-  margin-left: functions.px-to-rem(32px);
+  margin-inline-start: functions.px-to-rem(32px);
   @include card.avatar();
 }
 

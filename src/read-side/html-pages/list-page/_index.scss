@@ -11,7 +11,7 @@ $_image-max-width: 200px;
 
 .success-banner {
   border: settings.$border-width-wide solid settings.$colour-success;
-  margin-top: functions.px-to-rem(16px);
+  margin-block-start: functions.px-to-rem(16px);
 
   .sciety-grid-two-columns > & {
     grid-column: 1/-1;
@@ -28,13 +28,13 @@ $_image-max-width: 200px;
   color: settings.$colour-white;
 
   h2 {
-    margin-bottom: 0;
+    margin-block-end: 0;
     @include typography.heading-3();
   }
 }
 
 .page-header.page-header--list {
-  margin-bottom: 0;
+  margin-block-end: 0;
   display: flex;
   flex-direction: column-reverse;
 
@@ -48,23 +48,23 @@ $_image-max-width: 200px;
 .page-header--list .page-header__subheading {
   display: flex;
   align-items: center;
-  margin-bottom: functions.px-to-rem(8px);
+  margin-block-end: functions.px-to-rem(8px);
   @include typography.subheading();
 }
 
 .page-header--list .page-header__avatar {
   width: avatar.$size--medium;
   height: avatar.$size--medium;
-  margin-right: functions.px-to-rem(8px);
+  margin-inline-end: functions.px-to-rem(8px);
   @include avatar.border();
 }
 
 .page-header--list .page-header__description {
-  margin-bottom: functions.px-to-rem(8px);
+  margin-block-end: functions.px-to-rem(8px);
 }
 
 .page-header--list .page-header__meta {
-  margin-bottom: functions.px-to-rem(16px);
+  margin-block-end: functions.px-to-rem(16px);
   @include typography.details();
   @include typography.list-separator();
 }
@@ -72,7 +72,7 @@ $_image-max-width: 200px;
 .page-header--list .page-header__list_image {
   max-width: $_image-max-width;
   object-fit: contain;
-  margin-bottom: functions.px-to-rem(32px);
+  margin-block-end: functions.px-to-rem(32px);
 }
 
 .list-page-content {
@@ -83,7 +83,7 @@ $_image-max-width: 200px;
   display: flex;
   flex-wrap: wrap;
   gap: functions.px-to-rem(settings.$click-target-separation);
-  margin-bottom: functions.px-to-rem(32px);
+  margin-block-end: functions.px-to-rem(32px);
 }
 
 .list-page-actions__edit_details_link {
@@ -95,7 +95,7 @@ $_image-max-width: 200px;
   @include button.primary-link();
 
   & {
-    padding-left: functions.px-to-rem($_edit-details-icon-size + $_edit-details-icon-offset);
+    padding-inline-start: functions.px-to-rem($_edit-details-icon-size + $_edit-details-icon-offset);
   }
 }
 
@@ -108,7 +108,7 @@ $_image-max-width: 200px;
 }
 
 .articles-page-count {
-  margin-bottom: functions.px-to-rem(16px);
+  margin-block-end: functions.px-to-rem(16px);
   @include typography.details();
 }
 

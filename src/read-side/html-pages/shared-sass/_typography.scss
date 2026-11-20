@@ -103,11 +103,11 @@
 
 @mixin list-separator () {
   > * {
-    margin-right: 0.25rem;
+    margin-inline-end: 0.25rem;
   }
 
   > :nth-child(n+3)::before {
     content: '•';
-    margin-right: 0.25rem;
+    margin-inline-end: 0.25rem;
   }
 }

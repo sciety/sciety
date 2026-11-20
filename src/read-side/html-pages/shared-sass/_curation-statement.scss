@@ -21,13 +21,13 @@ $close-quotation-bottom-offset: 0,
 
   &::before {
     content: '\201C';
-    left: functions.px-to-rem($open-quotation-left-offset);
-    top: functions.px-to-rem($open-quotation-top-offset);
+    inset-inline-start: functions.px-to-rem($open-quotation-left-offset);
+    inset-block-start: functions.px-to-rem($open-quotation-top-offset);
   }
 
   &::after {
     content: '\201D';
-    right: functions.px-to-rem($close-quotation-right-offset);
-    bottom: functions.px-to-rem($close-quotation-bottom-offset);
+    inset-inline-end: functions.px-to-rem($close-quotation-right-offset);
+    inset-block-end: functions.px-to-rem($close-quotation-bottom-offset);
   }
 }

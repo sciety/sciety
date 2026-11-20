@@ -10,7 +10,7 @@
 $_common-space-beneath: 0.5rem;
 
 .search-results-page-search-form {
-  margin-bottom: layout.$vertical-spacing-coupled-to-page-header;
+  margin-block-end: layout.$vertical-spacing-coupled-to-page-header;
 }
 
 .related-groups {
@@ -18,7 +18,7 @@ $_common-space-beneath: 0.5rem;
 
   @include breakpoints.two-column-display {
     grid-row: 3;
-    padding-left: functions.px-to-rem(40px);
+    padding-inline-start: functions.px-to-rem(40px);
   }
 }
 
@@ -27,21 +27,21 @@ $_common-space-beneath: 0.5rem;
 }
 
 .related-groups__list_item {
-  margin-bottom: functions.px-to-rem(16px);
+  margin-block-end: functions.px-to-rem(16px);
 }
 
 .search-results {
-  margin-bottom: functions.px-to-rem(48px);
+  margin-block-end: functions.px-to-rem(48px);
 }
 
 .search-results__header {
-  margin-bottom: $_common-space-beneath;
+  margin-block-end: $_common-space-beneath;
   @include typography.details();
 }
 
 .search-results__page_count {
   font-weight: 400;
-  margin-bottom: $_common-space-beneath;
+  margin-block-end: $_common-space-beneath;
   @include typography.details();
 }
 
@@ -52,9 +52,9 @@ $_common-space-beneath: 0.5rem;
 }
 
 .search-results__header_details_item {
-  margin-bottom: $_common-space-beneath;
+  margin-block-end: $_common-space-beneath;
 
   &:first-child {
-    margin-right: 1rem;
+    margin-inline-end: 1rem;
   }
 }

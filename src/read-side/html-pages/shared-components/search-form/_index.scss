@@ -10,12 +10,12 @@ $_text-input-height: 3rem;
 $_clear-button-inline-size: 48px;
 
 .search-form {
-  margin-bottom: 0;
+  margin-block-end: 0;
 }
 
 .search-form__label {
   display: block;
-  margin-bottom: functions.px-to-rem(8px);
+  margin-block-end: functions.px-to-rem(8px);
 }
 
 .search-form__positioning_context {
@@ -24,14 +24,14 @@ $_clear-button-inline-size: 48px;
 
 .search-form__checkbox_label {
   display: inline-block;
-  margin-bottom: functions.px-to-rem(8px);
+  margin-block-end: functions.px-to-rem(8px);
   @include typography.body();
 }
 
 .search-form__clear {
   position: absolute;
-  right: 0;
-  top: 0;
+  inset-inline-end: 0;
+  inset-block-start: 0;
   padding: 0;
   background-color: transparent;
   border-width: 0;

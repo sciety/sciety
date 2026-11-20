@@ -2,7 +2,7 @@
 @use 'list';
 
 .card-authors {
-  margin-bottom: functions.px-to-rem(24px);
+  margin-block-end: functions.px-to-rem(24px);
   @include list.basics();
 }
 

@@ -34,8 +34,7 @@ body {
 }
 
 p {
-  margin-top: 0;
-  margin-bottom: functions.px-to-rem(24px);
+  margin-block: 0 functions.px-to-rem(24px);
   @include typography.body();
 
 
@@ -48,49 +47,43 @@ p {
 
 p + ul,
 p + ol {
-  margin-top: functions.px-to-rem(-16px);
+  margin-block-start: functions.px-to-rem(-16px);
 }
 
 h1 {
-  margin-top: 0;
-  margin-bottom: functions.px-to-rem(16px);
+  margin-block: 0 functions.px-to-rem(16px);
   @include typography.heading-1();
 }
 
 h2 {
-  margin-top: 0;
-  margin-bottom: functions.px-to-rem(16px);
+  margin-block: 0 functions.px-to-rem(16px);
   @include typography.heading-2();
 }
 
 h3 {
-  margin-top: 0;
-  margin-bottom: functions.px-to-rem(16px);
+  margin-block: 0 functions.px-to-rem(16px);
   @include typography.heading-3();
 }
 
 h4 {
-  margin-top: 0;
-  margin-bottom: functions.px-to-rem(16px);
+  margin-block: 0 functions.px-to-rem(16px);
   @include typography.heading-4();
 }
 
 h5 {
-  margin-top: 0;
-  margin-bottom: functions.px-to-rem(16px);
+  margin-block: 0 functions.px-to-rem(16px);
   @include typography.heading-5();
 }
 
 h6 {
-  margin-top: 0;
-  margin-bottom: functions.px-to-rem(16px);
+  margin-block: 0 functions.px-to-rem(16px);
   @include typography.heading-6();
 }
 
 blockquote {
-  border-left: functions.px-to-rem(8px) solid settings.$colour-furniture;
-  margin-left: functions.px-to-rem(24px);
-  padding-left: functions.px-to-rem(16px);
+  border-inline-start: functions.px-to-rem(8px) solid settings.$colour-furniture;
+  margin-inline-start: functions.px-to-rem(24px);
+  padding-inline-start: functions.px-to-rem(16px);
 }
 
 pre {
@@ -98,7 +91,7 @@ pre {
 }
 
 ul {
-  margin-top: 0;
+  margin-block-start: 0;
 }
 
 li {
@@ -131,7 +124,7 @@ textarea {
 textarea {
   display: block;
   width: 100%;
-  margin-bottom: functions.px-to-rem(settings.$default-form-gutter);
+  margin-block-end: functions.px-to-rem(settings.$default-form-gutter);
   padding: functions.px-to-rem(settings.$default-form-gutter);
   border: settings.$border-width solid settings.$colour-furniture;
   border-radius: settings.$border-radius;
@@ -145,19 +138,18 @@ button {
 fieldset {
   border: settings.$border-width solid settings.$colour-furniture;
   border-radius: settings.$border-radius;
-  margin-bottom: functions.px-to-rem(settings.$default-form-vertical-spacing);
+  margin-block-end: functions.px-to-rem(settings.$default-form-vertical-spacing);
 }
 
 input[type='checkbox'] {
-  margin-left: 0;
+  margin-inline-start: 0;
 }
 
 input[type='radio'] {
   flex-shrink: 0;
   height: functions.px-to-rem(22px);
   width: functions.px-to-rem(22px);
-  margin-top: 0;
-  margin-bottom: 0;
+  margin-block: 0;
 }
 
 /*
@@ -190,13 +182,12 @@ Use real subscript and superscript characters where possible
 }
 
 p:last-child {
-  margin-bottom: functions.px-to-rem(16px);
+  margin-block-end: functions.px-to-rem(16px);
 }
 
 table {
-  border-top: settings.$border-width solid settings.$colour-furniture;
-  border-bottom: settings.$border-width solid settings.$colour-furniture;
-  margin-bottom: functions.px-to-rem(24px);
+  border-block: settings.$border-width solid settings.$colour-furniture;
+  margin-block-end: functions.px-to-rem(24px);
 }
 
 td,
@@ -205,25 +196,25 @@ th {
   vertical-align: top;
 
   &:first-child {
-    padding-left: 0;
+    padding-inline-start: 0;
   }
 
   &:last-child {
-    padding-right: 0;
+    padding-inline-end: 0;
   }
 
   tr:first-child & {
-    padding-top: 0;
+    padding-block-start: 0;
   }
 
   tr:last-child & {
-    padding-bottom: 0;
+    padding-block-end: 0;
   }
 }
 
 address {
   font-style: normal;
-  margin-bottom: functions.px-to-rem(16px);
+  margin-block-end: functions.px-to-rem(16px);
   @include typography.body();
 }
 
