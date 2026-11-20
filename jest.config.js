@@ -17,6 +17,12 @@ module.exports = {
         sourcemap: true,
       },
     ],
+    '/node_modules/\\.pnpm/(htmlparser2|domhandler|domutils|domelementtype|dom-serializer|entities)@[^/]+/.+\\.js$': [
+      'esbuild-jest',
+      {
+        sourcemap: true,
+      },
+    ],
   },
   transformIgnorePatterns: ['\\.pnp\\.[^\\\/]+$'],
   verbose: true,
