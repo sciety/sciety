@@ -1,18 +1,21 @@
 import { URL } from 'url';
 import * as TE from 'fp-ts/TaskEither';
+import { fetchActivityPubNotes } from './fetch-activitypub-notes';
+import { fetchAtprotoMentions } from './fetch-atproto-mentions';
 import { fetchByCategory } from './fetch-by-category';
 import { fetchEvaluation } from './fetch-evaluation';
 import { fetchPublishingHistory } from './fetch-publishing-history';
 import { fetchRecommendedPapers } from './fetch-recommended-papers';
 import { fetchSearchCategories } from './fetch-search-categories';
+import { fetchSembleCardUrls } from './fetch-semble-card-urls';
 import { fetchStaticFile } from './fetch-static-file';
 import { localFetchPaperExpressionFrontMatter } from './local-fetch-paper-expression-front-matter';
 import { searchForPaperExpressions } from './search-for-paper-expressions';
 import { ExternalNotifications, ExternalQueries } from '../../third-parties';
 
 export const stubAdapters: ExternalQueries & ExternalNotifications = {
-  fetchAtprotoMentions: () => TE.right([]),
-  fetchActivityPubNotes: () => TE.right([]),
+  fetchAtprotoMentions,
+  fetchActivityPubNotes,
   fetchByCategory,
   fetchExpressionFrontMatter: localFetchPaperExpressionFrontMatter,
   fetchEvaluationHumanReadableOriginalUrl: () => TE.right(new URL('https://example.com')),
@@ -20,7 +23,7 @@ export const stubAdapters: ExternalQueries & ExternalNotifications = {
   fetchPublishingHistory,
   fetchRecommendedPapers,
   fetchSearchCategories,
-  fetchSembleCardUrls: () => TE.right([]),
+  fetchSembleCardUrls,
   fetchStaticFile,
   fetchUserAvatarUrl: () => TE.right('/static/images/profile-dark.svg'),
   searchForPaperExpressions,

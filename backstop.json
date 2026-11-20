@@ -67,6 +67,13 @@
       ]
     },
     {
+      "label": "An article page with social mentions",
+      "url": "http://sciety-test-app-1/articles/activity/10.1101/2024.05.01.592000",
+      "selectors": [
+        "main"
+      ]
+    },
+    {
       "label": "Explore page",
       "url": "http://sciety-test-app-1/explore",
       "selectors": [
