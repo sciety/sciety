@@ -24,8 +24,8 @@ importers:
         specifier: ^1.16.0
         version: 1.16.0(debug@4.4.3(supports-color@9.4.0))
       axios-cache-interceptor:
-        specifier: ^1.12.0
-        version: 1.12.0(axios@1.16.0(debug@4.4.3(supports-color@9.4.0)))
+        specifier: ^1.12.1
+        version: 1.12.1(axios@1.16.0(debug@4.4.3(supports-color@9.4.0)))
       axios-retry:
         specifier: 4.5.0
         version: 4.5.0(axios@1.16.0(debug@4.4.3(supports-color@9.4.0)))
@@ -2294,8 +2294,8 @@ packages:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
 
-  axios-cache-interceptor@1.12.0:
-    resolution: {integrity: sha512-15XuJkdeJmQo/HY2b0xx3zim8DMx7Nu+G8R4z6OG2VZLtbIDnsfn4qZsLLvkPfK4SVNRzXnoG4jPR7dqdQznRA==}
+  axios-cache-interceptor@1.12.1:
+    resolution: {integrity: sha512-0CMA7US/V9tLfJzZyxY5NBzRKvWBkOXeNJLGO1XB/B8xglp36Kdvt72i2Xr3JVrYyhWEGayUFzsSs6piHZadCw==}
     engines: {node: '>=12'}
     peerDependencies:
       axios: ^1
@@ -6370,6 +6370,10 @@ packages:
     resolution: {integrity: sha512-vzn8aSqKgytVik0iwdBEi+zevbTYZogewTUM6dtpmGwEcdzbub/TX4bCzRhebDCRC3QzXgJsLRKB2V/Oof7HXg==}
     engines: {node: '>=0.10.0'}
 
+  source-map-js@1.2.2:
+    resolution: {integrity: sha512-KGj/8Y43x35aZVDtt+J4mK1hoLGHULMYfSkODJNQjNDC3oW1PqPoxMwo0pLUsWM/UEGzON/NxeHywEfNXNP3Vw==}
+    engines: {node: '>=0.10.0'}
+
   source-map-js@1.2.4:
     resolution: {integrity: sha512-J7ZjMvHd9O1fcT/5V09QWaaSl2BbWx3F6O08spde82Namf9UB0GxRVIPiNbVsdKkoizHiSpTodo3vp2bAy91MA==}
     engines: {node: '>=6.0.0'}
@@ -9353,7 +9357,7 @@ snapshots:
     dependencies:
       possible-typed-array-names: 1.0.0
 
-  axios-cache-interceptor@1.12.0(axios@1.16.0(debug@4.4.3(supports-color@9.4.0))):
+  axios-cache-interceptor@1.12.1(axios@1.16.0(debug@4.4.3(supports-color@9.4.0))):
     dependencies:
       axios: 1.16.0(debug@4.4.3(supports-color@9.4.0))
       cache-parser: 1.2.6
@@ -13922,7 +13926,7 @@ snapshots:
     dependencies:
       nanoid: 3.3.20
       picocolors: 1.1.1
-      source-map-js: 1.2.4
+      source-map-js: 1.2.2
 
   postcss@8.5.6:
     dependencies:
@@ -14609,6 +14613,8 @@ snapshots:
   sort-keys@1.1.2:
     dependencies:
       is-plain-obj: 1.1.0
+
+  source-map-js@1.2.2: {}
 
   source-map-js@1.2.4: {}
 
