@@ -1,8 +1,10 @@
 {
   "extends": "stylelint-config-sass-guidelines",
-  "plugins": "stylelint-order",
+  "plugins": ["stylelint-order", "stylelint-plugin-logical-css"],
   "rules": {
     "at-rule-disallowed-list": ["extend"],
+    "logical-css/require-logical-keywords": true,
+    "logical-css/require-logical-properties": [true, { "ignore": ["overflow-x"] }],
     "order/properties-alphabetical-order": null,
     "scss/selector-no-redundant-nesting-selector": null,
     "selector-class-pattern": null,
