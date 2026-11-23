@@ -238,8 +238,8 @@ importers:
         specifier: ^9.0.4
         version: 9.0.4
       purgecss:
-        specifier: ^6.0.0
-        version: 6.0.0
+        specifier: ^9.1.0
+        version: 9.1.0
       sass:
         specifier: ^1.101.3
         version: 1.101.3
@@ -5774,12 +5774,12 @@ packages:
     peerDependencies:
       postcss: ^8.4.29
 
-  postcss-selector-parser@6.0.13:
-    resolution: {integrity: sha512-EaV1Gl4mUEV4ddhDnv/xtj7sxwrwxdetHdWUGnT4VJQf+4d05v6lHYZr8N573k5Z0BViss7BDhfWtKS3+sfAqQ==}
-    engines: {node: '>=4'}
-
   postcss-selector-parser@7.1.1:
     resolution: {integrity: sha512-orRsuYpJVw8LdAwqqLykBj9ecS5/cRHlI5+nvTo8LcCKmzDmqVORXtOIYEEQuL9D4BxtA1lm5isAqzQZCoQ6Eg==}
+    engines: {node: '>=4'}
+
+  postcss-selector-parser@7.2.1:
+    resolution: {integrity: sha512-GwxlMgTTXwIom+ebC7an3k6RaJDwklRQQnfiXsLPGicu8FYV/k/+1/9YY2OU2+r938H2t4X0TDxoif+HP2rjzQ==}
     engines: {node: '>=4'}
 
   postcss-sorting@10.0.0:
@@ -5806,10 +5806,6 @@ packages:
 
   postcss@8.5.33:
     resolution: {integrity: sha512-RVHEU9/Pp1Fnjr/MpAJsZoADukCKhfIi15OunEYiGktIkYLkPVvC1sioWolGDS7XByMTx9m/IGbro0Js13zhnQ==}
-    engines: {node: ^10 || ^12 || >=14}
-
-  postcss@8.5.6:
-    resolution: {integrity: sha512-3Ybi1tAuwAP9s0r1UQ2J4n5Y0G05bJkpUIO0/bI9MhwmD70S5aTWbXGBwxHrelT+XM1k6dM0pk+SwNkpTRN7Pg==}
     engines: {node: ^10 || ^12 || >=14}
 
   postcss@8.5.8:
@@ -5914,8 +5910,9 @@ packages:
   pure-rand@7.0.1:
     resolution: {integrity: sha512-oTUZM/NAZS8p7ANR3SHh30kXB+zK2r2BPcEn/awJIbOvq82WoMN4p62AWWp3Hhw50G0xMsw1mhIBLqHw64EcNQ==}
 
-  purgecss@6.0.0:
-    resolution: {integrity: sha512-s3EBxg5RSWmpqd0KGzNqPiaBbWDz1/As+2MzoYVGMqgDqRTLBhJW6sywfTBek7OwNfoS/6pS0xdtvChNhFj2cw==}
+  purgecss@9.1.0:
+    resolution: {integrity: sha512-KUuJWwloltnB1NhRFAjpkC9URvAenZWpKwUjpg/+cYPQGtVj65Iw7XpiF9NkPGBEPhJu9Rw5DbCn7NFlIAg8OQ==}
+    engines: {node: '>=22.12.0'}
     hasBin: true
 
   qified@0.9.0:
@@ -13877,14 +13874,13 @@ snapshots:
     dependencies:
       postcss: 8.5.33
 
-  postcss-selector-parser@6.0.13:
+  postcss-selector-parser@7.1.1:
     dependencies:
       cssesc: 3.0.0
       util-deprecate: 1.0.2
 
-  postcss-selector-parser@7.1.1:
+  postcss-selector-parser@7.2.1:
     dependencies:
-      cssesc: 3.0.0
       util-deprecate: 1.0.2
 
   postcss-sorting@10.0.0(postcss@8.5.16):
@@ -14056,12 +14052,12 @@ snapshots:
 
   pure-rand@7.0.1: {}
 
-  purgecss@6.0.0:
+  purgecss@9.1.0:
     dependencies:
-      commander: 12.1.0
-      glob: 10.5.0
-      postcss: 8.5.6
-      postcss-selector-parser: 6.0.13
+      commander: 15.0.0
+      fast-glob: 3.3.3
+      postcss: 8.5.33
+      postcss-selector-parser: 7.2.1
 
   qified@0.9.0:
     dependencies:
