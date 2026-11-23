@@ -90,7 +90,7 @@
     "stylelint-config-sass-guidelines": "11.1",
     "stylelint-order": "^8.1.1",
     "stylelint-plugin-logical-css": "^2.1.1",
-    "taiko": "^1.4.0",
+    "taiko": "^1.5.2",
     "ts-unused-exports": "^11.0.1",
     "tsx": "^4.21.0",
     "typescript": "^5.5.4"
