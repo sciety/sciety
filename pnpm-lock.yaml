@@ -208,8 +208,8 @@ importers:
         specifier: ^28.12.0
         version: 28.12.0(@typescript-eslint/eslint-plugin@7.18.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1(supports-color@9.4.0))(supports-color@9.4.0)(typescript@5.5.4))(eslint@8.57.1(supports-color@9.4.0))(supports-color@9.4.0)(typescript@5.5.4))(eslint@8.57.1(supports-color@9.4.0))(jest@30.3.0(@types/node@24.10.12)(supports-color@9.4.0))(supports-color@9.4.0)(typescript@5.5.4)
       eslint-plugin-jest-formatting:
-        specifier: ^3.1.0
-        version: 3.1.0(eslint@8.57.1(supports-color@9.4.0))
+        specifier: ^4.0.0
+        version: 4.0.0(eslint@8.57.1(supports-color@9.4.0))
       eslint-plugin-no-loops:
         specifier: ^0.3.0
         version: 0.3.0(eslint@8.57.1(supports-color@9.4.0))
@@ -3301,11 +3301,11 @@ packages:
       '@typescript-eslint/parser':
         optional: true
 
-  eslint-plugin-jest-formatting@3.1.0:
-    resolution: {integrity: sha512-XyysraZ1JSgGbLSDxjj5HzKKh0glgWf+7CkqxbTqb7zEhW7X2WHo5SBQ8cGhnszKN+2Lj3/oevBlHNbHezoc/A==}
-    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+  eslint-plugin-jest-formatting@4.0.0:
+    resolution: {integrity: sha512-98RiPKqKZf6HLr7fzH9wcZ7By3aaW+g76kAseagXP2AT6VvIQcPEbas4+Hl/SXD4Cyzl2DDvV6Kw+SZX9EUc4A==}
+    engines: {node: '>=22.0.0'}
     peerDependencies:
-      eslint: '>=0.8.0'
+      eslint: ^8.0.0 || ^9.0.0 || ^10.0.0
 
   eslint-plugin-jest@28.12.0:
     resolution: {integrity: sha512-J6zmDp8WiQ9tyvYXE+3RFy7/+l4hraWLzmsabYXyehkmmDd36qV4VQFc7XzcsD8C1PTNt646MSx25bO1mdd9Yw==}
@@ -10694,7 +10694,7 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-plugin-jest-formatting@3.1.0(eslint@8.57.1(supports-color@9.4.0)):
+  eslint-plugin-jest-formatting@4.0.0(eslint@8.57.1(supports-color@9.4.0)):
     dependencies:
       eslint: 8.57.1(supports-color@9.4.0)
 
