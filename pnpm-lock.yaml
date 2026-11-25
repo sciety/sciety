@@ -33,8 +33,8 @@ importers:
         specifier: ^1.2.0
         version: 1.2.0
       cls-rtracer:
-        specifier: ^2.6.3
-        version: 2.6.3
+        specifier: ^2.6.4
+        version: 2.6.4
       escape-goat:
         specifier: ^3.0.0
         version: 3.0.0
@@ -2637,8 +2637,8 @@ packages:
     resolution: {integrity: sha512-JQHZ2QMW6l3aH/j6xCqQThY/9OH4D/9ls34cgkUBiEeocRTU04tHfKPBsUK1PqZCUQM7GiA0IIXJSuXHI64Kbg==}
     engines: {node: '>=0.8'}
 
-  cls-rtracer@2.6.3:
-    resolution: {integrity: sha512-O7M/m2M/KfT9v+q7ka9nmsadS67ce9P8+1Zgm6VFamK56oFd1iCoJ9m8hYKUQpK4+RofyaexxHJlOBkxqCDs3Q==}
+  cls-rtracer@2.6.4:
+    resolution: {integrity: sha512-ZvMGg96OWmujBjYdH56TCr3PvimGDmVDTt8jJJsyLbvuvk/0dRlaJT2ibotn/mIYD0lZT5/xMrweeroUNvAhnQ==}
     engines: {node: '>=12.17.0 <13.0.0 || >=13.14.0 <14.0.0 || >=14.0.0'}
 
   cluster-key-slot@1.1.2:
@@ -9915,7 +9915,7 @@ snapshots:
 
   clone@1.0.4: {}
 
-  cls-rtracer@2.6.3:
+  cls-rtracer@2.6.4:
     dependencies:
       uuid: 9.0.1
 
